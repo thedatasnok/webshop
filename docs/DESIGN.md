@@ -105,3 +105,8 @@ The body font is the default font configured in the project.
 The spacing is derived from the TailwindCSS defaults, which holds a set of global spacing utilities that we strive to use. 
 
 Their default spacing can be found in their [documentation](https://tailwindcss.com/docs/customizing-spacing#default-spacing-scale).
+
+
+## Iconography
+
+For icons, we use [Remix Icons](https://github.com/Remix-Design/RemixIcon).
