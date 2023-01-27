@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="33.731232mm"
-   height="7.8457794mm"
    viewBox="0 0 33.731232 7.8457794"
    version="1.1"
-   id="svg2759"
+   style="color: white"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2756" />
   <g
-     id="layer1"
      transform="translate(-68.36413,-130.01762)">
     <g
-       aria-label="CGG"
-       id="text3188-2"
        style="font-size:11.2889px;font-family:Hypik;-inkscape-font-specification:Hypik;fill:#ffffff;stroke-width:0.300044">
       <path
          d="m 80.702901,130.01762 v 0 h -4.492982 l -7.845786,7.84578 h 8.218319 l 1.12889,-1.1176 1.490135,-1.50142 h -3.736626 l -1.501423,1.50142 H 73.21836 l 5.610584,-5.59929 h 0.745067 l -1.490135,1.49013 h 3.736626 l 2.619025,-2.61902 v 0 0 z"
-         style="fill:#000000"
-         id="path477" />
+         style="fill:currentColor" />
       <path
          d="m 85.105573,130.01762 -7.845785,7.84578 h 8.218319 l 4.10916,-4.10916 h -3.736626 l -0.372534,0.37254 -2.607736,2.61902 h -0.756356 l 5.610583,-5.61058 h 0.745068 l -1.501424,1.50142 h 3.736626 l 1.501424,-1.50142 1.117601,-1.1176 z"
-         style="fill:#000000"
-         id="path479" />
+         style="fill:currentColor" />
       <path
          d="m 93.877054,130.01762 -7.845786,7.84578 h 8.21832 l 4.109159,-4.10916 h -3.736626 l -0.372533,0.37254 -2.607736,2.61902 h -0.756357 l 5.610584,-5.61058 h 0.745067 l -1.501423,1.50142 h 3.736626 l 1.501421,-1.50142 1.1176,-1.1176 z"
-         style="fill:#000000"
-         id="path481" />
+         style="fill:currentColor" />
     </g>
   </g>
 </svg>
