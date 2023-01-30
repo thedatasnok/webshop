@@ -18,7 +18,7 @@
 │   ├───storefront (customer-facing frontend)
 │   └───dashboard (optional: admin frontend) *
 └───packages
-    ├───contracts (DTOs - shared between frontends and backend)
+    ├───contracts (DTOs - shared between frontends and backend, including validation)
     └───ui (shared UI components, if we make a dashboard) *
 ```
 
