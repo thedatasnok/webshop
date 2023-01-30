@@ -1,6 +1,14 @@
-<h3 align="center">webshop</h3>
-<p align="center">tbd</p>
+<div align="center">
+  <img align="center" width="300" src="docs/assets/logo-big.svg" />
+</div>
+<br />
+<p align="center">A webshop group project for the courses IDATA2301 and IDATA2306 at NTNU</p>
 
+<div align="center">
+  <a href="#getting-started">Getting started</a> •
+  <a href="#">View demo</a> •
+  <a href="#license">License</a>
+</div>
 
 ## Project structure
 
@@ -15,6 +23,10 @@
 ```
 
 `*`: Not yet decided.
+
+## Getting started
+
+tbd.
 
 ## License
 
