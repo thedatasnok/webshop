@@ -16,13 +16,11 @@
 ├───apps
 │   ├───backend (Spring Boot backend)
 │   ├───storefront (customer-facing frontend)
-│   └───dashboard (optional: admin frontend) *
+│   └───dashboard (admin frontend)
 └───packages
     ├───contracts (DTOs - shared between frontends and backend, including validation)
-    └───ui (shared UI components, if we make a dashboard) *
+    └───ui (shared UI components)
 ```
-
-`*`: Not yet decided.
 
 ## Getting started
 
