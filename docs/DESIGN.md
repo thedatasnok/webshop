@@ -87,8 +87,43 @@ As the theme is cyberpunk, we typically use the darker shades of the base color.
 
 </div>
 
+## Hierarchy and layout
+
+The layout varies between pages, but the general layout is as follows:
+
+- Header
+- Main content
+- Footer
+
+The header and footer are always visible, while the main content is the only part that changes between pages. 
+
+Storefront pages:
+- Home/landing page
+- Product browser page
+- Product page
+- Cart page
+- Checkout page
+- User profile
+
+The following pages are exceptions to the above rule:
+- Sign up page
+- Sign in page
+
+The dashboard app is not part of the storefront app, and is therefore not following the same hierarchy.
+
+The dashboard app has a sidebar for navigation, unlike the storefront. 
+
+Dashboard pages:
+- Dashboard page (overview?)
+- Order overview
+- ... (more to be added)
 
 ## Typography
+
+Both fonts are sans-serif fonts, and are available through Google Fonts.
+
+The title font is used for headings or text that needs to stand out more, while the body font is the default font used throughout the site.
+
 
 Title/heading font: [Rajdhani](https://fonts.google.com/specimen/Rajdhani)
 
@@ -100,6 +135,9 @@ Body font: [Roboto Condensed](https://fonts.google.com/specimen/Roboto+Condensed
 The body font is the default font configured in the project.
 
 
+The font sizes are based off the scaling in TailwindCSS, which can be found in their [documentation](https://tailwindcss.com/docs/font-size).
+
+
 ## Spacing
 
 The spacing is derived from the TailwindCSS defaults, which holds a set of global spacing utilities that we strive to use. 
@@ -107,6 +145,28 @@ The spacing is derived from the TailwindCSS defaults, which holds a set of globa
 Their default spacing can be found in their [documentation](https://tailwindcss.com/docs/customizing-spacing#default-spacing-scale).
 
 
+## Images
+
+Images should generally have no text on them, with the exception of the landing page.
+
+The images for products should be clear images, with a transparent background.
+
+Blur effects should be avoided, unless used for a specific effect on the landing page.
+
+
 ## Iconography
 
 For icons, we use [Remix Icons](https://github.com/Remix-Design/RemixIcon).
+
+They may be colored, but ideally uses the grayscale color. 
+
+
+## Border rounding
+
+As noted above, borders should generally not be rounded. 
+Some exceptions may be made, but it should be considered carefully.
+
+## Shadows
+
+Shadows are also generally not to be used, unless some sort of elevation or glowing effect is needed to make the UI more interesting.
+
