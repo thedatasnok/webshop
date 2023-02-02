@@ -1,9 +1,14 @@
 import { Logo } from '@webshop/ui';
+import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ className }) => {
   return (
-    <header className='border-base-200 px-12 py-2.5'>
+    <header className={clsx('border-base-200 px-12 py-2.5', className)}>
       <div className='mx-auto flex max-w-screen-xl flex-wrap items-center gap-4  py-4'>
         <a className='flex items-center w-48'>
           <Logo variant='big' />
