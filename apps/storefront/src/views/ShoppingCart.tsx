@@ -1,3 +1,4 @@
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { Button } from '@webshop/ui';
 
@@ -30,6 +31,8 @@ const ShoppingCart = () => {
             <Button className='self-end rounded-sm'>Checkout</Button>
           </div>
         </div>
+
+        <Footer />
       </main>
     </div>
   );
