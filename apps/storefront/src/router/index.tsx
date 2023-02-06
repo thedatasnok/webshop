@@ -1,4 +1,5 @@
 import SignIn from '@/views/auth/SignIn';
+import SignUp from '@/views/auth/SignUp';
 import NotFound from '@/views/error/NotFound';
 import LandingPage from '@/views/LandingPage';
 import ProductBrowser from '@/views/ProductBrowser';
@@ -45,7 +46,7 @@ export const routes: ApplicationRoute[] = [
   {
     path: '/auth/sign-up',
     href: '/auth/sign-up',
-    element: <SignIn />,
+    element: <SignUp />,
   },
   {
     path: '/cart',

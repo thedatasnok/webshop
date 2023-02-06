@@ -78,7 +78,7 @@ const LandingPage = () => {
                 )}
               >
                 <div className='h-24 aspect-square rounded-sm bg-base-800' />
-                <div>
+                <div className='max-w-lg'>
                   <h3 className='font-title font-semibold text-lg'>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   </h3>
