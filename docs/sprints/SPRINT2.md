@@ -30,7 +30,7 @@
 ✅ Set up React project
 
 
-### Optional: Artifacts
+### Artifacts
 ![logo-big](../assets/logo-big.svg)
 ![logo-small](../assets/logo-small.svg)
 ![er-diagram](../assets/sprint2-erdiagram.png)
