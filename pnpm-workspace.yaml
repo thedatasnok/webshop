@@ -2,3 +2,4 @@ packages:
 - apps/storefront
 - apps/dashboard
 - packages/ui
+- packages/contracts

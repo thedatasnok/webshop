@@ -1,0 +1,23 @@
+plugins {
+  id 'java-library'
+  alias libs.plugins.spring.boot
+  alias libs.plugins.spring.dependencies
+  id 'cz.habarta.typescript-generator' version '3.1.1185'
+}
+
+bootJar {
+  enabled = false
+}
+
+dependencies {
+  api 'org.springframework.boot:spring-boot-starter-validation'
+  api 'org.projectlombok:lombok'
+}
+
+generateTypeScript {
+  jsonLibrary = 'jackson2'
+  outputKind = 'module'
+  outputFileType = 'implementationFile'
+  outputFile = 'src/gen/typescript/index.ts'
+  classPatterns = ['no.ntnu.webshop.contracts.**']
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@webshop/contracts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/gen/typescript/index.ts",
+  "module": "src/gen/typescript/index.ts",
+  "types": "src/gen/typescript/index.ts",
+  "scripts": {}
+}
