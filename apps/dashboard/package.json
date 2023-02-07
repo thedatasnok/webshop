@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@webshop/contracts": "workspace:*",
     "@webshop/ui": "workspace:*",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
