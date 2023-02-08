@@ -10,10 +10,10 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   return (
     <header className={clsx('border-base-200 px-12 py-2.5', className)}>
       <div className='mx-auto flex max-w-screen-xl flex-wrap items-center gap-4  py-4'>
-        <a className='flex items-center w-48'>
+        <NavLink to='/' className='flex w-48 items-center'>
           <Logo variant='big' />
-        </a>
-        <div className='flex-1 border border-base-700 px-2 py-1 rounded-sm'>
+        </NavLink>
+        <div className='border-base-700 flex-1 rounded-sm border px-2 py-1'>
           <input
             type='text'
             className='w-full bg-transparent focus:outline-none'
@@ -21,11 +21,11 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             aria-label='Search'
           />
         </div>
-        <div className='flex items-center lg:order-2 gap-2'>
+        <div className='flex items-center gap-2 lg:order-2'>
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className='w-6 aspect-square rounded-full bg-base-600 '
+              className='bg-base-600 aspect-square w-6 rounded-full '
             />
           ))}
         </div>
