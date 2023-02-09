@@ -19,5 +19,7 @@ generateTypeScript {
   outputKind = 'module'
   outputFileType = 'implementationFile'
   outputFile = 'src/gen/typescript/index.ts'
-  classPatterns = ['no.ntnu.webshop.contracts.**']
+  classesWithAnnotations = [
+    'no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript'
+  ]
 }
