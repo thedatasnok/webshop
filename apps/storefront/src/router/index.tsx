@@ -5,6 +5,7 @@ import LandingPage from '@/views/LandingPage';
 import ProductBrowser from '@/views/ProductBrowser';
 import ProductView from '@/views/ProductView';
 import ShoppingCart from '@/views/ShoppingCart';
+import UserProfile from '@/views/UserProfile';
 
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 
@@ -52,6 +53,11 @@ export const routes: ApplicationRoute[] = [
     path: '/cart',
     href: '/cart',
     element: <ShoppingCart />,
+  },
+  {
+    path: '/profile',
+    href: '/profile',
+    element: <UserProfile />,
   },
   {
     path: '*',
