@@ -82,6 +82,14 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               Sign-up
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to='/checkout'
+              className={({ isActive }) => `${isActive ? 'text-primary' : ''}`}
+            >
+              Checkout
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
