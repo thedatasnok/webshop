@@ -99,14 +99,14 @@ const Checkout = () => {
               </div>
             </section>
 
-            <div className='flex justify-center pt-5'>
+            <div className='flex justify-center pt-5 pb-5'>
               <Button className='w-30 h-8 rounded-sm'>Confirm & Buy</Button>
             </div>
           </div>
 
           <div className='px-4 pt-8'>
             <div className='mt-10 bg-gray-50 px-4'>
-              <p className='text-gray-400 text-xl'>Shopping cart</p>
+              <p className='text-xl text-gray-400'>Shopping cart</p>
               <div>
                 <section id='dummy-cart-items'>
                   {[...Array(4)].map((_, i) => (
