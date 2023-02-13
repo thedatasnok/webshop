@@ -10,8 +10,8 @@ const UserProfile = () => {
     <div>
       <Header />
       <main>
-        <div className='mx-auto mt-4 flex max-w-screen-xl flex-wrap justify-between'>
-          <div>
+        <div className='mx-auto mt-4 flex max-w-screen-xl gap-32'>
+          <div className='w-1/3'>
             <h1 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Account Details
             </h1>
@@ -21,7 +21,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='email'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='E-mail'
                 />
               </div>
@@ -31,7 +31,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='text'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='Name'
                 />
               </div>
@@ -48,7 +48,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='text'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='Street'
                 />
               </div>
@@ -58,7 +58,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='text'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='City'
                 />
               </div>
@@ -68,7 +68,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='text'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='Postal Code'
                 />
               </div>
@@ -78,7 +78,7 @@ const UserProfile = () => {
                 <input
                   id=''
                   type='text'
-                  className='bg-base-800 w-96 rounded-sm p-1 focus:outline-none'
+                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                   aria-label='Country'
                 />
               </div>
@@ -88,11 +88,11 @@ const UserProfile = () => {
             </div>
           </div>
 
-          <div>
+          <div className='w-2/3'>
             <h1 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Order History
             </h1>
-            <div className='border-base-700 mb-4 w-96 flex-1 rounded-sm border px-2 py-1'>
+            <div className='border-base-700 mb-4 w-1/3 flex-1 rounded-sm border px-2 py-1'>
               <input
                 type='text'
                 className='w-full bg-transparent focus:outline-none'
