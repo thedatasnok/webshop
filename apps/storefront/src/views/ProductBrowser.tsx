@@ -8,7 +8,7 @@ const ProductBrowser = () => {
 
       <main>
         <div className='mx-auto w-full max-w-screen-xl'>
-          <div id='cart-title' className='px-10 py-4'>
+          <div id='cart-title' className='py-4'>
             <h1 className='mb-4 flex text-3xl'>Browse</h1>
             <p>
               Explore our newest insane gaming gear that will enhance your aim

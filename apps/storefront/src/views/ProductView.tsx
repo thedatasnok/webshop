@@ -1,17 +1,14 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import Button from '@webshop/ui/src/components/input/Button';
-import { useParams } from 'react-router-dom';
+import { Button } from '@webshop/ui';
 
 const ProductView = () => {
-  const { id } = useParams();
-
   return (
     <div>
       <Header />
       <main>
-        <div className='mx-auto flex max-w-screen-xl flex-wrap mt-4'>
-          <div className='space-x-2 text-sm text-base-400'>
+        <div className='mx-auto mt-4 flex max-w-screen-xl flex-wrap'>
+          <div className='text-base-400 space-x-2 text-sm'>
             <a href='#' className='hover:underline'>
               Mousepads
             </a>
@@ -23,33 +20,36 @@ const ProductView = () => {
         </div>
 
         <div className='mx-auto flex max-w-screen-xl flex-wrap gap-4 py-4'>
-          <img
-            id=''
-            className='h-max w-max'
-            src='https://placehold.co/768x768/d4d4d8/d4d4d8.png'
-          />
+          <div className='relative w-1/2'>
+            <img
+              className='clip-edges clip-corner-sm aspect-square'
+              src='https://placehold.co/768x768/d4d4d8/d4d4d8.png'
+              alt={undefined || 'product-image'} // read from product in the future
+            />
+
+            <div className='bg-base-900 font-title absolute bottom-0 right-1/4 translate-y-1/2 translate-x-full px-2 py-1 font-bold uppercase tracking-widest '>
+              #98320
+            </div>
+          </div>
           <div className='flex-1 px-4'>
-            <h1 className='mb-2 text-4xl font-title uppercase font-bold text-base-50'>
+            <h1 className='font-title text-base-50 mb-2 text-4xl font-bold uppercase'>
               3D Gaming Mousepad
             </h1>
-            <p className='mb-8 max-w-lg text-base-300'>
+            <p className='text-base-300 mb-8 max-w-lg'>
               Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae
               exercitationem porro saepe ea harum corrupti vero id laudantium
               enim, libero blanditiis expedita cupiditate a est.
             </p>
-            <h2 className='text-xl text-base-50 font-semibold'>$1,337</h2>
-            <button
-              type='button'
-              className='mt-2 h-10 bg-primary-500 px-6 font-semibold uppercase text-base-900 hover:bg-primary-200'
-            >
+            <h2 className='text-base-50 text-xl font-semibold'>$1,337</h2>
+            <Button className='mt-2 h-10 px-6 font-semibold uppercase'>
               Add to Cart
-            </button>
+            </Button>
           </div>
         </div>
 
-        <div className='mx-auto grid grid-cols-2 max-w-screen-xl gap-24 mt-4'>
+        <div className='mx-auto mt-4 grid max-w-screen-xl grid-cols-2 gap-24'>
           <div>
-            <h2 className='mb-2 text-3xl font-title uppercase font-semibold'>
+            <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Description
             </h2>
             <hr className='mb-8'></hr>
@@ -72,7 +72,7 @@ const ProductView = () => {
             </p>
           </div>
           <div>
-            <h2 className='mb-2 text-3xl font-title uppercase font-semibold'>
+            <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Specs
             </h2>
             <hr className='mb-8'></hr>
@@ -85,22 +85,22 @@ const ProductView = () => {
           </div>
         </div>
 
-        <h2 className='font-title text-center font-bold text-2xl uppercase mt-32 mb-4 tracking-wider'>
+        <h2 className='font-title mt-32 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
           Related products
         </h2>
 
         <section
           id='related-products'
-          className='mx-auto grid grid-cols-4 max-w-screen-xl gap-8 mt-4'
+          className='mx-auto mt-4 grid max-w-screen-xl grid-cols-4 gap-8'
         >
           {[...Array(4)].map((_, i) => (
-            <div key={i} className='flex flex-col w-full'>
-              <div className='w-full aspect-video rounded-sm bg-base-800' />
+            <div key={i} className='flex w-full flex-col'>
+              <div className='bg-base-800 aspect-video w-full rounded-sm' />
               <div className='flex justify-between text-lg font-medium'>
                 <p>product</p>
                 <p>$3,333</p>
               </div>
-              <Button className='self-end w-min rounded-sm'>buy</Button>
+              <Button className='w-min self-end rounded-sm'>buy</Button>
             </div>
           ))}
         </section>

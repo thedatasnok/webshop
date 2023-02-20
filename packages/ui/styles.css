@@ -8,3 +8,14 @@
 body {
   @apply bg-base-900 text-base-50;
 }
+
+@layer utilities {
+  .clip-corner-lg {
+    clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+  }
+
+  .clip-corner-sm {
+    clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%);
+  }
+}
+
