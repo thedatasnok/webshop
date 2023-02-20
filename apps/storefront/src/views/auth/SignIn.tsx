@@ -1,19 +1,19 @@
-import Header from '@/components/layout/Header';
 import { Button, Logo } from '@webshop/ui';
+import { NavLink } from 'react-router-dom';
 
 const SignIn = () => {
   return (
     <div>
-      <Header />
-
       <main>
-        <div className='flex flex-col items-center justify-center mx-auto py-10'>
+        <div className='flex h-screen flex-col items-center justify-center'>
           <div className='w-32 pb-10'>
-            <Logo variant='small' />
+            <NavLink to='/' className='flex w-32 items-center'>
+              <Logo variant='small' />
+            </NavLink>
           </div>
 
           <form id='sign-up-form'>
-            <div className='text-3xl flex justify-center'>
+            <div className='flex justify-center text-3xl'>
               <h1>Sign in</h1>
             </div>
 
@@ -22,7 +22,7 @@ const SignIn = () => {
               <input
                 id='email'
                 type='text'
-                className='w-full bg-base-800 focus:outline-none rounded-sm p-1'
+                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                 aria-label='Search'
               />
             </div>
@@ -32,12 +32,12 @@ const SignIn = () => {
               <input
                 id='password'
                 type='password'
-                className='w-full bg-base-800 focus:outline-none rounded-sm p-1'
+                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
                 aria-label='Search'
               />
             </div>
 
-            <div id='sign-up-button' className='py-5 text-3xl rounded-sm'>
+            <div id='sign-up-button' className='rounded-sm py-5 text-3xl'>
               <Button className='w-full'>Sign in</Button>
             </div>
           </form>
