@@ -3,6 +3,7 @@ rootProject.name = 'webshop'
 include ':apps:backend'
 
 include ':packages:contracts'
+include ':packages:migrations'
 
 dependencyResolutionManagement {
   repositories {
