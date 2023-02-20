@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -64,6 +67,7 @@ public class Product {
    * If the product is part of a product family, the value must be in the list of
    * possible values for the attribute, in the attribute map of the product family. 
    */
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "defined_attributes")
   private Map<String, String> attributes;
 
