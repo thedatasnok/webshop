@@ -1,6 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import NavBar from '@/components/navigation/NavBar';
+import NavigationBar from '@/components/navigation/NavigationBar';
 import Button from '@webshop/ui/src/components/input/Button';
 import { useParams } from 'react-router-dom';
 
@@ -123,7 +123,7 @@ const UserProfile = () => {
         </div>
       </main>
       <Footer />
-      <NavBar />
+      <NavigationBar />
     </div>
   );
 };

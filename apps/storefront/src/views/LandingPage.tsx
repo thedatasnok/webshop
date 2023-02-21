@@ -1,6 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import NavBar from '@/components/navigation/NavBar';
+import NavigationBar from '@/components/navigation/NavigationBar';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
 
@@ -97,7 +97,7 @@ const LandingPage = () => {
       </main>
 
       <Footer />
-      <NavBar />
+      <NavigationBar />
     </div>
   );
 };

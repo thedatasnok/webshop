@@ -1,6 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import NavBar from '@/components/navigation/NavBar';
+import NavigationBar from '@/components/navigation/NavigationBar';
 import { Button } from '@webshop/ui';
 
 const ShoppingCart = () => {
@@ -34,7 +34,7 @@ const ShoppingCart = () => {
         </div>
 
         <Footer />
-        <NavBar />
+        <NavigationBar />
       </main>
     </div>
   );

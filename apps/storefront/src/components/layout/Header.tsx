@@ -1,7 +1,8 @@
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
+import { RiShoppingCartLine, RiUser3Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
-import 'remixicon/fonts/remixicon.css';
+import NavigationItem from '../navigation/NavigationItem';
 
 interface HeaderProps {
   className?: string;
@@ -28,28 +29,20 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <div className='flex items-center gap-2'>
             <ul className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-center gap-2'>
               <li>
-                <NavLink
+                <NavigationItem
                   to='/profile'
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? 'ri-user-3-line ri-fw text-primary'
-                        : 'ri-user-3-line ri-fw'
-                    }`
-                  }
-                ></NavLink>
+                  name='Profile'
+                  icon={RiUser3Line}
+                  size='sm'
+                />
               </li>
               <li>
-                <NavLink
+                <NavigationItem
                   to='/cart'
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? 'ri-shopping-cart-line ri-fw text-primary'
-                        : 'ri-shopping-cart-line ri-fw'
-                    }`
-                  }
-                ></NavLink>
+                  name='Cart'
+                  icon={RiShoppingCartLine}
+                  size='sm'
+                />
               </li>
             </ul>
           </div>
