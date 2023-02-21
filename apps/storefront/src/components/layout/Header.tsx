@@ -1,6 +1,7 @@
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
+import 'remixicon/fonts/remixicon.css';
 
 interface HeaderProps {
   className?: string;
@@ -8,8 +9,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   return (
-    <header className={clsx('border-base-200 px-12 py-2.5', className)}>
-      <div className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4  sm:flex-row'>
+    <header className={clsx('border-base-200', className)}>
+      <div className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
         <div className='flex justify-center'>
           <NavLink to='/' className='w-64 sm:w-48'>
             <Logo variant='big' />
@@ -24,13 +25,33 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           />
         </div>
         <div className='hidden sm:block'>
-          <div className='flex items-center gap-2 lg:order-2'>
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className='bg-base-600 aspect-square w-6 rounded-full '
-              />
-            ))}
+          <div className='flex items-center gap-2'>
+            <ul className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-center gap-2'>
+              <li>
+                <NavLink
+                  to='/profile'
+                  className={({ isActive }) =>
+                    `${
+                      isActive
+                        ? 'ri-user-3-line ri-fw text-primary'
+                        : 'ri-user-3-line ri-fw'
+                    }`
+                  }
+                ></NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to='/cart'
+                  className={({ isActive }) =>
+                    `${
+                      isActive
+                        ? 'ri-shopping-cart-line ri-fw text-primary'
+                        : 'ri-shopping-cart-line ri-fw'
+                    }`
+                  }
+                ></NavLink>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -71,16 +92,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             </li>
             <li>
               <NavLink
-                to='/cart'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Cart
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
                 to='/auth/sign-in'
                 className={({ isActive }) =>
                   `${isActive ? 'text-primary' : ''}`
@@ -107,16 +118,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 }
               >
                 Checkout
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/profile'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Profile
               </NavLink>
             </li>
           </ul>
