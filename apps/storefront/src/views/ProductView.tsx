@@ -1,5 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import NavBar from '@/components/navigation/NavBar';
 import { Button } from '@webshop/ui';
 
 const ProductView = () => {
@@ -106,6 +107,7 @@ const ProductView = () => {
         </section>
       </main>
       <Footer />
+      <NavBar />
     </div>
   );
 };

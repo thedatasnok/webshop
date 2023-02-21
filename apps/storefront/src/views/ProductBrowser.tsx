@@ -1,5 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import NavBar from '@/components/navigation/NavBar';
 
 const ProductBrowser = () => {
   return (
@@ -48,6 +49,7 @@ const ProductBrowser = () => {
       </main>
 
       <Footer />
+      <NavBar />
     </div>
   );
 };

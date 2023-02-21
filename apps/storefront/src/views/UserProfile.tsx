@@ -1,5 +1,6 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import NavBar from '@/components/navigation/NavBar';
 import Button from '@webshop/ui/src/components/input/Button';
 import { useParams } from 'react-router-dom';
 
@@ -83,7 +84,7 @@ const UserProfile = () => {
                 />
               </div>
             </form>
-            <div id='' className='rounded-sm py-5 text-xl flex justify-end'>
+            <div id='' className='flex justify-end rounded-sm py-5 text-xl'>
               <Button className='px-4'>Save</Button>
             </div>
           </div>
@@ -122,6 +123,7 @@ const UserProfile = () => {
         </div>
       </main>
       <Footer />
+      <NavBar />
     </div>
   );
 };
