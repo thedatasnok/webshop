@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {
   RiComputerLine,
   RiHeadphoneLine,
@@ -6,10 +7,19 @@ import {
 } from 'react-icons/ri';
 import NavigationItem from './NavigationItem';
 
-const NavBar = () => {
+interface NavigationBarProps {
+  className?: string;
+}
+
+const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
   return (
-    <nav className='bg-base-900 border-base-700 sticky bottom-0 z-10 w-full border-t sm:hidden'>
-      <ul className='mx-auto flex w-2/3 items-center justify-between py-2'>
+    <nav
+      className={clsx(
+        'bg-base-900 border-base-700 sticky w-full border-t',
+        className
+      )}
+    >
+      <ul className='mx-auto grid w-2/3 items-center grid-cols-4 gap-2'>
         <li>
           <NavigationItem
             to='/products'
@@ -31,4 +41,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavigationBar;

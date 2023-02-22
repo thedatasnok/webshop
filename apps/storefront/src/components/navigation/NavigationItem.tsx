@@ -20,7 +20,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
       to={to}
       className={({ isActive }) =>
         clsx(
-          'flex flex-col items-center justify-center gap-1',
+          'flex flex-col items-center justify-center gap-1 py-2',
           isActive && 'text-primary',
           size === 'sm' && 'gap-0.5'
         )
