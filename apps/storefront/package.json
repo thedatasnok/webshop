@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.11",
+    "@mantine/hooks": "^5.10.4",
     "@webshop/contracts": "workspace:*",
     "@webshop/ui": "workspace:*",
     "clsx": "^1.2.1",
