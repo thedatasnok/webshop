@@ -12,8 +12,8 @@ interface PageLayoutProps {
  */
 const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   return (
-    <div className='flex h-screen w-screen flex-col'>
-      <div className='flex-1 overflow-auto px-2 sm:px-4'>
+    <>
+      <div className='overflow-auto px-2 sm:px-4'>
         <Header />
 
         {children}
@@ -21,8 +21,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
         <Footer />
       </div>
 
-      <NavigationBar className='sm:hidden' />
-    </div>
+      <NavigationBar className='fixed bottom-0 sm:hidden' />
+    </>
   );
 };
 
