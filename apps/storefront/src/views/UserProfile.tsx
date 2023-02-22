@@ -1,6 +1,4 @@
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import NavigationBar from '@/components/navigation/NavigationBar';
+import PageLayout from '@/components/layout/PageLayout';
 import Button from '@webshop/ui/src/components/input/Button';
 import { useParams } from 'react-router-dom';
 
@@ -8,8 +6,7 @@ const UserProfile = () => {
   const { id } = useParams();
 
   return (
-    <div>
-      <Header />
+    <PageLayout>
       <main>
         <div className='mx-auto mt-4 flex max-w-screen-xl gap-32'>
           <div className='w-1/3'>
@@ -122,9 +119,7 @@ const UserProfile = () => {
           </div>
         </div>
       </main>
-      <Footer />
-      <NavigationBar />
-    </div>
+    </PageLayout>
   );
 };
 

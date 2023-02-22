@@ -1,12 +1,8 @@
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import NavigationBar from '@/components/navigation/NavigationBar';
+import PageLayout from '@/components/layout/PageLayout';
 
 const ProductBrowser = () => {
   return (
-    <div>
-      <Header />
-
+    <PageLayout>
       <main>
         <div className='mx-auto w-full max-w-screen-xl'>
           <div id='cart-title' className='py-4'>
@@ -47,10 +43,7 @@ const ProductBrowser = () => {
           </section>
         </div>
       </main>
-
-      <Footer />
-      <NavigationBar />
-    </div>
+    </PageLayout>
   );
 };
 

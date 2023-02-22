@@ -1,14 +1,10 @@
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import NavigationBar from '@/components/navigation/NavigationBar';
+import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
 
 const LandingPage = () => {
   return (
-    <div>
-      <Header className='absolute top-0 z-10 w-full' />
-
+    <PageLayout>
       <main>
         <section
           id='hero'
@@ -95,10 +91,7 @@ const LandingPage = () => {
           </section>
         </div>
       </main>
-
-      <Footer />
-      <NavigationBar />
-    </div>
+    </PageLayout>
   );
 };
 

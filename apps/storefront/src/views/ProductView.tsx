@@ -1,12 +1,9 @@
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import NavigationBar from '@/components/navigation/NavigationBar';
+import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
 
 const ProductView = () => {
   return (
-    <div>
-      <Header />
+    <PageLayout>
       <main>
         <div className='mx-auto mt-4 flex max-w-screen-xl flex-wrap'>
           <div className='text-base-400 space-x-2 text-sm'>
@@ -106,9 +103,7 @@ const ProductView = () => {
           ))}
         </section>
       </main>
-      <Footer />
-      <NavigationBar />
-    </div>
+    </PageLayout>
   );
 };
 

@@ -1,13 +1,9 @@
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import NavigationBar from '@/components/navigation/NavigationBar';
+import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
 
 const ShoppingCart = () => {
   return (
-    <div>
-      <Header />
-
+    <PageLayout>
       <main>
         <div className='mx-auto max-w-screen-xl py-10'>
           <div id='cart-title' className='justify-start text-3xl'>
@@ -32,11 +28,8 @@ const ShoppingCart = () => {
             <Button className='self-end rounded-sm'>Checkout</Button>
           </div>
         </div>
-
-        <Footer />
-        <NavigationBar />
       </main>
-    </div>
+    </PageLayout>
   );
 };
 
