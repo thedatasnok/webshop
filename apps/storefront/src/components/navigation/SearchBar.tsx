@@ -6,19 +6,31 @@ import { RiArrowRightSLine, RiCloseLine, RiSearchLine } from 'react-icons/ri';
 
 export interface SearchOverlayProps {}
 
+/**
+ * Search bar component with search overlay.
+ * Used to search for products, it will open a search overlay when the user starts typing.
+ */
 export const SearchBar: React.FC<SearchOverlayProps> = () => {
   const [searchValue, setSearchValue] = useDebouncedState('', 500);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const openOverlay = () => {
+  /**
+   * Opens the search overlay, if checkContent is true, it will only open if the searchValue is not empty.
+   */
+  const openOverlay = (checkContent?: boolean) => {
+    if (checkContent && searchValue.length === 0) return;
     setShowOverlay(true);
   };
 
+  /**
+   * Closes the search overlay.
+   */
   const closeOverlay = () => {
     setShowOverlay(false);
   };
 
   useEffect(() => {
+    // only show the overlay if the search string is not empty
     if (searchValue.length > 0) {
       openOverlay();
     } else {
@@ -34,10 +46,11 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
           className='w-full bg-transparent focus:outline-none'
           placeholder='Search...'
           aria-label='Search'
+          onFocus={() => openOverlay(true)}
           onChange={(event) => setSearchValue(event.target.value)}
         />
 
-        <Popover.Button onClick={openOverlay}>
+        <Popover.Button onClick={() => openOverlay()}>
           <RiSearchLine className='text-base-300 h-5 w-5' />
         </Popover.Button>
       </div>
