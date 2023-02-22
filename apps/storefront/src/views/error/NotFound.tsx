@@ -6,7 +6,7 @@ const NotFound = () => {
   return (
     <PageLayout>
       <main>
-        <div className='flex h-96 flex-col items-center justify-center'>
+        <div className='flex flex-col items-center sm:justify-center sm:py-8'>
           <h1 className='font-title flex text-8xl font-semibold'>404</h1>
           <p>could not find that page</p>
           <div className='py-4'>

@@ -5,8 +5,8 @@ const Support = () => {
   return (
     <PageLayout>
       <main>
-        <div className='flex h-96 flex-col items-center'>
-          <p className='mt-16 max-w-xl text-center'>
+        <div className='flex flex-col items-center'>
+          <p className='max-w-xl text-center sm:pt-8'>
             Cyberpunk gaming gear are dedicated to providing you with the best
             shopping experience possible, and that includes offering top-notch
             support for all of your inquiries. Whether you have a question about
