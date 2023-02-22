@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { RiShoppingCartLine, RiUser3Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 import NavigationItem from '../navigation/NavigationItem';
+import { SearchBar } from '../navigation/SearchBar';
 
 interface HeaderProps {
   className?: string;
@@ -17,14 +18,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             <Logo variant='big' />
           </NavLink>
         </div>
-        <div className='border-base-700 flex-1 rounded-sm border px-2 py-1'>
-          <input
-            type='text'
-            className='w-full bg-transparent focus:outline-none'
-            placeholder='Search...'
-            aria-label='Search'
-          />
-        </div>
+
+        <SearchBar />
+
         <div className='hidden sm:block'>
           <div className='flex items-center gap-2'>
             <ul className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-center gap-2'>
