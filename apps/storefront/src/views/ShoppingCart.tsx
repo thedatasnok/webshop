@@ -26,7 +26,7 @@ const ShoppingCart = () => {
             <a className='self-end'>Total: $112,000</a>
           </div>
           <div id='checkout' className='flex w-full flex-col'>
-            <NavLink to='/Checkout|' className='self-end'>
+            <NavLink to='/checkout' className='self-end'>
               <Button className='rounded-sm text-lg'>Checkout</Button>
             </NavLink>
           </div>
