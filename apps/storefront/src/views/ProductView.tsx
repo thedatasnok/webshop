@@ -1,5 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
+import { NavLink } from 'react-router-dom';
 
 const ProductView = () => {
   return (
@@ -98,7 +99,9 @@ const ProductView = () => {
                 <p>product</p>
                 <p>$3,333</p>
               </div>
-              <Button className='w-min self-end rounded-sm'>buy</Button>
+              <NavLink to='/products/2' className='self-end'>
+                <Button className='w-min rounded-sm'>buy</Button>
+              </NavLink>
             </div>
           ))}
         </section>

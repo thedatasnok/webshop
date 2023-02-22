@@ -1,5 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
+import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
   return (
@@ -24,8 +25,10 @@ const ShoppingCart = () => {
           >
             <a className='self-end'>Total: $112,000</a>
           </div>
-          <div id='checkout' className='flex w-full flex-col text-lg'>
-            <Button className='self-end rounded-sm'>Checkout</Button>
+          <div id='checkout' className='flex w-full flex-col'>
+            <NavLink to='/Checkout|' className='self-end'>
+              <Button className='rounded-sm text-lg'>Checkout</Button>
+            </NavLink>
           </div>
         </div>
       </main>
