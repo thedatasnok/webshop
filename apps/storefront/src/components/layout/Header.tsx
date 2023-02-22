@@ -1,6 +1,10 @@
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
-import { RiShoppingCartLine, RiUser3Line } from 'react-icons/ri';
+import {
+  RiHeadphoneLine,
+  RiShoppingCartLine,
+  RiUser3Line,
+} from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 import NavigationItem from '../navigation/NavigationItem';
 import { SearchBar } from '../navigation/SearchBar';
@@ -24,6 +28,14 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         <div className='hidden sm:block'>
           <div className='flex items-center gap-2'>
             <ul className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-center gap-2'>
+              <li>
+                <NavigationItem
+                  to='/support'
+                  name='Support'
+                  icon={RiHeadphoneLine}
+                  size='sm'
+                />
+              </li>
               <li>
                 <NavigationItem
                   to='/profile'

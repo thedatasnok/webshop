@@ -1,6 +1,7 @@
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
+import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -24,9 +25,12 @@ const LandingPage = () => {
               <br className='hidden sm:block' />
               faster, stronger and more awesome.
             </h1>
-            <Button className='font-title rounded-sm text-lg font-bold'>
-              Browse shop
-            </Button>
+
+            <NavLink to='/products'>
+              <Button className='font-title rounded-sm text-lg font-bold'>
+                Browse shop
+              </Button>
+            </NavLink>
           </div>
         </section>
 
@@ -62,7 +66,10 @@ const LandingPage = () => {
                   <p>product</p>
                   <p>$3,333</p>
                 </div>
-                <Button className='w-min self-end rounded-sm'>buy</Button>
+
+                <NavLink to='/products/1' className='self-end'>
+                  <Button className='w-min rounded-sm'>buy</Button>
+                </NavLink>
               </div>
             ))}
           </section>

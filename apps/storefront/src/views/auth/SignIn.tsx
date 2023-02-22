@@ -12,7 +12,7 @@ const SignIn = () => {
             </NavLink>
           </div>
 
-          <form id='sign-up-form'>
+          <form id='sign-up-form' className='flex flex-col gap-2'>
             <div className='flex justify-center text-3xl'>
               <h1>Sign in</h1>
             </div>
@@ -27,7 +27,7 @@ const SignIn = () => {
               />
             </div>
 
-            <div className='py-1'>
+            <div>
               <label>Password</label>
               <input
                 id='password'
@@ -37,8 +37,10 @@ const SignIn = () => {
               />
             </div>
 
-            <div id='sign-up-button' className='rounded-sm py-5 text-3xl'>
-              <Button className='w-full'>Sign in</Button>
+            <div id='sign-up-button' className='my-2'>
+              <NavLink to='/'>
+                <Button className='w-full rounded-sm text-2xl'>Sign in</Button>
+              </NavLink>
             </div>
           </form>
         </div>
