@@ -1,6 +1,7 @@
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
 import {
+  RiDoorOpenLine,
   RiHeadphoneLine,
   RiShoppingCartLine,
   RiUser3Line,
@@ -18,43 +19,47 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     <header className={clsx('border-base-200', className)}>
       <div className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
         <div className='flex justify-center'>
-          <NavLink to='/' className='w-64 sm:w-48'>
+          <NavLink to='/' className='w-64 sm:w-44'>
             <Logo variant='big' />
           </NavLink>
         </div>
 
         <SearchBar />
 
-        <div className='hidden sm:block'>
-          <div className='flex items-center gap-2'>
-            <ul className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-center gap-2'>
-              <li>
-                <NavigationItem
-                  to='/support'
-                  name='Support'
-                  icon={RiHeadphoneLine}
-                  size='sm'
-                />
-              </li>
-              <li>
-                <NavigationItem
-                  to='/profile'
-                  name='Profile'
-                  icon={RiUser3Line}
-                  size='sm'
-                />
-              </li>
-              <li>
-                <NavigationItem
-                  to='/cart'
-                  name='Cart'
-                  icon={RiShoppingCartLine}
-                  size='sm'
-                />
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ul className='hidden w-44 items-center justify-end gap-2 sm:flex'>
+          <li>
+            <NavigationItem
+              to='/support'
+              name='Support'
+              icon={RiHeadphoneLine}
+              size='sm'
+            />
+          </li>
+          <li>
+            <NavigationItem
+              to='/profile'
+              name='Profile'
+              icon={RiUser3Line}
+              size='sm'
+            />
+          </li>
+          <li>
+            <NavigationItem
+              to='/cart'
+              name='Cart'
+              icon={RiShoppingCartLine}
+              size='sm'
+            />
+          </li>
+          <li>
+            <NavigationItem
+              to='/sign-out'
+              name='Sign out'
+              icon={RiDoorOpenLine}
+              size='sm'
+            />
+          </li>
+        </ul>
       </div>
 
       <nav>
