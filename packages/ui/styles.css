@@ -19,3 +19,14 @@ body {
   }
 }
 
+::-webkit-scrollbar {
+  @apply h-2 w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-base-800 hover:bg-base-700 rounded-full;
+}
