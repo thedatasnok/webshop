@@ -13,7 +13,7 @@ interface PageLayoutProps {
 const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   return (
     <div className='flex h-screen w-screen flex-col'>
-      <div className='flex-1 overflow-auto'>
+      <div className='flex-1 overflow-auto px-2 sm:px-4'>
         <Header />
 
         {children}
