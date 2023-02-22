@@ -29,7 +29,7 @@ Some characteristics we have found other cyberpunk themed sites to have:
 
 ## Color palette
 
-All of these colors are defined in the [TailwindCSS config file](../apps/storefront/tailwind.config.cjs). 
+All of these colors are defined in the [TailwindCSS config file](../packages/ui/tailwind.config.cjs). 
 We have named these colors with color-agnostic names so that they can potentially be swapped out for other colors in the future. 
 
 Each of the colors have shades the shades: `50, 100, 200, 300, 400, 500, 600, 700, 800, 900`
