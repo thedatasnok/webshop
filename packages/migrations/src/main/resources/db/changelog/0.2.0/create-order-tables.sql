@@ -20,7 +20,7 @@ CREATE TYPE webshop_payment_status AS ENUM (
   'CANCELLED'
 );
 
-CREATE TABLE order (
+CREATE TABLE "order" (
   order_id BIGINT GENERATED ALWAYS AS IDENTITY,
   total NUMERIC NOT NULL,
   order_status webshop_order_status NOT NULL,
@@ -44,8 +44,7 @@ CREATE TABLE order (
   invoice_care_of TEXT,
 
   PRIMARY KEY (order_id),
-  FOREIGN KEY (fk_user_account_id) REFERENCES user_account(user_account_id),
-  FOREIGN KEY (fk_product_price_id) REFERENCES product_price(product_price_id)
+  FOREIGN KEY (fk_customer_id) REFERENCES user_account(user_account_id)
 );
 
 CREATE TABLE order_line (
@@ -54,6 +53,13 @@ CREATE TABLE order_line (
   fk_product_id BIGINT NOT NULL,
   fk_product_price_id BIGINT NOT NULL,
   quantity INT NOT NULL,
-  subtotal NUMERIC
+  subtotal NUMERIC,
+
+  CHECK (quantity > 0),
+
+  PRIMARY KEY (order_line_id),
+  FOREIGN KEY (fk_order_id) REFERENCES "order"(order_id),
+  FOREIGN KEY (fk_product_id) REFERENCES product(product_id),
+  FOREIGN KEY (fk_product_price_id) REFERENCES product_price(product_price_id)
 );
 

@@ -23,8 +23,11 @@ CREATE TABLE product_price (
   fk_product_id BIGINT NOT NULL,
   price NUMERIC NOT NULL,
   is_discount BOOLEAN NOT NULL DEFAULT FALSE,
-  from TIMESTAMP NOT NULL DEFAULT NOW(),
-  to TIMESTAMP,
+  time_from TIMESTAMP NOT NULL DEFAULT NOW(),
+  time_to TIMESTAMP,
+
+  CHECK (price > 0),
+  CHECK (time_from < time_to),
 
   PRIMARY KEY (product_price_id),
   FOREIGN KEY (fk_product_id) REFERENCES product(product_id)
