@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * Represents a category in the database.
- * Can be associated with multiple products.
+ * Can be associated with multiple items.
  * 
- * @see Product
+ * @see Item
  */
 @Entity
 @Getter
@@ -40,16 +40,16 @@ public class Category {
 
   @ManyToMany
   @JoinTable(
-    name = "product_category",
+    name = "item_category",
     joinColumns = @JoinColumn(
       name = "fk_category_id", 
       referencedColumnName = Category.PRIMARY_KEY
     ),
     inverseJoinColumns = @JoinColumn(
-      name = "fk_product_id", 
-      referencedColumnName = Product.PRIMARY_KEY
+      name = "fk_item_id", 
+      referencedColumnName = Item.PRIMARY_KEY
     )
   )
-  private Set<Product> products = new HashSet<>();
+  private Set<Item> items = new HashSet<>();
 
 }

@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * Represents the primary key of the ProductPackaging entity.
+ * Represents the primary key of the ProductItem entity.
  * 
- * @see ProductPackaging
+ * @see ProductItem
  */
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ProductPackagingId implements Serializable {
+public class ProductItemId implements Serializable {
   private Long productId;
   private Long packagingId;
 }

@@ -17,21 +17,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Represents a product family in the database.
- * A product family consists of a number of products, with a number of shared attributes.
- * Each product in the family has a set of defined attributes that are based off the attributes mapped in this entity.
+ * Represents an item family in the database.
+ * An item family consists of a number of items, with a number of shared attributes.
+ * Each item in the family has a set of defined attributes that are based off the attributes mapped in this entity.
  */
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = ProductFamily.TABLE_NAME)
-public class ProductFamily {
+@Table(name = ItemFamily.TABLE_NAME)
+public class ItemFamily {
   
-  public static final String TABLE_NAME = "product_family";
-  public static final String PRIMARY_KEY = "product_family_id";
+  public static final String TABLE_NAME = "item_family";
+  public static final String PRIMARY_KEY = "item_family_id";
 
   @Id
-  @Column(name = ProductFamily.PRIMARY_KEY)
+  @Column(name = ItemFamily.PRIMARY_KEY)
   private Long id; 
 
   @Setter
@@ -43,10 +43,10 @@ public class ProductFamily {
   private String description;
 
   /**
-   * A set of shared attributes that are shared by all products in this family.
+   * A set of shared attributes that are shared by all items in this family.
    * The key is the name of the attribute, and the value is the value of the attribute. 
    * 
-   * For instance: A product family of mice can have the same type of sensor, 
+   * For instance: A item family of mice can have the same type of sensor, 
    * so the shared attribute could be "sensorType" with the value "optical".
    */
   @JdbcTypeCode(SqlTypes.JSON)
@@ -54,10 +54,10 @@ public class ProductFamily {
   private Map<String, String> sharedAttributes;
   
   /**
-   * Holds a map of attributes that can be set by products in this family.
+   * Holds a map of attributes that can be set by items in this family.
    * The key is the name of the attribute, and the value is a list of possible values a product can have.
    * 
-   * For instance: A product family of mice can have different colors, 
+   * For instance: An item family of mice can have different colors, 
    * so the attribute could be "color" with the available values being "red", "blue", "green", etc.
    */
   @JdbcTypeCode(SqlTypes.JSON)
@@ -65,17 +65,17 @@ public class ProductFamily {
   private Map<String, List<String>> attributeMap;
 
   @OneToMany(mappedBy = "family")
-  private List<Product> products = new ArrayList<>();
+  private List<Item> items = new ArrayList<>();
 
   /**
-   * Creates a new product family with the given name, description, shared attributes and attribute map.
+   * Creates a new item family with the given name, description, shared attributes and attribute map.
    * 
-   * @param name the name of the product family
-   * @param description the description of the product family
-   * @param sharedAttributes the shared attributes of the product family
-   * @param attributeMap the attribute map of the product family
+   * @param name the name of the item family
+   * @param description the description of the item family
+   * @param sharedAttributes the shared attributes of the item family
+   * @param attributeMap the attribute map of the item family
    */
-  public ProductFamily(
+  public ItemFamily(
       String name, 
       String description, 
       Map<String, String> sharedAttributes,
@@ -88,7 +88,7 @@ public class ProductFamily {
   }
 
   /**
-   * Adds a shared attribute to the product family.
+   * Adds a shared attribute to the item family.
    * 
    * @param key the name of the attribute
    * @param value the value of the shared attribute
@@ -98,7 +98,7 @@ public class ProductFamily {
   }
 
   /**
-   * Adds a new attribute to the map of attributes a product in this family can define.
+   * Adds a new attribute to the map of attributes a item in this family can define.
    * 
    * @param key the name of the attribute
    * @param value a possible value for the attribute
