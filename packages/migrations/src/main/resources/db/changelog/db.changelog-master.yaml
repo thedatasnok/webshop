@@ -16,3 +16,19 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.1.0/create-user-account-table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.2.0-domain-entities
+      author: thedatasnok
+      changes:
+        - sqlFile:
+            path: changelog/0.2.0/create-category-table.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.2.0/create-item-tables.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.2.0/create-product-tables.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.2.0/create-order-tables.sql
+            relativeToChangelogFile: true
