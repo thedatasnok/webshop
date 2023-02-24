@@ -19,12 +19,15 @@
 │   └───dashboard (admin frontend)
 └───packages
     ├───contracts (DTOs - shared between frontends and backend, including validation)
+    ├───migrations (Liquibase database migrations)
     └───ui (shared UI components & configuration)
 ```
 
 The frontend is split in two as noted above, the reason why this is done is because the layout and functionality of the two are quite different. The storefront is a customer-facing webshop, while the dashboard is an admin panel for managing the webshop. 
 
 Any shared UI components are placed in the `ui` package. This helps avoid code duplication. 
+
+Migrations are split into it's own package, but is a development dependency for the backend. The motivation for splitting the migrations out from the backend is to allow for running them in a init container before the backend is started. 
 
 ## Architecture
 
