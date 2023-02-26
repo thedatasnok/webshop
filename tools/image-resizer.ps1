@@ -1,11 +1,19 @@
-# Powershell script to produce downscaled variants of an image
+# Powershell script to produce downscaled variants of an image or images in a given directory
+# Requires ImageMagick
+# Run with -Path <pathToImageOrDirectory>
 
 param (
-  [Parameter(Mandatory)]
-  [ValidateScript({Test-Path $_})]
-  [string]$Path
+  [parameter(mandatory)]
+  [validateScript({Test-Path $_})]
+  [string]$path
 )
 
-mkdir output
-magick.exe $Path -resize 2048x2048 output\2048.jpg
-magick.exe $Path -resize 1024x1024 output\1024.jpg
+$images = Get-ChildItem -Path $path -Recurse -Filter "*original*"
+
+foreach ($image in $images) {
+  $outputFilename2048 = $image.basename.substring(0, $image.basename.indexOf("original"))+"2048.jpg"
+  $outputFilename1024 = $image.basename.substring(0, $image.basename.indexOf("original"))+"1024.jpg"
+
+  magick.exe $image.fullname -resize 2048x2048 $outputFilename2048
+  magick.exe $image.fullname -resize 1024x1024 $outputFilename1024
+}
