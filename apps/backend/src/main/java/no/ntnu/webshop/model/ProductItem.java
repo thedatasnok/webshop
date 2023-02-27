@@ -33,7 +33,7 @@ public class ProductItem {
   private Long productId;
 
   @Id
-  private Long packagingId;
+  private Long itemId;
 
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)

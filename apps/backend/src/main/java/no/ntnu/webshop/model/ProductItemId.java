@@ -14,5 +14,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class ProductItemId implements Serializable {
   private Long productId;
-  private Long packagingId;
+  private Long itemId;
 }
