@@ -2,20 +2,11 @@ plugins {
   id 'java'
   alias libs.plugins.spring.boot
   alias libs.plugins.spring.dependencies
+  alias libs.plugins.jib
 }
-
-group = 'no.ntnu'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
 configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
-  }
-}
-
-repositories {
-  mavenCentral()
+  compileOnly.extendsFrom annotationProcessor
 }
 
 dependencies {
@@ -36,4 +27,20 @@ dependencies {
 
 tasks.named('test') {
   useJUnitPlatform()
+}
+
+jib {
+  to {
+    image = 'ghcr.io/thedatasnok/webshop-backend'
+    tags = ['latest', version]
+  }
+
+  container {
+    ports = ['8080']
+    labels = [
+      'org.opencontainers.image.source': 'https://github.com/thedatasnok/webshop',
+      'org.opencontainers.image.description': 'Webshop backend container',
+      'org.opencontainers.licenses': 'MIT'
+    ]
+  }
 }
