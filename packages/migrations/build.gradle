@@ -2,16 +2,11 @@ plugins {
   id 'java'
   alias libs.plugins.spring.boot
   alias libs.plugins.spring.dependencies
+  alias libs.plugins.jib
 }
 
 configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
-  }
-}
-
-repositories {
-  mavenCentral()
+  compileOnly.extendsFrom annotationProcessor
 }
 
 dependencies {
@@ -20,4 +15,20 @@ dependencies {
   implementation 'org.liquibase:liquibase-core'
   runtimeOnly 'org.postgresql:postgresql'
   compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+}
+
+jib {
+  to {
+    image = 'ghcr.io/thedatasnok/webshop-migrations'
+    tags = ['latest', version]
+  }
+
+  container {
+    labels = [
+      'org.opencontainers.image.source': 'https://github.com/thedatasnok/webshop',
+      'org.opencontainers.image.description': 'Webshop migrations image/init container',
+      'org.opencontainers.licenses': 'MIT'
+    ]
+  }
 }
