@@ -50,4 +50,18 @@ public @interface ValidPassword {
    */
   int maxLength() default 200;
   
+  /**
+   * The groups the constraint belongs to.
+   * 
+   * @return the groups the constraint belongs to
+   */
+  Class<?>[] groups() default {};
+
+  /**
+   * The payload associated to the constraint.
+   * 
+   * @return the payload associated to the constraint
+   */
+  Class<?>[] payload() default {};
+
 }
