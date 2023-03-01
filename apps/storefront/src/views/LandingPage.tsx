@@ -41,13 +41,15 @@ const LandingPage = () => {
           </h2>
 
           <section id='categories'>
-            <div className='flex items-center justify-center gap-8'>
-              {[...Array(10)].map((_, i) => (
-                <div key={i}>
-                  <div className='bg-base-800 aspect-square h-16 rounded-sm' />
-                  <p className='text-center text-sm font-medium'>category</p>
-                </div>
-              ))}
+            <div className='max-sm:hide-scroll-bar pb-2 flex overflow-x-scroll lg:justify-center'>
+              <div className='flex flex-nowrap'>
+                {[...Array(10)].map((_, i) => (
+                  <div key={i} className='inline-block px-3'>
+                    <div className='bg-base-800 h-32 w-36 overflow-hidden rounded-sm sm:h-16 sm:w-16' />
+                    <p className='text-center text-sm font-medium'>category</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -55,23 +57,22 @@ const LandingPage = () => {
             Featured products
           </h2>
 
-          <section
-            id='featured-products'
-            className='grid w-full grid-cols-4 items-center justify-items-center gap-8'
-          >
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className='flex w-full flex-col'>
-                <div className='bg-base-800 aspect-video w-full rounded-sm' />
-                <div className='flex justify-between text-lg font-medium'>
-                  <p>product</p>
-                  <p>$3,333</p>
-                </div>
+          <section id='featured-products'>
+            <div className='max-sm:hide-scroll-bar pb-2 flex w-full justify-items-center gap-8 overflow-x-scroll'>
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className='flex w-full flex-col px-3'>
+                  <div className='bg-base-800 aspect-video h-32 w-full overflow-hidden rounded-sm' />
+                  <div className='flex justify-between text-lg font-medium'>
+                    <p>product</p>
+                    <p>$3,333</p>
+                  </div>
 
-                <NavLink to='/products/1' className='self-end'>
-                  <Button className='w-min rounded-sm'>buy</Button>
-                </NavLink>
-              </div>
-            ))}
+                  <NavLink to='/products/1' className='self-end'>
+                    <Button className='w-min rounded-sm'>buy</Button>
+                  </NavLink>
+                </div>
+              ))}
+            </div>
           </section>
 
           <h2 className='font-title mt-12 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
