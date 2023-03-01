@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +34,7 @@ public class UserAccount implements Serializable {
 
   @Id
   @Column(name = UserAccount.PRIMARY_KEY)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
   @Setter
