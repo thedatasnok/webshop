@@ -1,3 +1,4 @@
+import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
@@ -5,12 +6,21 @@ import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
-    <PageLayout>
+    <PageLayout excludeHeader>
+      {/* 
+        This is specific to this page, because of opting with excludeHeader.
+        Since we want the header & hero section to overlap, we need to manually add it here.
+      */}
+      <Header className='absolute z-10 -ml-2 w-full px-2 sm:-ml-4 sm:px-4' />
+
       <main>
         {/* Hero section is a bit hacky, but it's a one off since it is "below" the header and covers full width */}
-        <section id='hero' className='relative -mb-32 h-96'>
+        <section id='hero' className='relative h-80'>
           <div
-            className='absolute -top-32 -z-10 -ml-2 h-full w-[calc(100%+32px)] bg-cover sm:-ml-4'
+            className={clsx(
+              'absolute -z-10 -ml-2 h-full bg-cover sm:-ml-4',
+              'w-[calc(100%+16px)] sm:w-[calc(100%+32px)] ' // compensates for the padding in PageLayout
+            )}
             style={{
               backgroundImage:
                 'url(https://images.unsplash.com/photo-1557515126-1bf9ada5cb93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3131&q=80)',
@@ -19,7 +29,7 @@ const LandingPage = () => {
             <div className='from-base via-base/20 to-base flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-b'></div>
           </div>
 
-          <div className='absolute top-2 left-1/2 flex w-full -translate-x-1/2 flex-col items-center gap-2 sm:top-8'>
+          <div className='absolute top-1/2 left-1/2 flex w-full -translate-y-1/4 -translate-x-1/2 flex-col items-center gap-2'>
             <h1 className='font-title text-center text-3xl font-bold'>
               Gaming gear that just makes you better,{' '}
               <br className='hidden sm:block' />
@@ -35,13 +45,13 @@ const LandingPage = () => {
         </section>
 
         {/* Main content segment */}
-        <div className='mx-auto flex w-full max-w-screen-xl flex-col'>
+        <div className='z-20 mx-auto flex w-full max-w-screen-xl flex-col'>
           <h2 className='font-title my-4 text-center text-2xl font-bold uppercase tracking-wider'>
             Categories
           </h2>
 
           <section id='categories'>
-            <div className='max-sm:hide-scroll-bar pb-2 flex overflow-x-scroll lg:justify-center'>
+            <div className='max-sm:hide-scroll-bar flex overflow-x-scroll pb-2 lg:justify-center'>
               <div className='flex flex-nowrap'>
                 {[...Array(10)].map((_, i) => (
                   <div key={i} className='inline-block px-3'>
@@ -58,7 +68,7 @@ const LandingPage = () => {
           </h2>
 
           <section id='featured-products'>
-            <div className='max-sm:hide-scroll-bar pb-2 flex w-full justify-items-center gap-8 overflow-x-scroll'>
+            <div className='max-sm:hide-scroll-bar flex w-full justify-items-center gap-8 overflow-x-scroll pb-2'>
               {[...Array(4)].map((_, i) => (
                 <div key={i} className='flex w-full flex-col px-3'>
                   <div className='bg-base-800 aspect-video h-32 w-full overflow-hidden rounded-sm' />

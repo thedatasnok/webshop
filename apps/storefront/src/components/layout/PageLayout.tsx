@@ -4,6 +4,7 @@ import Footer from './Footer';
 import Header from './Header';
 
 interface PageLayoutProps {
+  excludeHeader?: boolean;
   children?: React.ReactNode;
 }
 
@@ -11,8 +12,7 @@ interface PageLayoutProps {
  * Shared page layout component, ensuring the existance of a header, footer and navigation bar for mobile.
  * It's meant to be opt-in as not every page will need it.
  */
-const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
-
+const PageLayout: React.FC<PageLayoutProps> = ({ excludeHeader, children }) => {
   /**
    * Scrolls to the top of the page on render.
    * Avoids the issue of the scroll position being remembered when navigating between pages.
@@ -23,8 +23,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <div className='overflow-auto px-2 sm:px-4 pb-16'>
-        <Header />
+      <div className='overflow-auto px-2 pb-16 sm:px-4'>
+        {!excludeHeader && <Header />}
 
         {children}
 
