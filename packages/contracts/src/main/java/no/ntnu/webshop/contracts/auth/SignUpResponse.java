@@ -9,6 +9,6 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 @GenerateTypeScript
 public record SignUpResponse(
   UUID id,
-  String username,
+  String fullName,
   String email
 ) {}
