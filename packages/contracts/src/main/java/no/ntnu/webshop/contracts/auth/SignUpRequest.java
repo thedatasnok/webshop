@@ -11,7 +11,7 @@ import no.ntnu.webshop.contracts.validation.annotation.ValidPassword;
 public record SignUpRequest(
   @NotNull @Size(min = 6) String username,
   @NotNull @Email String email,
-  @NotNull @ValidPassword String password, // TODO: Enforce password complexity/strength
+  @NotNull @ValidPassword String password,
   @NotNull String passwordConfirmation
 ) {
 
