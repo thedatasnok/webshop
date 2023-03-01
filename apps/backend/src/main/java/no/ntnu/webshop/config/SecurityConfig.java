@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.security.AuthenticationRequestFilter;
-import no.ntnu.webshop.security.JwtAuthenticationEntrypoint;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 
 @Configuration
@@ -29,7 +28,6 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 )
 public class SecurityConfig {
   private final UserAccountJpaRepository userAccountRepository;
-  private final JwtAuthenticationEntrypoint authenticationEntrypoint;
   private final AuthenticationRequestFilter authenticationRequestFilter;
 
   @Bean
@@ -67,9 +65,6 @@ public class SecurityConfig {
       .and()
       .csrf()
       .disable()
-      .exceptionHandling()
-      .authenticationEntryPoint(this.authenticationEntrypoint)
-      .and()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()

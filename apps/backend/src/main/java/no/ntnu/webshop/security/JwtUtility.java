@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
  * Utility class for working with JWT tokens.
@@ -56,29 +57,22 @@ public class JwtUtility {
   }
 
   /**
-   * Checks whether a given token is valid.
+   * Decodes a token of a given type, and verifies it's validity.
+   * Throws an exception if the token is invalid.
    * 
-   * @param token the token to check the validitiy of
-   * @param tokenType the type of token to check the validity of
+   * @param token the token to decode
+   * @param tokenType the type of token to decode
    * 
    * @return true if the token is valid, false otherwise
    */
-  public boolean isValid(String token, JwtTokenType tokenType) {
+  public DecodedJWT decodeToken(String token, JwtTokenType tokenType) {
     var algorithm = this.resolveAlgorithm(tokenType);
-    var valid = false;
 
     var verifier = JWT.require(algorithm)
         .withIssuer(this.tokenIssuer)
         .build();
 
-    try {
-      verifier.verify(token);
-      valid = true;
-    } catch (Exception e) {
-      // implicitly false
-    }
-
-    return valid;
+    return verifier.verify(token);
   }
 
   /**
@@ -102,6 +96,7 @@ public class JwtUtility {
         .withIssuer(this.tokenIssuer)
         .withClaim("username", principal.getUsername())
         .withClaim("role", principal.getUserAccount().getRole().toString())
+        .withIssuedAt(Instant.now())
         .withExpiresAt(Instant.now().plus(expirationMillis, ChronoUnit.MILLIS))
         .sign(algorithm);
   }
