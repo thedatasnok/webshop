@@ -11,9 +11,6 @@ databaseChangeLog:
       author: thedatasnok
       changes:
         - sqlFile:
-            path: changelog/0.1.0/create-user-account-role-table.sql
-            relativeToChangelogFile: true
-        - sqlFile:
             path: changelog/0.1.0/create-user-account-table.sql
             relativeToChangelogFile: true
   - changeSet:
