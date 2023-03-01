@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -54,6 +56,7 @@ public class UserAccount implements Serializable {
   private boolean emailVerified;
 
   @Setter
+  @Enumerated(EnumType.STRING)
   @Type(UserAccountRoleEnumType.class)
   @Column(name = "role", nullable = false)
   private UserAccountRole role;

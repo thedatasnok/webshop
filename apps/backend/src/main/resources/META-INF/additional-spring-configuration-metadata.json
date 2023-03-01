@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "no.ntnu.webshop.jwt.token-issuer",
+      "type": "java.lang.String",
+      "description": "JWT token issuer"
+    },
+    {
+      "name": "no.ntnu.webshop.jwt.access-token-secret",
+      "type": "java.lang.String",
+      "description": "Secret used to sign access tokens"
+    },
+    {
+      "name": "no.ntnu.webshop.jwt.refresh-token-secret",
+      "type": "java.lang.String",
+      "description": "Secret used to sign refresh tokens"
+    },
+    {
+      "name": "no.ntnu.webshop.jwt.access-token-expiration-ms",
+      "type": "java.lang.Integer",
+      "description": "Duration of access tokens in milliseconds"
+    },
+    {
+      "name": "no.ntnu.webshop.jwt.refresh-token-expiration-ms",
+      "type": "java.lang.Integer",
+      "description": "Duration of refresh tokens in milliseconds"
+    }
+  ]
+}
