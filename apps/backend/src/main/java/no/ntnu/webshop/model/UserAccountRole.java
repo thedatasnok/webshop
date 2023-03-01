@@ -1,5 +1,6 @@
 package no.ntnu.webshop.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = UserAccountRole.TABLE_NAME)
-public class UserAccountRole {
+public class UserAccountRole implements Serializable {
   
   public static final String TABLE_NAME = "user_account_role";
   public static final String PRIMARY_KEY = "user_account_role_id";
