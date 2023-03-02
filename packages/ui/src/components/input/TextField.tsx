@@ -25,14 +25,14 @@ const TextField: React.FC<TextFieldProps> = ({
     <input
       {...inputProps}
       className={clsx(
-        'w-full p-2 border border-primary-50 outline-none rounded-sm bg-transparent focus:border-primary',
+        'border-primary-50 focus:border-primary w-full rounded-sm border bg-transparent p-2 outline-none',
         className
       )}
       placeholder={placeholder}
       value={value}
       onChange={(event) => emitUpdate(event.target.value)}
       type={type}
-    ></input>
+    />
   );
 };
 
