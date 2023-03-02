@@ -2,17 +2,24 @@ import clsx from 'clsx';
 
 export interface ButtonProps {
   children?: React.ReactNode;
+  type?: 'button' | 'submit' | 'reset';
   className?: string;
+  onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, className }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  type,
+  className,
+  onClick,
+}) => {
   const handleClick = () => {
-    // TODO: Remove this placeholder logic :)
-    console.log('Button clicked!');
+    onClick?.();
   };
 
   return (
     <button
+      type={type}
       onClick={handleClick}
       className={clsx('bg-primary-500 text-base-900 px-2 py-1', className)}
     >
