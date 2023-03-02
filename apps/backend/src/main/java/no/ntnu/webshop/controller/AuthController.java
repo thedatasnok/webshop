@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignInResponse;
@@ -30,7 +31,7 @@ public class AuthController {
   private final AuthenticationManager authenticationManager;
 
   @PostMapping("/sign-up")
-  public ResponseEntity<SignUpResponse> signUp(@RequestBody SignUpRequest request) {
+  public ResponseEntity<SignUpResponse> signUp(@RequestBody @Valid SignUpRequest request) {
     if (request.fullName() == null)
       return ResponseEntity.badRequest().build();
 
