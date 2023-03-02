@@ -1,7 +1,50 @@
-import { Button, Logo } from '@webshop/ui';
-import { NavLink } from 'react-router-dom';
+import { Button, Logo, TextField } from '@webshop/ui';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+import { useForm, zodResolver } from '@mantine/form';
+import { z } from 'zod';
+import { useSignUpMutation } from '@/services/auth';
+import { SignUpRequest } from '@webshop/contracts';
+
+const schema = z
+  .object({
+    fullName: z
+      .string()
+      .min(2, { message: 'Name should have at least 2 letters' }),
+    email: z.string().email({ message: 'Invalid email' }),
+    password: z
+      .string()
+      .min(10, { message: 'Password should contain atleast 10 characters' }),
+    passwordConfirmation: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ['passwordConfirmation'],
+  });
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const [signUp] = useSignUpMutation();
+
+  const handleSubmit = async (values: SignUpRequest) => {
+    try {
+      await signUp(values).unwrap();
+      navigate('/profile');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const form = useForm({
+    validate: zodResolver(schema),
+    initialValues: {
+      email: '',
+      fullName: '',
+      password: '',
+      passwordConfirmation: '',
+    },
+  });
+
   return (
     <div>
       <main>
@@ -12,55 +55,46 @@ const SignUp = () => {
             </NavLink>
           </div>
 
-          <form id='sign-up-form' className='flex flex-col gap-2'>
+          <form
+            id='sign-up-form'
+            className='flex flex-col gap-2'
+            onSubmit={form.onSubmit(handleSubmit)}
+          >
             <div className='flex justify-center text-3xl'>
               <h1>Sign up</h1>
             </div>
 
             <div>
               <label>E-mail</label>
-              <input
-                id='email'
-                type='text'
-                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                aria-label='Search'
-              />
+              <TextField {...form.getInputProps('email')} />
+              <p>{form.errors.email}</p>
             </div>
 
             <div>
               <label>Name</label>
-              <input
-                id='name'
-                type='text'
-                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                aria-label='Search'
-              />
+              <TextField {...form.getInputProps('fullName')} />
+              <p>{form.errors.fullName}</p>
             </div>
 
             <div>
               <label>Password</label>
-              <input
-                id='password'
-                type='password'
-                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                aria-label='Search'
-              />
+              <TextField type='password' {...form.getInputProps('password')} />
+              <p>{form.errors.password}</p>
             </div>
 
             <div>
               <label>Confirm password</label>
-              <input
-                id='confirm-password'
+              <TextField
                 type='password'
-                className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                aria-label='Search'
+                {...form.getInputProps('passwordConfirmation')}
               />
+              <p>{form.errors.passwordConfirmation}</p>
             </div>
 
             <div id='sign-up-button' className='my-2'>
-              <NavLink to='/'>
-                <Button className='w-full rounded-sm text-2xl'>Sign up</Button>
-              </NavLink>
+              <Button className='w-full rounded-sm text-2xl' type='submit'>
+                Sign up
+              </Button>
             </div>
           </form>
         </div>
