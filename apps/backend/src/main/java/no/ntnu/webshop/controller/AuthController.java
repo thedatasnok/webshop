@@ -2,6 +2,7 @@ package no.ntnu.webshop.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,11 +36,15 @@ public class AuthController {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
 
+  @GetMapping("/profile")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<Object> test() { 
+    // TODO: Update this to return the user's profile
+    return ResponseEntity.ok("You are logged in!");
+  }
+
   @PostMapping("/sign-up")
   public ResponseEntity<SignUpResponse> signUp(@RequestBody @Valid SignUpRequest request) {
-    if (request.fullName() == null)
-      return ResponseEntity.badRequest().build();
-
     var userAccount = new UserAccount(
       request.fullName(), 
       request.email(), 
@@ -48,6 +53,8 @@ public class AuthController {
     );
 
     var savedAccount = this.userAccountJpaRepository.save(userAccount);
+
+    // TODO: Use the saved account to generate JWT tokens like in the sign-in method
 
     return ResponseEntity.ok(SignUpResponse.builder()
       .id(savedAccount.getId())
