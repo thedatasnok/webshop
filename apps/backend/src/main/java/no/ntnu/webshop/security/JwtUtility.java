@@ -11,6 +11,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import jakarta.servlet.http.Cookie;
+
 /**
  * Utility class for working with JWT tokens.
  */
@@ -99,6 +101,24 @@ public class JwtUtility {
         .withIssuedAt(Instant.now())
         .withExpiresAt(Instant.now().plus(expirationMillis, ChronoUnit.MILLIS))
         .sign(algorithm);
+  }
+
+  /**
+   * Creates a cookie for the given refresh token.
+   * Uses the configured refresh token expiration.
+   * 
+   * @param refreshToken the refresh token to create a cookie for
+   * 
+   * @return the cookie for the given refresh token
+   */
+  public Cookie createCookie(String refreshToken) {
+    var cookie = new Cookie("refresh-token", refreshToken);
+    
+    cookie.setHttpOnly(true);
+    cookie.setMaxAge(this.refreshTokenExpiration);
+    cookie.setPath("/");
+
+    return cookie;
   }
 
 }
