@@ -16,7 +16,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
     <nav
       className={clsx('bg-base-900 border-base-700 w-full border-t', className)}
     >
-      <ul className='mx-auto grid w-2/3 grid-cols-4 items-center gap-2'>
+      <ul className='mx-auto flex w-2/3 justify-center items-center gap-4'>
         <li>
           <NavigationItem
             to='/products'
