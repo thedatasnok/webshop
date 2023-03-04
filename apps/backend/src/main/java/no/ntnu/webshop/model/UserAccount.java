@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.ntnu.webshop.utility.UserAccountRoleEnumType;
+import no.ntnu.webshop.utility.EnumTypes.UserAccountRoleEnumType;
 
 /**
  * Represents a user account in the database.
