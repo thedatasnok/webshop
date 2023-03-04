@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-03-02 11:03:23.
+// Generated using typescript-generator version 3.1.1185 on 2023-03-04 15:52:06.
 
 export interface GenericResponse {
     message: string;
@@ -13,7 +13,6 @@ export interface SignInRequest {
 
 export interface SignInResponse {
     accessToken: string;
-    refreshToken: string;
 }
 
 export interface SignUpRequest {
