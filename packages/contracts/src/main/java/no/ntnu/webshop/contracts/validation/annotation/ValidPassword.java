@@ -10,17 +10,19 @@ import jakarta.validation.Constraint;
 import no.ntnu.webshop.contracts.validation.validator.PasswordConstraintValidator;
 
 /**
- * The annotated string value must be a valid/strong password.
- * Defines the min & max length, and the minimum bits of entropy required for the password.
+ * The annotated string value must be a valid/strong password. Defines the min & max length, and the
+ * minimum bits of entropy required for the password.
  * 
  * @see PasswordConstraintValidator
  */
 @Documented
 @Constraint(validatedBy = PasswordConstraintValidator.class)
-@Target({ ElementType.FIELD })
+@Target({
+    ElementType.FIELD
+})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPassword {
-  
+
   /**
    * The error message to display when the password is not strong enough.
    * 
@@ -29,8 +31,7 @@ public @interface ValidPassword {
   String message() default "Password is not strong enough!";
 
   /**
-   * The minimum bits of entropy required for the password.
-   * Defaults to 48 bits.
+   * The minimum bits of entropy required for the password. Defaults to 48 bits.
    * 
    * @return the minimum bits of entropy required for the password
    */
@@ -49,7 +50,7 @@ public @interface ValidPassword {
    * @return the maximum length of the password
    */
   int maxLength() default 200;
-  
+
   /**
    * The groups the constraint belongs to.
    * 

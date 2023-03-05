@@ -26,16 +26,11 @@ public class JwtUtility {
   private final Algorithm refreshTokenAlgorithm;
 
   public JwtUtility(
-      @Value("${no.ntnu.webshop.jwt.token-issuer}")
-      String tokenIssuer,
-      @Value("${no.ntnu.webshop.jwt.access-token-secret}")
-      String accessTokenSecret,
-      @Value("${no.ntnu.webshop.jwt.refresh-token-secret}")
-      String refreshTokenSecret,
-      @Value("${no.ntnu.webshop.jwt.access-token-expiration-ms}")
-      int accessTokenExpiration,
-      @Value("${no.ntnu.webshop.jwt.refresh-token-expiration-ms}")
-      int refreshTokenExpiration
+      @Value("${no.ntnu.webshop.jwt.token-issuer}") String tokenIssuer,
+      @Value("${no.ntnu.webshop.jwt.access-token-secret}") String accessTokenSecret,
+      @Value("${no.ntnu.webshop.jwt.refresh-token-secret}") String refreshTokenSecret,
+      @Value("${no.ntnu.webshop.jwt.access-token-expiration-ms}") int accessTokenExpiration,
+      @Value("${no.ntnu.webshop.jwt.refresh-token-expiration-ms}") int refreshTokenExpiration
   ) {
     this.tokenIssuer = tokenIssuer;
     this.accessTokenExpiration = accessTokenExpiration;
@@ -43,7 +38,7 @@ public class JwtUtility {
     this.accessTokenAlgorithm = Algorithm.HMAC256(accessTokenSecret);
     this.refreshTokenAlgorithm = Algorithm.HMAC256(refreshTokenSecret);
   }
-  
+
   /**
    * Resolves the algorithm to use for signing a token for a given token type.
    * 
@@ -51,28 +46,31 @@ public class JwtUtility {
    * 
    * @return the algorithm to use for signing a token of the given token type
    */
-  private Algorithm resolveAlgorithm(JwtTokenType tokenType) {
-    return switch(tokenType) {
+  private Algorithm resolveAlgorithm(
+      JwtTokenType tokenType
+  ) {
+    return switch (tokenType) {
       case ACCESS_TOKEN -> this.accessTokenAlgorithm;
       case REFRESH_TOKEN -> this.refreshTokenAlgorithm;
     };
   }
 
   /**
-   * Decodes a token of a given type, and verifies it's validity.
-   * Throws an exception if the token is invalid.
+   * Decodes a token of a given type, and verifies it's validity. Throws an exception if the token is
+   * invalid.
    * 
-   * @param token the token to decode
+   * @param token     the token to decode
    * @param tokenType the type of token to decode
    * 
    * @return true if the token is valid, false otherwise
    */
-  public DecodedJWT decodeToken(String token, JwtTokenType tokenType) {
+  public DecodedJWT decodeToken(
+      String token,
+      JwtTokenType tokenType
+  ) {
     var algorithm = this.resolveAlgorithm(tokenType);
 
-    var verifier = JWT.require(algorithm)
-        .withIssuer(this.tokenIssuer)
-        .build();
+    var verifier = JWT.require(algorithm).withIssuer(this.tokenIssuer).build();
 
     return verifier.verify(token);
   }
@@ -81,12 +79,15 @@ public class JwtUtility {
    * Generates a JWT token for the given authentication.
    * 
    * @param authentication the authentication to generate a token for
-   * @param tokenType the type of token to generate (access or refresh)
+   * @param tokenType      the type of token to generate (access or refresh)
    * 
    * @return the generated JWT token
    */
-  public String generateToken(Authentication authentication, JwtTokenType tokenType) {
-    var expirationMillis = switch(tokenType) {
+  public String generateToken(
+      Authentication authentication,
+      JwtTokenType tokenType
+  ) {
+    var expirationMillis = switch (tokenType) {
       case ACCESS_TOKEN -> this.accessTokenExpiration;
       case REFRESH_TOKEN -> this.refreshTokenExpiration;
     };
@@ -95,25 +96,29 @@ public class JwtUtility {
     var principal = (UserAccountDetailsAdapter) authentication.getPrincipal();
 
     return JWT.create()
-        .withIssuer(this.tokenIssuer)
-        .withClaim("username", principal.getUsername())
-        .withClaim("role", principal.getUserAccount().getRole().toString())
-        .withIssuedAt(Instant.now())
-        .withExpiresAt(Instant.now().plus(expirationMillis, ChronoUnit.MILLIS))
-        .sign(algorithm);
+      .withIssuer(this.tokenIssuer)
+      .withClaim("username", principal.getUsername())
+      .withClaim("role", principal.getUserAccount().getRole().toString())
+      .withIssuedAt(Instant.now())
+      .withExpiresAt(Instant.now().plus(expirationMillis, ChronoUnit.MILLIS))
+      .sign(algorithm);
   }
 
   /**
-   * Creates a cookie for the given refresh token.
-   * Uses the configured refresh token expiration.
+   * Creates a cookie for the given refresh token. Uses the configured refresh token expiration.
    * 
    * @param refreshToken the refresh token to create a cookie for
    * 
    * @return the cookie for the given refresh token
    */
-  public Cookie createCookie(String refreshToken) {
-    var cookie = new Cookie("refresh-token", refreshToken);
-    
+  public Cookie createCookie(
+      String refreshToken
+  ) {
+    var cookie = new Cookie(
+      "refresh-token",
+      refreshToken
+    );
+
     cookie.setHttpOnly(true);
     cookie.setMaxAge(this.refreshTokenExpiration);
     cookie.setPath("/");

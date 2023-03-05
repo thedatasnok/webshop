@@ -19,25 +19,17 @@ public class OpenApiConfig {
     var version = implementationVersion == null ? "dev" : implementationVersion;
 
     return new OpenAPI()
-      .info(new Info()
-        .title("Webshop API")
-        .version(version)
-        .description("""
-          API for the Webshop project in the courses IDATA2301 and IDATA2306 at [NTNU](https://ntnu.edu).
-          <br />
-          <br />
-          Made by thedatasnok, GBfur and dawsta27.
-        """)
-        .contact(
-          new Contact()
-            .name("GitHub")
-            .url("https://github.com/thedatasnok/webshop")
-        )
-        .license(
-          new License()
-            .name("MIT license")
-            .url("https://github.com/thedatasnok/webshop/blob/main/LICENSE")
-        )
+      .info(
+        new Info().title("Webshop API")
+          .version(version)
+          .description("""
+                API for the Webshop project in the courses IDATA2301 and IDATA2306 at [NTNU](https://ntnu.edu).
+                <br />
+                <br />
+                Made by thedatasnok, GBfur and dawsta27.
+              """)
+          .contact(new Contact().name("GitHub").url("https://github.com/thedatasnok/webshop"))
+          .license(new License().name("MIT license").url("https://github.com/thedatasnok/webshop/blob/main/LICENSE"))
       )
       .specVersion(SpecVersion.V31);
   }

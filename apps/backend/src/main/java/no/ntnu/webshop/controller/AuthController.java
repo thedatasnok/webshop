@@ -50,13 +50,13 @@ public class AuthController {
   @Operation(summary = "Signs up a new user")
   @PostMapping("/sign-up")
   public ResponseEntity<SignUpResponse> signUp(
-      @RequestBody @Valid SignUpRequest request, 
+      @RequestBody @Valid SignUpRequest request,
       HttpServletResponse response
   ) {
     var userAccount = new UserAccount(
-      request.fullName(), 
-      request.email(), 
-      passwordEncoder.encode(request.password()), 
+      request.fullName(),
+      request.email(),
+      passwordEncoder.encode(request.password()),
       UserAccountRole.CUSTOMER
     );
 
@@ -64,8 +64,8 @@ public class AuthController {
     var userDetails = new UserAccountDetailsAdapter(savedAccount);
 
     var authentication = new UsernamePasswordAuthenticationToken(
-      userDetails, 
-      null, 
+      userDetails,
+      null,
       userDetails.getAuthorities()
     );
 
@@ -74,19 +74,20 @@ public class AuthController {
 
     response.addCookie(this.jwtUtility.createCookie(refreshToken));
 
-    return ResponseEntity.ok(SignUpResponse.builder()
-      .id(savedAccount.getId())
-      .fullName(savedAccount.getFullName())
-      .email(savedAccount.getEmail())
-      .accessToken(accessToken)
-      .build()
+    return ResponseEntity.ok(
+      SignUpResponse.builder()
+        .id(savedAccount.getId())
+        .fullName(savedAccount.getFullName())
+        .email(savedAccount.getEmail())
+        .accessToken(accessToken)
+        .build()
     );
   }
 
   @Operation(summary = "Signs in a user")
   @PostMapping("/sign-in")
   public ResponseEntity<SignInResponse> signIn(
-      @RequestBody SignInRequest request, 
+      @RequestBody SignInRequest request,
       HttpServletResponse response
   ) {
     var authentication = this.authenticationManager.authenticate(
@@ -101,37 +102,35 @@ public class AuthController {
 
     response.addCookie(this.jwtUtility.createCookie(refreshToken));
 
-    return ResponseEntity.ok(SignInResponse.builder()
-      .accessToken(accessToken)
-      .build()
-    );
+    return ResponseEntity.ok(SignInResponse.builder().accessToken(accessToken).build());
   }
 
   @Operation(summary = "Uses the refresh token to obtain a new access token")
   @GetMapping("/refresh")
-  public ResponseEntity<SignInResponse> refresh(@CookieValue("refresh-token") String refreshToken) {
-    if (refreshToken == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  public ResponseEntity<SignInResponse> refresh(
+      @CookieValue("refresh-token") String refreshToken
+  ) {
+    if (refreshToken == null)
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     var decodedToken = this.jwtUtility.decodeToken(refreshToken, JwtTokenType.REFRESH_TOKEN);
     var email = decodedToken.getClaim("username").asString();
 
     var foundUser = this.userAccountJpaRepository.findByEmail(email);
 
-    if (foundUser.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    if (foundUser.isEmpty())
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     var userDetails = new UserAccountDetailsAdapter(foundUser.get());
     var authentication = new UsernamePasswordAuthenticationToken(
-      userDetails, 
-      null, 
+      userDetails,
+      null,
       userDetails.getAuthorities()
     );
 
     var accessToken = this.jwtUtility.generateToken(authentication, JwtTokenType.ACCESS_TOKEN);
 
-    return ResponseEntity.ok(SignInResponse.builder()
-      .accessToken(accessToken)
-      .build()
-    );
+    return ResponseEntity.ok(SignInResponse.builder().accessToken(accessToken).build());
   }
 
 }

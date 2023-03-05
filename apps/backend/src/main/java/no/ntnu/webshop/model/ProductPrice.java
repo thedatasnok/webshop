@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = ProductPrice.TABLE_NAME)
 public class ProductPrice {
-  
+
   public static final String TABLE_NAME = "product_price";
   public static final String PRIMARY_KEY = "product_price_id";
 

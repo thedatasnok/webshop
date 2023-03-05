@@ -16,8 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
 /**
- * Filter for validating access tokens.
- * Runs once per request.
+ * Filter for validating access tokens. Runs once per request.
  */
 @Slf4j
 @Component
@@ -28,8 +27,8 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      HttpServletRequest request, 
-      HttpServletResponse response, 
+      HttpServletRequest request,
+      HttpServletResponse response,
       FilterChain filterChain
   ) throws ServletException, IOException {
     var token = this.getBearerToken(request);
@@ -42,12 +41,12 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
         var decodedToken = this.jwtUtility.decodeToken(token, JwtTokenType.ACCESS_TOKEN);
         var email = decodedToken.getClaim("username").asString();
         var foundUser = this.userAccountRepository.findByEmail(email);
-        
+
         foundUser.ifPresent(user -> {
           var userDetails = new UserAccountDetailsAdapter(user);
           var authentication = new UsernamePasswordAuthenticationToken(
-            userDetails, 
-            null, 
+            userDetails,
+            null,
             userDetails.getAuthorities()
           );
 
@@ -63,7 +62,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
     filterChain.doFilter(request, response);
   }
-  
+
   /**
    * Extracts the bearer token from the Authorization header.
    * 
@@ -71,7 +70,9 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
    * 
    * @return the bearer token, or null if no token was found
    */
-  private String getBearerToken(HttpServletRequest request) {
+  private String getBearerToken(
+      HttpServletRequest request
+  ) {
     var authHeader = request.getHeader("Authorization");
     var bearerPrefix = "Bearer ";
 
@@ -82,5 +83,4 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     return null;
   }
 
-  
 }

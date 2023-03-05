@@ -17,16 +17,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a product in the database.
- * A product is a sellable unit of n items in the system.
- * For instance, a combination of a gaming console and a controller.
+ * Represents a product in the database. A product is a sellable unit of n items in the system. For
+ * instance, a combination of a gaming console and a controller.
  */
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = Product.TABLE_NAME)
 public class Product {
-  
+
   public static final String TABLE_NAME = "product";
   public static final String PRIMARY_KEY = "product_id";
 
@@ -52,11 +51,11 @@ public class Product {
    * Creates a new product.
    * 
    * @param description the description of the product
-   * @param imageUrls a list of image urls for the product
+   * @param imageUrls   a list of image urls for the product
    */
   public Product(
-    String description,
-    List<String> imageUrls
+      String description,
+      List<String> imageUrls
   ) {
     this.description = description;
     this.imageUrls = imageUrls;
@@ -67,7 +66,9 @@ public class Product {
    * 
    * @param item the item to add to this product
    */
-  public void addItem(ProductItem item) {
+  public void addItem(
+      ProductItem item
+  ) {
     item.setProduct(this);
     this.items.add(item);
   }
@@ -77,7 +78,9 @@ public class Product {
    * 
    * @param item the item to remove from this product
    */
-  public void removeItem(ProductItem item) {
+  public void removeItem(
+      ProductItem item
+  ) {
     item.setProduct(null);
     this.items.remove(item);
   }

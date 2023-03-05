@@ -17,19 +17,18 @@ import no.ntnu.webshop.model.UserAccountRole;
  * A collection of custom enum types that can be used with the @Type annotation.
  */
 public class EnumTypes {
-  
+
   private EnumTypes() {}
 
   /**
-   * Custom enum type that maps enums to PostgreSQL enums.
-   * By default Hibernate maps enums to VARCHAR, which would
-   * cause exceptions on insert.
+   * Custom enum type that maps enums to PostgreSQL enums. By default Hibernate maps enums to VARCHAR,
+   * which would cause exceptions on insert.
    */
   private static class CustomEnumType<T extends Enum<T>> extends EnumType<T> {
     @Override
     public void nullSafeSet(
-        PreparedStatement st, 
-        T value, 
+        PreparedStatement st,
+        T value,
         int index,
         SharedSessionContractImplementor session
     ) throws HibernateException, SQLException {
@@ -45,8 +44,11 @@ public class EnumTypes {
   // Each of these are tied to a specific enum type in the model package.
 
   public static final class UserAccountRoleEnumType extends CustomEnumType<UserAccountRole> {}
+
   public static final class OrderStatusEnumType extends CustomEnumType<OrderStatus> {}
+
   public static final class PaymentStatusEnumType extends CustomEnumType<PaymentStatus> {}
+
   public static final class PaymentMethodEnumType extends CustomEnumType<PaymentMethod> {}
 
 }

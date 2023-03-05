@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Join table between Product and Item.
- * Represents the quantity of a item in a specific product.
+ * Join table between Product and Item. Represents the quantity of a item in a specific product.
  * 
  * @see Item
  * @see Product
@@ -39,12 +38,12 @@ public class ProductItem {
   @ManyToOne(fetch = FetchType.LAZY)
   @PrimaryKeyJoinColumn(name = "fk_product_id", referencedColumnName = Product.PRIMARY_KEY)
   private Product product;
-  
+
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @PrimaryKeyJoinColumn(name = "fk_item_id", referencedColumnName = Item.PRIMARY_KEY)
   private Item item;
-  
+
   @Setter
   @Column(name = "quantity")
   private Integer quantity;
