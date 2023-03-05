@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import no.ntnu.webshop.security.JwtTokenType;
 import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 
+@Tag(name = "Authentication")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -36,6 +39,7 @@ public class AuthController {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
 
+  @Operation(summary = "Returns the user profile of the logged in user")
   @GetMapping("/profile")
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Object> test() {
@@ -43,6 +47,7 @@ public class AuthController {
     return ResponseEntity.ok("You are logged in!");
   }
 
+  @Operation(summary = "Signs up a new user")
   @PostMapping("/sign-up")
   public ResponseEntity<SignUpResponse> signUp(
       @RequestBody @Valid SignUpRequest request, 
@@ -78,6 +83,7 @@ public class AuthController {
     );
   }
 
+  @Operation(summary = "Signs in a user")
   @PostMapping("/sign-in")
   public ResponseEntity<SignInResponse> signIn(
       @RequestBody SignInRequest request, 
@@ -101,6 +107,7 @@ public class AuthController {
     );
   }
 
+  @Operation(summary = "Uses the refresh token to obtain a new access token")
   @GetMapping("/refresh")
   public ResponseEntity<SignInResponse> refresh(@CookieValue("refresh-token") String refreshToken) {
     if (refreshToken == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
