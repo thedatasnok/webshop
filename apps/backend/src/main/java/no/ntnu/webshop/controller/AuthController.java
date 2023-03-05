@@ -38,13 +38,16 @@ public class AuthController {
 
   @GetMapping("/profile")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Object> test() { 
+  public ResponseEntity<Object> test() {
     // TODO: Update this to return the user's profile
     return ResponseEntity.ok("You are logged in!");
   }
 
   @PostMapping("/sign-up")
-  public ResponseEntity<SignUpResponse> signUp(@RequestBody @Valid SignUpRequest request) {
+  public ResponseEntity<SignUpResponse> signUp(
+      @RequestBody @Valid SignUpRequest request, 
+      HttpServletResponse response
+  ) {
     var userAccount = new UserAccount(
       request.fullName(), 
       request.email(), 
@@ -53,13 +56,24 @@ public class AuthController {
     );
 
     var savedAccount = this.userAccountJpaRepository.save(userAccount);
+    var userDetails = new UserAccountDetailsAdapter(savedAccount);
 
-    // TODO: Use the saved account to generate JWT tokens like in the sign-in method
+    var authentication = new UsernamePasswordAuthenticationToken(
+      userDetails, 
+      null, 
+      userDetails.getAuthorities()
+    );
+
+    var accessToken = this.jwtUtility.generateToken(authentication, JwtTokenType.ACCESS_TOKEN);
+    var refreshToken = this.jwtUtility.generateToken(authentication, JwtTokenType.REFRESH_TOKEN);
+
+    response.addCookie(this.jwtUtility.createCookie(refreshToken));
 
     return ResponseEntity.ok(SignUpResponse.builder()
       .id(savedAccount.getId())
       .fullName(savedAccount.getFullName())
       .email(savedAccount.getEmail())
+      .accessToken(accessToken)
       .build()
     );
   }
