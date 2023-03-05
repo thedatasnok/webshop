@@ -1,13 +1,16 @@
-import PasswordStrength, {
-  type PasswordStrengthCode,
-} from '@/components/auth/PasswordStrength';
+import PasswordStrength from '@/components/auth/PasswordStrength';
 import { useSignUpMutation } from '@/services/auth';
 import { useForm, zodResolver } from '@mantine/form';
 import { SignUpRequest } from '@webshop/contracts';
-import { Button, Logo, TextField } from '@webshop/ui';
-import { useMemo } from 'react';
+import {
+  Button,
+  Logo,
+  PasswordStrengthCode,
+  TextField,
+  usePasswordStrength,
+} from '@webshop/ui';
+import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { PasswordStrength as TaiPasswordStrength } from 'tai-password-strength';
 import { z } from 'zod';
 
 const schema = z
@@ -35,7 +38,6 @@ const schema = z
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const strengthTester = new TaiPasswordStrength();
   const [signUp] = useSignUpMutation();
 
   const handleSubmit = async (values: SignUpRequest) => {
@@ -64,19 +66,19 @@ const SignUp = () => {
     },
   });
 
-  useMemo(() => {
-    const { charsets, strengthCode, passwordLength } = strengthTester.check(
-      form.values.password
-    );
+  const strength = usePasswordStrength(form.values.password);
+
+  useEffect(() => {
+    const { strength: strengthCode, charsets, length } = strength;
 
     form.setFieldValue('passwordStrength', {
       strengthCode: strengthCode satisfies PasswordStrengthCode,
-      lengthSatisfied: passwordLength > 10,
-      lowercaseSatisfied: (charsets as any)?.lower || false,
-      uppercaseSatisfied: (charsets as any)?.upper || false,
-      numberSatisfied: (charsets as any)?.number || false,
+      lengthSatisfied: length > 10,
+      lowercaseSatisfied: charsets.lowercase,
+      uppercaseSatisfied: charsets.uppercase,
+      numberSatisfied: charsets.numbers,
     });
-  }, [form.values.password]);
+  }, [strength]);
 
   return (
     <div>
@@ -145,7 +147,8 @@ const SignUp = () => {
                 },
                 {
                   label: 'Passwords match',
-                  satisfied: form.isValid('passwordConfirmation'),
+                  satisfied:
+                    form.values.passwordConfirmation === form.values.password,
                 },
               ]}
             />
