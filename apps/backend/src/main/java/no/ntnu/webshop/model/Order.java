@@ -4,7 +4,10 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -55,35 +58,25 @@ public class Order {
   @Column(name = "customer_name")
   private String customerName;
 
-  @Column(name = "delivery_country")
-  private String deliveryCountry;
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "country", column = @Column(name = "delivery_country")),
+    @AttributeOverride(name = "postalCode", column = @Column(name = "delivery_postal_code")),
+    @AttributeOverride(name = "city", column = @Column(name = "delivery_city")),
+    @AttributeOverride(name = "street", column = @Column(name = "delivery_street")),
+    @AttributeOverride(name = "careOf", column = @Column(name = "delivery_care_of"))
+  })
+  private Address deliveryAddress;
 
-  @Column(name = "delivery_postal_code")
-  private String deliveryPostalCode;
-
-  @Column(name = "delivery_city")
-  private String deliveryCity;
-
-  @Column(name = "delivery_street")
-  private String deliveryStreet;
-
-  @Column(name = "delivery_care_of")
-  private String deliveryCareOf;
-
-  @Column(name = "invoice_country")
-  private String invoiceCountry;
-
-  @Column(name = "invoice_postal_code")
-  private String invoicePostalCode;
-
-  @Column(name = "invoice_city")
-  private String invoiceCity;
-
-  @Column(name = "invoice_street")
-  private String invoiceStreet;
-
-  @Column(name = "invoice_care_of")
-  private String invoiceCareOf;
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "country", column = @Column(name = "invoice_country")),
+    @AttributeOverride(name = "postalCode", column = @Column(name = "invoice_postal_code")),
+    @AttributeOverride(name = "city", column = @Column(name = "invoice_city")),
+    @AttributeOverride(name = "street", column = @Column(name = "invoice_street")),
+    @AttributeOverride(name = "careOf", column = @Column(name = "invoice_care_of"))
+  })
+  private Address invoiceAddress;
 
   @Column(name = "order_status")
   @Enumerated(EnumType.STRING)
