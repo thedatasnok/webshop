@@ -19,18 +19,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   return (
     <NavLink to={to} className={clsx('text-base-50')}>
-      <div className={clsx('p-1 border-2 border-base-700')}>
+      <div className={clsx('border-base-700 border-2 p-1')}>
         <img src={image}></img>
         <h2 className={clsx('font-title mb-2 text-xl font-bold uppercase')}>
           {name}
         </h2>
-        <div className={clsx('flex justify-between items-center')}>
-          <h3>
-            {price}
-          </h3>
+        <div className={clsx('flex items-center justify-between')}>
+          <h3>{price}</h3>
           <Button>Buy</Button>
         </div>
-        
       </div>
     </NavLink>
   );

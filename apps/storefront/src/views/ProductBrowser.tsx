@@ -36,7 +36,11 @@ const ProductBrowser = () => {
             <div className='mx-auto mt-10 mb-5 grid w-fit grid-cols-1 justify-center justify-items-center gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3'>
               {[...Array(9)].map((_, i) => (
                 <div key={i}>
-                  <ProductCard to={'/products/1'} name={'3d gaming mousepad'} price={'$1,337.00'} />
+                  <ProductCard
+                    to={'/products/1'}
+                    name={'3d gaming mousepad'}
+                    price={'$1,337.00'}
+                  />
                 </div>
               ))}
             </div>
