@@ -48,4 +48,21 @@ public class ProductItem {
   @Column(name = "quantity")
   private Integer quantity;
 
+  /**
+   * Creates a new product item.
+   * 
+   * @param product  the product the item is in
+   * @param item     the item in the product
+   * @param quantity the quantity of the item in the product
+   */
+  public ProductItem(
+      Product product,
+      Item item,
+      Integer quantity
+  ) {
+    this.product = product;
+    this.item = item;
+    this.quantity = quantity;
+  }
+
 }
