@@ -1,4 +1,4 @@
-import { SignUpRequest, SignUpResponse } from '@webshop/contracts';
+import { SignUpRequest, SignUpResponse, SignInRequest, SignInResponse } from '@webshop/contracts';
 import { webshopApi } from '.';
 
 export const authApi = webshopApi.injectEndpoints({
@@ -10,7 +10,17 @@ export const authApi = webshopApi.injectEndpoints({
         body,
       }),
     }),
+
+    signIn: builder.mutation<SignInResponse, SignInRequest>({
+      query: (body) => ({
+        url: '/v1/auth/sign-in',
+        method: 'POST',
+        body,
+      }),
+    })
+
   }),
 });
 
 export const { useSignUpMutation } = authApi;
+export const { useSignInMutation } = authApi;
