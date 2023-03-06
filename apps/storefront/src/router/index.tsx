@@ -1,15 +1,16 @@
-import SignIn from '@/views/auth/SignIn';
-import SignUp from '@/views/auth/SignUp';
-import Checkout from '@/views/Checkout';
-import NotFound from '@/views/error/NotFound';
-import LandingPage from '@/views/LandingPage';
-import ProductBrowser from '@/views/ProductBrowser';
-import ProductView from '@/views/ProductView';
-import ShoppingCart from '@/views/ShoppingCart';
-import Support from '@/views/Support';
-import UserProfile from '@/views/UserProfile';
-
+import React from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+
+const SignIn = React.lazy(() => import('@/views/auth/SignIn'));
+const SignUp = React.lazy(() => import('@/views/auth/SignUp'));
+const Checkout = React.lazy(() => import('@/views/Checkout'));
+const NotFound = React.lazy(() => import('@/views/error/NotFound'));
+const LandingPage = React.lazy(() => import('@/views/LandingPage'));
+const ProductBrowser = React.lazy(() => import('@/views/ProductBrowser'));
+const ProductView = React.lazy(() => import('@/views/ProductView'));
+const ShoppingCart = React.lazy(() => import('@/views/ShoppingCart'));
+const Support = React.lazy(() => import('@/views/Support'));
+const UserProfile = React.lazy(() => import('@/views/UserProfile'));
 
 /**
  * Represents a route in the application.

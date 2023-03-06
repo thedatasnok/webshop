@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = OrderLine.TABLE_NAME)
 public class OrderLine {
-  
+
   public static final String TABLE_NAME = "order_line";
   public static final String PRIMARY_KEY = "order_line_id";
 

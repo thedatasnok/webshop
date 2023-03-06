@@ -1,3 +1,4 @@
+import { PasswordStrengthCode, PasswordStrengthCodes } from '@webshop/ui';
 import clsx from 'clsx';
 import { RiCheckFill, RiCloseLine } from 'react-icons/ri';
 
@@ -5,16 +6,6 @@ export interface PasswordRequirement {
   label: string;
   satisfied: boolean;
 }
-
-export const PasswordStrengthCodes = [
-  'VERY_WEAK',
-  'WEAK',
-  'REASONABLE',
-  'STRONG',
-  'VERY_STRONG',
-] as const;
-
-export type PasswordStrengthCode = (typeof PasswordStrengthCodes)[number];
 
 export interface PasswordStrengthProps {
   strength: PasswordStrengthCode;

@@ -10,12 +10,16 @@ import org.passay.RuleResult;
 public class ShannonEntropyRule implements Rule {
   private int minimumEntropyBits;
 
-  public ShannonEntropyRule(int minimumEntropyBits) {
+  public ShannonEntropyRule(
+      int minimumEntropyBits
+  ) {
     this.minimumEntropyBits = minimumEntropyBits;
   }
-  
+
   @Override
-  public RuleResult validate(PasswordData passwordData) {
+  public RuleResult validate(
+      PasswordData passwordData
+  ) {
     var result = new RuleResult(true);
     var entropy = this.calculateEntropy(passwordData.getPassword());
 
@@ -23,11 +27,8 @@ public class ShannonEntropyRule implements Rule {
     if (entropy < this.minimumEntropyBits) {
       result.setValid(false);
       result.addError(
-        "PASSWORD_TOO_WEAK", 
-        Map.of(
-          "minimumEntropyBits", this.minimumEntropyBits, 
-          "actualEntropyBits", entropy
-        )
+        "PASSWORD_TOO_WEAK",
+        Map.of("minimumEntropyBits", this.minimumEntropyBits, "actualEntropyBits", entropy)
       );
     }
 
@@ -35,15 +36,16 @@ public class ShannonEntropyRule implements Rule {
   }
 
   /**
-   * Calculates the Shannon entropy of a password.
-   * This is inspired by the implementation of the same calculation in the 
-   * tai-password-strength library used in the frontend.
+   * Calculates the Shannon entropy of a password. This is inspired by the implementation of the same
+   * calculation in the tai-password-strength library used in the frontend.
    * 
    * @param password the password to calculate the entropy of
    * 
    * @return the entropy of the password
    */
-  private float calculateEntropy(String password) {
+  private float calculateEntropy(
+      String password
+  ) {
     var frequencyMap = new HashMap<Character, Integer>();
     var passwordLength = password.length();
 

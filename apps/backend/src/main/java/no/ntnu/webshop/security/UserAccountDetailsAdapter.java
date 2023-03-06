@@ -13,16 +13,18 @@ public class UserAccountDetailsAdapter implements UserDetails {
   private UserAccount userAccount;
   private boolean enabled;
 
-  public UserAccountDetailsAdapter(UserAccount userAccount) {
+  public UserAccountDetailsAdapter(
+      UserAccount userAccount
+  ) {
     this.userAccount = userAccount;
     // TODO: Reflect on this, do we want to disable accounts?
-    this.enabled = true; 
+    this.enabled = true;
   }
 
   public UserAccount getUserAccount() {
     return this.userAccount;
   }
-  
+
   @Override
   public String getUsername() {
     return this.userAccount.getEmail();

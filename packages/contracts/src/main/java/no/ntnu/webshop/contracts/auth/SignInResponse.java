@@ -5,7 +5,4 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 
 @Builder
 @GenerateTypeScript
-public record SignInResponse(
-  String accessToken,
-  String refreshToken
-) {}
+public record SignInResponse(String accessToken) {}

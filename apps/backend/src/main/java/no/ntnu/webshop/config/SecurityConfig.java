@@ -21,11 +21,7 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(
-  securedEnabled = true,
-  jsr250Enabled = true,
-  prePostEnabled = true
-)
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig {
   private final UserAccountJpaRepository userAccountRepository;
   private final AuthenticationRequestFilter authenticationRequestFilter;
@@ -46,10 +42,10 @@ public class SecurityConfig {
   public DaoAuthenticationProvider authenticationProvider() {
     var provider = new DaoAuthenticationProvider();
 
-    provider.setUserDetailsService(username -> 
-      new UserAccountDetailsAdapter(
+    provider.setUserDetailsService(
+      username -> new UserAccountDetailsAdapter(
         this.userAccountRepository.findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Could not find user account with username: " + username))
+          .orElseThrow(() -> new UsernameNotFoundException("Could not find user account with username: " + username))
       )
     );
 
@@ -59,9 +55,10 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain webSecurityCustomizer(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity
-      .cors()
+  public SecurityFilterChain webSecurityCustomizer(
+      HttpSecurity httpSecurity
+  ) throws Exception {
+    httpSecurity.cors()
       .and()
       .csrf()
       .disable()
@@ -69,7 +66,8 @@ public class SecurityConfig {
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeHttpRequests()
-      .requestMatchers("/**").permitAll()
+      .requestMatchers("/**")
+      .permitAll()
       .anyRequest()
       .authenticated();
 

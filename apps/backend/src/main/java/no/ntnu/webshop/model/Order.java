@@ -3,6 +3,7 @@ package no.ntnu.webshop.model;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -20,6 +21,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import no.ntnu.webshop.utility.EnumTypes.OrderStatusEnumType;
+import no.ntnu.webshop.utility.EnumTypes.PaymentMethodEnumType;
+import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
 
 /**
  * Represents an order in the database.
@@ -35,7 +39,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = Order.TABLE_NAME)
 public class Order {
-  
+
   public static final String TABLE_NAME = "order";
   public static final String PRIMARY_KEY = "order_id";
 
@@ -78,15 +82,18 @@ public class Order {
   })
   private Address invoiceAddress;
 
-  @Column(name = "order_status")
   @Enumerated(EnumType.STRING)
+  @Type(OrderStatusEnumType.class)
+  @Column(name = "order_status")
   private OrderStatus orderStatus;
 
-  @Column(name = "payment_status")
   @Enumerated(EnumType.STRING)
+  @Type(PaymentStatusEnumType.class)
+  @Column(name = "payment_status")
   private PaymentStatus paymentStatus;
 
-  @Column(name = "payment_method")
   @Enumerated(EnumType.STRING)
+  @Type(PaymentMethodEnumType.class)
+  @Column(name = "payment_method")
   private PaymentMethod paymentMethod;
 }

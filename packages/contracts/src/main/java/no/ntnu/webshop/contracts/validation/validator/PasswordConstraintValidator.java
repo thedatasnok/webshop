@@ -15,8 +15,8 @@ import no.ntnu.webshop.contracts.validation.annotation.ValidPassword;
 import no.ntnu.webshop.contracts.validation.rule.ShannonEntropyRule;
 
 /**
- * Represents a constraint validator implementation for the {@link ValidPassword} annotation.
- * Checks that the password meets certain requirements, and is stronger than a set level of entropy.
+ * Represents a constraint validator implementation for the {@link ValidPassword} annotation. Checks
+ * that the password meets certain requirements, and is stronger than a set level of entropy.
  * 
  * @see ValidPassword
  */
@@ -24,9 +24,14 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
   private PasswordValidator validator;
 
   @Override
-  public void initialize(ValidPassword annotation) {
+  public void initialize(
+      ValidPassword annotation
+  ) {
     this.validator = new PasswordValidator(
-      new LengthRule(annotation.minLength(), annotation.maxLength()),
+      new LengthRule(
+        annotation.minLength(),
+        annotation.maxLength()
+      ),
       // require at least one character from each of these groups
       new CharacterRule(EnglishCharacterData.UpperCase),
       new CharacterRule(EnglishCharacterData.LowerCase),
@@ -42,16 +47,18 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
   }
 
   @Override
-  public boolean isValid(String password, ConstraintValidatorContext context) {
+  public boolean isValid(
+      String password,
+      ConstraintValidatorContext context
+  ) {
     var result = this.validator.validate(new PasswordData(password));
 
     if (result.isValid()) {
-        return true;
+      return true;
     } else {
       context.disableDefaultConstraintViolation();
-      validator.getMessages(result).forEach(message -> 
-        context.buildConstraintViolationWithTemplate(message).addConstraintViolation()
-      );
+      validator.getMessages(result)
+        .forEach(message -> context.buildConstraintViolationWithTemplate(message).addConstraintViolation());
 
       return false;
     }

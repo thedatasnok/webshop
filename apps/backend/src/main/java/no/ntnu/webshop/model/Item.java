@@ -22,8 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents an item in the database. 
- * Can be part of a item family, and have multiple categories.
+ * Represents an item in the database. Can be part of a item family, and have multiple categories.
  * Can also be composed into multiple sellable units, which are represented by the Product class.
  * 
  * @see ItemFamily
@@ -36,7 +35,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = Item.TABLE_NAME)
 public class Item {
-  
+
   public static final String TABLE_NAME = "item";
   public static final String PRIMARY_KEY = "item_id";
 
@@ -51,8 +50,7 @@ public class Item {
   private String description;
 
   /**
-   * A price guidance for the item. 
-   * Note that this is not the actual price.
+   * A price guidance for the item. Note that this is not the actual price.
    */
   @Column(name = "price_guidance")
   private Double priceGuidance;
@@ -60,12 +58,11 @@ public class Item {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "fk_item_family_id", referencedColumnName = ItemFamily.PRIMARY_KEY)
   private ItemFamily family;
-  
+
   /**
-   * The defined attributes of this item.
-   * The key is the name of the attribute, and the value is the value of the attribute.
-   * If the item is part of a item family, the value must be in the list of
-   * possible values for the attribute, in the attribute map of the item family. 
+   * The defined attributes of this item. The key is the name of the attribute, and the value is the
+   * value of the attribute. If the item is part of a item family, the value must be in the list of
+   * possible values for the attribute, in the attribute map of the item family.
    */
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "defined_attributes")
