@@ -1,5 +1,11 @@
 import React from 'react';
-import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  type RouteObject,
+} from 'react-router-dom';
+import RouteGuard from './RouteGuard';
 
 const SignIn = React.lazy(() => import('@/views/auth/SignIn'));
 const SignUp = React.lazy(() => import('@/views/auth/SignUp'));
@@ -13,6 +19,27 @@ const Support = React.lazy(() => import('@/views/Support'));
 const UserProfile = React.lazy(() => import('@/views/UserProfile'));
 
 /**
+ * Represents the authentication state of a user.
+ */
+export type AuthenticationState = 'logged-in' | 'logged-out';
+
+/**
+ * An enum of all hrefs used in the application.
+ * Hrefs for all routes should be defined here, with the exception of hrefs that are dynamic.
+ * (e.g. /products/:id)
+ */
+export const enum RouteHref {
+  HOME = '/',
+  PRODUCTS = '/products',
+  SIGN_IN = '/auth/sign-in',
+  SIGN_UP = '/auth/sign-up',
+  CART = '/cart',
+  CHECKOUT = '/checkout',
+  PROFILE = '/profile',
+  SUPPORT = '/support',
+}
+
+/**
  * Represents a route in the application.
  * This is a superset of the RouteObject type from react-router.
  * Specifically includes href, as the path may not be the same as the href in some instances.
@@ -21,6 +48,7 @@ const UserProfile = React.lazy(() => import('@/views/UserProfile'));
  */
 export type ApplicationRoute = RouteObject & {
   href?: string;
+  authentication?: AuthenticationState;
 };
 
 /**
@@ -29,13 +57,13 @@ export type ApplicationRoute = RouteObject & {
  */
 export const routes: ApplicationRoute[] = [
   {
-    path: '/',
-    href: '/',
+    path: RouteHref.HOME,
+    href: RouteHref.HOME,
     element: <LandingPage />,
   },
   {
-    path: '/products',
-    href: '/products',
+    path: RouteHref.PRODUCTS,
+    href: RouteHref.PRODUCTS,
     element: <ProductBrowser />,
   },
   {
@@ -43,32 +71,36 @@ export const routes: ApplicationRoute[] = [
     element: <ProductView />,
   },
   {
-    path: '/auth/sign-in',
-    href: '/auth/sign-in',
+    path: RouteHref.SIGN_IN,
+    href: RouteHref.SIGN_IN,
     element: <SignIn />,
+    authentication: 'logged-out',
   },
   {
-    path: '/auth/sign-up',
-    href: '/auth/sign-up',
+    path: RouteHref.SIGN_UP,
+    href: RouteHref.SIGN_UP,
     element: <SignUp />,
+    authentication: 'logged-out',
   },
   {
-    path: '/cart',
-    href: '/cart',
+    path: RouteHref.CART,
+    href: RouteHref.CART,
     element: <ShoppingCart />,
   },
   {
-    path: '/checkout',
-    href: '/checkout',
+    path: RouteHref.CHECKOUT,
+    href: RouteHref.CHECKOUT,
     element: <Checkout />,
   },
   {
-    path: '/profile',
-    href: '/profile',
+    path: RouteHref.PROFILE,
+    href: RouteHref.PROFILE,
     element: <UserProfile />,
+    authentication: 'logged-in',
   },
   {
-    path: '/support',
+    path: RouteHref.SUPPORT,
+    href: RouteHref.SUPPORT,
     element: <Support />,
   },
   {
@@ -78,6 +110,22 @@ export const routes: ApplicationRoute[] = [
 ];
 
 // browser router - uses DOM history API
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    routes.map((route) => (
+      <Route
+        key={route.path}
+        path={route.path}
+        element={
+          // Wrap each route in a RouteGuard component, to allow it for checking
+          // whether the user can access the route or not.
+          <RouteGuard key={route.path} authentication={route.authentication}>
+            {route.element}
+          </RouteGuard>
+        }
+      />
+    ))
+  )
+);
 
 export default router;
