@@ -1,4 +1,5 @@
 import PageLayout from '@/components/layout/PageLayout';
+import ProductCard from '@/components/navigation/ProductCard';
 
 const ProductBrowser = () => {
   return (
@@ -35,8 +36,7 @@ const ProductBrowser = () => {
             <div className='mx-auto mt-10 mb-5 grid w-fit grid-cols-1 justify-center justify-items-center gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3'>
               {[...Array(9)].map((_, i) => (
                 <div key={i}>
-                  <div className='bg-base-800 aspect-square h-48 rounded-sm' />
-                  <p className='text-center text-sm font-medium'>product</p>
+                  <ProductCard to={'/products/1'} name={'3d gaming mousepad'} price={'$1,337.00'} />
                 </div>
               ))}
             </div>
