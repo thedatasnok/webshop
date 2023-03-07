@@ -1,9 +1,11 @@
 import { webshopApi } from '@/services';
 import { configureStore } from '@reduxjs/toolkit';
+import { authSlice } from './auth';
 
 export const store = configureStore({
   reducer: {
     [webshopApi.reducerPath]: webshopApi.reducer,
+    auth: authSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(webshopApi.middleware),
