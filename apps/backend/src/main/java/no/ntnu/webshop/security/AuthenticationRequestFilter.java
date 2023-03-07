@@ -54,7 +54,6 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
         });
       } catch (Exception e) {
         // either token is invalid, or the user account does not exist anymore
-        e.printStackTrace();
         log.debug("Not setting authentication context for request.", e);
       }
 
