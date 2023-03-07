@@ -120,7 +120,7 @@ public class JwtUtility {
     );
 
     cookie.setHttpOnly(true);
-    cookie.setMaxAge(this.refreshTokenExpiration);
+    cookie.setMaxAge(this.refreshTokenExpiration / 1000);
     cookie.setPath("/");
 
     return cookie;
