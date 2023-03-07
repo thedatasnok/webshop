@@ -1,5 +1,5 @@
 import PageLayout from '@/components/layout/PageLayout';
-import ProductCard from '@/components/navigation/ProductCard';
+import ProductCard from '@/components/product/ProductCard';
 
 const ProductBrowser = () => {
   return (

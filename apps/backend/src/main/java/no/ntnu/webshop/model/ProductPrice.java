@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Represents the price of a product.
@@ -37,6 +38,7 @@ public class ProductPrice {
   @Column(name = "price")
   private Double price;
 
+  @Setter
   @Column(name = "is_discount")
   private Boolean isDiscount;
 
@@ -45,4 +47,30 @@ public class ProductPrice {
 
   @Column(name = "to")
   private Date to;
+
+  /**
+   * Creates a new product price. The from date is set to the current time.
+   * 
+   * @param product    the product the price is for
+   * @param price      the price of the product
+   * @param isDiscount whether the price is a discount or not
+   */
+  public ProductPrice(
+      Product product,
+      Double price,
+      boolean isDiscount
+  ) {
+    this.product = product;
+    this.price = price;
+    this.isDiscount = isDiscount;
+    this.from = new Date();
+  }
+
+  /**
+   * Sets the end date of the price to the current time. Effectively ending the price.
+   */
+  public void end() {
+    this.to = new Date();
+  }
+
 }

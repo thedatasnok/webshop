@@ -45,4 +45,15 @@ public class Category {
   )
   private Set<Item> items = new HashSet<>();
 
+  /**
+   * Creates a new category with the given name.
+   * 
+   * @param name the name of the category
+   */
+  public Category(
+      String name
+  ) {
+    this.name = name;
+  }
+
 }

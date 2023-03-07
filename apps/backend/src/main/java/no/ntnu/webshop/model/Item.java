@@ -74,4 +74,27 @@ public class Item {
   @OneToMany(mappedBy = "item")
   private List<ProductItem> products = new ArrayList<>();
 
+  /**
+   * Creates a new item with the given parameters.
+   * 
+   * @param name          the name of the item
+   * @param description   a description of the item
+   * @param priceGuidance a price guidance for the item
+   * @param family        the item family the item belongs to
+   * @param attributes    the defined attributes of the item
+   */
+  public Item(
+      String name,
+      String description,
+      Double priceGuidance,
+      ItemFamily family,
+      Map<String, String> attributes
+  ) {
+    this.name = name;
+    this.description = description;
+    this.priceGuidance = priceGuidance;
+    this.family = family;
+    this.attributes = attributes;
+  }
+
 }

@@ -46,4 +46,26 @@ public class OrderLine {
 
   @Column(name = "subtotal")
   private Double subtotal;
+
+  /**
+   * Creates a new order line.
+   * 
+   * @param order        the order the product is in
+   * @param product      the product in the order
+   * @param productPrice the price of the product
+   * @param quantity     the quantity of the product
+   */
+  public OrderLine(
+      Order order,
+      Product product,
+      ProductPrice productPrice,
+      Integer quantity
+  ) {
+    this.order = order;
+    this.product = product;
+    this.productPrice = productPrice;
+    this.quantity = quantity;
+    this.subtotal = this.productPrice.getPrice() * this.quantity;
+  }
+
 }

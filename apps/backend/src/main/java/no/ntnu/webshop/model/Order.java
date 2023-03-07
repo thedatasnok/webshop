@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -48,9 +47,6 @@ public class Order {
   @Column(name = Order.PRIMARY_KEY)
   private Long id;
 
-  @Column(name = "total")
-  private Double subtotal;
-
   @CreationTimestamp
   @Column(name = "ordered_at")
   private Date orderedAt;
@@ -63,23 +59,19 @@ public class Order {
   private String customerName;
 
   @Embedded
-  @AttributeOverrides({
-    @AttributeOverride(name = "country", column = @Column(name = "delivery_country")),
-    @AttributeOverride(name = "postalCode", column = @Column(name = "delivery_postal_code")),
-    @AttributeOverride(name = "city", column = @Column(name = "delivery_city")),
-    @AttributeOverride(name = "street", column = @Column(name = "delivery_street")),
-    @AttributeOverride(name = "careOf", column = @Column(name = "delivery_care_of"))
-  })
+  @AttributeOverride(name = "country", column = @Column(name = "delivery_country"))
+  @AttributeOverride(name = "postalCode", column = @Column(name = "delivery_postal_code"))
+  @AttributeOverride(name = "city", column = @Column(name = "delivery_city"))
+  @AttributeOverride(name = "street", column = @Column(name = "delivery_street"))
+  @AttributeOverride(name = "careOf", column = @Column(name = "delivery_care_of"))
   private Address deliveryAddress;
 
   @Embedded
-  @AttributeOverrides({
-    @AttributeOverride(name = "country", column = @Column(name = "invoice_country")),
-    @AttributeOverride(name = "postalCode", column = @Column(name = "invoice_postal_code")),
-    @AttributeOverride(name = "city", column = @Column(name = "invoice_city")),
-    @AttributeOverride(name = "street", column = @Column(name = "invoice_street")),
-    @AttributeOverride(name = "careOf", column = @Column(name = "invoice_care_of"))
-  })
+  @AttributeOverride(name = "country", column = @Column(name = "invoice_country"))
+  @AttributeOverride(name = "postalCode", column = @Column(name = "invoice_postal_code"))
+  @AttributeOverride(name = "city", column = @Column(name = "invoice_city"))
+  @AttributeOverride(name = "street", column = @Column(name = "invoice_street"))
+  @AttributeOverride(name = "careOf", column = @Column(name = "invoice_care_of"))
   private Address invoiceAddress;
 
   @Enumerated(EnumType.STRING)
@@ -96,4 +88,29 @@ public class Order {
   @Type(PaymentMethodEnumType.class)
   @Column(name = "payment_method")
   private PaymentMethod paymentMethod;
+
+  /**
+   * Creates a new order with the given parameters.
+   * 
+   * @param customer        the customer who placed the order
+   * @param deliveryAddress the delivery address of the order
+   * @param invoiceAddress  the invoice address of the order
+   * @param paymentMethod   the payment method of the order
+   */
+  public Order(
+      UserAccount customer,
+      Address deliveryAddress,
+      Address invoiceAddress,
+      PaymentMethod paymentMethod
+  ) {
+    this.customer = customer;
+    this.customerName = customer.getFullName();
+    this.deliveryAddress = deliveryAddress;
+    this.invoiceAddress = invoiceAddress;
+    this.paymentMethod = paymentMethod;
+
+    this.orderStatus = OrderStatus.NEW;
+    this.paymentStatus = PaymentStatus.NEW;
+  }
+
 }
