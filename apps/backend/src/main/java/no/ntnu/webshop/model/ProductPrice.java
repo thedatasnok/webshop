@@ -42,10 +42,10 @@ public class ProductPrice {
   @Column(name = "is_discount")
   private Boolean isDiscount;
 
-  @Column(name = "from")
+  @Column(name = "time_from")
   private Date from;
 
-  @Column(name = "to")
+  @Column(name = "time_to")
   private Date to;
 
   /**
