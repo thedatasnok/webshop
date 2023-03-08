@@ -22,6 +22,7 @@ import no.ntnu.webshop.model.ProductItem;
 import no.ntnu.webshop.model.ProductPrice;
 import no.ntnu.webshop.repository.ItemJpaRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
+import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
 @Tag(name = "Products")
 @RestController
@@ -38,6 +39,7 @@ public class ProductController {
 
   @Operation(summary = "Creates a new product")
   @PostMapping
+  @ShopWorkerAuthorization
   public ResponseEntity<ProductDetails> createProduct(
       @Valid @RequestBody CreateProductRequest request
   ) {
