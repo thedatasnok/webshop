@@ -28,10 +28,24 @@ export interface SignUpResponse {
     accessToken: string;
 }
 
+export interface Category {
+    id: number;
+    name: string;
+}
+
 export interface ProductListItem {
     id: number;
     name: string;
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
+}
+
+export interface UserProfile {
+    id: string;
+    fullName: string;
+    email: string;
+    emailVerified: boolean;
+    role: string;
+    createdAt: Date;
 }
