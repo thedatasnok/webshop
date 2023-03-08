@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.webshop.contracts.GenericResponse;
 import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignInResponse;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
@@ -131,6 +132,29 @@ public class AuthController {
     var accessToken = this.jwtUtility.generateToken(authentication, JwtTokenType.ACCESS_TOKEN);
 
     return ResponseEntity.ok(SignInResponse.builder().accessToken(accessToken).build());
+  }
+
+  @Operation(
+    summary = "Signs out the user",
+    description = "Signs out the user in with their refresh token, by changing the max age of the token cookie to 0"
+  )
+  @PostMapping("/sign-out")
+  public ResponseEntity<GenericResponse> signOut(
+      @CookieValue("refresh-token") String refreshToken,
+      HttpServletResponse response
+  ) {
+    // if we want to invalidate tokens, we can do it here.
+    // for now, we just "delete" the cookie
+
+    var cookie = this.jwtUtility.createCookie(refreshToken);
+
+    // manually override the age of the cookie to 0
+    // this will cause the browser to delete/expire the cookie
+    cookie.setMaxAge(0);
+
+    response.addCookie(cookie);
+
+    return ResponseEntity.ok(GenericResponse.builder().message("Successfully signed out!").build());
   }
 
 }

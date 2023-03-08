@@ -1,3 +1,7 @@
+import { useAuth } from '@/hooks/useAuth';
+import { useLazyRefreshAccessTokenQuery } from '@/services/auth';
+import { isTokenExpired } from '@/store/auth.slice';
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthenticationState, RouteHref } from '.';
 
@@ -20,8 +24,24 @@ const RouteGuard: React.FC<RouteGuardProps> = ({
   authentication,
   children,
 }) => {
-  // TODO: Use the authentication state from the store
-  const { isLoggedIn } = { isLoggedIn: false };
+  const { isLoggedIn, tokenDetails } = useAuth();
+  const [refreshAccessToken] = useLazyRefreshAccessTokenQuery();
+
+  /**
+   * Interval check to refresh the access token if it has expired.
+   */
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (tokenDetails && isTokenExpired(tokenDetails)) {
+        refreshAccessToken();
+      }
+    };
+
+    checkTokenExpiration(); // check once on mount
+    const tokenRefresher = setInterval(checkTokenExpiration, 1000);
+
+    return () => clearInterval(tokenRefresher);
+  }, [tokenDetails]);
 
   if (authentication === 'logged-out' && isLoggedIn) {
     return <Navigate to={RouteHref.HOME} />;
