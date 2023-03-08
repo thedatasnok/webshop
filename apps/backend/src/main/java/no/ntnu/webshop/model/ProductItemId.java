@@ -2,17 +2,21 @@ package no.ntnu.webshop.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents the primary key of the ProductItem entity.
  * 
  * @see ProductItem
  */
+@Data
+@Embeddable
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class ProductItemId implements Serializable {
-  private Long productId;
-  private Long itemId;
+  private Long product;
+  private Long item;
 }

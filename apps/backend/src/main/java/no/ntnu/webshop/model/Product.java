@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,8 +45,15 @@ public class Product {
   @JdbcTypeCode(SqlTypes.JSON)
   private List<String> imageUrls;
 
-  @OneToMany(mappedBy = "product")
+  @OneToMany(mappedBy = "product", cascade = {
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
+  })
   private List<ProductItem> items = new ArrayList<>();
+
+  @OneToMany(mappedBy = "product", cascade = {
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
+  })
+  private List<ProductPrice> prices = new ArrayList<>();
 
   /**
    * Creates a new product.
@@ -54,9 +62,11 @@ public class Product {
    * @param imageUrls   a list of image urls for the product
    */
   public Product(
+      String name,
       String description,
       List<String> imageUrls
   ) {
+    this.name = name;
     this.description = description;
     this.imageUrls = imageUrls;
   }
@@ -83,6 +93,17 @@ public class Product {
   ) {
     item.setProduct(null);
     this.items.remove(item);
+  }
+
+  /**
+   * Adds a price to this product.
+   * 
+   * @param price the price to add to this product
+   */
+  public void addPrice(
+      ProductPrice price
+  ) {
+    this.prices.add(price);
   }
 
 }

@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,19 +29,15 @@ public class ProductItem {
   public static final String TABLE_NAME = "product_item";
 
   @Id
-  private Long productId;
-
-  @Id
-  private Long itemId;
-
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
-  @PrimaryKeyJoinColumn(name = "fk_product_id", referencedColumnName = Product.PRIMARY_KEY)
+  @JoinColumn(name = "fk_product_id", referencedColumnName = Product.PRIMARY_KEY)
   private Product product;
 
+  @Id
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
-  @PrimaryKeyJoinColumn(name = "fk_item_id", referencedColumnName = Item.PRIMARY_KEY)
+  @JoinColumn(name = "fk_item_id", referencedColumnName = Item.PRIMARY_KEY)
   private Item item;
 
   @Setter
