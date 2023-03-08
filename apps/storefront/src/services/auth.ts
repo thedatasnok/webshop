@@ -36,6 +36,16 @@ export const authApi = webshopApi.injectEndpoints({
     refreshAccessToken: builder.query<SignInResponse, void>({
       query: () => '/v1/auth/refresh',
     }),
+
+    /**
+     * Signs out the user.
+     */
+    signOut: builder.mutation<string, void>({
+      query: () => ({
+        url: '/v1/auth/sign-out',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -43,4 +53,5 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useLazyRefreshAccessTokenQuery,
+  useSignOutMutation,
 } = authApi;

@@ -147,6 +147,14 @@ export const authSlice = createSlice({
         }
       }
     );
+
+    /**
+     * Whenever the user signs out, we clear the credentials.
+     * This will result in the user being redirected to the login page, if they are on a protected page.
+     */
+    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, (state) =>
+      authSlice.caseReducers.clearCredentials(state)
+    );
   },
 });
 
