@@ -67,17 +67,19 @@ const initialTokenDetails = initialAccessToken
   : null;
 const initialLoginState = isTokenExpired(initialTokenDetails);
 
+const initialState: AuthState = {
+  isLoggedIn: !initialLoginState,
+  accessToken: initialAccessToken,
+  tokenDetails: initialTokenDetails,
+};
+
 /**
  * Slice for managing authentication.
  * This slice is responsible for storing the access token and token details.
  */
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    isLoggedIn: !initialLoginState,
-    accessToken: initialAccessToken,
-    tokenDetails: initialTokenDetails,
-  } as AuthState,
+  initialState,
   reducers: {
     /**
      * Action to set the credentials in the store.
@@ -107,6 +109,19 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    /**
+     * Whenver sign up requests are fulfilled, we set the credentials in the store.
+     */
+    builder.addMatcher(
+      authApi.endpoints.signUp.matchFulfilled,
+      (state, action) => {
+        authSlice.caseReducers.setCredentials(state, {
+          ...action,
+          payload: action.payload.accessToken,
+        });
+      }
+    );
+
     /**
      * Whenver sign in requests are fulfilled, we set the credentials in the store.
      */
@@ -146,6 +161,14 @@ export const authSlice = createSlice({
           authSlice.caseReducers.clearCredentials(state);
         }
       }
+    );
+
+    /**
+     * Whenever the user signs out, we clear the credentials.
+     * This will result in the user being redirected to the login page, if they are on a protected page.
+     */
+    builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, (state) =>
+      authSlice.caseReducers.clearCredentials(state)
     );
   },
 });

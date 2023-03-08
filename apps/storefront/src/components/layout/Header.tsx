@@ -1,3 +1,6 @@
+import { useAuth } from '@/hooks/useAuth';
+import { RouteHref } from '@/router';
+import { useSignOutMutation } from '@/services/auth';
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
 import {
@@ -15,6 +18,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
+  const { isLoggedIn } = useAuth();
+  const [signOut] = useSignOutMutation();
+
   return (
     <header className={clsx('border-base-200', className)}>
       <div className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
@@ -37,28 +43,43 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           </li>
           <li>
             <NavigationItem
-              to='/profile'
-              name='Profile'
-              icon={RiUser3Line}
-              size='sm'
-            />
-          </li>
-          <li>
-            <NavigationItem
               to='/cart'
               name='Cart'
               icon={RiShoppingCartLine}
               size='sm'
             />
           </li>
-          <li>
-            <NavigationItem
-              to='/sign-out'
-              name='Sign out'
-              icon={RiDoorOpenLine}
-              size='sm'
-            />
-          </li>
+          {!isLoggedIn && (
+            <li>
+              <NavigationItem
+                to={RouteHref.SIGN_IN}
+                name='Sign in'
+                icon={RiDoorOpenLine}
+                size='sm'
+              />
+            </li>
+          )}
+          {isLoggedIn && (
+            <>
+              <li>
+                <NavigationItem
+                  to={RouteHref.PROFILE}
+                  name='Profile'
+                  icon={RiUser3Line}
+                  size='sm'
+                />
+              </li>
+              <li>
+                <NavigationItem
+                  type='button'
+                  onClick={signOut}
+                  name='Sign out'
+                  icon={RiDoorOpenLine}
+                  size='sm'
+                />
+              </li>
+            </>
+          )}
         </ul>
       </div>
 

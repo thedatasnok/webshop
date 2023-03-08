@@ -1,9 +1,11 @@
 import PasswordStrength from '@/components/auth/PasswordStrength';
+import { RouteHref } from '@/router';
 import { useSignUpMutation } from '@/services/auth';
 import { useForm, zodResolver } from '@mantine/form';
 import { SignUpRequest } from '@webshop/contracts';
 import {
   Button,
+  InputLabel,
   Logo,
   PasswordStrengthCode,
   TextField,
@@ -43,7 +45,7 @@ const SignUp = () => {
   const handleSubmit = async (values: SignUpRequest) => {
     try {
       await signUp(values).unwrap();
-      navigate('/profile');
+      navigate(RouteHref.PROFILE);
     } catch (err) {
       console.log(err);
     }
@@ -95,30 +97,41 @@ const SignUp = () => {
             className='flex flex-col gap-2'
             onSubmit={form.onSubmit(handleSubmit)}
           >
-            <div className='flex justify-center text-3xl'>
-              <h1>Sign up</h1>
-            </div>
+            <h1 className='font-title text-center text-2xl font-semibold uppercase'>
+              Sign up
+            </h1>
+
+            <p className='-mt-2 text-center'>
+              Or{' '}
+              <NavLink
+                to={RouteHref.SIGN_IN}
+                className='text-primary hover:underline'
+              >
+                sign in
+              </NavLink>{' '}
+              if you already registered
+            </p>
 
             <div>
-              <label>E-mail</label>
+              <InputLabel>Email</InputLabel>
               <TextField {...form.getInputProps('email')} />
               <p>{form.errors.email}</p>
             </div>
 
             <div>
-              <label>Name</label>
+              <InputLabel>Name</InputLabel>
               <TextField {...form.getInputProps('fullName')} />
               <p>{form.errors.fullName}</p>
             </div>
 
             <div>
-              <label>Password</label>
+              <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
               <p>{form.errors.password}</p>
             </div>
 
             <div>
-              <label>Confirm password</label>
+              <InputLabel>Confirm password</InputLabel>
               <TextField
                 type='password'
                 {...form.getInputProps('passwordConfirmation')}
