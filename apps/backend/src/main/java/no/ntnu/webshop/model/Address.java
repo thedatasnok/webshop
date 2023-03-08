@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents an address. Is an embeddable class, meaning it can be used as a property in entity
@@ -12,6 +13,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @Embeddable
+@NoArgsConstructor
 @AllArgsConstructor
 public class Address {
   private String country;
