@@ -16,7 +16,7 @@ const ProductBrowser = () => {
           </div>
 
           <section id='categories'>
-            <div className='mx-auto flex flex-wrap mt-10 mb-5 w-fit grid-cols-4 justify-center justify-items-center gap-2'>
+            <div className='mx-auto mt-10 mb-5 flex w-fit grid-cols-4 flex-wrap justify-center justify-items-center gap-2'>
               {[...Array(8)].map((_, i) => (
                 <div key={i}>
                   <div className='bg-base-800 aspect-square h-28 rounded-sm' />
@@ -40,9 +40,10 @@ const ProductBrowser = () => {
               <div className='w-full'>
                 <select
                   id='sort'
+                  defaultValue='name'
                   className='bg-base-800 border-base-800 h-8 w-full border'
                 >
-                  <option selected>Name</option>
+                  <option value='name'>Name</option>
                   <option value='pricelowtohigh'>Price low-high</option>
                   <option value='pricehightolow'>Price high-low</option>
                   <option value='discount'>Discount</option>
