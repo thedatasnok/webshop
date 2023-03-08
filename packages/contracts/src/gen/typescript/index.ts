@@ -27,3 +27,11 @@ export interface SignUpResponse {
     email: string;
     accessToken: string;
 }
+
+export interface ProductListItem {
+    id: number;
+    name: string;
+    imageUrls: string[];
+    price: number;
+    isDiscount: boolean;
+}
