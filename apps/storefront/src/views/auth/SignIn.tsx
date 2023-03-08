@@ -1,10 +1,11 @@
-import { Button, Logo, TextField } from '@webshop/ui';
+import { Button, InputLabel, Logo, TextField } from '@webshop/ui';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { useSignInMutation } from '@/services/auth';
 import { SignInRequest } from '@webshop/contracts';
+import { RouteHref } from '@/router';
 
 const schema = z.object({
   email: z.string().email({ message: 'Invalid email' }),
@@ -18,7 +19,7 @@ const SignIn = () => {
   const handleSubmit = async (values: SignInRequest) => {
     try {
       await signIn(values).unwrap();
-      navigate('/profile');
+      navigate(RouteHref.PROFILE);
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +38,7 @@ const SignIn = () => {
       <main>
         <div className='flex h-screen flex-col items-center justify-center'>
           <div className='w-32 pb-10'>
-            <NavLink to='/' className='flex w-32 items-center'>
+            <NavLink to={RouteHref.HOME} className='flex w-32 items-center'>
               <Logo variant='small' />
             </NavLink>
           </div>
@@ -47,18 +48,29 @@ const SignIn = () => {
             className='flex flex-col gap-2'
             onSubmit={form.onSubmit(handleSubmit)}
           >
-            <div className='flex justify-center text-3xl'>
-              <h1>Sign in</h1>
-            </div>
+            <h1 className='font-title text-center text-2xl font-semibold uppercase'>
+              Sign in
+            </h1>
+
+            <p className='-mt-2 text-center'>
+              Or{' '}
+              <NavLink
+                to={RouteHref.SIGN_UP}
+                className='text-primary hover:underline'
+              >
+                sign up
+              </NavLink>{' '}
+              for a free account
+            </p>
 
             <div>
-              <label>E-mail</label>
+              <InputLabel>Email</InputLabel>
               <TextField {...form.getInputProps('email')} />
               <p>{form.errors.email}</p>
             </div>
 
             <div>
-              <label>Password</label>
+              <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
               <p>{form.errors.password}</p>
             </div>
