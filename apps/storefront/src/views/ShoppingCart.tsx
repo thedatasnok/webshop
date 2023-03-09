@@ -6,7 +6,7 @@ const ShoppingCart = () => {
   return (
     <PageLayout>
       <main>
-        <div className='mx-auto max-w-screen-xl py-10'>
+        <div className='mx-auto max-w-screen-xl py-4'>
           <div id='cart-title' className='justify-start text-3xl'>
             <h1>Shopping cart</h1>
           </div>
@@ -21,13 +21,15 @@ const ShoppingCart = () => {
           </section>
           <div
             id='cart-total'
-            className='flex w-full flex-col self-end py-6 text-xl'
+            className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
           >
             <a className='self-end'>Total: $112,000</a>
           </div>
-          <div id='checkout' className='flex w-full flex-col'>
-            <NavLink to='/checkout' className='self-end'>
-              <Button className='rounded-sm text-lg'>Checkout</Button>
+          <div id='checkout' className='sm:flex sm:flex-col'>
+            <NavLink to='/checkout' className='sm:self-end'>
+              <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
+                Checkout
+              </Button>
             </NavLink>
           </div>
         </div>
