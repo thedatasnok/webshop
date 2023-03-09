@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignInResponse;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
 import no.ntnu.webshop.contracts.auth.SignUpResponse;
+import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.model.UserAccount;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
@@ -43,9 +45,11 @@ public class AuthController {
   @Operation(summary = "Returns the user profile of the logged in user")
   @GetMapping("/profile")
   @PreAuthorize("isAuthenticated()")
-  public ResponseEntity<Object> test() {
-    // TODO: Update this to return the user's profile
-    return ResponseEntity.ok("You are logged in!");
+  public ResponseEntity<UserProfile> findProfile(
+      @AuthenticationPrincipal UserAccountDetailsAdapter adapter
+  ) {
+    var userId = adapter.getUserAccount().getId();
+    return ResponseEntity.ok(userAccountJpaRepository.findProfile(userId));
   }
 
   @Operation(summary = "Signs up a new user")
