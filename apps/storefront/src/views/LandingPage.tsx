@@ -2,14 +2,10 @@ import { Value } from '@/components/branding/Value';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
+import { TESTIMONIALS } from '@/static/testimonials';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
-import {
-  RiAlarmWarningFill,
-  RiAlarmWarningLine,
-  RiCpuLine,
-  RiHeadphoneLine,
-} from 'react-icons/ri';
+import { RiCpuLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
@@ -98,7 +94,7 @@ const LandingPage = () => {
           </h2>
 
           <section id='testimonials'>
-            {[...Array(4)].map((_, i) => (
+            {TESTIMONIALS.map((testimonial, i) => (
               <div
                 key={i}
                 className={clsx(
@@ -106,17 +102,12 @@ const LandingPage = () => {
                   i % 2 !== 0 && 'flex-row-reverse text-right'
                 )}
               >
-                <div className='bg-base-800 aspect-square h-24 rounded-sm' />
+                <div className='bg-base-800 aspect-square h-24 self-center rounded-sm' />
                 <div className='max-w-lg'>
                   <h3 className='font-title text-lg font-semibold'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    {testimonial.name}, {testimonial.age}
                   </h3>
-                  <p className='text-base-300'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Sunt quibusdam, ad consequuntur illum suscipit molestiae
-                    expedita nobis omnis debitis nemo reprehenderit deleniti,
-                    optio similique recusandae explicabo vel! Neque, alias hic.
-                  </p>
+                  <p className='text-base-300 text-sm'>{testimonial.text}</p>
                 </div>
               </div>
             ))}
@@ -166,7 +157,7 @@ const LandingPage = () => {
 
           <section
             id='disclaimer'
-            className='text-base-300 relative mx-auto max-w-screen-lg text-center mb-16'
+            className='text-base-300 relative mx-auto mb-16 max-w-screen-lg text-center'
           >
             <p>
               This website is a result of a university group project, performed
