@@ -3,7 +3,6 @@ import ProductCard from '@/components/product/ProductCard';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
-import { useEffect } from 'react';
 import { RiArrowUpSLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 
@@ -33,10 +32,9 @@ const ProductView = () => {
           <div className='relative sm:w-1/2'>
             <img
               className='clip-edges clip-corner-sm'
-              src='https://placehold.co/768x768/d4d4d8/d4d4d8.png'
-              alt={undefined || 'product-image'} // read from product in the future
+              src={productInfo?.imageUrls[0]}
+              alt={undefined || productInfo?.name}
             />
-
             <div className='bg-base-900 font-title absolute bottom-0 right-1/4 translate-y-1/2 translate-x-full px-2 py-1 font-bold uppercase tracking-widest '>
               #98320
             </div>
