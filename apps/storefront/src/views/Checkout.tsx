@@ -1,10 +1,40 @@
 import Header from '@/components/layout/Header';
-import { Button, Logo } from '@webshop/ui';
+import { Button, Logo, TextField } from '@webshop/ui';
+import { type } from 'os';
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { RadioGroup } from '@headlessui/react';
 
 const Checkout = () => {
+  const deliveryOptions = [
+    {
+      name: 'Your local Eurospar',
+    },
+    {
+      name: 'Package Box',
+    },
+    {
+      name: 'Home Delivery',
+    },
+  ];
+
+  const paymentOptions = [
+    {
+      name: 'Card',
+    },
+    {
+      name: 'Vipps',
+    },
+    {
+      name: 'Free',
+    },
+  ];
+
+  const [delivery, setSelectedDelivery] = useState(deliveryOptions[0]);
+  const [payment, setSelectedPayment] = useState(paymentOptions[0]);
+
   return (
-    <div className='wrapper'>
+    <div>
       <header className='mx-auto flex flex-col items-center justify-center py-10'>
         <NavLink to='/' className='flex-wrap items-center justify-center'>
           <div className='w-32'>
@@ -14,99 +44,169 @@ const Checkout = () => {
       </header>
 
       <main>
-        <div className='mx-auto grid max-w-screen-2xl sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-56'>
-          <div className='px-4 pt-8'>
-            <section>
-              <div className='bg-base-800 mt-4 rounded-sm py-4 px-6'>
-                <p className='pb-4 text-xl'>Delivery information</p>
-                <label className='block pb-1 text-sm'>Full name</label>
-                <div className='overflow bg-base-700 relative mb-4 pl-1'>
-                  <input
+        <div className='mx-auto grid max-w-screen-xl gap-28 px-2 lg:grid-cols-2'>
+          <div className='font-title'>
+            <form>
+              <div className='rounded-sm'>
+                <p className='text-xl'>Delivery information</p>
+                <hr className='text-base-600 pb-4'></hr>
+                <label className='block text-sm'>Full name</label>
+                <div className='mb-2'>
+                  <TextField
                     type='text'
-                    id='name'
                     className='w-full bg-transparent focus:outline-none'
-                    placeholder='Mr. Bofamai Phatt'
-                  />
+                    placeholder='First Middle Last'
+                  ></TextField>
                 </div>
-                <label className='block pb-1 text-sm'>Email</label>
-                <div className='bg-base-700 relative mb-4 pl-1'>
-                  <input
+                <label className='block text-sm'>Email</label>
+                <div className='mb-2'>
+                  <TextField
                     type='text'
-                    id='email'
                     className='w-full bg-transparent focus:outline-none'
-                    placeholder='email@sugma.no'
-                  />
+                    placeholder='email@noreply.no'
+                  ></TextField>
                 </div>
-
-                <label className='block pb-1 text-sm'>Billing Address</label>
-                <div className='mb-2 flex flex-col gap-4 sm:flex-row '>
-                  <div className='bg-base-700 w-fit pl-1'>
-                    <input
+                <label className='block text-sm'>Billing Address</label>
+                <div className='flex flex-col gap-4 sm:flex-row'>
+                  <div className='w-fit'>
+                    <TextField
                       type='text'
-                      id='zip-code'
                       className='w-full bg-transparent focus:outline-none'
-                      placeholder='Postal code'
-                    />
+                      placeholder='postal code'
+                    ></TextField>
                   </div>
-                  <div className='bg-base-700 w-fit pl-1'>
-                    <input
+                  <div className='w-fit'>
+                    <TextField
                       type='text'
-                      id='address'
                       className='w-full bg-transparent focus:outline-none'
-                      placeholder='Address'
-                    />
+                      placeholder='address'
+                    ></TextField>
                   </div>
-                  <div className='bg-base-700 w-fit'>
-                    <input
+                  <div className='w-fit'>
+                    <TextField
                       type='text'
-                      id='country'
                       className='w-full bg-transparent focus:outline-none'
-                      placeholder='Country'
-                    />
+                      placeholder='country'
+                    ></TextField>
                   </div>
                 </div>
-                <div className='pt-2'>
-                  <button>checkbox - Same shipping address</button>
+                <div className='flex flex-row gap-4 py-4'>
+                  <input type='checkbox' />
+                  <p>same shipping address</p>
                 </div>
               </div>
-            </section>
+            </form>
 
-            <section>
-              <div className='bg-base-800 mt-4 rounded-sm py-4 px-6'>
-                <p className='pb-4 text-xl'>Shipping Methods</p>
-                <form className='grid gap-6'>
-                  <div className='relative'>
-                    <button>option 1</button>
+            <div className='w-full py-16'>
+              <h2>Shipping methods</h2>
+              <div className='mx-auto w-full'>
+                <RadioGroup value={delivery} onChange={setSelectedDelivery}>
+                  <div className='space-y-4'>
+                    {deliveryOptions.map((deliveryOptions) => (
+                      <RadioGroup.Option
+                        key={deliveryOptions.name}
+                        value={deliveryOptions}
+                        className={({ active, checked }) =>
+                          `${
+                            active
+                              ? 'border-primary-700 border-2'
+                              : 'border-base-700 border'
+                          }
+                  }
+                    bg-base-800 flex rounded-sm bg-opacity-40 px-5 py-4 focus:outline-none`
+                        }
+                      >
+                        {({ active, checked }) => (
+                          <>
+                            <div className='flex w-full items-center justify-between'>
+                              <div className='flex items-center'>
+                                <div className='text-sm'>
+                                  <RadioGroup.Label
+                                    as='p'
+                                    className={`font-medium  ${
+                                      checked ? 'text-white' : 'text-gray-900'
+                                    }`}
+                                  >
+                                    {deliveryOptions.name}
+                                  </RadioGroup.Label>
+                                </div>
+                              </div>
+                              {checked && (
+                                <div className='shrink-0 text-white'></div>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </RadioGroup.Option>
+                    ))}
                   </div>
-                  <div className='relative'>
-                    <button>option 2</button>
-                  </div>
-                </form>
+                </RadioGroup>
               </div>
-            </section>
+            </div>
 
-            <section>
-              <div className='bg-base-800 mt-4 rounded-sm py-4 px-6'>
-                <p className='pb-4 text-xl'>Payment options</p>
-                <form className='grid gap-6'>
-                  <div className='relative'>
-                    <button>Free</button>
+            <div className='w-full'>
+              <h2>Payment methods</h2>
+              <div className='mx-auto w-full'>
+                <RadioGroup value={payment} onChange={setSelectedPayment}>
+                  <div className='space-y-4'>
+                    {paymentOptions.map((paymentOptions) => (
+                      <RadioGroup.Option
+                        key={paymentOptions.name}
+                        value={paymentOptions}
+                        className={({ active, checked }) =>
+                          `${
+                            active
+                              ? 'border-primary-700 border-2'
+                              : 'border-base-700 border'
+                          }
+                  }
+                  bg-base-800 flex rounded-sm bg-opacity-40 px-5 py-4 focus:outline-none`
+                        }
+                      >
+                        {({ checked }) => (
+                          <>
+                            <div className='flex w-full items-center justify-between'>
+                              <div className='flex items-center'>
+                                <div className='text-sm'>
+                                  <RadioGroup.Label
+                                    as='p'
+                                    className={`font-medium  ${
+                                      checked ? 'text-white' : 'text-gray-900'
+                                    }`}
+                                  >
+                                    {paymentOptions.name}
+                                  </RadioGroup.Label>
+                                </div>
+                              </div>
+                              {checked && (
+                                <div className='shrink-0 text-white'></div>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </RadioGroup.Option>
+                    ))}
                   </div>
-                  <div className='relative'>
-                    <button>PayUsBofa</button>
-                  </div>
-                </form>
+                </RadioGroup>
               </div>
-            </section>
-
-            <div className='flex justify-center pt-5 pb-5'>
-              <Button className='w-30 h-8 rounded-sm'>Confirm & Buy</Button>
             </div>
           </div>
 
-          <div className='px-4 pt-8'>
-            <div className='mt-10 bg-gray-50 px-4'>
+          <div className='h-max lg:flex lg:flex-col-reverse'>
+            <div className='flex flex-col gap-4 lg:items-center lg:justify-end'>
+              <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase lg:w-fit'>
+                Confirm & Buy
+              </Button>
+
+              <div className='flex items-center justify-end gap-4'>
+                <p>Total</p>
+                <p>$408.00</p>
+              </div>
+            </div>
+
+            <div>
               <p className='text-xl text-gray-400'>Shopping cart</p>
+              <hr className='text-base-600 pb-4'></hr>
               <div>
                 <section id='dummy-cart-items'>
                   {[...Array(4)].map((_, i) => (
@@ -116,11 +216,6 @@ const Checkout = () => {
                     </div>
                   ))}
                 </section>
-              </div>
-
-              <div className='mt-6 flex items-center justify-end gap-4'>
-                <p className='text-sm text-gray-900'>Total</p>
-                <p className='text-2xlld text-gray-900'>$408.00</p>
               </div>
             </div>
           </div>
