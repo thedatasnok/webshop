@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import no.ntnu.webshop.model.Product;
 import no.ntnu.webshop.model.ProductItem;
 import no.ntnu.webshop.model.ProductPrice;
 import no.ntnu.webshop.repository.ItemJpaRepository;
+import no.ntnu.webshop.repository.ProductJdbcRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
@@ -30,11 +32,23 @@ import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 @RequestMapping("/api/v1/products")
 public class ProductController {
   private final ProductJpaRepository productJpaRepository;
+  private final ProductJdbcRepository productJdbcRepository;
   private final ItemJpaRepository itemJpaRepository;
 
   @GetMapping
   public ResponseEntity<List<ProductListItem>> findProducts() {
     return ResponseEntity.ok(productJpaRepository.findProducts());
+  }
+
+  @Operation(summary = "Finds a product by its id")
+  @GetMapping("/{id}")
+  public ResponseEntity<ProductDetails> findProductById(
+      @PathVariable Long id
+  ) {
+    if (!this.productJpaRepository.existsById(id))
+      return ResponseEntity.notFound().build();
+
+    return ResponseEntity.ok(this.productJdbcRepository.findById(id));
   }
 
   @Operation(summary = "Creates a new product")
