@@ -1,12 +1,19 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
-import { useFindProductsQuery } from '@/services/products';
+import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
+import { useEffect } from 'react';
 import { RiArrowUpSLine } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
 
 const ProductView = () => {
+  const { id } = useParams();
+  console.log(id);
+
+  const { data: productInfo } = useFindProductQuery(parseInt(id!));
   const { data: products } = useFindProductsQuery();
+
   return (
     <PageLayout>
       <main>
@@ -17,7 +24,7 @@ const ProductView = () => {
             </a>
             <span>/</span>
             <a href='#' className='hover:underline'>
-              3D Gaming Mousepad
+              {productInfo?.name}
             </a>
           </div>
         </div>
@@ -36,14 +43,14 @@ const ProductView = () => {
           </div>
           <div className='flex-1 px-4'>
             <h1 className='font-title text-base-50 mb-2 text-4xl font-bold uppercase'>
-              3D Gaming Mousepad
+              {productInfo?.name}
             </h1>
             <p className='text-base-300 mb-8 max-w-lg'>
-              Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae
-              exercitationem porro saepe ea harum corrupti vero id laudantium
-              enim, libero blanditiis expedita cupiditate a est.
+              {productInfo?.description}
             </p>
-            <h2 className='text-base-50 text-xl font-semibold'>$1,337</h2>
+            <h2 className='text-base-50 text-xl font-semibold'>
+              {'$' + productInfo?.price}
+            </h2>
             <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
               Add to Cart
             </Button>
@@ -107,7 +114,7 @@ const ProductView = () => {
 
                       <hr className='mb-4'></hr>
                     </Disclosure.Button>
-                    <Disclosure.Panel className='text-gray-500 pb-8'>
+                    <Disclosure.Panel className='pb-8 text-gray-500'>
                       This mouse pad is made of a special type of polymer that
                       can change its shape and texture in response to different
                       in-game environments. The pad has advanced sensors that
@@ -149,7 +156,7 @@ const ProductView = () => {
                     </span>
                     <hr className='mb-4'></hr>
                   </Disclosure.Button>
-                  <Disclosure.Panel className='text-gray-500 pb-8'>
+                  <Disclosure.Panel className='pb-8 text-gray-500'>
                     <ul>
                       <li>- 100k dpi</li>
                       <li>- 10000000k colors</li>
