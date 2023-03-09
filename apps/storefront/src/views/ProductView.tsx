@@ -1,12 +1,16 @@
 import PageLayout from '@/components/layout/PageLayout';
+import ProductCard from '@/components/product/ProductCard';
+import { useFindProductsQuery } from '@/services/products';
+import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
-import { NavLink } from 'react-router-dom';
+import { RiArrowUpSLine } from 'react-icons/ri';
 
 const ProductView = () => {
+  const { data: products } = useFindProductsQuery();
   return (
     <PageLayout>
       <main>
-        <div className='mx-auto mt-4 flex max-w-screen-xl flex-wrap'>
+        <div className='mx-auto mt-4 max-w-screen-xl'>
           <div className='text-base-400 space-x-2 text-sm'>
             <a href='#' className='hover:underline'>
               Mousepads
@@ -18,10 +22,10 @@ const ProductView = () => {
           </div>
         </div>
 
-        <div className='mx-auto flex max-w-screen-xl flex-wrap gap-4 py-4'>
-          <div className='relative w-1/2'>
+        <div className='mx-auto flex w-full max-w-screen-xl flex-col gap-4 py-4 sm:flex-row'>
+          <div className='relative sm:w-1/2'>
             <img
-              className='clip-edges clip-corner-sm aspect-square'
+              className='clip-edges clip-corner-sm'
               src='https://placehold.co/768x768/d4d4d8/d4d4d8.png'
               alt={undefined || 'product-image'} // read from product in the future
             />
@@ -40,13 +44,12 @@ const ProductView = () => {
               enim, libero blanditiis expedita cupiditate a est.
             </p>
             <h2 className='text-base-50 text-xl font-semibold'>$1,337</h2>
-            <Button className='mt-2 h-10 px-6 font-semibold uppercase'>
+            <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
               Add to Cart
             </Button>
           </div>
         </div>
-
-        <div className='mx-auto mt-4 grid max-w-screen-xl grid-cols-2 gap-24'>
+        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-24 sm:grid sm:grid-cols-2'>
           <div>
             <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Description
@@ -84,26 +87,98 @@ const ProductView = () => {
           </div>
         </div>
 
-        <h2 className='font-title mt-32 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+        <div className='mx-auto mt-4 max-w-screen-xl flex-col gap-24'>
+          <div>
+            <div className='block sm:hidden'>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className='w-full py-2'>
+                      <h2 className='font-title items-center justify-center text-3xl font-semibold uppercase'>
+                        Description
+                      </h2>
+                      <span>
+                        <RiArrowUpSLine
+                          className={
+                            open ? 'w-full rotate-180 transform' : 'w-full'
+                          }
+                        ></RiArrowUpSLine>
+                      </span>
+
+                      <hr className='mb-4'></hr>
+                    </Disclosure.Button>
+                    <Disclosure.Panel className='text-gray-500 pb-8'>
+                      This mouse pad is made of a special type of polymer that
+                      can change its shape and texture in response to different
+                      in-game environments. The pad has advanced sensors that
+                      detect the player's movements and translate them into
+                      in-game actions, allowing for precise and intuitive
+                      control. This pad is connected to a gaming computer or
+                      console, and would be able to display different dimensions
+                      and environments through the use of holographic
+                      technology. This mouse pad is made of a special type of
+                      polymer that can change its shape and texture in response
+                      to different in-game environments. The pad has advanced
+                      sensors that detect the player's movements and translate
+                      them into in-game actions, allowing for precise and
+                      intuitive control. This pad is connected to a gaming
+                      computer or console, and would be able to display
+                      different dimensions and environments through the use of
+                      holographic technology.
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            </div>
+            <p></p>
+          </div>
+          <div className='block sm:hidden'>
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className='w-full py-2'>
+                    <h2 className='font-title items-center justify-center text-3xl font-semibold uppercase'>
+                      SPECS
+                    </h2>
+                    <span>
+                      <RiArrowUpSLine
+                        className={
+                          open ? 'w-full rotate-180 transform' : 'w-full'
+                        }
+                      ></RiArrowUpSLine>
+                    </span>
+                    <hr className='mb-4'></hr>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-500 pb-8'>
+                    <ul>
+                      <li>- 100k dpi</li>
+                      <li>- 10000000k colors</li>
+                      <li>- incredible precision</li>
+                      <li>- for kill in video fps games, -turbo mode neon-</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+          </div>
+        </div>
+
+        <h2 className='font-title mt-16 mb-4 text-center text-2xl font-bold uppercase tracking-wider sm:mt-32'>
           Related products
         </h2>
 
-        <section
-          id='related-products'
-          className='mx-auto mt-4 grid max-w-screen-xl grid-cols-4 gap-8'
-        >
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className='flex w-full flex-col'>
-              <div className='bg-base-800 aspect-video w-full rounded-sm' />
-              <div className='flex justify-between text-lg font-medium'>
-                <p>product</p>
-                <p>$3,333</p>
-              </div>
-              <NavLink to='/products/2' className='self-end'>
-                <Button className='w-min rounded-sm'>buy</Button>
-              </NavLink>
-            </div>
-          ))}
+        <section id='products-temp'>
+          <div className='mx-auto grid w-fit max-w-screen-xl grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-3'>
+            {products?.map((product, i) => (
+              <ProductCard
+                key={product.id}
+                to={'/products/' + product.id}
+                name={product.name}
+                price={product.price + '$'}
+                image={product.imageUrls[0]}
+              />
+            ))}
+          </div>
         </section>
       </main>
     </PageLayout>
