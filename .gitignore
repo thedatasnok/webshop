@@ -34,7 +34,9 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
+.vscode/*
+# include launch json for convenience
+!.vscode/launch.json
 
 # Logs
 logs

@@ -1,0 +1,24 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch backend",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "no.ntnu.webshop.WebshopApplication",
+      "projectName": "backend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Run migrations",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "no.ntnu.webshop.migrations.MigrationsApplication",
+      "projectName": "migrations",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
