@@ -1,8 +1,10 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
+import { useFindProductsQuery } from '@/services/products';
 import { RiGridFill, RiListCheck } from 'react-icons/ri';
 
 const ProductBrowser = () => {
+  const { data: products } = useFindProductsQuery();
   return (
     <PageLayout>
       <main>
@@ -26,15 +28,8 @@ const ProductBrowser = () => {
             </div>
           </section>
 
-          <div className='flex flex-col-reverse sm:ml-20 sm:flex-row sm:items-center sm:justify-between'>
+          <div className='mt-12 flex flex-col-reverse sm:ml-20 sm:flex-row sm:items-center sm:justify-between'>
             <h2 className=''>showing x results for ""</h2>
-
-            {/* <div className='mt-7 flex items-center justify-center gap-2'>
-            <h2 className='md:pr-6 lg:pr-96'>showing x results for ""</h2>
-            <button>sort</button>
-            <button>grid</button>
-            <button>list</button>
-          </div> */}
 
             <div className='my-2 mr-0 flex items-center sm:mr-20 sm:gap-2'>
               <div className='w-full'>
@@ -49,6 +44,7 @@ const ProductBrowser = () => {
                   <option value='discount'>Discount</option>
                 </select>
               </div>
+
               <button>
                 <RiGridFill className='hidden h-12 w-12 sm:block md:h-8 md:w-8' />
               </button>
@@ -57,17 +53,16 @@ const ProductBrowser = () => {
               </button>
             </div>
           </div>
-
           <section id='products'>
-            <div className='mx-auto grid w-fit grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-4'>
-              {[...Array(9)].map((_, i) => (
-                <div key={i}>
-                  <ProductCard
-                    to={'/products/1'}
-                    name={'3d gaming mousepad'}
-                    price={'$1,337.00'}
-                  />
-                </div>
+            <div className='mx-auto grid w-fit grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'>
+              {products?.map((product, i) => (
+                <ProductCard
+                  key={product.id}
+                  to={'/products/' + product.id}
+                  name={product.name}
+                  price={product.price + '$'}
+                  image={product.imageUrls[0]}
+                />
               ))}
             </div>
           </section>
