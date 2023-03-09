@@ -33,6 +33,33 @@ export interface Category {
     name: string;
 }
 
+export interface CreateProductRequest {
+    name: string;
+    description: string;
+    imageUrls: string[];
+    price: number;
+    isDiscount: boolean;
+    items: { [index: string]: number };
+}
+
+export interface ProductDetails {
+    id: number;
+    name: string;
+    description: string;
+    imageUrls: string[];
+    price: number;
+    isDiscount: boolean;
+    items: ProductItemDetails[];
+}
+
+export interface ProductItemDetails {
+    id: number;
+    quantity: number;
+    name: string;
+    description: string;
+    attributes: { [index: string]: string };
+}
+
 export interface ProductListItem {
     id: number;
     name: string;
