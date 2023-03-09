@@ -20,7 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <NavLink to={to} className={clsx('text-base-50')}>
       <div className={clsx('border-base-700 border-2 p-1')}>
-        <img src={image}></img>
+        <img src={image} className='aspect-square w-full'></img>
         <h2 className={clsx('font-title mb-2 text-xl font-bold uppercase')}>
           {name}
         </h2>
