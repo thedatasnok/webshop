@@ -1,7 +1,15 @@
+import { Value } from '@/components/branding/Value';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
+import ExternalLink from '@/components/navigation/ExternalLink';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
+import {
+  RiAlarmWarningFill,
+  RiAlarmWarningLine,
+  RiCpuLine,
+  RiHeadphoneLine,
+} from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
@@ -112,6 +120,69 @@ const LandingPage = () => {
                 </div>
               </div>
             ))}
+          </section>
+
+          <h2 className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+            About us
+          </h2>
+
+          <section id='about' className='mx-auto max-w-screen-lg text-center'>
+            <p className='text-base-300'>
+              Welcome to the future of gaming! We are a cutting edge company
+              specializing in the most advanced cyberpunk gaming gadgets
+              available. From headsets to keyboards, mice to controllers, we
+              have everything you need to get the most out of your gaming
+              experience. Our products feature the latest in cyberpunk
+              technology, with sleek designs and advanced capabilities.
+              Experience the power of cyberpunk gaming with us today! Let us
+              take your gaming to the next level.
+            </p>
+
+            <h2 className='font-title mt-12 mb-4 text-center text-xl font-bold uppercase tracking-wider'>
+              Our values
+            </h2>
+
+            <div className='flex items-center justify-center gap-4'>
+              <Value icon={RiCpuLine} text='High-tech' />
+              <Value icon={RiCpuLine} text='Comfort' />
+              <Value icon={RiCpuLine} text='Stylish' />
+            </div>
+
+            <p className='text-base-300 mt-4'>
+              At Cyberpunk Gaming Gear, we strive to provide our customers with
+              the best gaming experience possible. Our values include high-tech,
+              comfortable, and stylish products that are designed to help you
+              get the most out of your gaming. We believe in providing the most
+              advanced technology and highest quality materials to ensure that
+              our customers can enjoy their gaming in comfort and style. Our
+              goal is to provide an unbeatable gaming experience that you won't
+              find anywhere else.
+            </p>
+          </section>
+
+          <h2 className='font-title mt-16 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+            Disclaimer
+          </h2>
+
+          <section
+            id='disclaimer'
+            className='text-base-300 relative mx-auto max-w-screen-lg text-center mb-16'
+          >
+            <p>
+              This website is a result of a university group project, performed
+              in the course{' '}
+              <ExternalLink href='https://ntnu.edu/studies/courses/IDATA2301'>
+                IDATA2301 Web technologies
+              </ExternalLink>
+              , at <ExternalLink href='https://ntnu.edu'>NTNU</ExternalLink>.
+              All the information provided here is a result of imagination. Any
+              resemblance with real companies or products is a coincidence.
+            </p>
+
+            <p className='mt-4'>
+              Product descriptions and image assets used on this site are
+              generated using AI.
+            </p>
           </section>
         </div>
       </main>
