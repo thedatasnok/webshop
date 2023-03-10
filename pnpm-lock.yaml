@@ -12,6 +12,10 @@ importers:
 
   apps/dashboard:
     specifiers:
+      '@headlessui/react': ^1.7.11
+      '@mantine/form': ^5.10.5
+      '@mantine/hooks': ^5.10.4
+      '@reduxjs/toolkit': ^1.9.3
       '@types/node': ^18.14.4
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.9
@@ -20,18 +24,32 @@ importers:
       '@webshop/ui': workspace:*
       autoprefixer: ^10.4.13
       clsx: ^1.2.1
+      jwt-decode: ^3.1.2
       postcss: ^8.4.21
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-icons: ^4.7.1
+      react-redux: ^8.0.5
+      react-router-dom: ^6.8.0
       tailwindcss: ^3.2.4
       typescript: ^4.9.3
       vite: ^4.0.0
+      zod: ^3.20.6
     dependencies:
+      '@headlessui/react': 1.7.11_biqbaboplfbrettd7655fr4n2y
+      '@mantine/form': 5.10.5_react@18.2.0
+      '@mantine/hooks': 5.10.4_react@18.2.0
+      '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
       '@webshop/contracts': link:../../packages/contracts
       '@webshop/ui': link:../../packages/ui
       clsx: 1.2.1
+      jwt-decode: 3.1.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-icons: 4.7.1_react@18.2.0
+      react-redux: 8.0.5_fxtgt6bjwd6p4cwoordejim2zi
+      react-router-dom: 6.8.0_biqbaboplfbrettd7655fr4n2y
+      zod: 3.20.6
     devDependencies:
       '@types/node': 18.14.4
       '@types/react': 18.0.27
