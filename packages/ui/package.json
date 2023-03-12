@@ -27,6 +27,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@headlessui/tailwindcss": "^0.1.2",
     "clsx": "^1.2.1"
   }
 }
