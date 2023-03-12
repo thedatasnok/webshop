@@ -8,6 +8,7 @@ export const enum RouteHref {
   SIGN_UP = '/auth/sign-up',
   DASHBOARD = '/',
   ITEM_MANAGEMENT = '/items',
+  ORDER_MANAGEMENT = '/orders',
   USER_MANAGEMENT = '/users',
   PRODUCT_MANAGEMENT = '/products',
 }

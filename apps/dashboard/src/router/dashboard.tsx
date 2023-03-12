@@ -1,10 +1,11 @@
 import React from 'react';
 import { ApplicationRoute } from '.';
 import { RouteHref } from './enum';
-import { RiDashboardLine, RiGroupLine, RiQuestionLine } from 'react-icons/ri';
+import { RiDashboardLine, RiGroupLine, RiListOrdered, RiQuestionLine } from 'react-icons/ri';
 
 const Dashboard = React.lazy(() => import('@/views/Dashboard'));
 const ItemManagement = React.lazy(() => import('@/views/ItemManagement'));
+const OrderManagement = React.lazy(() => import('@/views/OrderManagement'));
 const ProductManagement = React.lazy(() => import('@/views/ProductManagement'));
 const UserManagement = React.lazy(() => import('@/views/UserManagement'));
 
@@ -16,6 +17,14 @@ const dashboardRoutes: ApplicationRoute[] = [
     icon: RiDashboardLine,
     href: RouteHref.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    name: 'Orders',
+    path: 'orders',
+    sidebar: true,
+    icon: RiListOrdered,
+    href: RouteHref.ORDER_MANAGEMENT,
+    element: <OrderManagement />,
   },
   {
     name: 'Items',
