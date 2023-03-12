@@ -1,122 +1,42 @@
 import PageLayout from '@/components/layout/PageLayout';
 import Button from '@webshop/ui/src/components/input/Button';
-import { useParams } from 'react-router-dom';
+import { Tab } from '@headlessui/react';
+import { Fragment } from 'react';
+import UserDetails from '@/views/profile/UserDetails';
+import OrderHistory from '@/views/profile/OrderHistory';
 
 const UserProfile = () => {
-  const { id } = useParams();
-
   return (
     <PageLayout>
-      <main>
-        <div className='mx-auto mt-4 flex max-w-screen-xl gap-32'>
-          <div className='w-1/3'>
-            <h1 className='font-title mb-2 text-3xl font-semibold uppercase'>
-              Account Details
-            </h1>
-            <form id=''>
-              <div className='flex flex-col py-1'>
-                <label>E-mail</label>
-                <input
-                  id=''
-                  type='email'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='E-mail'
-                />
-              </div>
+      <main className='md:hidden'>
+        <div>
+          <Tab.Group>
+            <Tab.List className='grid grid-cols-2'>
+              <Tab as={Fragment}>
+                {({ selected }) => (
+                  <Button className={selected ? 'border-b-2 border-primary text-base-50 bg-base-900' : 'border-b-2 border-base-50 text-base-50 bg-base-900'}>Account details</Button>
+                )}
+              </Tab>
+              <Tab as={Fragment}>
+                {({ selected }) => (
+                  <Button className={selected ? 'border-b-2 border-primary text-base-50 bg-base-900' : 'border-b-2 border-base-50 text-base-50 bg-base-900'}>Order history</Button>
+                )}
+              </Tab>
+            </Tab.List>
+            <Tab.Panels>
+              <Tab.Panel as={UserDetails} />
+              <Tab.Panel as={OrderHistory} />
+            </Tab.Panels>
+          </Tab.Group>
+        </div>
+      </main>
 
-              <div className='flex flex-col py-1'>
-                <label>Name</label>
-                <input
-                  id=''
-                  type='text'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='Name'
-                />
-              </div>
-            </form>
-            <div id='' className='rounded-sm py-5 text-xl'>
-              <Button className='px-4'>Change password</Button>
-            </div>
-            <h1 className='font-title mt-8 mb-2 text-3xl font-semibold uppercase'>
-              Delivery Address
-            </h1>
-            <form id=''>
-              <div className='flex flex-col py-1'>
-                <label>Street</label>
-                <input
-                  id=''
-                  type='text'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='Street'
-                />
-              </div>
-
-              <div className='flex flex-col py-1'>
-                <label>City</label>
-                <input
-                  id=''
-                  type='text'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='City'
-                />
-              </div>
-
-              <div className='flex flex-col py-1'>
-                <label>Postal Code</label>
-                <input
-                  id=''
-                  type='text'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='Postal Code'
-                />
-              </div>
-
-              <div className='flex flex-col py-1'>
-                <label>Country</label>
-                <input
-                  id=''
-                  type='text'
-                  className='bg-base-800 w-full rounded-sm p-1 focus:outline-none'
-                  aria-label='Country'
-                />
-              </div>
-            </form>
-            <div id='' className='flex justify-end rounded-sm py-5 text-xl'>
-              <Button className='px-4'>Save</Button>
-            </div>
-          </div>
-
-          <div className='w-2/3'>
-            <h1 className='font-title mb-2 text-3xl font-semibold uppercase'>
-              Order History
-            </h1>
-            <div className='border-base-700 mb-4 w-1/3 flex-1 rounded-sm border px-2 py-1'>
-              <input
-                type='text'
-                className='w-full bg-transparent focus:outline-none'
-                placeholder='Search...'
-                aria-label='Search'
-              />
-            </div>
-            <div className='mx-auto mt-4 flex flex-wrap justify-between'>
-              <h2 className='font-title mb-2 text-xl font-semibold uppercase'>
-                Order #1337
-              </h2>
-              <h2 className='font-title mb-2 text-xl font-semibold uppercase'>
-                25.12.2020 13:50
-              </h2>
-            </div>
-            <h3>Status: Delivered</h3>
-            <section id=''>
-              {[...Array(3)].map((_, i) => (
-                <div className='flex py-2' key={i}>
-                  <div className='bg-base-800 h-24 w-48 rounded-sm' />
-                  <p className='px-4'>3D GAMING</p>
-                </div>
-              ))}
-            </section>
-            <h3 className='flex justify-end'>Total: $2,000,000</h3>
-          </div>
+      <main className='hidden mx-auto mt-4 max-w-screen-xl md:flex gap-x-32'>
+        <div className='w-1/3'>
+          <UserDetails />
+        </div>
+        <div className='w-2/3'>
+          <OrderHistory />
         </div>
       </main>
     </PageLayout>
