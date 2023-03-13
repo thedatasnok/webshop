@@ -32,12 +32,8 @@ const UserProfile = () => {
       </main>
 
       <main className='hidden mx-auto mt-4 max-w-screen-xl md:flex gap-x-32'>
-        <div className='w-1/3'>
-          <UserDetails />
-        </div>
-        <div className='w-2/3'>
-          <OrderHistory />
-        </div>
+        <UserDetails className='w-1/3' />
+        <OrderHistory className='w-2/3' />
       </main>
     </PageLayout>
   );

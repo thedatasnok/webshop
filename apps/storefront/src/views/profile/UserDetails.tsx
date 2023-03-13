@@ -1,4 +1,5 @@
 import { Button, TextField } from "@webshop/ui";
+import clsx from "clsx";
 
 export interface UserDetailsProps {
   className?: string;
@@ -6,7 +7,7 @@ export interface UserDetailsProps {
 
 const UserDetails: React.FC<UserDetailsProps> = ({ className }) => {
   return (
-    <div>
+    <div className={clsx(className)}>
       <h1 className='mt-4 font-title mb-2 text-3xl font-semibold uppercase'>
         Account Details
       </h1>

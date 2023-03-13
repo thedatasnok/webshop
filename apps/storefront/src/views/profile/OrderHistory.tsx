@@ -1,10 +1,12 @@
+import clsx from "clsx";
+
 export interface OrderHistoryProps {
   className?: string;
 }
 
 const OrderHistory: React.FC<OrderHistoryProps> = ({ className }) => {
   return (
-    <div className=''>
+    <div className={clsx(className)}>
       <h1 className='mt-4 font-title mb-2 text-3xl font-semibold uppercase'>
         Order History
       </h1>
