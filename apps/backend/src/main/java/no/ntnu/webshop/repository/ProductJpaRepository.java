@@ -16,13 +16,17 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       p.name,
       p.imageUrls,
       pp.price,
-      pp.isDiscount
+      pp.isDiscount,
+      prev_pp.price
     )
     FROM Product p
     INNER JOIN ProductPrice pp
       ON pp.product = p
       AND pp.from <= NOW()
       AND pp.to IS NULL
+    LEFT JOIN ProductPrice prev_pp
+      ON prev_pp.product = p
+      AND prev_pp.to = pp.from
     """)
   List<ProductListItem> findProducts();
 

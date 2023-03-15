@@ -42,6 +42,7 @@ public class ProductJdbcRepository {
         p.image_urls,
         pp.is_discount,
         pp.price,
+        prev_pp.price AS previous_price,
         JSON_AGG(it) AS items
       FROM
         product p,
@@ -58,15 +59,19 @@ public class ProductJdbcRepository {
           ON pi.fk_item_id = i.item_id
           WHERE pi.fk_product_id = :id
         ) it,
-        product_price pp
+        product_price pp,
+        product_price prev_pp
       WHERE
         (p.product_id = :id) AND
         (pp.fk_product_id = :id) AND
         (pp.time_from <= NOW()) AND
-        (pp.time_to IS NULL)
+        (pp.time_to IS NULL) AND
+        (prev_pp.fk_product_id = :id) AND
+        (prev_pp.time_to = pp.time_from)
       GROUP BY
         p.product_id,
-        pp.product_price_id
+        pp.product_price_id,
+        prev_pp.product_price_id
       """, Map.of("id", id), (rs, rowNum) -> {
       try {
         return new ProductDetails(
@@ -76,6 +81,7 @@ public class ProductJdbcRepository {
           this.objectMapper.readValue(rs.getString("image_urls"), STRING_LIST_TYPE_REF),
           rs.getDouble("price"),
           rs.getBoolean("is_discount"),
+          rs.getDouble("previous_price"),
           this.objectMapper.readValue(rs.getString("items"), PRODUCT_ITEM_DETAILS_LIST_TYPE_REF)
         );
       } catch (Exception e) {

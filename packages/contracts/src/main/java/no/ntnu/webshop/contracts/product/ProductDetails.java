@@ -14,5 +14,6 @@ public record ProductDetails(
   List<String> imageUrls,
   Double price,
   Boolean isDiscount,
+  Double previousPrice,
   List<ProductItemDetails> items
 ) {}
