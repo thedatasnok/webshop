@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useSignOutMutation } from '@/services/auth';
 import { Logo } from '@webshop/ui';
@@ -20,6 +21,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const { isLoggedIn } = useAuth();
   const [signOut] = useSignOutMutation();
+  const { items } = useCart();
+
+  const cartItems = Object.values(items).reduce((acc, item) => acc + item, 0);
 
   return (
     <header className={clsx('border-base-200', className)}>
@@ -41,13 +45,19 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               size='sm'
             />
           </li>
-          <li>
+          <li className='relative'>
             <NavigationItem
               to='/cart'
               name='Cart'
               icon={RiShoppingCartLine}
               size='sm'
             />
+
+            {cartItems > 0 && (
+              <div className='bg-primary text-base-900 absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full px-1 text-xs font-semibold'>
+                {cartItems < 10 ? cartItems : '9+'}
+              </div>
+            )}
           </li>
           {!isLoggedIn && (
             <li>

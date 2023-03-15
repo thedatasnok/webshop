@@ -23,6 +23,7 @@ interface CartState {
 
 /**
  * Reads and returns the carts items from local storage.
+ *
  * @returns cart items
  */
 const readCartFromStorage = () => {
@@ -32,6 +33,15 @@ const readCartFromStorage = () => {
   if (storedItems) cart = JSON.parse(storedItems);
 
   return cart;
+};
+
+/**
+ * Writes the cart items to local storage.
+ *
+ * @param state the state of the cart
+ */
+const writeCartToStorage = (state: CartState) => {
+  window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.items));
 };
 
 const initialState: CartState = {
@@ -81,16 +91,13 @@ export const cartSlice = createSlice({
       }
     },
   },
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     /**
      * Whenever the state of the cart updates, store the changes in local storage.
      */
-    builder.addDefaultCase((state) => {
-      window.localStorage.setItem(
-        CART_STORAGE_KEY,
-        JSON.stringify(state.items)
-      );
-    });
+    builder.addMatcher((action) => {
+      return action.type.startsWith('cart/');
+    }, writeCartToStorage);
   },
 });
 
