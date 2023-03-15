@@ -1,17 +1,24 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
+import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
 import { RiArrowUpSLine } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const ProductView = () => {
   const { id } = useParams();
-  console.log(id);
-
   const { data: productInfo } = useFindProductQuery(parseInt(id!));
-  const { data: products } = useFindProductsQuery();
+  const { data: products } = useFindProductsQuery({});
+  const dispatch = useDispatch();
+
+  const add = () => {
+    if (productInfo) {
+      dispatch(addToCart(productInfo.id));
+    }
+  };
 
   return (
     <PageLayout>
@@ -49,12 +56,15 @@ const ProductView = () => {
             <h2 className='text-base-50 text-xl font-semibold'>
               {'$' + productInfo?.price}
             </h2>
-            <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
+            <Button
+              onClick={add}
+              className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'
+            >
               Add to Cart
             </Button>
           </div>
         </div>
-        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-24 sm:grid sm:grid-cols-2'>
+        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-24 md:grid md:grid-cols-2'>
           <div>
             <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
               Description
@@ -94,7 +104,7 @@ const ProductView = () => {
 
         <div className='mx-auto mt-4 max-w-screen-xl flex-col gap-24'>
           <div>
-            <div className='block sm:hidden'>
+            <div className='block md:hidden'>
               <Disclosure>
                 {({ open }) => (
                   <>
@@ -137,7 +147,7 @@ const ProductView = () => {
             </div>
             <p></p>
           </div>
-          <div className='block sm:hidden'>
+          <div className='block md:hidden'>
             <Disclosure>
               {({ open }) => (
                 <>
