@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductItemDetails;
@@ -24,6 +26,7 @@ import no.ntnu.webshop.model.ProductPrice;
 import no.ntnu.webshop.repository.ItemJpaRepository;
 import no.ntnu.webshop.repository.ProductJdbcRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
+import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
 @Tag(name = "Products")
@@ -33,6 +36,7 @@ import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 public class ProductController {
   private final ProductJpaRepository productJpaRepository;
   private final ProductJdbcRepository productJdbcRepository;
+  private final ProductPriceJpaRepository productPriceJpaRepository;
   private final ItemJpaRepository itemJpaRepository;
 
   @GetMapping
@@ -111,6 +115,31 @@ public class ProductController {
         .items(itemDetails)
         .build()
     );
+  }
+
+  @Operation(summary = "Updates the price of a product")
+  @ShopWorkerAuthorization
+  @PutMapping("/{id}/price")
+  public ResponseEntity<String> updateProductPrice(
+      @PathVariable("id") Long productId,
+      @RequestBody UpdateProductPriceRequest request
+  ) {
+    var product = this.productJpaRepository.findById(productId).orElseThrow(IllegalArgumentException::new);
+
+    var currentPrice = this.productPriceJpaRepository.findCurrentPriceByProductId(product.getId());
+
+    var newPrice = new ProductPrice(
+      product,
+      request.price(),
+      request.isDiscount()
+    );
+    
+    currentPrice.end();
+    newPrice.setFrom(currentPrice.getTo());
+
+    this.productPriceJpaRepository.saveAll(List.of(currentPrice, newPrice));
+
+    return ResponseEntity.ok("Successfully updated the price of the product wehoo");
   }
 
 }

@@ -45,6 +45,7 @@ public class ProductPrice {
   @Column(name = "is_discount")
   private Boolean isDiscount;
 
+  @Setter
   @Column(name = "time_from")
   private Date from;
 
