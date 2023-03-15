@@ -1,6 +1,7 @@
 package no.ntnu.webshop.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,9 +41,14 @@ public class ProductController {
   private final ProductPriceJpaRepository productPriceJpaRepository;
   private final ItemJpaRepository itemJpaRepository;
 
+  @Operation(summary = "Finds a list of products with optional filters")
   @GetMapping
-  public ResponseEntity<List<ProductListItem>> findProducts() {
-    return ResponseEntity.ok(productJpaRepository.findProducts());
+  public ResponseEntity<List<ProductListItem>> findProducts(
+      @RequestParam(value = "id", required = false) List<Long> ids,
+      @RequestParam(value = "name", required = false) Optional<String> name,
+      @RequestParam(value = "categoryId", required = false) List<Integer> category
+  ) {
+    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category));
   }
 
   @Operation(summary = "Finds a product by its id")
@@ -133,7 +140,7 @@ public class ProductController {
       request.price(),
       request.isDiscount()
     );
-    
+
     currentPrice.end();
     newPrice.setFrom(currentPrice.getTo());
 
