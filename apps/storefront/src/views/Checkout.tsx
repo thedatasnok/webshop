@@ -44,10 +44,10 @@ const Checkout = () => {
       </header>
 
       <main>
-        <div className='mx-auto grid max-w-screen-xl gap-28 px-2 lg:grid-cols-2'>
+        <div className='mx-auto grid max-w-screen-xl gap-8 px-2 lg:grid-cols-2'>
           <div className='font-title'>
             <form>
-              <div className='rounded-sm'>
+              <div className='flex flex-col rounded-sm'>
                 <p className='text-xl'>Delivery information</p>
                 <hr className='text-base-600 pb-4'></hr>
                 <label className='block text-sm'>Full name</label>
@@ -58,42 +58,34 @@ const Checkout = () => {
                     placeholder='First Middle Last'
                   ></TextField>
                 </div>
-                <label className='block text-sm'>Email</label>
+                <label className='block text-sm'>Address</label>
                 <div className='mb-2'>
                   <TextField
                     type='text'
                     className='w-full bg-transparent focus:outline-none'
-                    placeholder='email@noreply.no'
+                    placeholder='address'
                   ></TextField>
                 </div>
-                <label className='block text-sm'>Billing Address</label>
-                <div className='flex flex-col gap-4 sm:flex-row'>
-                  <div className='w-fit'>
-                    <TextField
-                      type='text'
-                      className='w-full bg-transparent focus:outline-none'
-                      placeholder='postal code'
-                    ></TextField>
-                  </div>
-                  <div className='w-fit'>
-                    <TextField
-                      type='text'
-                      className='w-full bg-transparent focus:outline-none'
-                      placeholder='address'
-                    ></TextField>
-                  </div>
-                  <div className='w-fit'>
-                    <TextField
-                      type='text'
-                      className='w-full bg-transparent focus:outline-none'
-                      placeholder='country'
-                    ></TextField>
-                  </div>
+                <label className='block text-sm'>Country</label>
+                <div className='mb-2'>
+                  <TextField
+                    type='text'
+                    className='w-full bg-transparent focus:outline-none'
+                    placeholder='country'
+                  ></TextField>
                 </div>
-                <div className='flex flex-row gap-4 py-4'>
-                  <input type='checkbox' />
-                  <p>same shipping address</p>
+                <label className='block text-sm'>Postal code</label>
+                <div className='mb-2'>
+                  <TextField
+                    type='text'
+                    className='w-full bg-transparent focus:outline-none'
+                    placeholder='postal code'
+                  ></TextField>
                 </div>
+              </div>
+              <div className='flex flex-row gap-4 py-4'>
+                <input type='checkbox' />
+                <p>same shipping address</p>
               </div>
             </form>
 
