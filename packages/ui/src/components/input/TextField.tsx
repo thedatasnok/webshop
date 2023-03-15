@@ -6,7 +6,7 @@ export interface TextFieldProps {
   value?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   onChange?: (value: string) => void;
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'email';
 }
 
 const TextField: React.FC<TextFieldProps> = ({
