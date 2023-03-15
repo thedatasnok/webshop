@@ -10,6 +10,7 @@ export interface TextFieldProps {
   icon?: IconType;
   iconSide?: 'left' | 'right';
   type?: 'text' | 'password' | 'email';
+  error?: boolean;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -21,6 +22,7 @@ const TextField: React.FC<TextFieldProps> = ({
   icon: Icon,
   iconSide = 'left',
   type = 'text',
+  error = false,
 }) => {
   const emitUpdate = (value: string) => {
     onChange?.(value);
@@ -40,11 +42,13 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         {...inputProps}
         className={clsx(
-          'border-primary-50 focus:border-primary w-full rounded-sm border bg-transparent p-2 outline-none',
+          'border-base-50 w-full rounded-sm border bg-transparent p-2 outline-none',
           Icon && [
             iconSide === 'left' && 'pl-8',
             iconSide === 'right' && 'pr-8',
           ],
+          !error && 'focus:border-primary',
+          error && 'border-error',
           className
         )}
         placeholder={placeholder}
