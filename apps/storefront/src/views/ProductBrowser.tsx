@@ -4,7 +4,8 @@ import { useFindProductsQuery } from '@/services/products';
 import { RiGridFill, RiListCheck } from 'react-icons/ri';
 
 const ProductBrowser = () => {
-  const { data: products } = useFindProductsQuery();
+  const { data: products } = useFindProductsQuery({});
+
   return (
     <PageLayout>
       <main>

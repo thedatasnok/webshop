@@ -1,10 +1,16 @@
 import { ProductDetails, ProductListItem } from '@webshop/contracts';
 import { webshopApi } from '.';
+import { buildQueryParams, QueryParams } from './utils';
+
+export interface FindProductsQueryParams extends QueryParams {
+  id?: number[];
+  name?: string;
+}
 
 export const productsApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({
-    findProducts: builder.query<ProductListItem[], void>({
-      query: () => '/v1/products',
+    findProducts: builder.query<ProductListItem[], FindProductsQueryParams>({
+      query: (params) => '/v1/products?' + buildQueryParams(params),
     }),
 
     findProduct: builder.query<ProductDetails, number>({
@@ -13,5 +19,4 @@ export const productsApi = webshopApi.injectEndpoints({
   }),
 });
 
-export const { useFindProductQuery } = productsApi;
-export const { useFindProductsQuery } = productsApi;
+export const { useFindProductQuery, useFindProductsQuery } = productsApi;
