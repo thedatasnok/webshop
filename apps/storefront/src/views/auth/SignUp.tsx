@@ -94,7 +94,7 @@ const SignUp = () => {
 
           <form
             id='sign-up-form'
-            className='flex flex-col gap-2'
+            className='flex w-64 flex-col gap-2'
             onSubmit={form.onSubmit(handleSubmit)}
           >
             <h1 className='font-title text-center text-2xl font-semibold uppercase'>
