@@ -30,7 +30,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       ON prev_pp.product = p
       AND prev_pp.to = pp.from
     WHERE 
-      (COALESCE(:id) IS NULL OR p.id IN (:id)) AND
+      ((COALESCE(:id) IS NULL AND :allowEmptyIdList = TRUE) OR p.id IN (:id)) AND
       (:name IS NULL OR p.name ILIKE %:name%) AND
       (COALESCE(:category) IS NULL OR p.id IN (
         SELECT pi.product.id
@@ -44,7 +44,8 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
   List<ProductListItem> findProducts(
       @Param("id") List<Long> ids,
       @Param("name") Optional<String> name,
-      @Param("category") List<Integer> category
+      @Param("category") List<Integer> category,
+      @Param("allowEmptyIdList") Boolean allowEmptyIdList
   );
 
 }

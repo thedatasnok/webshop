@@ -46,9 +46,12 @@ public class ProductController {
   public ResponseEntity<List<ProductListItem>> findProducts(
       @RequestParam(value = "id", required = false) List<Long> ids,
       @RequestParam(value = "name", required = false) Optional<String> name,
-      @RequestParam(value = "categoryId", required = false) List<Integer> category
+      @RequestParam(value = "categoryId", required = false) List<Integer> category,
+      @RequestParam(value = "allowEmptyIdList", required = false) Optional<Boolean> allowEmptyIdList
   ) {
-    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category));
+    var allowEmptyIds = allowEmptyIdList.orElse(true);
+
+    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds));
   }
 
   @Operation(summary = "Finds a product by its id")
