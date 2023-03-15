@@ -59,15 +59,15 @@ public class ProductJdbcRepository {
           ON pi.fk_item_id = i.item_id
           WHERE pi.fk_product_id = :id
         ) it,
-        product_price pp,
-        product_price prev_pp
+        product_price pp
+      LEFT JOIN product_price prev_pp
+        ON prev_pp.fk_product_id = :id
+        AND prev_pp.time_to = pp.time_from
       WHERE
         (p.product_id = :id) AND
         (pp.fk_product_id = :id) AND
         (pp.time_from <= NOW()) AND
-        (pp.time_to IS NULL) AND
-        (prev_pp.fk_product_id = :id) AND
-        (prev_pp.time_to = pp.time_from)
+        (pp.time_to IS NULL)
       GROUP BY
         p.product_id,
         pp.product_price_id,
