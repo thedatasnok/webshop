@@ -85,9 +85,9 @@ export const cartSlice = createSlice({
      * @param state the current state of the store slice
      * @param action the dispatched action containing the cart item to remove
      */
-    removeCartItem: (state, { payload: item }: PayloadAction<CartItem>) => {
-      if (item.productId in state.items) {
-        delete state.items[item.productId];
+    removeCartItem: (state, { payload: productId }: PayloadAction<number>) => {
+      if (productId in state.items) {
+        delete state.items[productId];
       }
     },
   },

@@ -1,14 +1,14 @@
 import PageLayout from '@/components/layout/PageLayout';
 import CartCard from '@/components/product/CartCard';
 import { useCart } from '@/hooks/useCart';
-import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
+import { useFindProductsQuery } from '@/services/products';
 import { Button } from '@webshop/ui';
 import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
   const { items } = useCart();
   const { data: products } = useFindProductsQuery({
-    id: Object.keys(items).map(id => parseInt(id)),
+    id: Object.keys(items).map((id) => parseInt(id)),
     allowEmptyIdList: false,
   });
 
@@ -20,29 +20,21 @@ const ShoppingCart = () => {
             <h1 className='font-title'>Shopping cart</h1>
           </div>
 
-          <div className='font-title hidden sm:block'>
-            <div className='font-title flex flex-row justify-between gap-8 text-lg md:gap-14 xl:gap-24'>
-              <div className='w-full'></div>
-              <h3 className=''>Quantity</h3>
-              <h3 className=''>Price</h3>
+          <div className='font-title'>
+            <div className='flex flex-row justify-end gap-10 text-lg sm:gap-11 md:gap-16 xl:gap-24'>
               <h3 className=''>Total</h3>
               <h3 className=''>Delete</h3>
             </div>
           </div>
 
-          {/* {items?.map((item, i) => (
-              <div key={item.productId}>
-                {item.productId}: {item.quantity}
-              </div> */}
-
           <div className='mx-auto flex w-fit grid-cols-2 flex-col gap-4'>
             {products?.map((product, i) => (
               <CartCard
                 key={product.id}
+                productId={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
-                description=''
-                quantity={"" + items[product.id]}
+                quantity={items[product.id]}
                 price={'$' + product.price}
                 image={product.imageUrls[0]}
               />
