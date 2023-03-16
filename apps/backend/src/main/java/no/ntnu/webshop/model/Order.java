@@ -1,11 +1,14 @@
 package no.ntnu.webshop.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -17,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +43,7 @@ import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
 @Table(name = Order.TABLE_NAME)
 public class Order {
 
-  public static final String TABLE_NAME = "order";
+  public static final String TABLE_NAME = "\"order\"";
   public static final String PRIMARY_KEY = "order_id";
 
   @Id
@@ -89,6 +93,11 @@ public class Order {
   @Column(name = "payment_method")
   private PaymentMethod paymentMethod;
 
+  @OneToMany(mappedBy = "order", cascade = {
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+  })
+  private List<OrderLine> lines = new ArrayList<>();
+
   /**
    * Creates a new order with the given parameters.
    * 
@@ -111,6 +120,18 @@ public class Order {
 
     this.orderStatus = OrderStatus.NEW;
     this.paymentStatus = PaymentStatus.NEW;
+  }
+
+  public void addOrderLine(
+      OrderLine orderLine
+  ) {
+    this.lines.add(orderLine);
+  }
+
+  public void setOrderStatus(
+      OrderStatus orderStatus
+  ) {
+    this.orderStatus = orderStatus;
   }
 
 }

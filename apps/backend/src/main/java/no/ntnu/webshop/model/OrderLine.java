@@ -2,6 +2,8 @@ package no.ntnu.webshop.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,6 +28,7 @@ public class OrderLine {
   public static final String PRIMARY_KEY = "order_line_id";
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = OrderLine.PRIMARY_KEY)
   private Long id;
 
