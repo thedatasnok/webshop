@@ -36,3 +36,10 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.2.1/add-product-name.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.3.0-update-order
+      author: thedatasnok
+      changes:
+        - sqlFile:
+            path: changelog/0.3.0/update-order-table.sql
+            relativeToChangelogFile: true
