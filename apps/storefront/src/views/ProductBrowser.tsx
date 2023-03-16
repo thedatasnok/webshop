@@ -29,10 +29,10 @@ const ProductBrowser = () => {
             </div>
           </section>
 
-          <div className='mt-12 flex flex-col-reverse sm:ml-20 sm:flex-row sm:items-center sm:justify-between'>
+          <div className='mt-12 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between'>
             <h2 className=''>showing x results for ""</h2>
 
-            <div className='my-2 mr-0 flex items-center sm:mr-20 sm:gap-2'>
+            <div className='my-2 mr-0 flex items-center sm:gap-2'>
               <div className='w-full'>
                 <select
                   id='sort'
@@ -47,10 +47,10 @@ const ProductBrowser = () => {
               </div>
 
               <button>
-                <RiGridFill className='hidden h-12 w-12 sm:block md:h-8 md:w-8' />
+                <RiGridFill className='hidden  h-8 w-8 sm:block' />
               </button>
               <button>
-                <RiListCheck className='hidden h-12 w-12 sm:block md:h-8 md:w-8' />
+                <RiListCheck className='hidden h-8 w-8 sm:block' />
               </button>
             </div>
           </div>
