@@ -1,8 +1,14 @@
+import { useFindProductsQuery } from '@/services/products';
 import { Popover, Transition } from '@headlessui/react';
 import { useDebouncedState } from '@mantine/hooks';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { RiArrowRightSLine, RiCloseLine, RiSearchLine } from 'react-icons/ri';
+import {
+  RiArrowRightSLine,
+  RiCloseLine,
+  RiLoader5Line,
+  RiSearchLine,
+} from 'react-icons/ri';
 
 export interface SearchOverlayProps {}
 
@@ -13,6 +19,11 @@ export interface SearchOverlayProps {}
 export const SearchBar: React.FC<SearchOverlayProps> = () => {
   const [searchValue, setSearchValue] = useDebouncedState('', 500);
   const [showOverlay, setShowOverlay] = useState(false);
+  const { data: products, isFetching } = useFindProductsQuery({
+    name: searchValue,
+  });
+
+  const MAX_PRODUCTS_SHOWN = 5;
 
   /**
    * Opens the search overlay, if checkContent is true, it will only open if the searchValue is not empty.
@@ -65,7 +76,7 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
 
       <Transition show={showOverlay}>
         <Popover.Panel static className='absolute top-full left-0 z-10 w-full'>
-          <div className='bg-base-900/50 border-base-700/80 relative mt-1 flex h-96 flex-col overflow-hidden rounded-sm border px-2 py-1 backdrop-blur-xl'>
+          <div className='bg-base-900/50 border-base-700/80 relative mt-1 flex flex-col overflow-hidden rounded-sm border px-2 py-1 backdrop-blur-xl'>
             <div className='flex items-center justify-between'>
               <h3 className='font-title flex-1 truncate font-medium'>
                 <b>Search results for:</b> {searchValue}
@@ -77,35 +88,58 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
             </div>
 
             <div className='my-1 flex-1 gap-2 overflow-y-auto pr-1'>
-              {[...Array(5)].map((_, i, array) => (
-                <div
-                  key={i}
-                  tabIndex={0}
-                  className={clsx(
-                    'border-base-700 hover:bg-base-700/20 focus:bg-base-700/20 flex w-full cursor-pointer items-center gap-2 px-1 focus:outline-none',
-                    i !== array.length - 1 && 'border-b'
-                  )}
-                >
-                  <div className='bg-base-700/60 aspect-sqaure my-1 aspect-square h-12 rounded-sm' />
-                  <div className='flex-1 overflow-hidden'>
-                    <p className='font-title truncate text-lg font-semibold uppercase'>
-                      Product name
-                    </p>
-                    <p className='text-base-300 truncate text-sm'>
-                      specifications
-                    </p>
-                  </div>
+              {!isFetching && products?.length === 0 && (
+                <p className='text-base-300 font-title my-4 text-center font-semibold uppercase'>
+                  No results matching that search phrase
+                </p>
+              )}
 
-                  <p className='font-title'>$4,000</p>
+              {isFetching && (
+                <RiLoader5Line className='mx-auto h-10 w-10 animate-spin' />
+              )}
 
-                  <RiArrowRightSLine className='h-5 w-5' />
-                </div>
-              ))}
+              {!isFetching &&
+                searchValue.length > 0 &&
+                products
+                  ?.slice(0, MAX_PRODUCTS_SHOWN)
+                  .map((product, i, array) => (
+                    <div
+                      key={i}
+                      tabIndex={0}
+                      className={clsx(
+                        'border-base-700 hover:bg-base-700/20 focus:bg-base-700/20 flex w-full cursor-pointer items-center gap-2 px-1 focus:outline-none',
+                        i !== array.length - 1 && 'border-b'
+                      )}
+                    >
+                      <div
+                        className='bg-base-700/60 aspect-sqaure my-1 aspect-square h-12 rounded-sm bg-cover'
+                        style={{
+                          backgroundImage: `url(${product.imageUrls[0]})`,
+                        }}
+                      />
+                      <div className='flex-1 overflow-hidden'>
+                        <p className='font-title truncate text-lg font-semibold uppercase'>
+                          {product.name}
+                        </p>
+                        <p className='text-base-300 truncate text-sm'>
+                          specifications
+                        </p>
+                      </div>
+
+                      <p className='font-title'>${product.price}</p>
+
+                      <RiArrowRightSLine className='h-5 w-5' />
+                    </div>
+                  ))}
             </div>
 
-            <button className='font-title justify-self-start text-sm font-semibold uppercase tracking-wider hover:underline'>
-              Show all results
-            </button>
+            {!isFetching &&
+              products &&
+              products.length > MAX_PRODUCTS_SHOWN && (
+                <button className='font-title justify-self-start text-sm font-semibold uppercase tracking-wider hover:underline'>
+                  Show all results
+                </button>
+              )}
           </div>
         </Popover.Panel>
       </Transition>
