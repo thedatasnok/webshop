@@ -22,6 +22,8 @@ public interface ProductPriceJpaRepository extends JpaRepository<ProductPrice, L
   @Query("""
     SELECT pp
     FROM ProductPrice pp
+    INNER JOIN Product p
+      ON pp.product = p
     WHERE pp.product.id IN (:productId)
       AND pp.from <= NOW()
       AND pp.to IS NULL

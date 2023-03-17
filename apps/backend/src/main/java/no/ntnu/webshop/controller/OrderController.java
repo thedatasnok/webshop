@@ -20,7 +20,6 @@ import no.ntnu.webshop.model.Order;
 import no.ntnu.webshop.model.OrderLine;
 import no.ntnu.webshop.model.PaymentMethod;
 import no.ntnu.webshop.repository.OrderJpaRepository;
-import no.ntnu.webshop.repository.ProductJpaRepository;
 import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 import no.ntnu.webshop.security.annotation.CustomerAuthorization;
@@ -31,7 +30,6 @@ import no.ntnu.webshop.security.annotation.CustomerAuthorization;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
   private final OrderJpaRepository orderJpaRepository;
-  private final ProductJpaRepository productJpaRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
 
   @Operation(summary = "Places an order for the logged in user")
@@ -70,18 +68,15 @@ public class OrderController {
 
     var productIds = orderRequest.lines().keySet();
 
-    // fetch using ids to avoid a query for each product & price combination
-    var products = this.productJpaRepository.findAllById(productIds);
     var prices = this.productPriceJpaRepository.findAllCurrentPricesByProductIds(productIds);
 
     // TODO: Define a proper exception for this w/a response code
     // it should never be possible when using the frontend since products with no price are not shown
-    if (products.size() != prices.size())
+    if (prices.size() != productIds.size())
       throw new IllegalArgumentException();
 
-    for (int i = 0; i < products.size(); i++) {
-      var product = products.get(i);
-      var price = prices.get(i);
+    for (var price : prices) {
+      var product = price.getProduct();
 
       var line = new OrderLine(
         order,
