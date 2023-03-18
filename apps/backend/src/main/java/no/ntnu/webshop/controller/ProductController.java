@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
-import no.ntnu.webshop.contracts.product.ProductItemDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
 import no.ntnu.webshop.model.Product;
 import no.ntnu.webshop.model.ProductItem;
@@ -44,9 +44,14 @@ public class ProductController {
   @Operation(summary = "Finds a list of products with optional filters")
   @GetMapping
   public ResponseEntity<List<ProductListItem>> findProducts(
-      @RequestParam(value = "id", required = false) List<Long> ids,
+      @Parameter(
+        description = "The ids of the products to find. If empty, no products will be returned unless allowEmptyIdList is set to true."
+      ) @RequestParam(value = "id", required = false) List<Long> ids,
+      @Parameter(description = "The name of the products to find, can be partial case insensitive match.")
       @RequestParam(value = "name", required = false) Optional<String> name,
+      @Parameter(description = "A list of categories the products should be associated with")
       @RequestParam(value = "categoryId", required = false) List<Integer> category,
+      @Parameter(description = "If true, the query will return products without being passed a list of ids.")
       @RequestParam(value = "allowEmptyIdList", required = false) Optional<Boolean> allowEmptyIdList
   ) {
     var allowEmptyIds = allowEmptyIdList.orElse(true);
@@ -101,36 +106,13 @@ public class ProductController {
 
     var savedProduct = this.productJpaRepository.save(product);
 
-    // maps the product items into the contract
-    var itemDetails = savedProduct.getItems()
-      .stream()
-      .map(
-        productItem -> ProductItemDetails.builder()
-          .id(productItem.getItem().getId())
-          .quantity(productItem.getQuantity())
-          .name(productItem.getItem().getName())
-          .description(productItem.getItem().getDescription())
-          .attributes(productItem.getItem().getAttributes())
-          .build()
-      )
-      .toList();
-
-    return ResponseEntity.ok(
-      ProductDetails.builder()
-        .id(savedProduct.getId())
-        .name(savedProduct.getName())
-        .imageUrls(savedProduct.getImageUrls())
-        .price(price.getPrice())
-        .isDiscount(price.getIsDiscount())
-        .items(itemDetails)
-        .build()
-    );
+    return ResponseEntity.ok(this.productJdbcRepository.findById(savedProduct.getId()));
   }
 
   @Operation(summary = "Updates the price of a product")
   @ShopWorkerAuthorization
   @PutMapping("/{id}/price")
-  public ResponseEntity<String> updateProductPrice(
+  public ResponseEntity<ProductDetails> updateProductPrice(
       @PathVariable("id") Long productId,
       @RequestBody UpdateProductPriceRequest request
   ) {
@@ -149,7 +131,7 @@ public class ProductController {
 
     this.productPriceJpaRepository.saveAll(List.of(currentPrice, newPrice));
 
-    return ResponseEntity.ok("Successfully updated the price of the product wehoo");
+    return ResponseEntity.ok(this.productJdbcRepository.findById(productId));
   }
 
 }
