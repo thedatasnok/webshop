@@ -1,5 +1,6 @@
 package no.ntnu.webshop.contracts.address;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 
@@ -9,9 +10,9 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
  */
 @GenerateTypeScript
 public record AddressDto(
-  @NotBlank String country,
-  @NotBlank String postalCode,
-  @NotBlank String city,
-  @NotBlank String street,
-  String careOf
+  @Schema(example = "Norway") @NotBlank String country,
+  @Schema(example = "6009") @NotBlank String postalCode,
+  @Schema(example = "Ålesund") @NotBlank String city,
+  @Schema(example = "Larsgårdsvegen 2") @NotBlank String street,
+  @Schema(example = "Bob") String careOf
 ) {}
