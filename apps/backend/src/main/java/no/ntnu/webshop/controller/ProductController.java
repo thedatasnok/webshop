@@ -93,6 +93,10 @@ public class ProductController {
     var itemIds = request.items().keySet();
     var items = this.itemJpaRepository.findAllById(itemIds);
 
+    // TODO: Create a proper exception with a response code here
+    if (items.size() != itemIds.size())
+      throw new IllegalArgumentException();
+
     // adds the items to the product
     for (var item : items) {
       product.addItem(
