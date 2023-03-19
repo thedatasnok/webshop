@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import no.ntnu.webshop.model.Category;
+import no.ntnu.webshop.contracts.category.CategoryDto;
 import no.ntnu.webshop.repository.CategoryJpaRepository;
 
 @Tag(name = "Categories")
@@ -20,7 +20,7 @@ public class CategoryController {
   private final CategoryJpaRepository categoryJpaRepository;
 
   @GetMapping
-  public ResponseEntity<List<Category>> findCategories() {
-    return ResponseEntity.ok(categoryJpaRepository.findCategories());
+  public ResponseEntity<List<CategoryDto>> findCategories() {
+    return ResponseEntity.ok(this.categoryJpaRepository.findCategories());
   }
 }
