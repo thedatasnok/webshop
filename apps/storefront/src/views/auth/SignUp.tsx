@@ -10,6 +10,7 @@ import {
   PasswordStrengthCode,
   TextField,
   usePasswordStrength,
+  ErrorLabel,
 } from '@webshop/ui';
 import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -115,19 +116,19 @@ const SignUp = () => {
             <div>
               <InputLabel>Email</InputLabel>
               <TextField {...form.getInputProps('email')} />
-              <p>{form.errors.email}</p>
+              {form.errors.email && <ErrorLabel text={form.errors.email as string} />}
             </div>
 
             <div>
               <InputLabel>Name</InputLabel>
               <TextField {...form.getInputProps('fullName')} />
-              <p>{form.errors.fullName}</p>
+              {form.errors.fullName && <ErrorLabel text={form.errors.fullName as string} />}
             </div>
 
             <div>
               <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
-              <p>{form.errors.password}</p>
+              {form.errors.password && <ErrorLabel text={form.errors.password as string} />}
             </div>
 
             <div>
@@ -136,7 +137,7 @@ const SignUp = () => {
                 type='password'
                 {...form.getInputProps('passwordConfirmation')}
               />
-              <p>{form.errors.passwordConfirmation}</p>
+              {form.errors.passwordConfirmation && <ErrorLabel text={form.errors.passwordConfirmation as string} />}
             </div>
 
             <PasswordStrength

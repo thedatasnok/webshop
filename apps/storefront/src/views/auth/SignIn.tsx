@@ -1,4 +1,4 @@
-import { Button, InputLabel, Logo, TextField } from '@webshop/ui';
+import { Button, ErrorLabel, InputLabel, Logo, TextField } from '@webshop/ui';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useForm, zodResolver } from '@mantine/form';
@@ -66,13 +66,13 @@ const SignIn = () => {
             <div>
               <InputLabel>Email</InputLabel>
               <TextField {...form.getInputProps('email')} />
-              <p>{form.errors.email}</p>
+              {form.errors.email && <ErrorLabel text={form.errors.email as string} />}
             </div>
 
             <div>
               <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
-              <p>{form.errors.password}</p>
+              {form.errors.password && <ErrorLabel text={form.errors.password as string} />}
             </div>
 
             <div id='sign-in-button' className='my-2'>
