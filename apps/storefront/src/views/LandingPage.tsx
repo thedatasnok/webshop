@@ -2,6 +2,7 @@ import { Value } from '@/components/branding/Value';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
+import { RouteHref } from '@/router';
 import { TESTIMONIALS } from '@/static/testimonials';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
@@ -40,7 +41,7 @@ const LandingPage = () => {
               faster, stronger and more awesome.
             </h1>
 
-            <NavLink to='/products'>
+            <NavLink to={RouteHref.PRODUCTS}>
               <Button className='font-title rounded-sm text-lg font-bold'>
                 Browse shop
               </Button>

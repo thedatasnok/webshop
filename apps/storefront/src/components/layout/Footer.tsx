@@ -1,3 +1,4 @@
+import { RouteHref } from '@/router';
 import { Logo } from '@webshop/ui';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
@@ -16,17 +17,17 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
           </h2>
           <ul className='text-base-400'>
             <li className='mb-2'>
-              <NavLink to='/' className='hover:underline'>
+              <NavLink to={RouteHref.HOME} className='hover:underline'>
                 Home
               </NavLink>
             </li>
             <li className='mb-2'>
-              <NavLink to='/products' className='hover:underline'>
-                All products
+              <NavLink to={RouteHref.PRODUCTS} className='hover:underline'>
+                Browse
               </NavLink>
             </li>
             <li>
-              <NavLink to='/support' className='hover:underline'>
+              <NavLink to={RouteHref.SUPPORT} className='hover:underline'>
                 Support
               </NavLink>
             </li>

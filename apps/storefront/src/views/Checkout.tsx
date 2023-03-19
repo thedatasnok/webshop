@@ -4,6 +4,7 @@ import { type } from 'os';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
+import { RouteHref } from '@/router';
 
 const Checkout = () => {
   const deliveryOptions = [
@@ -36,7 +37,10 @@ const Checkout = () => {
   return (
     <div>
       <header className='mx-auto flex flex-col items-center justify-center py-10'>
-        <NavLink to='/' className='flex-wrap items-center justify-center'>
+        <NavLink
+          to={RouteHref.HOME}
+          className='flex-wrap items-center justify-center'
+        >
           <div className='w-32'>
             <Logo variant='small' />
           </div>

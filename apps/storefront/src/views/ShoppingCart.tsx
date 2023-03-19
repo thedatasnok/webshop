@@ -1,6 +1,7 @@
 import PageLayout from '@/components/layout/PageLayout';
 import CartCard from '@/components/product/CartCard';
 import { useCart } from '@/hooks/useCart';
+import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { Button } from '@webshop/ui';
 import { NavLink } from 'react-router-dom';
@@ -47,7 +48,7 @@ const ShoppingCart = () => {
             <a className='self-end sm:py-4'>Total: $112,000</a>
           </div>
           <div id='checkout' className='sm:flex sm:flex-col'>
-            <NavLink to='/checkout' className='sm:self-end'>
+            <NavLink to={RouteHref.CHECKOUT} className='sm:self-end'>
               <Button className='h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
                 Checkout
               </Button>

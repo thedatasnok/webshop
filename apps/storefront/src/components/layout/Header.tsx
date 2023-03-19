@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     <header className={clsx('border-base-200', className)}>
       <div className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
         <div className='flex justify-center'>
-          <NavLink to='/' className='w-64 sm:w-44'>
+          <NavLink to={RouteHref.HOME} className='w-64 sm:w-44'>
             <Logo variant='big' />
           </NavLink>
         </div>
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         <ul className='hidden w-44 items-center justify-end gap-2 sm:flex'>
           <li>
             <NavigationItem
-              to='/support'
+              to={RouteHref.SUPPORT}
               name='Support'
               icon={RiHeadphoneLine}
               size='sm'
@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           </li>
           <li className='relative'>
             <NavigationItem
-              to='/cart'
+              to={RouteHref.CART}
               name='Cart'
               icon={RiShoppingCartLine}
               size='sm'
@@ -98,63 +98,23 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <ul className='mx-auto flex max-w-screen-xl flex-wrap gap-2 text-cyan-50'>
             <li>
               <NavLink
-                to='/'
+                to={RouteHref.HOME}
                 className={({ isActive }) =>
                   `${isActive ? 'text-primary' : ''}`
                 }
               >
-                Landing
+                Home
               </NavLink>
             </li>
             <li>
               <NavLink
-                to='/products'
+                to={RouteHref.PRODUCTS}
                 end
                 className={({ isActive }) =>
                   `${isActive ? 'text-primary' : ''}`
                 }
               >
-                Products
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/products/1'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Product
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/auth/sign-in'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Sign-in
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/auth/sign-up'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Sign-up
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/checkout'
-                className={({ isActive }) =>
-                  `${isActive ? 'text-primary' : ''}`
-                }
-              >
-                Checkout
+                Browse
               </NavLink>
             </li>
           </ul>

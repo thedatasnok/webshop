@@ -88,7 +88,7 @@ const SignUp = () => {
       <main>
         <div className='flex h-screen flex-col items-center justify-center'>
           <div className='w-32 pb-10'>
-            <NavLink to='/' className='flex w-32 items-center'>
+            <NavLink to={RouteHref.HOME} className='flex w-32 items-center'>
               <Logo variant='small' />
             </NavLink>
           </div>
@@ -116,19 +116,25 @@ const SignUp = () => {
             <div>
               <InputLabel>Email</InputLabel>
               <TextField {...form.getInputProps('email')} />
-              {form.errors.email && <ErrorLabel text={form.errors.email as string} />}
+              {form.errors.email && (
+                <ErrorLabel text={form.errors.email as string} />
+              )}
             </div>
 
             <div>
               <InputLabel>Name</InputLabel>
               <TextField {...form.getInputProps('fullName')} />
-              {form.errors.fullName && <ErrorLabel text={form.errors.fullName as string} />}
+              {form.errors.fullName && (
+                <ErrorLabel text={form.errors.fullName as string} />
+              )}
             </div>
 
             <div>
               <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
-              {form.errors.password && <ErrorLabel text={form.errors.password as string} />}
+              {form.errors.password && (
+                <ErrorLabel text={form.errors.password as string} />
+              )}
             </div>
 
             <div>
@@ -137,7 +143,9 @@ const SignUp = () => {
                 type='password'
                 {...form.getInputProps('passwordConfirmation')}
               />
-              {form.errors.passwordConfirmation && <ErrorLabel text={form.errors.passwordConfirmation as string} />}
+              {form.errors.passwordConfirmation && (
+                <ErrorLabel text={form.errors.passwordConfirmation as string} />
+              )}
             </div>
 
             <PasswordStrength
