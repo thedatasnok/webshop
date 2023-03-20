@@ -53,35 +53,48 @@ const CartCard: React.FC<CartCardProps> = ({
   return (
     <div className='border-base-800 border-b-2'>
       <div className='flex flex-row p-1'>
-        <NavLink to={to} className='aspect-square w-1/4'>
-          <img src={image}></img>
+        <NavLink to={to} className='sm:flex sm:flex-row'>
+          <img
+            src={image}
+            className='aspect-square w-1/3 sm:w-2/6 md:w-1/6'
+          ></img>
+          <div className='flex max-h-full w-full flex-col'>
+            <h2 className='font-title w-32 overflow-hidden truncate text-ellipsis text-2xl font-bold uppercase sm:w-48 sm:px-2 md:w-64 xl:w-96 xl:text-3xl'>
+              {name}
+            </h2>
+          </div>
         </NavLink>
-        <div className='flex max-h-full w-full flex-col justify-center'>
-          <h2 className='font-title flex-1 px-2 text-2xl font-bold uppercase lg:text-4xl'>
-            {name}
-          </h2>
-          <div className='relative flex w-full flex-row'>
-            <button onClick={decrementQuantity}>
-              <RiArrowDropLeftLine className='h-8 w-8 sm:h-12 sm:w-12'></RiArrowDropLeftLine>
+        <div className='flex flex-row items-center justify-center gap-5 sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
+          <div className='bg-base-800 font-title relative flex w-full flex-row bg-opacity-20'>
+            <button onClick={decrementQuantity} disabled={quantity === 1}>
+              <p
+                className={clsx(
+                  'font-title mx-2 text-2xl sm:mx-4 sm:text-4xl ',
+                  {
+                    'text-base-600': quantity === 1,
+                  }
+                )}
+              >
+                -
+              </p>
             </button>
-            <p className='font-title flex items-center text-2xl'>{quantity}</p>
+            <p className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
+              {quantity}
+            </p>
             <button onClick={incrementQuantity}>
-              <RiArrowDropRightLine className='h-8 w-8 sm:h-12 sm:w-12'></RiArrowDropRightLine>
+              <p className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</p>
             </button>
           </div>
-        </div>
-        <div className='flex flex-row items-center justify-center sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
           <div className='flex flex-col justify-center'>
             <h3 className='line-through'>$10000</h3>
             <h3 className='text-primary-600'>${totalPrice}</h3>
           </div>
           <button
-            className='pl-12 pr-2 sm:pl-0'
             onClick={() => {
               dispatch(removeCartItem(productId));
             }}
           >
-            <div className='bg-base-800 relative flex h-6 w-6 items-center justify-center'>
+            <div className='bg-base-800 relative flex h-6 w-6 items-center justify-center bg-opacity-40'>
               <span className='text-base-400 font-title absolute pb-1 text-3xl'>
                 x
               </span>
