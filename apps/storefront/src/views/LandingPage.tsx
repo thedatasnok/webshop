@@ -3,6 +3,7 @@ import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
 import { RouteHref } from '@/router';
+import { useGetCategoriesQuery } from '@/services/categories';
 import { TESTIMONIALS } from '@/static/testimonials';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
@@ -10,6 +11,8 @@ import { RiCpuLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
+  const { data: categories } = useGetCategoriesQuery();
+
   return (
     <PageLayout excludeHeader>
       {/* 
@@ -58,10 +61,12 @@ const LandingPage = () => {
           <section id='categories'>
             <div className='max-sm:hide-scroll-bar flex overflow-x-scroll pb-2 lg:justify-center'>
               <div className='flex flex-nowrap'>
-                {[...Array(10)].map((_, i) => (
+                {categories?.map((category, i) => (
                   <div key={i} className='inline-block px-3'>
-                    <div className='bg-base-800 h-32 w-36 overflow-hidden rounded-sm sm:h-16 sm:w-16' />
-                    <p className='text-center text-sm font-medium'>category</p>
+                    <div className='bg-base-800 aspect-square h-28 rounded-sm' />
+                    <p className='text-center text-sm font-medium'>
+                      {category.name}
+                    </p>
                   </div>
                 ))}
               </div>

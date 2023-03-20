@@ -1,10 +1,12 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
+import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
 import { RiGridFill, RiListCheck } from 'react-icons/ri';
 
 const ProductBrowser = () => {
   const { data: products } = useFindProductsQuery({});
+  const { data: categories } = useGetCategoriesQuery();
 
   return (
     <PageLayout>
@@ -20,10 +22,12 @@ const ProductBrowser = () => {
 
           <section id='categories'>
             <div className='mx-auto mt-10 mb-5 flex w-fit grid-cols-4 flex-wrap justify-center justify-items-center gap-2'>
-              {[...Array(8)].map((_, i) => (
+              {categories?.map((category, i) => (
                 <div key={i}>
                   <div className='bg-base-800 aspect-square h-28 rounded-sm' />
-                  <p className='text-center text-sm font-medium'>category</p>
+                  <p className='text-center text-sm font-medium'>
+                    {category.name}
+                  </p>
                 </div>
               ))}
             </div>
