@@ -4,6 +4,7 @@ import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { Button } from '@webshop/ui';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
@@ -12,6 +13,13 @@ const ShoppingCart = () => {
     id: Object.keys(items).map((id) => parseInt(id)),
     allowEmptyIdList: false,
   });
+
+  /**
+   * Iterates over products and calculates the total price
+   */
+  const totalPrice = products?.reduce((total, product) => {
+    return total + items[product.id] * product.price;
+  }, 0);
 
   return (
     <PageLayout>
@@ -22,9 +30,10 @@ const ShoppingCart = () => {
           </div>
 
           <div className='font-title'>
-            <div className='flex flex-row justify-end gap-10 text-lg sm:gap-11 md:gap-16 xl:gap-24'>
-              <h3 className=''>Total</h3>
-              <h3 className=''>Delete</h3>
+            <div className='flex flex-row justify-end gap-4 text-lg sm:gap-12 md:gap-16 xl:gap-24'>
+              <h3 className='pr-2 sm:pr-9'>Quantity</h3>
+              <h3>Total</h3>
+              <h3>Delete</h3>
             </div>
           </div>
 
@@ -36,7 +45,7 @@ const ShoppingCart = () => {
                 to={'/products/' + product.id}
                 name={product.name}
                 quantity={items[product.id]}
-                price={'$' + product.price}
+                price={product.price}
                 image={product.imageUrls[0]}
               />
             ))}
@@ -45,7 +54,7 @@ const ShoppingCart = () => {
             id='cart-total'
             className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
           >
-            <a className='self-end sm:py-4'>Total: $112,000</a>
+            <a className='self-end sm:py-4'>Total: ${totalPrice?.toFixed(2)}</a>
           </div>
           <div id='checkout' className='sm:flex sm:flex-col'>
             <NavLink to={RouteHref.CHECKOUT} className='sm:self-end'>
