@@ -115,7 +115,7 @@ const SignUp = () => {
 
             <div>
               <InputLabel>Email</InputLabel>
-              <TextField {...form.getInputProps('email')} />
+              <TextField type='email' {...form.getInputProps('email')} />
               {form.errors.email && (
                 <ErrorLabel text={form.errors.email as string} />
               )}
