@@ -1,12 +1,13 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
+import { RouteHref } from '@/router';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
 import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
 import { RiArrowUpSLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 const ProductView = () => {
   const { id } = useParams();
@@ -25,13 +26,17 @@ const ProductView = () => {
       <main>
         <div className='mx-auto mt-4 max-w-screen-xl'>
           <div className='text-base-400 space-x-2 text-sm'>
-            <a href='#' className='hover:underline'>
-              Mousepads
-            </a>
+            <NavLink to={RouteHref.HOME} className='hover:underline'>
+              Home
+            </NavLink>
             <span>/</span>
-            <a href='#' className='hover:underline'>
+            <NavLink to={RouteHref.PRODUCTS} className='hover:underline'>
+              Browse
+            </NavLink>
+            <span>/</span>
+            <NavLink to='#' className='hover:underline'>
               {productInfo?.name}
-            </a>
+            </NavLink>
           </div>
         </div>
 
