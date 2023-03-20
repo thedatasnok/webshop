@@ -2,8 +2,10 @@ import { Value } from '@/components/branding/Value';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
+import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
+import { useFindProductsQuery } from '@/services/products';
 import { TESTIMONIALS } from '@/static/testimonials';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
@@ -12,6 +14,9 @@ import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
   const { data: categories } = useGetCategoriesQuery();
+  const { data: products } = useFindProductsQuery({
+    featured: true,
+  });
 
   return (
     <PageLayout excludeHeader>
@@ -61,8 +66,8 @@ const LandingPage = () => {
           <section id='categories'>
             <div className='max-sm:hide-scroll-bar flex overflow-x-scroll pb-2 lg:justify-center'>
               <div className='flex flex-nowrap'>
-                {categories?.map((category, i) => (
-                  <div key={i} className='inline-block px-3'>
+                {categories?.map((category) => (
+                  <div key={category.id} className='inline-block px-3'>
                     <div className='bg-base-800 aspect-square h-28 rounded-sm' />
                     <p className='text-center text-sm font-medium'>
                       {category.name}
@@ -79,18 +84,14 @@ const LandingPage = () => {
 
           <section id='featured-products'>
             <div className='max-sm:hide-scroll-bar flex w-full justify-items-center gap-8 overflow-x-scroll pb-2'>
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className='flex w-full flex-col px-3'>
-                  <div className='bg-base-800 aspect-video h-32 w-full overflow-hidden rounded-sm' />
-                  <div className='flex justify-between text-lg font-medium'>
-                    <p>product</p>
-                    <p>$3,333</p>
-                  </div>
-
-                  <NavLink to='/products/1' className='self-end'>
-                    <Button className='w-min rounded-sm'>buy</Button>
-                  </NavLink>
-                </div>
+              {products?.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  to={[RouteHref.PRODUCTS, product.id].join('/')}
+                  name={product.name}
+                  price={product.price + '$'}
+                  image={product.imageUrls[0]}
+                />
               ))}
             </div>
           </section>
