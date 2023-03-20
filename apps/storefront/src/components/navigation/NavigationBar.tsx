@@ -1,9 +1,9 @@
 import { RouteHref } from '@/router';
 import clsx from 'clsx';
 import {
-  RiComputerLine,
   RiHeadphoneLine,
   RiShoppingCartLine,
+  RiStore2Line,
   RiUser3Line,
 } from 'react-icons/ri';
 import NavigationItem from './NavigationItem';
@@ -21,8 +21,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
         <li>
           <NavigationItem
             to={RouteHref.PRODUCTS}
-            name='Products'
-            icon={RiComputerLine}
+            name='Browse'
+            icon={RiStore2Line}
           />
         </li>
         <li>
