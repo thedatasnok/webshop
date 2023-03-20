@@ -1,4 +1,5 @@
 import { CartItem, removeCartItem, updateCartItem } from '@/store/cart.slice';
+import clsx from 'clsx';
 import { RiArrowDropLeftLine, RiArrowDropRightLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -7,7 +8,7 @@ interface CartCardProps {
   to: string;
   productId: number;
   name: string;
-  price: string;
+  price: number;
   quantity: number;
   image?: string;
 }
@@ -21,25 +22,7 @@ const CartCard: React.FC<CartCardProps> = ({
   image = 'https://placehold.co/256x256/007676/007676.png',
 }) => {
   const dispatch = useDispatch();
-
-  /**
-   * Returns the price times the quantity.
-   * @returns the price times the quantity.
-   */
-  function totalPrice() {
-    //Removes '$' from the price
-    var priceAsNumber = price.slice(1);
-    return parseInt(priceAsNumber) * quantity;
-  }
-
-  function update() {
-    dispatch(
-      updateCartItem({
-        productId,
-        quantity,
-      } as CartItem)
-    );
-  }
+  const totalPrice = price * quantity;
 
   /**
    * If the quantity is higher than 1, decrements the quantity by 1.
@@ -47,8 +30,12 @@ const CartCard: React.FC<CartCardProps> = ({
    */
   function decrementQuantity() {
     if (quantity > 1) {
-      quantity = quantity - 1;
-      update();
+      dispatch(
+        updateCartItem({
+          productId,
+          quantity: quantity - 1,
+        })
+      );
     }
   }
 
@@ -56,8 +43,12 @@ const CartCard: React.FC<CartCardProps> = ({
    * Increments the quantity by 1 and updates to local storage.
    */
   function incrementQuantity() {
-    quantity = quantity + 1;
-    update();
+    dispatch(
+      updateCartItem({
+        productId,
+        quantity: quantity + 1,
+      })
+    );
   }
   return (
     <div className='border-base-800 border-b-2'>
@@ -82,7 +73,7 @@ const CartCard: React.FC<CartCardProps> = ({
         <div className='flex flex-row items-center justify-center sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
           <div className='flex flex-col justify-center'>
             <h3 className='line-through'>$10000</h3>
-            <h3 className='text-primary-600'>${totalPrice()}</h3>
+            <h3 className='text-primary-600'>${totalPrice}</h3>
           </div>
           <button
             className='pl-12 pr-2 sm:pl-0'
