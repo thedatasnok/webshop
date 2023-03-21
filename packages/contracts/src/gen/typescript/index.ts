@@ -5,6 +5,14 @@ export interface GenericResponse {
     message: string;
 }
 
+export interface AddressDto {
+    country: string;
+    postalCode: string;
+    city: string;
+    street: string;
+    careOf: string;
+}
+
 export interface SignInRequest {
     email: string;
     password: string;
@@ -28,9 +36,26 @@ export interface SignUpResponse {
     accessToken: string;
 }
 
-export interface Category {
+export interface CategoryDto {
     id: number;
     name: string;
+}
+
+export interface PlaceOrderRequest {
+    shippingAddress: AddressDto;
+    billingAddress: AddressDto;
+    differentBillingAddress: boolean;
+    paymentMethod: string;
+    shippingMethod: string;
+    /**
+     * The quantity of products keyed by the product id.
+     */
+    lines: { [index: string]: number };
+}
+
+export interface UpdateProductPriceRequest {
+    isDiscount: boolean;
+    price: number;
 }
 
 export interface CreateProductRequest {
@@ -39,6 +64,9 @@ export interface CreateProductRequest {
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
+    /**
+     * The amount of items keyed by the item id.
+     */
     items: { [index: string]: number };
 }
 
@@ -49,6 +77,7 @@ export interface ProductDetails {
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
+    previousPrice: number;
     items: ProductItemDetails[];
 }
 
@@ -66,6 +95,7 @@ export interface ProductListItem {
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
+    previousPrice: number;
 }
 
 export interface UserProfile {
