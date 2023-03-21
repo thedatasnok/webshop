@@ -73,7 +73,7 @@ const RadioGroup = <T,>({ options, children }: RadioGroupProps<T>) => {
             <Icon className='h-7 w-7' />
 
             <div className='flex-1'>
-              <HeadlessRadioGroup.Label className='font-title text-sm font-semibold uppercase'>
+              <HeadlessRadioGroup.Label className='font-title text-sm font-semibold uppercase cursor-pointer'>
                 {name}
               </HeadlessRadioGroup.Label>
 
