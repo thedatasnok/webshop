@@ -5,6 +5,7 @@ import { buildQueryParams, QueryParams } from './utils';
 export interface FindProductsQueryParams extends QueryParams {
   id?: number[];
   name?: string;
+  categoryId?: number[];
   allowEmptyIdList?: boolean;
 }
 

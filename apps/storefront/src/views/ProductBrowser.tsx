@@ -2,11 +2,27 @@ import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
-import { RiGridFill, RiListCheck } from 'react-icons/ri';
+import { CategoryDto } from '@webshop/contracts';
+import clsx from 'clsx';
+import { useState } from 'react';
+import { RiGamepadLine, RiGridFill, RiListCheck } from 'react-icons/ri';
 
 const ProductBrowser = () => {
-  const { data: products } = useFindProductsQuery({});
+  const [selectedCategory, setSelectedCategory] = useState<CategoryDto>();
+  const categoryId =
+    selectedCategory === undefined ? undefined : [selectedCategory.id];
+  const { data: products } = useFindProductsQuery({
+    categoryId,
+  });
   const { data: categories } = useGetCategoriesQuery();
+
+  function handleCategoryClick(category: CategoryDto) {
+    if (selectedCategory?.id === category.id) {
+      setSelectedCategory(undefined);
+    } else {
+      setSelectedCategory(category);
+    }
+  }
 
   return (
     <PageLayout>
@@ -19,20 +35,26 @@ const ProductBrowser = () => {
               in CS:GO Source 7 and Half life 3
             </p>
           </div>
-
           <section id='categories'>
-            <div className='mx-auto mt-10 mb-5 flex w-fit grid-cols-4 flex-wrap justify-center justify-items-center gap-2'>
+            <div className='mx-auto mt-10 mb-5 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
               {categories?.map((category, i) => (
-                <div key={i}>
-                  <div className='bg-base-800 aspect-square h-28 rounded-sm' />
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category)}
+                  className={clsx(
+                    'border-base-800 bg-base-800/10 lg:hover:border-primary flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none lg:transition lg:hover:scale-110',
+                    selectedCategory?.id === category.id &&
+                      'text-primary  border-primary'
+                  )}
+                >
+                  <RiGamepadLine className='h-14 w-14 sm:h-24 sm:w-24 lg:h-24 lg:w-24' />
                   <p className='text-center text-sm font-medium'>
                     {category.name}
                   </p>
-                </div>
+                </button>
               ))}
             </div>
           </section>
-
           <div className='mt-12 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between'>
             <h2 className=''>showing x results for ""</h2>
 
