@@ -51,21 +51,21 @@ const CartCard: React.FC<CartCardProps> = ({
     );
   }
   return (
-    <div className='border-base-800 border-b-2'>
-      <div className='flex flex-row p-1'>
-        <NavLink to={to} className='sm:flex sm:flex-row'>
-          <img
-            src={image}
-            className='aspect-square w-1/3 sm:w-2/6 md:w-1/6'
-          ></img>
-          <div className='flex max-h-full w-full flex-col'>
-            <h2 className='font-title w-32 overflow-hidden truncate text-ellipsis text-2xl font-bold uppercase sm:w-48 sm:px-2 md:w-64 xl:w-96 xl:text-3xl'>
+    <div className='border-base-800 border-b-2 pb-1'>
+      <div className='flex flex-col p-1 sm:flex-row'>
+        <NavLink to={to} className='flex w-full flex-row'>
+          <img src={image} className='aspect-square w-1/6 md:w-1/6'></img>
+          <div className='flex max-h-full max-w-[260px] flex-col pl-2 sm:max-w-[240px]  lg:max-w-[540px]'>
+            <h2 className='font-title overflow-hidden truncate text-ellipsis text-2xl font-bold uppercase'>
               {name}
             </h2>
+            <p className='overflow-hidden truncate text-ellipsis'>
+              {'short description here'}
+            </p>
           </div>
         </NavLink>
-        <div className='flex flex-row items-center justify-center gap-5 sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
-          <div className='bg-base-800 font-title relative flex w-full flex-row bg-opacity-20'>
+        <div className='flex flex-row items-center gap-5 sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
+          <div className='bg-base-800/40 font-title relative mr-auto mt-1 flex flex-row rounded-sm'>
             <button onClick={decrementQuantity} disabled={quantity === 1}>
               <p
                 className={clsx(
@@ -85,9 +85,11 @@ const CartCard: React.FC<CartCardProps> = ({
               <p className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</p>
             </button>
           </div>
-          <div className='flex flex-col justify-center'>
-            <h3 className='line-through'>$10000</h3>
-            <h3 className='text-primary-600'>${totalPrice}</h3>
+          <div className='flex flex-col justify-center gap-1'>
+            <h3 className=''>${totalPrice}</h3>
+            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-xl border px-1 text-sm'>
+              $20 off
+            </div>
           </div>
           <button
             onClick={() => {

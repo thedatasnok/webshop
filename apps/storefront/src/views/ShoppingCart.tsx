@@ -31,13 +31,13 @@ const ShoppingCart = () => {
 
           <div className='font-title'>
             <div className='flex flex-row justify-end gap-4 text-lg sm:gap-12 md:gap-16 xl:gap-24'>
-              <h3 className='pr-2 sm:pr-9'>Quantity</h3>
+              <h3 className='hidden pr-2 sm:block sm:pr-9'>Quantity</h3>
               <h3>Total</h3>
               <h3>Delete</h3>
             </div>
           </div>
 
-          <div className='mx-auto flex w-fit grid-cols-2 flex-col gap-4'>
+          <div className='mx-auto flex w-fit grid-cols-2 flex-col gap-2'>
             {products?.map((product, i) => (
               <CartCard
                 key={product.id}
