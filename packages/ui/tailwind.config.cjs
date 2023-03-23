@@ -54,5 +54,5 @@ module.exports = {
       ok: colors.green['500'],
     },
   },
-  plugins: [require('@headlessui/tailwindcss')],
+  plugins: [require('@headlessui/tailwindcss'), require('@tailwindcss/forms')],
 };

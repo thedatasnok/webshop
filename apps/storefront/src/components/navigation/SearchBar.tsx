@@ -54,7 +54,7 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
       <div className='border-base-700 z-25 flex w-full flex-1 items-center rounded-sm border px-2 py-1'>
         <input
           type='text'
-          className='w-full bg-transparent focus:outline-none'
+          className='w-full border-none bg-transparent p-0 focus:outline-none focus:ring-0'
           placeholder='Search...'
           aria-label='Search'
           onFocus={() => openOverlay(true)}
