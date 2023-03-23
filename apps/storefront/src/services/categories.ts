@@ -1,4 +1,4 @@
-import { Category } from '@webshop/contracts';
+import { CategoryDto } from '@webshop/contracts';
 import { webshopApi } from '.';
 
 export const categoriesApi = webshopApi.injectEndpoints({
@@ -6,7 +6,7 @@ export const categoriesApi = webshopApi.injectEndpoints({
     /**
      * Gets all categories
      */
-    getCategories: builder.query<Category[], void>({
+    getCategories: builder.query<CategoryDto[], void>({
       query: () => '/v1/categories',
     }),
   }),
