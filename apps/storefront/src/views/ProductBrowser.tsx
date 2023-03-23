@@ -1,5 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
+import ProductListCard from '@/components/product/ProductListCard';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
@@ -15,6 +16,16 @@ const ProductBrowser = () => {
     categoryId,
   });
   const { data: categories } = useGetCategoriesQuery();
+
+  const [isGridSelected, setIsGridSelected] = useState(true);
+
+  const handleGridButtonClick = () => {
+    setIsGridSelected(true);
+  };
+
+  const handleListButtonClick = () => {
+    setIsGridSelected(false);
+  };
 
   function handleCategoryClick(category: CategoryDto) {
     if (selectedCategory?.id === category.id) {
@@ -42,7 +53,8 @@ const ProductBrowser = () => {
                   key={category.id}
                   onClick={() => handleCategoryClick(category)}
                   className={clsx(
-                    'border-base-800 bg-base-800/10 lg:hover:border-primary flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none lg:transition lg:hover:scale-110',
+                    'border-base-800 bg-base-800/10 sm:hover:border-primary flex aspect-square cursor-pointer',
+                    'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition ',
                     selectedCategory?.id === category.id &&
                       'text-primary  border-primary'
                   )}
@@ -72,24 +84,54 @@ const ProductBrowser = () => {
                 </select>
               </div>
 
-              <button>
-                <RiGridFill className='hidden  h-8 w-8 sm:block' />
+              <button onClick={handleGridButtonClick}>
+                <RiGridFill
+                  className={clsx('h-8 w-8', {
+                    'text-primary-300': isGridSelected,
+                  })}
+                ></RiGridFill>
               </button>
-              <button>
-                <RiListCheck className='hidden h-8 w-8 sm:block' />
+
+              <button onClick={handleListButtonClick}>
+                <RiListCheck
+                  className={clsx('h-8 w-8', {
+                    'text-primary-300': !isGridSelected,
+                  })}
+                />
               </button>
             </div>
           </div>
+
           <section id='products'>
-            <div className='mx-auto grid w-fit grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'>
+            <div
+              className={clsx({
+                'grid grid-cols-2 gap-2 sm:grid-cols-3 lg:sm:grid-cols-4':
+                  isGridSelected,
+                'mx-auto grid grid-cols-1': !isGridSelected,
+              })}
+            >
               {products?.map((product, i) => (
-                <ProductCard
-                  key={product.id}
-                  to={'/products/' + product.id}
-                  name={product.name}
-                  price={product.price + '$'}
-                  image={product.imageUrls[0]}
-                />
+                <div key={product.id}>
+                  {isGridSelected ? (
+                    <ProductCard
+                      to={'/products/' + product.id}
+                      name={product.name}
+                      previousPrice={product.previousPrice}
+                      price={product.price}
+                      shortDescription={product.shortDescription}
+                      isDiscount={product.isDiscount}
+                      image={product.imageUrls[0]}
+                    />
+                  ) : (
+                    <ProductListCard
+                      to={'/products/' + product.id}
+                      name={product.name}
+                      shortDescription={product.shortDescription}
+                      image={product.imageUrls[0]}
+                      children
+                    />
+                  )}
+                </div>
               ))}
             </div>
           </section>
