@@ -194,7 +194,10 @@ const ProductView = () => {
                 key={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
-                price={product.price + '$'}
+                previousPrice={product.previousPrice}
+                price={product.price}
+                shortDescription={product.shortDescription}
+                isDiscount={product.isDiscount}
                 image={product.imageUrls[0]}
               />
             ))}

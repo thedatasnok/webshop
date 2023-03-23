@@ -83,13 +83,16 @@ const LandingPage = () => {
           </h2>
 
           <section id='featured-products'>
-            <div className='max-sm:hide-scroll-bar flex w-full justify-items-center gap-8 overflow-x-scroll pb-2'>
+            <div className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'>
               {products?.map((product) => (
                 <ProductCard
                   key={product.id}
                   to={[RouteHref.PRODUCTS, product.id].join('/')}
                   name={product.name}
-                  price={product.price + '$'}
+                  previousPrice={product.previousPrice}
+                  shortDescription={product.shortDescription}
+                  isDiscount={product.isDiscount}
+                  price={product.price}
                   image={product.imageUrls[0]}
                 />
               ))}
