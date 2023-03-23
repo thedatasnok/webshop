@@ -25,6 +25,18 @@ export interface RadioGroupOption<T> {
 
 export interface RadioGroupProps<T> {
   /**
+   * The value of the currently selected option.
+   */
+  value?: T;
+
+  /**
+   * Callback function that is called when the selected option changes.
+   *
+   * @param value the value of the newly selected option
+   */
+  onChange?: (value: T) => void;
+
+  /**
    * The set of options to render in the radio group.
    */
   options: RadioGroupOption<T>[];
@@ -43,15 +55,21 @@ export interface RadioGroupProps<T> {
  * Shared component for rendering a radio group.
  * Takes a set of options, and optionally a children slot.
  */
-const RadioGroup = <T,>({ options, children }: RadioGroupProps<T>) => {
-  const [selected, setSelected] = useState<T>(options[0].value);
+const RadioGroup = <T,>({
+  value: initialValue,
+  onChange,
+  options,
+  children,
+}: RadioGroupProps<T>) => {
+  const [value, setValue] = useState<T>(initialValue ?? options[0].value);
 
   const handleSelectedChanged = (value: T) => {
-    setSelected(value);
+    setValue(value);
+    onChange?.(value);
   };
 
   return (
-    <HeadlessRadioGroup value={selected} onChange={handleSelectedChanged}>
+    <HeadlessRadioGroup value={value} onChange={handleSelectedChanged}>
       <div>
         {options.map(({ value, icon: Icon, name, description }, i, array) => (
           <HeadlessRadioGroup.Option
@@ -73,7 +91,7 @@ const RadioGroup = <T,>({ options, children }: RadioGroupProps<T>) => {
             <Icon className='h-7 w-7' />
 
             <div className='flex-1'>
-              <HeadlessRadioGroup.Label className='font-title text-sm font-semibold uppercase cursor-pointer'>
+              <HeadlessRadioGroup.Label className='font-title cursor-pointer text-sm font-semibold uppercase'>
                 {name}
               </HeadlessRadioGroup.Label>
 
