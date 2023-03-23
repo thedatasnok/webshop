@@ -13,25 +13,29 @@ const UserProfile = () => {
           <Tab.Group>
             <Tab.List className='grid grid-cols-2'>
               <Tab as={Fragment}>
-                {({ selected }) => (
-                  <Button className={selected ? 'border-b-2 border-primary text-base-50 bg-base-900' : 'border-b-2 border-base-50 text-base-50 bg-base-900'}>Account details</Button>
-                )}
+                <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
+                  Account details
+                </button>
               </Tab>
               <Tab as={Fragment}>
-                {({ selected }) => (
-                  <Button className={selected ? 'border-b-2 border-primary text-base-50 bg-base-900' : 'border-b-2 border-base-50 text-base-50 bg-base-900'}>Order history</Button>
-                )}
+                <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
+                  Order history
+                </button>
               </Tab>
             </Tab.List>
             <Tab.Panels>
-              <Tab.Panel as={UserDetails} />
-              <Tab.Panel as={OrderHistory} />
+              <Tab.Panel>
+                <UserDetails />
+              </Tab.Panel>
+              <Tab.Panel>
+                <OrderHistory />
+              </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
         </div>
       </main>
 
-      <main className='hidden mx-auto mt-4 max-w-screen-xl md:flex gap-x-32'>
+      <main className='mx-auto mt-4 hidden max-w-screen-xl gap-x-32 md:flex'>
         <UserDetails className='w-1/3' />
         <OrderHistory className='w-2/3' />
       </main>
