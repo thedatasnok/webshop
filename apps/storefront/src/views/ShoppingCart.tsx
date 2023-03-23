@@ -143,7 +143,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
       <div className='flex flex-col items-center justify-center gap-1'>
         <h3 className=''>${totalPrice}</h3>
         {isDiscount && (
-          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-xl border px-1 text-sm'>
+          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
             ${previousTotal - totalPrice} off
           </div>
         )}
