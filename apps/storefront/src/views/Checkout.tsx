@@ -1,5 +1,12 @@
 import { RouteHref } from '@/router';
-import { Button, Logo, RadioGroup, TextField } from '@webshop/ui';
+import {
+  Button,
+  Logo,
+  PaymentMethod,
+  RadioGroup,
+  ShippingMethod,
+  TextField,
+} from '@webshop/ui';
 import {
   RiBitCoinLine,
   RiClipboardLine,
@@ -9,22 +16,6 @@ import {
   RiWalletLine,
 } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
-
-// TODO: Move these constants somewhere else - probably needs to be shared with the dashboard in the future
-export const enum ShippingMethod {
-  INSTANT_TELEPORTATION,
-  DRONE,
-  SELF_DRIVEN_TRUCK,
-  HYPERLOOP,
-}
-
-export const enum PaymentMethod {
-  BIOMETRIC,
-  CRYPTO,
-  VIRTUAL_WALLET,
-  SMART_CONTRACT,
-  CREDIT_CARD,
-}
 
 const Checkout = () => {
   return (
