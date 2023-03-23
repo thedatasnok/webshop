@@ -1,12 +1,19 @@
+import ProductListCard from '@/components/product/ProductListCard';
+import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
+import { useFindProductsQuery } from '@/services/products';
+import { useForm, zodResolver } from '@mantine/form';
+import { PlaceOrderRequest } from '@webshop/contracts';
 import {
   Button,
+  InputLabel,
   Logo,
   PaymentMethod,
   RadioGroup,
   ShippingMethod,
   TextField,
 } from '@webshop/ui';
+import { useState } from 'react';
 import {
   RiBitCoinLine,
   RiClipboardLine,
@@ -15,9 +22,89 @@ import {
   RiTruckLine,
   RiWalletLine,
 } from 'react-icons/ri';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const Checkout = () => {
+  const { items } = useCart();
+  const navigate = useNavigate();
+  const { data: products } = useFindProductsQuery({
+    id: Object.keys(items).map((id) => parseInt(id)),
+    allowEmptyIdList: false,
+  });
+
+  const [showBillingAddress, setShowBillingAddress] = useState(false);
+
+  const handleSubmit = async (values: PlaceOrderRequest) => {
+    try {
+      console.log(values);
+      navigate(RouteHref.PROFILE);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * Iterates over products and calculates the total price
+   */
+  const totalPrice = products?.reduce((total, product) => {
+    return total + items[product.id] * product.price;
+  }, 0);
+
+  const schema = z.object({
+    shippingAddress: z.object({
+      country: z
+        .string()
+        .min(2, { message: 'Name should have at least 2 letters' }),
+      city: z.string().min(2),
+      street: z.string().min(2),
+      postalCode: z.string().min(2),
+      careOf: z.string().optional(),
+    }),
+    billingAddress: z.object({
+      country: z.string(),
+      postalCode: z.string(),
+      city: z.string(),
+      street: z.string(),
+    }),
+    differentBillingAddress: z.boolean(),
+    shippingMethod: z.string(),
+    paymentMethod: z.string(),
+  });
+
+  const form = useForm({
+    validate: zodResolver(schema),
+    initialValues: {
+      shippingAddress: {
+        country: '',
+        postalCode: '',
+        city: '',
+        street: '',
+        careOf: '',
+      },
+
+      billingAddress: {
+        country: '',
+        postalCode: '',
+        city: '',
+        street: '',
+        careOf: '',
+      },
+      differentBillingAddress: false,
+      paymentMethod: '',
+      shippingMethod: '',
+      lines: items,
+    },
+  });
+
+  function handleDifferentBillingAddress(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const checked = e.target.checked;
+    setShowBillingAddress(checked);
+    form.setFieldValue('differentBillingAddress', checked);
+  }
+
   return (
     <div>
       <header className='mx-auto flex flex-col items-center justify-center py-10'>
@@ -32,57 +119,96 @@ const Checkout = () => {
       </header>
 
       <main>
-        <div className='mx-auto grid max-w-screen-xl gap-8 px-2 lg:grid-cols-2'>
-          <div>
-            <form>
-              <div className='flex flex-col rounded-sm'>
-                <p className='text-xl'>Delivery information</p>
-                <hr className='text-base-600 pb-4'></hr>
-                <label className='block text-sm'>Full name</label>
-                <div className='mb-2'>
+        <div className='mx-auto grid max-w-screen-xl gap-0 px-2 lg:grid-cols-2 lg:gap-8'>
+          <form
+            id='check-out-form'
+            className='flex w-full flex-col gap-2'
+            onSubmit={form.onSubmit(handleSubmit)}
+          >
+            <div className='flex flex-col rounded-sm'>
+              <p className='text-xl'>Delivery information</p>
+              <hr className='text-base-600 pb-4'></hr>
+              <div className='flex w-full flex-col gap-1'>
+                <div>
+                  <InputLabel>Name</InputLabel>
+                  <TextField placeholder='Full Name' />
+                </div>
+                <InputLabel>Country</InputLabel>
+                <div>
                   <TextField
-                    type='text'
-                    className='w-full bg-transparent focus:outline-none'
-                    placeholder='First Middle Last'
+                    {...form.getInputProps('shippingAddress.country')}
                   />
                 </div>
-                <label className='block text-sm'>Address</label>
-                <div className='mb-2'>
+                <InputLabel>City</InputLabel>
+                <div>
+                  <TextField {...form.getInputProps('shippingAddress.city')} />
+                </div>
+                <InputLabel>Street</InputLabel>
+                <div>
                   <TextField
-                    type='text'
-                    className='w-full bg-transparent focus:outline-none'
-                    placeholder='address'
+                    {...form.getInputProps('shippingAddress.street')}
                   />
                 </div>
-                <label className='block text-sm'>Country</label>
-                <div className='mb-2'>
+                <div>
+                  <InputLabel>Postal Code</InputLabel>
                   <TextField
-                    type='text'
-                    className='w-full bg-transparent focus:outline-none'
-                    placeholder='country'
+                    {...form.getInputProps('shippingAddress.postalCode')}
                   />
                 </div>
-                <label className='block text-sm'>Postal code</label>
-                <div className='mb-2'>
+                <div>
+                  <InputLabel>C/O Address (optional)</InputLabel>
                   <TextField
-                    type='text'
-                    className='w-full bg-transparent focus:outline-none'
-                    placeholder='postal code'
+                    {...form.getInputProps('shippingAddress.careOf')}
                   />
                 </div>
               </div>
-              <div className='flex flex-row gap-4 py-4'>
-                <input type='checkbox' />
-                <p>same shipping address</p>
+            </div>
+            <div className='flex flex-row gap-2 p-2'>
+              <input
+                type='checkbox'
+                className='border-primary-50 bg-primary-100 text-base-700 focus:ring-primary-200'
+                onChange={handleDifferentBillingAddress}
+              />
+              <p>Different billing address</p>
+            </div>
+            {showBillingAddress && (
+              <div>
+                <div>
+                  <InputLabel>Country</InputLabel>
+                  <TextField
+                    {...form.getInputProps('billingAddress.country')}
+                  />
+                </div>
+                <div>
+                  <InputLabel>City</InputLabel>
+                  <TextField {...form.getInputProps('billingAddress.city')} />
+                </div>
+                <div>
+                  <InputLabel>Street</InputLabel>
+                  <TextField {...form.getInputProps('billingAddress.street')} />
+                </div>
+                <div>
+                  <InputLabel>Postal Code</InputLabel>
+                  <TextField
+                    {...form.getInputProps('billingAddress.postalCode')}
+                  />
+                </div>
+                <div>
+                  <InputLabel>C/O Address (optional)</InputLabel>
+                  <TextField {...form.getInputProps('billingAddress.careOf')} />
+                </div>
               </div>
-            </form>
-
+            )}
             <div className='mt-2'>
               <h2 className='font-title text-lg font-semibold uppercase'>
                 Shipping methods
               </h2>
 
               <RadioGroup
+                value={form.values.shippingMethod}
+                onChange={(shippingMethod) =>
+                  form.setValues({ shippingMethod })
+                }
                 options={[
                   {
                     name: 'Instant teleportation',
@@ -121,6 +247,8 @@ const Checkout = () => {
               </h2>
 
               <RadioGroup
+                value={form.values.paymentMethod}
+                onChange={(paymentMethod) => form.setValues({ paymentMethod })}
                 options={[
                   {
                     name: 'Biometric',
@@ -149,37 +277,78 @@ const Checkout = () => {
                 ]}
               />
             </div>
-          </div>
 
-          <div className='h-max lg:flex lg:flex-col-reverse'>
-            <div className='flex flex-col gap-4 lg:items-center lg:justify-end'>
-              <Button className='mt-2 h-10 w-full px-6 font-semibold uppercase lg:w-fit'>
-                Confirm & Buy
-              </Button>
-
-              <div className='flex items-center justify-end gap-4'>
-                <p>Total</p>
-                <p>$408.00</p>
+            <div className='flex flex-col pb-8 lg:items-center lg:justify-end'>
+              <div>
+                <Button
+                  className='font-title w-full rounded-sm text-2xl font-semibold uppercase'
+                  type='submit'
+                >
+                  Pay: ${totalPrice}
+                </Button>
               </div>
             </div>
+          </form>
 
+          <div className='h-max lg:flex lg:flex-col-reverse'>
             <div>
               <p className='text-xl text-gray-400'>Shopping cart</p>
               <hr className='text-base-600 pb-4'></hr>
               <div>
-                <section id='dummy-cart-items'>
-                  {[...Array(4)].map((_, i) => (
-                    <div className='flex py-2' key={i}>
-                      <div className='bg-base-800 h-24 w-48 rounded-sm' />
-                      <p className='px-4'>3D GAMING</p>
-                    </div>
-                  ))}
-                </section>
+                {products?.map((product, i) => (
+                  <ProductListCard
+                    key={product.id}
+                    to={'/products/' + product.id}
+                    name={product.name}
+                    shortDescription={product.shortDescription}
+                    image={product.imageUrls[0]}
+                  >
+                    <ProductListCardCartActions
+                      productId={product.id}
+                      quantity={items[product.id]}
+                      price={product.price}
+                      previousPrice={product.previousPrice}
+                      isDiscount={product.isDiscount}
+                    />
+                  </ProductListCard>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </main>
+    </div>
+  );
+};
+
+interface CheckoutCardCartActionsProps {
+  productId: number;
+  price: number;
+  previousPrice: number;
+  quantity: number;
+  isDiscount: boolean;
+}
+
+const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
+  productId,
+  price,
+  previousPrice,
+  quantity,
+  isDiscount,
+}) => {
+  const totalPrice = price * quantity;
+  const previousTotal = previousPrice * quantity;
+
+  return (
+    <div className='flex flex-row items-center justify-end gap-5 sm:items-center sm:text-xl'>
+      <div className='flex flex-col items-center gap-1'>
+        <h3 className=''>${totalPrice}</h3>
+        {isDiscount && (
+          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
+            ${previousTotal - totalPrice} off
+          </div>
+        )}
+      </div>
     </div>
   );
 };
