@@ -1,10 +1,12 @@
 import PageLayout from '@/components/layout/PageLayout';
-import CartCard from '@/components/product/CartCard';
+import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
+import { removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button } from '@webshop/ui';
-import { useState } from 'react';
+import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
@@ -39,15 +41,20 @@ const ShoppingCart = () => {
 
           <div className='mx-auto flex w-fit grid-cols-2 flex-col gap-2'>
             {products?.map((product, i) => (
-              <CartCard
+              <ProductListCard
                 key={product.id}
-                productId={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
-                quantity={items[product.id]}
-                price={product.price}
                 image={product.imageUrls[0]}
-              />
+              >
+                <ProductListCardCartActions
+                  productId={product.id}
+                  quantity={items[product.id]}
+                  price={product.price}
+                  previousPrice={product.previousPrice}
+                  isDiscount={product.isDiscount}
+                />
+              </ProductListCard>
             ))}
           </div>
           <div
@@ -66,6 +73,93 @@ const ShoppingCart = () => {
         </div>
       </main>
     </PageLayout>
+  );
+};
+
+interface ProductListCardCartActionsProps {
+  productId: number;
+  price: number;
+  previousPrice: number;
+  quantity: number;
+  isDiscount: boolean;
+}
+
+const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
+  productId,
+  price,
+  previousPrice,
+  quantity,
+  isDiscount,
+}) => {
+  const dispatch = useDispatch();
+  const totalPrice = price * quantity;
+  const previousTotal = previousPrice * quantity;
+
+  /**
+   * If the quantity is higher than 1, decrements the quantity by 1.
+   * Updates to local storage.
+   */
+  function decrementQuantity() {
+    if (quantity > 1) {
+      dispatch(
+        updateCartItem({
+          productId,
+          quantity: quantity - 1,
+        })
+      );
+    }
+  }
+
+  /**
+   * Increments the quantity by 1 and updates to local storage.
+   */
+  function incrementQuantity() {
+    dispatch(
+      updateCartItem({
+        productId,
+        quantity: quantity + 1,
+      })
+    );
+  }
+  return (
+    <div className='flex flex-row items-center gap-5 sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
+      <div className='bg-base-800/40 font-title relative mr-auto mt-1 flex flex-row rounded-sm'>
+        <button onClick={decrementQuantity} disabled={quantity === 1}>
+          <p
+            className={clsx('font-title mx-2 text-2xl sm:mx-4 sm:text-4xl ', {
+              'text-base-600': quantity === 1,
+            })}
+          >
+            -
+          </p>
+        </button>
+        <p className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
+          {quantity}
+        </p>
+        <button onClick={incrementQuantity}>
+          <p className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</p>
+        </button>
+      </div>
+      <div className='flex flex-col items-center justify-center gap-1'>
+        <h3 className=''>${totalPrice}</h3>
+        {isDiscount && (
+          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-xl border px-1 text-sm'>
+            ${previousTotal - totalPrice} off
+          </div>
+        )}
+      </div>
+      <button
+        onClick={() => {
+          dispatch(removeCartItem(productId));
+        }}
+      >
+        <div className='bg-base-800 relative flex h-6 w-6 items-center justify-center bg-opacity-40'>
+          <span className='text-base-400 font-title absolute pb-1 text-3xl'>
+            x
+          </span>
+        </div>
+      </button>
+    </div>
   );
 };
 

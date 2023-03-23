@@ -7,6 +7,7 @@ export interface FindProductsQueryParams extends QueryParams {
   name?: string;
   categoryId?: number[];
   allowEmptyIdList?: boolean;
+  previousPrice?: number;
 }
 
 export const productsApi = webshopApi.injectEndpoints({
