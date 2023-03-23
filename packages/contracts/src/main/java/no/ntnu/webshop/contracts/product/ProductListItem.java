@@ -8,6 +8,7 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 public record ProductListItem(
   Long id,
   String name,
+  String shortDescription,
   List<String> imageUrls,
   Double price,
   Boolean isDiscount,

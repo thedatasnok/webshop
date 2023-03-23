@@ -45,6 +45,7 @@ const ShoppingCart = () => {
                 key={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
+                shortDescription={product.shortDescription}
                 image={product.imageUrls[0]}
               >
                 <ProductListCardCartActions

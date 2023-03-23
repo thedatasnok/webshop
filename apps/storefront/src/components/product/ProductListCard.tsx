@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 interface ProductListCardProps {
   to: string;
   name: string;
+  shortDescription: string;
   image?: string;
   children: React.ReactNode;
 }
@@ -10,6 +11,7 @@ interface ProductListCardProps {
 const ProductListCard: React.FC<ProductListCardProps> = ({
   to,
   name,
+  shortDescription,
   image,
   children,
 }) => {
@@ -23,7 +25,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
               {name}
             </h2>
             <p className='overflow-hidden truncate text-ellipsis'>
-              {'short description here'}
+              {shortDescription}
             </p>
           </div>
         </NavLink>

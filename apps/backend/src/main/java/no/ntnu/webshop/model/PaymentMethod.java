@@ -1,10 +1,11 @@
 package no.ntnu.webshop.model;
 
 public enum PaymentMethod {
-  CREDIT_CARD,
-  PAYPAL,
-  BANK_TRANSFER,
-  CASH_ON_DELIVERY;
+  BIOMETRIC,
+  CRYPTO,
+  VIRTUAL_WALLET,
+  SMART_CONTRACT,
+  CREDIT_CARD;
 
   /**
    * Returns the payment method with the given name. The name is case insensitive.

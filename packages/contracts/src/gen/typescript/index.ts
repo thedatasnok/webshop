@@ -92,6 +92,7 @@ export interface ProductItemDetails {
 export interface ProductListItem {
     id: number;
     name: string;
+    shortDescription: string;
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
