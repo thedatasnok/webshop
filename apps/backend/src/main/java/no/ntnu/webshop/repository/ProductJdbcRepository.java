@@ -77,6 +77,7 @@ public class ProductJdbcRepository {
         return new ProductDetails(
           rs.getLong("product_id"),
           rs.getString("name"),
+          rs.getString("short_description"),
           rs.getString("description"),
           this.objectMapper.readValue(rs.getString("image_urls"), STRING_LIST_TYPE_REF),
           rs.getDouble("price"),

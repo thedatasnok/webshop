@@ -16,6 +16,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     SELECT new no.ntnu.webshop.contracts.product.ProductListItem(
       p.id,
       p.name,
+      p.shortDescription,
       p.imageUrls,
       pp.price,
       pp.isDiscount,
