@@ -42,7 +42,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         {...inputProps}
         className={clsx(
-          'border-base-50 w-full rounded-sm border bg-transparent p-2 outline-none',
+          'border-base-50 w-full rounded-sm border bg-transparent p-2 focus:outline-none focus:ring-0',
           Icon && [
             iconSide === 'left' && 'pl-8',
             iconSide === 'right' && 'pr-8',
