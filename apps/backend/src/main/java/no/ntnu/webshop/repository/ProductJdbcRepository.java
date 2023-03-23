@@ -39,6 +39,7 @@ public class ProductJdbcRepository {
         p.product_id,
         p.name,
         p.description,
+        p.short_description,
         p.image_urls,
         pp.is_discount,
         pp.price,
