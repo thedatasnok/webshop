@@ -1,5 +1,5 @@
-import { Button, TextField } from "@webshop/ui";
-import clsx from "clsx";
+import { Button, TextField } from '@webshop/ui';
+import clsx from 'clsx';
 
 export interface UserDetailsProps {
   className?: string;
@@ -8,7 +8,7 @@ export interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({ className }) => {
   return (
     <div className={clsx(className)}>
-      <h1 className='mt-4 font-title mb-2 text-3xl font-semibold uppercase'>
+      <h1 className='font-title mt-4 mb-2 text-3xl font-semibold uppercase'>
         Account Details
       </h1>
       <form id=''>
@@ -21,39 +21,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({ className }) => {
           <label>Name</label>
           <TextField />
         </div>
+
+        <Button className='text-primary border-primary rounded-sm border bg-transparent px-4 mt-2'>
+          Change password
+        </Button>
       </form>
-      <div id='' className='rounded-sm py-5 text-xl'>
-        <Button className='px-4'>Change password</Button>
-      </div>
-      <h1 className='font-title mt-8 mb-2 text-3xl font-semibold uppercase'>
-        Delivery Address
-      </h1>
-      <form id=''>
-        <div className='flex flex-col py-1'>
-          <label>Street</label>
-          <TextField />
-        </div>
-
-        <div className='flex flex-col py-1'>
-          <label>City</label>
-          <TextField />
-        </div>
-
-        <div className='flex flex-col py-1'>
-          <label>Postal Code</label>
-          <TextField />
-        </div>
-
-        <div className='flex flex-col py-1'>
-          <label>Country</label>
-          <TextField />
-        </div>
-      </form>
-      <div id='' className='flex justify-end rounded-sm py-5 text-xl'>
-        <Button className='px-4'>Save</Button>
-      </div>
     </div>
-  )
-}
+  );
+};
 
 export default UserDetails;
