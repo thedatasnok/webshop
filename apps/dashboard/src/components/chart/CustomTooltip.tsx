@@ -4,7 +4,7 @@ const CustomTooltip: React.FC<TooltipProps<number[], string>> = ({
   payload,
 }) => {
   const translations: { [k: string]: string } = {
-    salesSum: 'Sales sum',
+    sumOfSales: 'Sales sum',
     numberOfSales: 'Number of sales',
   };
 

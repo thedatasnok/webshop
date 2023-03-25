@@ -1,4 +1,5 @@
 import CustomTooltip from '@/components/chart/CustomTooltip';
+import { useFindDailyOrderSummaryQuery } from '@/services/orders';
 import {
   Area,
   Bar,
@@ -10,51 +11,9 @@ import {
   YAxis,
 } from 'recharts';
 
-// a week of varying sample data
-const SAMPLE_DATA = [
-  {
-    date: '12.03.2023',
-    salesSum: 1000,
-    numberOfSales: 10,
-  },
-  {
-    date: '13.03.2023',
-    salesSum: 2000,
-    numberOfSales: 20,
-  },
-  {
-    date: '14.03.2023',
-    salesSum: 3000,
-    numberOfSales: 30,
-  },
-  {
-    date: '15.03.2023',
-    salesSum: 4000,
-    numberOfSales: 40,
-  },
-  {
-    date: '16.03.2023',
-    salesSum: 5000,
-    numberOfSales: 50,
-  },
-  {
-    date: '17.03.2023',
-    salesSum: 3000,
-    numberOfSales: 40,
-  },
-  {
-    date: '18.03.2023',
-    salesSum: 2000,
-    numberOfSales: 10,
-  },
-  {
-    date: '19.03.2023',
-    salesSum: 1000,
-    numberOfSales: 12,
-  },
-];
-
 const Dashboard = () => {
+  const { data: orderSummary } = useFindDailyOrderSummaryQuery();
+
   return (
     <div className='relative grid h-full grid-rows-2 px-4 pt-4'>
       <section id='chart' className='flex flex-col'>
@@ -63,7 +22,7 @@ const Dashboard = () => {
         </h2>
 
         <ResponsiveContainer width='100%' height='100%'>
-          <ComposedChart data={SAMPLE_DATA}>
+          <ComposedChart data={orderSummary}>
             <defs>
               <linearGradient id='sumColor' x1='0' y1='0' x2='0' y2='1'>
                 <stop offset='5%' stopColor='#00AEAE' stopOpacity={0.8} />
@@ -76,7 +35,7 @@ const Dashboard = () => {
             <Tooltip content={<CustomTooltip />} />
             <Area
               type='monotone'
-              dataKey='salesSum'
+              dataKey='sumOfSales'
               stroke='#1FFFFF'
               fillOpacity={1}
               fill='url(#sumColor)'
