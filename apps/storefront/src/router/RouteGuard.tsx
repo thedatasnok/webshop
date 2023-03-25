@@ -1,6 +1,8 @@
-import { useAuth } from '@/hooks/useAuth';
-import { useLazyRefreshAccessTokenQuery } from '@/services/auth';
-import { isTokenExpired } from '@/store/auth.slice';
+import {
+  isTokenExpired,
+  useAuth,
+  useLazyRefreshAccessTokenQuery,
+} from '@webshop/ui';
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthenticationState, RouteHref } from '.';

@@ -1,5 +1,4 @@
-import { useSignOutMutation } from '@/services/auth';
-import { Button, TextField } from '@webshop/ui';
+import { Button, TextField, useSignOutMutation } from '@webshop/ui';
 import clsx from 'clsx';
 import { RiLogoutBoxLine } from 'react-icons/ri';
 

@@ -1,6 +1,5 @@
-import { selectCart } from '@/store/cart.slice';
+import { useTypedSelector } from '@/store';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 
 /**
  * Hooks to get the cart state from the store.
@@ -8,7 +7,7 @@ import { useSelector } from 'react-redux';
  * @returns the cart state, wrapped in a memoized object
  */
 export const useCart = () => {
-  const cart = useSelector(selectCart);
+  const cart = useTypedSelector((state) => state.cart);
 
   return useMemo(() => ({ ...cart }), [cart]);
 };

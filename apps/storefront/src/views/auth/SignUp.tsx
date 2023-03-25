@@ -1,16 +1,16 @@
 import PasswordStrength from '@/components/auth/PasswordStrength';
 import { RouteHref } from '@/router';
-import { useSignUpMutation } from '@/services/auth';
 import { useForm, zodResolver } from '@mantine/form';
 import { SignUpRequest } from '@webshop/contracts';
 import {
   Button,
+  ErrorLabel,
   InputLabel,
   Logo,
   PasswordStrengthCode,
   TextField,
   usePasswordStrength,
-  ErrorLabel,
+  useSignUpMutation,
 } from '@webshop/ui';
 import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';

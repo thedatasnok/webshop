@@ -1,6 +1,5 @@
-import { selectAuth } from '@/store/auth.slice';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useCoreSelector } from '../store';
 
 /**
  * Hooks to get the auth state from the store.
@@ -8,7 +7,7 @@ import { useSelector } from 'react-redux';
  * @returns the auth state, wrapped in a memoized object
  */
 export const useAuth = () => {
-  const tokenDetails = useSelector(selectAuth);
+  const tokenDetails = useCoreSelector((state) => state.auth);
 
   return useMemo(() => ({ ...tokenDetails }), [tokenDetails]);
 };

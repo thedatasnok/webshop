@@ -1,11 +1,16 @@
-import { Button, ErrorLabel, InputLabel, Logo, TextField } from '@webshop/ui';
-import { NavLink, useNavigate } from 'react-router-dom';
-
-import { useForm, zodResolver } from '@mantine/form';
-import { z } from 'zod';
-import { useSignInMutation } from '@/services/auth';
-import { SignInRequest } from '@webshop/contracts';
 import { RouteHref } from '@/router';
+import { useForm, zodResolver } from '@mantine/form';
+import { SignInRequest } from '@webshop/contracts';
+import {
+  Button,
+  ErrorLabel,
+  InputLabel,
+  Logo,
+  TextField,
+  useSignInMutation,
+} from '@webshop/ui';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const schema = z.object({
   email: z.string().email({ message: 'Invalid email' }),
@@ -66,13 +71,17 @@ const SignIn = () => {
             <div>
               <InputLabel>Email</InputLabel>
               <TextField type='email' {...form.getInputProps('email')} />
-              {form.errors.email && <ErrorLabel text={form.errors.email as string} />}
+              {form.errors.email && (
+                <ErrorLabel text={form.errors.email as string} />
+              )}
             </div>
 
             <div>
               <InputLabel>Password</InputLabel>
               <TextField type='password' {...form.getInputProps('password')} />
-              {form.errors.password && <ErrorLabel text={form.errors.password as string} />}
+              {form.errors.password && (
+                <ErrorLabel text={form.errors.password as string} />
+              )}
             </div>
 
             <div id='sign-in-button' className='my-2'>

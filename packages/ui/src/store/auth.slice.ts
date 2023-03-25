@@ -1,7 +1,6 @@
-import { authApi } from '@/services/auth';
+import { authApi } from '../services/auth';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import jwtDecode, { type JwtPayload } from 'jwt-decode';
-import { RootState } from '.';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 
@@ -18,6 +17,7 @@ export interface TokenDetails {
   issuer: string;
   expiresAt: number;
   issuedAt: number;
+  role: string;
 }
 
 /**
@@ -30,6 +30,15 @@ export interface AuthState {
 }
 
 /**
+ * A representation of the claims we have in JWT tokens.
+ * These need to be updated whenever the backend contract changes.
+ */
+interface WebshopPayload {
+  role: string;
+  username: string;
+}
+
+/**
  * Decodes a JWT token and returns the token details.
  *
  * @param token the token to decode
@@ -37,12 +46,13 @@ export interface AuthState {
  * @returns the token details
  */
 const destructureToken = (token: string): TokenDetails => {
-  const { iss, exp, iat } = jwtDecode<JwtPayload>(token);
+  const { iss, exp, iat, role } = jwtDecode<WebshopPayload & JwtPayload>(token);
 
   return {
     issuer: iss!,
     expiresAt: exp!,
     issuedAt: iat!,
+    role,
   };
 };
 
@@ -172,5 +182,3 @@ export const authSlice = createSlice({
     );
   },
 });
-
-export const selectAuth = (state: RootState) => state.auth;

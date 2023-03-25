@@ -1,7 +1,6 @@
-import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { Logo } from '@webshop/ui';
+import { Logo, useAuth } from '@webshop/ui';
 import clsx from 'clsx';
 import {
   RiDoorOpenLine,

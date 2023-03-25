@@ -1,5 +1,5 @@
 import { CategoryDto } from '@webshop/contracts';
-import { webshopApi } from '.';
+import { webshopApi } from '@webshop/ui';
 
 export const categoriesApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({

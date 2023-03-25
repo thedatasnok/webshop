@@ -1,4 +1,4 @@
-import { RootState } from '@/store';
+import { CoreState } from '../store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const webshopApi = createApi({
@@ -6,7 +6,7 @@ export const webshopApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: '/api',
     prepareHeaders: (headers, api) => {
-      const { accessToken } = (api.getState() as RootState).auth;
+      const { accessToken } = (api.getState() as CoreState).auth;
 
       if (accessToken) {
         headers.set('Authorization', `Bearer ${accessToken}`);

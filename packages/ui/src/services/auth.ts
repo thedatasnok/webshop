@@ -1,10 +1,10 @@
 import {
-  SignUpRequest,
-  SignUpResponse,
   SignInRequest,
   SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
 } from '@webshop/contracts';
-import { webshopApi } from '.';
+import { webshopApi } from './base';
 
 export const authApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({
