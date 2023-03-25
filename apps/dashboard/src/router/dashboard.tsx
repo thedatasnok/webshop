@@ -1,7 +1,13 @@
 import React from 'react';
 import { ApplicationRoute } from '.';
 import { RouteHref } from './enum';
-import { RiDashboardLine, RiGroupLine, RiListOrdered, RiQuestionLine } from 'react-icons/ri';
+import {
+  RiDashboardLine,
+  RiGroupLine,
+  RiListOrdered,
+  RiQuestionLine,
+} from 'react-icons/ri';
+import { Role } from '@/app/constants';
 
 const Dashboard = React.lazy(() => import('@/views/Dashboard'));
 const ItemManagement = React.lazy(() => import('@/views/ItemManagement'));
@@ -15,6 +21,7 @@ const dashboardRoutes: ApplicationRoute[] = [
     path: '',
     sidebar: true,
     icon: RiDashboardLine,
+    roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
     href: RouteHref.DASHBOARD,
     element: <Dashboard />,
   },
@@ -23,6 +30,7 @@ const dashboardRoutes: ApplicationRoute[] = [
     path: 'orders',
     sidebar: true,
     icon: RiListOrdered,
+    roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
     href: RouteHref.ORDER_MANAGEMENT,
     element: <OrderManagement />,
   },
@@ -31,6 +39,7 @@ const dashboardRoutes: ApplicationRoute[] = [
     path: 'items',
     sidebar: true,
     icon: RiQuestionLine,
+    roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
     href: RouteHref.ITEM_MANAGEMENT,
     element: <ItemManagement />,
   },
@@ -39,6 +48,7 @@ const dashboardRoutes: ApplicationRoute[] = [
     path: 'products',
     sidebar: true,
     icon: RiQuestionLine,
+    roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
     href: RouteHref.PRODUCT_MANAGEMENT,
     element: <ProductManagement />,
   },
@@ -47,6 +57,7 @@ const dashboardRoutes: ApplicationRoute[] = [
     path: 'users',
     sidebar: true,
     icon: RiGroupLine,
+    roles: [Role.SHOP_OWNER],
     href: RouteHref.USER_MANAGEMENT,
     element: <UserManagement />,
   },

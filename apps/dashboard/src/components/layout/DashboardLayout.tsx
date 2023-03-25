@@ -1,5 +1,5 @@
 import dashboardRoutes from '@/router/dashboard';
-import { Logo } from '@webshop/ui';
+import { Logo, useSignOutMutation } from '@webshop/ui';
 import { RiLogoutBoxLine } from 'react-icons/ri';
 import { NavLink, useOutlet } from 'react-router-dom';
 import clsx from 'clsx';
@@ -7,10 +7,11 @@ import { RouteHref } from '@/router/enum';
 
 const DashboardLayout = () => {
   const outlet = useOutlet();
+  const [signOut] = useSignOutMutation();
 
   return (
     <div className='flex h-screen w-screen overflow-hidden'>
-      <aside className='border-base-700 flex w-24 flex-col flex-shrink-0 border-r'>
+      <aside className='border-base-700 flex w-24 flex-shrink-0 flex-col border-r'>
         <NavLink to={RouteHref.DASHBOARD} className='my-2 h-10 p-2'>
           <Logo variant='small' />
         </NavLink>
@@ -36,7 +37,10 @@ const DashboardLayout = () => {
           ))}
         </nav>
 
-        <button className='hover:bg-base-800 flex items-center justify-center gap-1 px-2 py-1'>
+        <button
+          onClick={() => signOut()}
+          className='hover:bg-base-800 flex items-center justify-center gap-1 px-2 py-1'
+        >
           <RiLogoutBoxLine className='h-6 w-6' />
         </button>
       </aside>

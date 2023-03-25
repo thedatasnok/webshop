@@ -1,5 +1,5 @@
 export const enum Role {
-  CUSTOMER,
-  SHOP_WORKER,
-  SHOP_OWNER,
+  CUSTOMER = 'CUSTOMER',
+  SHOP_WORKER = 'SHOP_WORKER',
+  SHOP_OWNER = 'SHOP_OWNER',
 }
