@@ -12,7 +12,7 @@ dependencyResolutionManagement {
 
   versionCatalogs {
     libs {
-      plugin('spring-boot', 'org.springframework.boot').version('3.0.4')
+      plugin('spring-boot', 'org.springframework.boot').version('3.0.5')
       plugin('spring-dependencies', 'io.spring.dependency-management').version('1.1.0')
       plugin('jib', 'com.google.cloud.tools.jib').version('3.3.1')
     }
