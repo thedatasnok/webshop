@@ -41,6 +41,30 @@ export interface CategoryDto {
     name: string;
 }
 
+export interface CreateItemRequest {
+    name: string;
+    description: string;
+    priceGuidance: number;
+    /**
+     * The ID of the family the item should belong to, or null if it should not belong to a family.
+     */
+    familyId: number;
+    /**
+     * A list of category IDs that this item belongs to.
+     */
+    categories: number[];
+    /**
+     * A map of attributes for that item, typically specifications.
+     */
+    attributes: { [index: string]: string };
+}
+
+export interface OrderSummary {
+    date: Date;
+    numberOfSales: number;
+    sumOfSales: number;
+}
+
 export interface PlaceOrderRequest {
     shippingAddress: AddressDto;
     billingAddress: AddressDto;
@@ -73,6 +97,7 @@ export interface CreateProductRequest {
 export interface ProductDetails {
     id: number;
     name: string;
+    shortDescription: string;
     description: string;
     imageUrls: string[];
     price: number;
