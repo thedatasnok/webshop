@@ -25,6 +25,10 @@ body {
   .hide-scroll-bar::-webkit-scrollbar {
     display: none;
   }
+
+  .grid-cols-inherit {
+    grid-template-columns: inherit;
+  }
 }
 
 ::-webkit-scrollbar {
