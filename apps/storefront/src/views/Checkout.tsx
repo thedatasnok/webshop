@@ -225,10 +225,10 @@ const Checkout = () => {
                     icon: RiTruckLine,
                   },
                   {
-                    name: 'Self-driven truck',
+                    name: 'Self-driving truck',
                     description:
-                      'One of our self-driven trucks will drop off your gear',
-                    value: ShippingMethod.SELF_DRIVEN_TRUCK,
+                      'One of our self-driving trucks will drop off your gear',
+                    value: ShippingMethod.SELF_DRIVING_TRUCK,
                     icon: RiTruckLine,
                   },
                   {

@@ -27,6 +27,7 @@ import lombok.NoArgsConstructor;
 import no.ntnu.webshop.utility.EnumTypes.OrderStatusEnumType;
 import no.ntnu.webshop.utility.EnumTypes.PaymentMethodEnumType;
 import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
+import no.ntnu.webshop.utility.EnumTypes.ShippingMethodEnumType;
 
 /**
  * Represents an order in the database.
@@ -36,6 +37,7 @@ import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
  * @see OrderStatus
  * @see PaymentMethod
  * @see PaymentStatus
+ * @see ShippingMethod
  */
 @Entity
 @Getter
@@ -93,6 +95,11 @@ public class Order {
   @Column(name = "payment_method")
   private PaymentMethod paymentMethod;
 
+  @Enumerated(EnumType.STRING)
+  @Type(ShippingMethodEnumType.class)
+  @Column(name = "shipping_method")
+  private ShippingMethod shippingMethod;
+
   @OneToMany(mappedBy = "order", cascade = {
       CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
   })
@@ -105,18 +112,21 @@ public class Order {
    * @param deliveryAddress the delivery address of the order
    * @param invoiceAddress  the invoice address of the order
    * @param paymentMethod   the payment method of the order
+   * @param shippingMethod  the shipping method of the order
    */
   public Order(
       UserAccount customer,
       Address deliveryAddress,
       Address invoiceAddress,
-      PaymentMethod paymentMethod
+      PaymentMethod paymentMethod,
+      ShippingMethod shippingMethod
   ) {
     this.customer = customer;
     this.customerName = customer.getFullName();
     this.deliveryAddress = deliveryAddress;
     this.invoiceAddress = invoiceAddress;
     this.paymentMethod = paymentMethod;
+    this.shippingMethod = shippingMethod;
 
     this.orderStatus = OrderStatus.NEW;
     this.paymentStatus = PaymentStatus.NEW;
