@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.item.CreateItemRequest;
+import no.ntnu.webshop.error.model.ItemFamilyNotFoundException;
 import no.ntnu.webshop.model.Item;
 import no.ntnu.webshop.model.ItemFamily;
 import no.ntnu.webshop.repository.ItemFamilyJpaRepository;
@@ -31,7 +32,7 @@ public class ItemController {
 
     if (request.familyId() != null) {
       itemFamily = this.itemFamilyJpaRepository.findById(request.familyId())
-        .orElseThrow(IllegalArgumentException::new);
+        .orElseThrow(() -> new ItemFamilyNotFoundException("Could not find item family with id " + request.familyId()));
     }
 
     var item = new Item(

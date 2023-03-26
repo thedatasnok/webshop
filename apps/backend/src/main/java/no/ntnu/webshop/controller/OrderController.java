@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.GenericResponse;
 import no.ntnu.webshop.contracts.order.OrderSummary;
 import no.ntnu.webshop.contracts.order.PlaceOrderRequest;
+import no.ntnu.webshop.error.model.ProductNotFoundException;
 import no.ntnu.webshop.model.Address;
 import no.ntnu.webshop.model.Order;
 import no.ntnu.webshop.model.OrderLine;
@@ -91,10 +92,8 @@ public class OrderController {
 
     var prices = this.productPriceJpaRepository.findAllCurrentPricesByProductIds(productIds);
 
-    // TODO: Define a proper exception for this w/a response code
-    // it should never be possible when using the frontend since products with no price are not shown
     if (prices.size() != productIds.size())
-      throw new IllegalArgumentException();
+      throw new ProductNotFoundException("Cannot place an order with non-active or non-existant products");
 
     for (var price : prices) {
       var product = price.getProduct();

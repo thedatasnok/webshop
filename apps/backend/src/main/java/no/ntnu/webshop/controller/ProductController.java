@@ -22,6 +22,8 @@ import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
+import no.ntnu.webshop.error.model.ItemNotFoundException;
+import no.ntnu.webshop.error.model.ProductNotFoundException;
 import no.ntnu.webshop.model.Product;
 import no.ntnu.webshop.model.ProductItem;
 import no.ntnu.webshop.model.ProductPrice;
@@ -65,7 +67,7 @@ public class ProductController {
       @PathVariable Long id
   ) {
     if (!this.productJpaRepository.existsById(id))
-      return ResponseEntity.notFound().build();
+      throw new ProductNotFoundException("Could not find product with id: " + id);
 
     return ResponseEntity.ok(this.productJdbcRepository.findById(id));
   }
@@ -93,9 +95,8 @@ public class ProductController {
     var itemIds = request.items().keySet();
     var items = this.itemJpaRepository.findAllById(itemIds);
 
-    // TODO: Create a proper exception with a response code here
     if (items.size() != itemIds.size())
-      throw new IllegalArgumentException();
+      throw new ItemNotFoundException("One or more items were not found");
 
     // adds the items to the product
     for (var item : items) {
@@ -120,7 +121,8 @@ public class ProductController {
       @PathVariable("id") Long productId,
       @RequestBody UpdateProductPriceRequest request
   ) {
-    var product = this.productJpaRepository.findById(productId).orElseThrow(IllegalArgumentException::new);
+    var product = this.productJpaRepository.findById(productId)
+      .orElseThrow(() -> new ProductNotFoundException("Could not find product with id: " + productId));
 
     var currentPrice = this.productPriceJpaRepository.findCurrentPriceByProductId(product.getId());
 
