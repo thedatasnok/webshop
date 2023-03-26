@@ -53,3 +53,10 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.4.0/update-payment-enum.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.5.0-shipping-enum
+      author: dawsta27
+      changes:
+        - sqlFile:
+            path: changelog/0.5.0/add-shipping-enum.sql
+            relativeToChangelogFile: true

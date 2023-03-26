@@ -124,6 +124,13 @@ export interface ProductListItem {
     previousPrice: number;
 }
 
+export interface UpdateUserProfileRequest {
+    fullName: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+}
+
 export interface UserProfile {
     id: string;
     fullName: string;

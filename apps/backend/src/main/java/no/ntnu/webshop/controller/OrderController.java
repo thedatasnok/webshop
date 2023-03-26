@@ -27,6 +27,7 @@ import no.ntnu.webshop.model.Address;
 import no.ntnu.webshop.model.Order;
 import no.ntnu.webshop.model.OrderLine;
 import no.ntnu.webshop.model.PaymentMethod;
+import no.ntnu.webshop.model.ShippingMethod;
 import no.ntnu.webshop.repository.OrderJpaRepository;
 import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
@@ -82,7 +83,8 @@ public class OrderController {
       customer,
       deliveryAddress,
       billingAddress,
-      PaymentMethod.fromString(orderRequest.paymentMethod())
+      PaymentMethod.fromString(orderRequest.paymentMethod()),
+      ShippingMethod.fromString(orderRequest.shippingMethod())
     );
 
     var productIds = orderRequest.lines().keySet();

@@ -11,6 +11,7 @@ import org.hibernate.type.EnumType;
 import no.ntnu.webshop.model.OrderStatus;
 import no.ntnu.webshop.model.PaymentMethod;
 import no.ntnu.webshop.model.PaymentStatus;
+import no.ntnu.webshop.model.ShippingMethod;
 import no.ntnu.webshop.model.UserAccountRole;
 
 /**
@@ -50,5 +51,7 @@ public class EnumTypes {
   public static final class PaymentStatusEnumType extends CustomEnumType<PaymentStatus> {}
 
   public static final class PaymentMethodEnumType extends CustomEnumType<PaymentMethod> {}
+
+  public static final class ShippingMethodEnumType extends CustomEnumType<ShippingMethod> {}
 
 }
