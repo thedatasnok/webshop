@@ -9,6 +9,8 @@ import {
   RiLoader5Line,
   RiSearchLine,
 } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
+import { RouteHref } from '@/router';
 
 export interface SearchOverlayProps {}
 
@@ -103,7 +105,8 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
                 products
                   ?.slice(0, MAX_PRODUCTS_SHOWN)
                   .map((product, i, array) => (
-                    <div
+                    <NavLink
+                      to={[RouteHref.PRODUCTS, product.id].join('/')}
                       key={i}
                       tabIndex={0}
                       className={clsx(
@@ -129,7 +132,7 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
                       <p className='font-title'>${product.price}</p>
 
                       <RiArrowRightSLine className='h-5 w-5' />
-                    </div>
+                    </NavLink>
                   ))}
             </div>
 
