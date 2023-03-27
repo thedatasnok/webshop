@@ -14,12 +14,13 @@ public record UpdateUserProfileRequest(
   @ValidPassword String passwordConfirmation
 ) {
 
-  public boolean validatePasswords() {
-    return this.password != null || this.passwordConfirmation != null;
+  public boolean updatePassword() {
+    return this.password != null && this.passwordConfirmation != null;
   }
-
+  
   @AssertTrue
   public boolean passwordsMatch() {
+    if (this.password == null && this.passwordConfirmation == null) return true;
     if (this.password == null || this.passwordConfirmation == null) return false;
 
     return this.password.equals(this.passwordConfirmation);

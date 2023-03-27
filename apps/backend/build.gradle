@@ -17,12 +17,19 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'com.auth0:java-jwt:4.3.0'
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-  developmentOnly project(':packages:migrations')
+  
   compileOnly 'org.projectlombok:lombok'
+
+  developmentOnly project(':packages:migrations')
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  
   runtimeOnly 'org.postgresql:postgresql'
+  runtimeOnly 'com.h2database:h2'
+
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
   annotationProcessor 'org.projectlombok:lombok'
+  
+  testAnnotationProcessor 'org.projectlombok:lombok'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
 }

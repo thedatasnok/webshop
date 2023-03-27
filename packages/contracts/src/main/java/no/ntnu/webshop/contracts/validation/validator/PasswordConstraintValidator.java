@@ -51,6 +51,9 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
       String password,
       ConstraintValidatorContext context
   ) {
+    // consider null values valid
+    if (password == null) return true;
+
     var result = this.validator.validate(new PasswordData(password));
 
     if (result.isValid()) {

@@ -1,8 +1,5 @@
 package no.ntnu.webshop.controller;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.user.UpdateUserProfileRequest;
 import no.ntnu.webshop.contracts.user.UserProfile;
@@ -28,7 +24,6 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 public class UserContextController {
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final PasswordEncoder passwordEncoder;
-  private final Validator validator;
 
   @Operation(summary = "Returns the user profile of the logged in user")
   @GetMapping
@@ -45,28 +40,16 @@ public class UserContextController {
   @PreAuthorize("isAuthenticated()")
   public ResponseEntity<UserProfile> updateProfile(
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
-      @RequestBody UpdateUserProfileRequest request
+      @Valid @RequestBody UpdateUserProfileRequest request
   ) {
     var user = adapter.getUserAccount();
-
-    Set<ConstraintViolation<UpdateUserProfileRequest>> violations = new HashSet<>();
-
-    violations.addAll(this.validator.validateProperty(request, "fullName"));
-    violations.addAll(this.validator.validateProperty(request, "email"));
 
     user.setFullName(request.fullName());
     user.setEmail(request.email());
 
-    if (request.validatePasswords()) {
-      if (!request.passwordsMatch())
-        throw new IllegalArgumentException();
-
-      violations.addAll(this.validator.validateProperty(request, "password"));
+    if (request.updatePassword()) {
       user.setPassword(this.passwordEncoder.encode(request.password()));
     }
-
-    if (!violations.isEmpty())
-      throw new IllegalArgumentException();
 
     this.userAccountJpaRepository.save(user);
 
