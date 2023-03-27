@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 
 interface ProductListCardProps {
@@ -6,6 +7,7 @@ interface ProductListCardProps {
   shortDescription: string;
   image?: string;
   children: React.ReactNode;
+  cart?: boolean;
 }
 
 const ProductListCard: React.FC<ProductListCardProps> = ({
@@ -14,23 +16,31 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
   shortDescription,
   image,
   children,
+  cart = false,
 }) => {
   return (
-    <div className='border-base-800 border-b-2 pb-1'>
-      <div className='flex flex-col p-1 sm:flex-row'>
-        <NavLink to={to} className='flex w-full flex-row'>
-          <img src={image} className='aspect-square w-1/6 md:w-1/6'></img>
-          <div className='flex max-h-full max-w-[260px] flex-col pl-2 sm:max-w-[240px]  lg:max-w-[540px]'>
-            <h2 className='font-title overflow-hidden truncate text-ellipsis text-2xl font-bold uppercase'>
-              {name}
-            </h2>
-            <p className='overflow-hidden truncate text-ellipsis'>
-              {shortDescription}
-            </p>
-          </div>
-        </NavLink>
-
-        {children}
+    <div className='border-base-800 z-0 border-b-2 pb-1'>
+      <div className='flex p-1 sm:flex-row'>
+        <div className='flex-grow-1 relative z-20 flex w-full flex-row'>
+          <NavLink to={to} className='flex'>
+            <img src={image} className='aspect-square w-4/12 md:w-1/6'></img>
+            <div
+              className={clsx(
+                'max-w-150 flex flex-col overflow-hidden text-ellipsis pl-2 sm:max-w-xs md:max-w-md',
+                {
+                  'lg:max-w-2xl': cart === true,
+                  'lg:max-w-xs': cart === false,
+                }
+              )}
+            >
+              <h2 className='font-title truncate text-xl sm:text-2xl'>
+                {name}
+              </h2>
+              <p className='truncate text-sm'>{shortDescription}</p>
+            </div>
+          </NavLink>
+          {children}
+        </div>
       </div>
     </div>
   );

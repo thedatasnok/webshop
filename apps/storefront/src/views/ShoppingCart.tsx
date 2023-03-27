@@ -1,3 +1,4 @@
+import Counter from '@/components/button/Counter';
 import PageLayout from '@/components/layout/PageLayout';
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
@@ -32,10 +33,12 @@ const ShoppingCart = () => {
           </div>
 
           <div className='font-title'>
-            <div className='flex flex-row justify-end gap-4 text-lg sm:gap-12 md:gap-16 xl:gap-24'>
-              <h3 className='hidden pr-2 sm:block sm:pr-9'>Quantity</h3>
+            <div className='mr-2 flex flex-row justify-end gap-4 text-lg sm:mr-0 sm:gap-6 md:gap-7'>
+              <h3 className='hidden pr-2 sm:block sm:pr-14 md:pr-16'>
+                Quantity
+              </h3>
               <h3>Total</h3>
-              <h3>Delete</h3>
+              <h3 className='hidden sm:block'>Delete</h3>
             </div>
           </div>
 
@@ -47,6 +50,7 @@ const ShoppingCart = () => {
                 name={product.name}
                 shortDescription={product.shortDescription}
                 image={product.imageUrls[0]}
+                cart={true}
               >
                 <ProductListCardCartActions
                   productId={product.id}
@@ -62,7 +66,7 @@ const ShoppingCart = () => {
             id='cart-total'
             className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
           >
-            <a className='self-end sm:py-4'>Total: ${totalPrice?.toFixed(2)}</a>
+            <a className='self-end sm:py-4'>Sum: ${totalPrice?.toFixed(2)}</a>
           </div>
           <div id='checkout' className='sm:flex sm:flex-col'>
             <NavLink to={RouteHref.CHECKOUT} className='sm:self-end'>
@@ -96,70 +100,60 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
   const totalPrice = price * quantity;
   const previousTotal = previousPrice * quantity;
 
-  /**
-   * If the quantity is higher than 1, decrements the quantity by 1.
-   * Updates to local storage.
-   */
-  function decrementQuantity() {
-    if (quantity > 1) {
-      dispatch(
-        updateCartItem({
-          productId,
-          quantity: quantity - 1,
-        })
-      );
-    }
-  }
-
-  /**
-   * Increments the quantity by 1 and updates to local storage.
-   */
-  function incrementQuantity() {
-    dispatch(
-      updateCartItem({
-        productId,
-        quantity: quantity + 1,
-      })
-    );
-  }
   return (
-    <div className='flex flex-row items-center gap-5 sm:items-center sm:gap-12 sm:text-xl md:gap-16 xl:gap-24'>
-      <div className='bg-base-800/40 font-title relative mr-auto mt-1 flex flex-row rounded-sm'>
-        <button onClick={decrementQuantity} disabled={quantity === 1}>
-          <p
-            className={clsx('font-title mx-2 text-2xl sm:mx-4 sm:text-4xl ', {
-              'text-base-600': quantity === 1,
-            })}
-          >
-            -
-          </p>
-        </button>
-        <p className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
-          {quantity}
-        </p>
-        <button onClick={incrementQuantity}>
-          <p className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</p>
-        </button>
-      </div>
-      <div className='flex flex-col items-center justify-center gap-1'>
-        <h3 className=''>${totalPrice}</h3>
-        {isDiscount && (
-          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-            ${previousTotal - totalPrice} off
-          </div>
-        )}
-      </div>
-      <button
-        onClick={() => {
-          dispatch(removeCartItem(productId));
-        }}
-      >
-        <div className='bg-base-800 relative flex h-6 w-6 items-center justify-center bg-opacity-40'>
-          <span className='text-base-400 font-title absolute pb-1 text-3xl'>
-            x
-          </span>
+    <div className='z-20 flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-0'>
+      <div className='flex sm:gap-8 md:gap-10'>
+        {/* Counter */}
+        <div className='hidden sm:block'>
+          <Counter productId={productId} quantity={quantity} />
         </div>
-      </button>
+        {/* Total price */}
+        <div
+          className={clsx({
+            'flex flex-col items-end': isDiscount,
+            'flex flex-row items-center': !isDiscount,
+          })}
+        >
+          <h3 className='flex w-16 justify-end text-xl'>${totalPrice}</h3>
+          {isDiscount && (
+            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
+              -${previousTotal - totalPrice}
+            </div>
+          )}
+        </div>
+        {/* Delete */}
+        <button
+          onClick={() => {
+            dispatch(removeCartItem(productId));
+          }}
+        >
+          <div className='bg-base-800 relative hidden h-6 w-6 items-center justify-center bg-opacity-40 sm:flex'>
+            <span className='text-base-400 font-title absolute pb-1 text-3xl'>
+              x
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <div className='flex gap-2'>
+        {/* Mobile Counter */}
+        <div className='block sm:hidden'>
+          <Counter productId={productId} quantity={quantity} />
+        </div>
+        {/* Mobile Delete */}
+        <button
+          className='z-10 flex aspect-square items-end justify-end sm:hidden'
+          onClick={() => {
+            dispatch(removeCartItem(productId));
+          }}
+        >
+          <div className='bg-base-800/40 relative flex aspect-square h-8 w-8 items-center justify-center pt-1'>
+            <span className='text-base-400 font-title absolute pb-1 text-xl'>
+              x
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
   );
 };

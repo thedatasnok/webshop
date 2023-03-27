@@ -1,10 +1,10 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
+import { usePlaceOrderMutation } from '@/services/orders';
 import { useFindProductsQuery } from '@/services/products';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
-import { usePlaceOrderMutation } from '@/services/orders';
 import {
   Button,
   InputLabel,
@@ -344,9 +344,11 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
 
   return (
     <div className='flex flex-row items-end justify-end gap-4 sm:gap-8'>
-      <span className='whitespace-nowrap text-xl'>qty: {quantity}</span>
+      <span className='bg-base-800/40 font-title flex whitespace-nowrap rounded-sm px-1 text-xl'>
+        qty: {quantity}
+      </span>
       <div className='flex flex-col items-end gap-1'>
-        <h3 className='flex w-12 items-end justify-end text-xl'>
+        <h3 className='flex w-16 items-end justify-end text-xl'>
           ${totalPrice}
         </h3>
         {isDiscount && (

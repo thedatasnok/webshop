@@ -30,6 +30,11 @@ body {
     grid-template-columns: inherit;
   }
 }
+@media (min-width: 0px) {
+  .max-w-150 {
+    max-width: 150px;
+  }
+}
 
 ::-webkit-scrollbar {
   @apply h-2 w-2;
