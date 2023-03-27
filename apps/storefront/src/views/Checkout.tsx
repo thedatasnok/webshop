@@ -4,6 +4,7 @@ import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
+import { usePlaceOrderMutation } from '@/services/orders';
 import {
   Button,
   InputLabel,
@@ -33,11 +34,13 @@ const Checkout = () => {
     allowEmptyIdList: false,
   });
 
+  const [placeOrder] = usePlaceOrderMutation();
   const [showBillingAddress, setShowBillingAddress] = useState(false);
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
     try {
       console.log(values);
+      await placeOrder(values).unwrap();
       navigate(RouteHref.PROFILE);
     } catch (err) {
       console.log(err);
@@ -166,7 +169,7 @@ const Checkout = () => {
             <div className='flex flex-row gap-2 p-2'>
               <input
                 type='checkbox'
-                className='border-primary-50 bg-primary-100 text-base-700 focus:ring-primary-200'
+                className='border-base-600 bg-base-600'
                 onChange={handleDifferentBillingAddress}
               />
               <p>Different billing address</p>
@@ -293,7 +296,7 @@ const Checkout = () => {
           <div className='h-max lg:flex lg:flex-col-reverse'>
             <div>
               <p className='text-xl text-gray-400'>Shopping cart</p>
-              <hr className='text-base-600 pb-4'></hr>
+              <hr className='text-base-600 pb-2'></hr>
               <div>
                 {products?.map((product, i) => (
                   <ProductListCard
@@ -340,12 +343,15 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
   const previousTotal = previousPrice * quantity;
 
   return (
-    <div className='flex flex-row items-center justify-end gap-5 sm:items-center sm:text-xl'>
-      <div className='flex flex-col items-center gap-1'>
-        <h3 className=''>${totalPrice}</h3>
+    <div className='flex flex-row items-end justify-end gap-4 sm:gap-8'>
+      <span className='whitespace-nowrap text-xl'>qty: {quantity}</span>
+      <div className='flex flex-col items-end gap-1'>
+        <h3 className='flex w-12 items-end justify-end text-xl'>
+          ${totalPrice}
+        </h3>
         {isDiscount && (
           <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-            ${previousTotal - totalPrice} off
+            -${previousTotal - totalPrice}
           </div>
         )}
       </div>
