@@ -22,11 +22,11 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
     <div className='border-base-800 z-0 border-b-2 pb-1'>
       <div className='flex p-1 sm:flex-row'>
         <div className='flex-grow-1 relative z-20 flex w-full flex-row'>
-          <NavLink to={to} className='flex'>
+          <NavLink to={to} className='flex flex-grow'>
             <img src={image} className='aspect-square w-4/12 md:w-1/6'></img>
             <div
               className={clsx(
-                'max-w-150 flex flex-col overflow-hidden text-ellipsis pl-2 sm:max-w-xs md:max-w-md',
+                'max-w-180 flex flex-col overflow-hidden text-ellipsis pl-2 sm:max-w-xs md:max-w-md',
                 {
                   'lg:max-w-2xl': cart === true,
                   'lg:max-w-xs': cart === false,
