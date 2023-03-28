@@ -3,7 +3,7 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
-import { removeCartItem, updateCartItem } from '@/store/cart.slice';
+import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
@@ -23,12 +23,29 @@ const ShoppingCart = () => {
     return total + items[product.id] * product.price;
   }, 0);
 
+  const dispatch = useDispatch();
+
+  /**
+   * Clears the cart prompting the user for confirmation
+   */
+  function handleClearCart() {
+    const confirmed = window.confirm(
+      'Are you sure you want to clear your cart?'
+    );
+    if (confirmed) {
+      dispatch(clearCart());
+    }
+  }
+
   return (
     <PageLayout>
       <main>
         <div className='mx-auto max-w-screen-xl py-4'>
-          <div id='cart-title' className='justify-start text-3xl'>
-            <h1 className='font-title'>Shopping cart</h1>
+          <div id='cart-title' className='flex justify-between'>
+            <h1 className='font-title text-3xl'>Shopping cart</h1>
+            <button onClick={handleClearCart} className='text-sm underline'>
+              clear cart
+            </button>
           </div>
 
           <div className='font-title'>

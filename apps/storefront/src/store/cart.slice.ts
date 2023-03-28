@@ -90,6 +90,13 @@ export const cartSlice = createSlice({
         delete state.items[productId];
       }
     },
+    /**
+     * Action to clear the cart.
+     * @param state  the current state of the store slice
+     */
+    clearCart: (state) => {
+      state.items = {};
+    },
   },
   extraReducers: (builder) => {
     /**
@@ -103,4 +110,5 @@ export const cartSlice = createSlice({
 
 export const selectCart = (state: RootState) => state.cart;
 
-export const { addToCart, removeCartItem, updateCartItem } = cartSlice.actions;
+export const { addToCart, removeCartItem, updateCartItem, clearCart } =
+  cartSlice.actions;

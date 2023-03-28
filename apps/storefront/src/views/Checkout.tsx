@@ -3,6 +3,7 @@ import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { usePlaceOrderMutation } from '@/services/orders';
 import { useFindProductsQuery } from '@/services/products';
+import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
 import {
@@ -23,6 +24,7 @@ import {
   RiTruckLine,
   RiWalletLine,
 } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -36,11 +38,12 @@ const Checkout = () => {
 
   const [placeOrder] = usePlaceOrderMutation();
   const [showBillingAddress, setShowBillingAddress] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
     try {
-      console.log(values);
       await placeOrder(values).unwrap();
+      dispatch(clearCart());
       navigate(RouteHref.PROFILE);
     } catch (err) {
       console.log(err);
@@ -307,7 +310,6 @@ const Checkout = () => {
                     image={product.imageUrls[0]}
                   >
                     <ProductListCardCartActions
-                      productId={product.id}
                       quantity={items[product.id]}
                       price={product.price}
                       previousPrice={product.previousPrice}
@@ -325,7 +327,6 @@ const Checkout = () => {
 };
 
 interface CheckoutCardCartActionsProps {
-  productId: number;
   price: number;
   previousPrice: number;
   quantity: number;
@@ -333,7 +334,6 @@ interface CheckoutCardCartActionsProps {
 }
 
 const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
-  productId,
   price,
   previousPrice,
   quantity,
