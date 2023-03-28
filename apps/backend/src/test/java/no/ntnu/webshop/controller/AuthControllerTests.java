@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +21,6 @@ import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
 @SpringBootTest
 @RequiredArgsConstructor
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class AuthControllerTests {
   private final ObjectMapper objectMapper;
   private final UserAccountJpaRepository userAccountJpaRepository;
