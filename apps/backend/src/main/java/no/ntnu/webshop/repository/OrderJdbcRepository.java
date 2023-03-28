@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.address.AddressDto;
 import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.OrderLineDetails;
-import no.ntnu.webshop.error.model.ProductNotFoundException;
+import no.ntnu.webshop.error.model.MappingException;
 
 @Repository
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class OrderJdbcRepository {
     params.addValue("userId", userId);
     params.addValue("productName", productName.orElse(null), Types.VARCHAR);
 
-    // not sure how 
+    // not sure how
     return this.jdbcTemplate.query("""
         SELECT
           o.order_id,
@@ -124,7 +124,7 @@ public class OrderJdbcRepository {
           .shippingMethod(rs.getString("shipping_method"))
           .build();
       } catch (Exception e) {
-        throw new ProductNotFoundException("Hello, this should not happen.");
+        throw new MappingException("Failed to convert order to OrderDetails");
       }
     });
   }

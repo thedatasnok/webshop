@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductItemDetails;
+import no.ntnu.webshop.error.model.MappingException;
 
 @Repository
 @RequiredArgsConstructor
@@ -87,7 +88,7 @@ public class ProductJdbcRepository {
           this.objectMapper.readValue(rs.getString("items"), PRODUCT_ITEM_DETAILS_LIST_TYPE_REF)
         );
       } catch (Exception e) {
-        return null;
+        throw new MappingException("Failed to convert product to ProductDetails");
       }
     });
   }
