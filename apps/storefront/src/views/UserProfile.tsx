@@ -1,9 +1,8 @@
 import PageLayout from '@/components/layout/PageLayout';
-import Button from '@webshop/ui/src/components/input/Button';
+import OrderHistory from '@/views/profile/OrderHistory';
+import UserDetails from '@/views/profile/UserDetails';
 import { Tab } from '@headlessui/react';
 import { Fragment } from 'react';
-import UserDetails from '@/views/profile/UserDetails';
-import OrderHistory from '@/views/profile/OrderHistory';
 
 const UserProfile = () => {
   return (
@@ -13,14 +12,10 @@ const UserProfile = () => {
           <Tab.Group>
             <Tab.List className='grid grid-cols-2'>
               <Tab as={Fragment}>
-                <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
-                  Account details
-                </button>
+                <TabButton>Account details</TabButton>
               </Tab>
               <Tab as={Fragment}>
-                <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
-                  Order history
-                </button>
+                <TabButton>Order history</TabButton>
               </Tab>
             </Tab.List>
             <Tab.Panels>
@@ -40,6 +35,18 @@ const UserProfile = () => {
         <OrderHistory className='w-2/3' />
       </main>
     </PageLayout>
+  );
+};
+
+interface TabButtonProps {
+  children: React.ReactNode;
+}
+
+const TabButton: React.FC<TabButtonProps> = ({ children }) => {
+  return (
+    <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
+      {children}
+    </button>
   );
 };
 
