@@ -31,8 +31,8 @@ body {
   }
 }
 @media (min-width: 0px) {
-  .max-w-150 {
-    max-width: 150px;
+  .max-w-180 {
+    max-width: 180px;
   }
 }
 

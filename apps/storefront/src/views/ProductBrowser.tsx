@@ -128,8 +128,13 @@ const ProductBrowser = () => {
                       name={product.name}
                       shortDescription={product.shortDescription}
                       image={product.imageUrls[0]}
-                      children
-                    />
+                    >
+                      <ProductListActions
+                        price={product.price}
+                        isDiscount={product.isDiscount}
+                        previousPrice={product.previousPrice}
+                      />
+                    </ProductListCard>
                   )}
                 </div>
               ))}
@@ -138,6 +143,36 @@ const ProductBrowser = () => {
         </div>
       </main>
     </PageLayout>
+  );
+};
+
+interface ProductListActionsProps {
+  price: number;
+  previousPrice: number;
+  isDiscount: boolean;
+}
+
+const ProductListActions: React.FC<ProductListActionsProps> = ({
+  price,
+  previousPrice,
+  isDiscount,
+}) => {
+  return (
+    <div className='flex flex-col-reverse'>
+      <h3
+        className={clsx({
+          'text-primary-200 flex justify-end text-xl': isDiscount,
+          '': !isDiscount,
+        })}
+      >
+        ${price}
+      </h3>
+      {isDiscount && (
+        <div className='text-base-400 ml-1 mt-1 flex justify-end whitespace-nowrap line-through'>
+          ${previousPrice}
+        </div>
+      )}
+    </div>
   );
 };
 
