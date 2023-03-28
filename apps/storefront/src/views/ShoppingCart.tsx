@@ -3,10 +3,15 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
-import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
+import {
+  clearCart,
+  removeCartItem,
+  selectIsCartEmpty,
+  updateCartItem,
+} from '@/store/cart.slice';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
@@ -15,6 +20,8 @@ const ShoppingCart = () => {
     id: Object.keys(items).map((id) => parseInt(id)),
     allowEmptyIdList: false,
   });
+
+  const cartIsEmpty = useSelector(selectIsCartEmpty);
 
   /**
    * Iterates over products and calculates the total price
@@ -78,19 +85,30 @@ const ShoppingCart = () => {
               </ProductListCard>
             ))}
           </div>
-          <div
-            id='cart-total'
-            className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
-          >
-            <a className='self-end sm:py-4'>Sum: ${totalPrice?.toFixed(2)}</a>
-          </div>
-          <div id='checkout' className='sm:flex sm:flex-col'>
-            <NavLink to={RouteHref.CHECKOUT} className='sm:self-end'>
-              <Button className='h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
-                Checkout
-              </Button>
-            </NavLink>
-          </div>
+          {cartIsEmpty ? (
+            <div className='flex flex-col items-center justify-center gap-2 pt-8'>
+              <hr className='text-base-700 w-full'></hr>
+              Cart is empty
+            </div>
+          ) : (
+            <div>
+              <div
+                id='cart-total'
+                className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
+              >
+                <a className='self-end sm:py-4'>
+                  Sum: ${totalPrice?.toFixed(2)}
+                </a>
+              </div>
+              <div id='checkout' className='flex w-full justify-end text-xl'>
+                <NavLink to={RouteHref.CHECKOUT}>
+                  <Button className='h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
+                    Checkout
+                  </Button>
+                </NavLink>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </PageLayout>
