@@ -109,23 +109,32 @@ export const routes: ApplicationRoute[] = [
   },
 ];
 
+/**
+ * Recursively maps an application route to a react-router-dom route, including a route guard.
+ * This is needed since we have extra metadata such as authentication, that we need to pass to the route guard.
+ *
+ * @param route the application route to map
+ *
+ * @returns a react-router-dom route
+ */
+const mapRoute = (route: ApplicationRoute) => {
+  return (
+    <Route
+      key={route.path}
+      path={route.path}
+      children={route.children?.map(mapRoute)}
+      element={
+        <RouteGuard key={route.path} authentication={route.authentication}>
+          {route.element}
+        </RouteGuard>
+      }
+    />
+  );
+};
+
 // browser router - uses DOM history API
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    routes.map((route) => (
-      <Route
-        key={route.path}
-        path={route.path}
-        element={
-          // Wrap each route in a RouteGuard component, to allow it for checking
-          // whether the user can access the route or not.
-          <RouteGuard key={route.path} authentication={route.authentication}>
-            {route.element}
-          </RouteGuard>
-        }
-      />
-    ))
-  )
+  createRoutesFromElements(routes.map(mapRoute))
 );
 
 export default router;

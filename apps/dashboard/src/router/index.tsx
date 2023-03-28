@@ -14,7 +14,6 @@ import { RouteHref } from './enum';
 import RouteGuard from './RouteGuard';
 
 const SignIn = React.lazy(() => import('@/views/auth/SignIn'));
-const SignUp = React.lazy(() => import('@/views/auth/SignUp'));
 
 /**
  * Represents the authentication state of a user.
@@ -67,39 +66,35 @@ export const routes: ApplicationRoute[] = [
   },
 ];
 
+/**
+ * Recursively maps an application route to a react-router-dom route, including a route guard.
+ * This is needed since we have extra metadata, such as authentication and roles, that we need to pass to the route guard.
+ *
+ * @param route the application route to map
+ *
+ * @returns a react-router-dom route
+ */
+const mapRoute = (route: ApplicationRoute) => {
+  return (
+    <Route
+      key={route.path}
+      path={route.path}
+      children={route.children?.map(mapRoute)}
+      element={
+        <RouteGuard
+          key={route.path}
+          authentication={route.authentication}
+          roles={route.roles}
+        >
+          {route.element}
+        </RouteGuard>
+      }
+    />
+  );
+};
+
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    routes.map((route) => (
-      <Route
-        key={route.path}
-        path={route.path}
-        children={route.children?.map((child: ApplicationRoute) => (
-          <Route
-            key={child.path}
-            path={child.path}
-            element={
-              <RouteGuard
-                key={child.path}
-                authentication={child.authentication}
-                roles={child.roles}
-              >
-                {child.element}
-              </RouteGuard>
-            }
-          />
-        ))}
-        element={
-          <RouteGuard
-            key={route.path}
-            authentication={route.authentication}
-            roles={route.roles}
-          >
-            {route.element}
-          </RouteGuard>
-        }
-      />
-    ))
-  )
+  createRoutesFromElements(routes.map(mapRoute))
 );
 
 export default router;
