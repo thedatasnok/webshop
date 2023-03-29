@@ -44,7 +44,7 @@ const Checkout = () => {
     try {
       await placeOrder(values).unwrap();
       dispatch(clearCart());
-      navigate(RouteHref.PROFILE);
+      navigate(RouteHref.ORDER_CONFIRMATION);
     } catch (err) {
       console.log(err);
     }

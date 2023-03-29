@@ -9,5 +9,8 @@ import { useMemo } from 'react';
 export const useCart = () => {
   const cart = useTypedSelector((state) => state.cart);
 
-  return useMemo(() => ({ ...cart }), [cart]);
+  return useMemo(
+    () => ({ ...cart, isEmpty: Object.keys(cart.items).length === 0 }),
+    [cart]
+  );
 };

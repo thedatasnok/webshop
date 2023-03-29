@@ -110,15 +110,5 @@ export const cartSlice = createSlice({
 
 export const selectCart = (state: RootState) => state.cart;
 
-/**
- * Returns true if the cart is empty, false otherwise.
- * @param state the current state of the store slice
- * @returns true if the cart is empty, false otherwise
- */
-export const selectIsCartEmpty = (state: RootState): boolean => {
-  const { items } = state.cart;
-  return Object.keys(items).length === 0;
-};
-
 export const { addToCart, removeCartItem, updateCartItem, clearCart } =
   cartSlice.actions;
