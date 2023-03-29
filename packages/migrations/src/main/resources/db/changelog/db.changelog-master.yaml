@@ -60,3 +60,10 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.5.0/add-shipping-enum.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.6.0-category-icon
+      author: GBFur
+      changes:
+        - sqlFile:
+            path: changelog/0.6.0/add-category-icon.sql
+            relativeToChangelogFile: true

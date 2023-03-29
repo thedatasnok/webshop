@@ -36,6 +36,8 @@ public class Category {
 
   @Column(name = "name")
   private String name;
+  @Column(name = "icon_url")
+  private String iconUrl;
 
   @ManyToMany
   @JoinTable(
@@ -51,9 +53,11 @@ public class Category {
    * @param name the name of the category
    */
   public Category(
-      String name
+      String name,
+      String iconUrl
   ) {
     this.name = name;
+    this.iconUrl = iconUrl;
   }
 
 }

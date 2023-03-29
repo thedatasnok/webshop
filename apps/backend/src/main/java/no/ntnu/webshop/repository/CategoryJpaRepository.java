@@ -13,7 +13,8 @@ public interface CategoryJpaRepository extends JpaRepository<Category, Long> {
   @Query("""
     SELECT new no.ntnu.webshop.contracts.category.CategoryDto(
       category.id,
-      category.name
+      category.name,
+      category.iconUrl
     )
     FROM Category category
     """)
