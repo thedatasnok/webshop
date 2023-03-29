@@ -36,6 +36,10 @@ body {
   }
 }
 
+.icon-fill-primary {
+  filter: invert(82%) sepia(64%) saturate(549%) hue-rotate(101deg) brightness(111%) contrast(105%);
+}
+
 ::-webkit-scrollbar {
   @apply h-2 w-2;
 }

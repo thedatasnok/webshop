@@ -59,7 +59,11 @@ const ProductBrowser = () => {
                       'text-primary  border-primary'
                   )}
                 >
-                  <RiGamepadLine className='h-14 w-14 sm:h-24 sm:w-24 lg:h-24 lg:w-24' />
+                  <img
+                    src={category.iconUrl}
+                    className={clsx('aspect-square w-full invert', 
+                    selectedCategory?.id === category.id && 'icon-fill-primary' )}
+                  />
                   <p className='text-center text-sm font-medium'>
                     {category.name}
                   </p>
