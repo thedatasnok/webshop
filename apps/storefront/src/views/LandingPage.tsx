@@ -28,7 +28,7 @@ const LandingPage = () => {
 
       <main>
         {/* Hero section is a bit hacky, but it's a one off since it is "below" the header and covers full width */}
-        <section id='hero' className='relative h-80'>
+        <section aria-label='hero' className='relative h-80'>
           <div
             className={clsx(
               'absolute -z-10 -ml-2 h-full bg-cover sm:-ml-4',
@@ -59,51 +59,61 @@ const LandingPage = () => {
 
         {/* Main content segment */}
         <div className='z-20 mx-auto flex w-full max-w-screen-xl flex-col'>
-          <h2 className='font-title my-4 text-center text-2xl font-bold uppercase tracking-wider'>
+          <h2
+            id='categories-title'
+            className='font-title my-4 text-center text-2xl font-bold uppercase tracking-wider'
+          >
             Categories
           </h2>
 
-          <section id='categories'>
-            <div className='max-sm:hide-scroll-bar flex overflow-x-scroll pb-2 lg:justify-center'>
-              <div className='flex flex-nowrap'>
-                {categories?.map((category) => (
-                  <div key={category.id} className='inline-block px-3'>
-                    <div className='bg-base-800 aspect-square h-28 rounded-sm' />
-                    <p className='text-center text-sm font-medium'>
-                      {category.name}
-                    </p>
-                  </div>
-                ))}
+          <section
+            aria-labelledby='categories-title'
+            className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'
+          >
+            {categories?.map((category) => (
+              <div key={category.id} className='inline-block px-3'>
+                <div className='bg-base-800 aspect-square h-28 rounded-sm' />
+                <p className='text-center text-sm font-medium'>
+                  {category.name}
+                </p>
               </div>
-            </div>
+            ))}
           </section>
 
-          <h2 className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+          <h2
+            id='featured-products-title'
+            className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+          >
             Featured products
           </h2>
 
-          <section id='featured-products'>
-            <div className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'>
-              {products?.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  to={[RouteHref.PRODUCTS, product.id].join('/')}
-                  name={product.name}
-                  previousPrice={product.previousPrice}
-                  shortDescription={product.shortDescription}
-                  isDiscount={product.isDiscount}
-                  price={product.price}
-                  image={product.imageUrls[0]}
-                />
-              ))}
-            </div>
+          <section
+            aria-labelledby='featured-products-title'
+            className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'
+          >
+            {products?.map((product) => (
+              <ProductCard
+                key={product.id}
+                to={[RouteHref.PRODUCTS, product.id].join('/')}
+                name={product.name}
+                previousPrice={product.previousPrice}
+                shortDescription={product.shortDescription}
+                isDiscount={product.isDiscount}
+                price={product.price}
+                image={product.imageUrls[0]}
+                className='w-40 flex-shrink-0'
+              />
+            ))}
           </section>
 
-          <h2 className='font-title mt-12 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+          <h2
+            id='testimonials-title'
+            className='font-title mt-12 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+          >
             Testimonials
           </h2>
 
-          <section id='testimonials'>
+          <section aria-labelledby='testimonials-title'>
             {TESTIMONIALS.map((testimonial, i) => (
               <div
                 key={i}
@@ -123,11 +133,17 @@ const LandingPage = () => {
             ))}
           </section>
 
-          <h2 className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+          <h2
+            id='about-us-title'
+            className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+          >
             About us
           </h2>
 
-          <section id='about' className='mx-auto max-w-screen-lg text-center'>
+          <section
+            aria-labelledby='about-us-title'
+            className='mx-auto max-w-screen-lg text-center'
+          >
             <p className='text-base-300'>
               Welcome to the future of gaming! We are a cutting edge company
               specializing in the most advanced cyberpunk gaming gadgets
