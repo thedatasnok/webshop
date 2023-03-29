@@ -3,25 +3,18 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
-import {
-  clearCart,
-  removeCartItem,
-  selectIsCartEmpty,
-  updateCartItem,
-} from '@/store/cart.slice';
+import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button } from '@webshop/ui';
 import clsx from 'clsx';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 const ShoppingCart = () => {
-  const { items } = useCart();
+  const { items, isEmpty } = useCart();
   const { data: products } = useFindProductsQuery({
     id: Object.keys(items).map((id) => parseInt(id)),
     allowEmptyIdList: false,
   });
-
-  const cartIsEmpty = useSelector(selectIsCartEmpty);
 
   /**
    * Iterates over products and calculates the total price
@@ -85,7 +78,7 @@ const ShoppingCart = () => {
               </ProductListCard>
             ))}
           </div>
-          {cartIsEmpty ? (
+          {isEmpty ? (
             <div className='flex flex-col items-center justify-center gap-2 pt-8'>
               <hr className='text-base-700 w-full'></hr>
               Cart is empty
