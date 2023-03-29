@@ -2,7 +2,6 @@ import PageLayout from '@/components/layout/PageLayout';
 import OrderHistory from '@/views/profile/OrderHistory';
 import UserDetails from '@/views/profile/UserDetails';
 import { Tab } from '@headlessui/react';
-import { Fragment } from 'react';
 
 const UserProfile = () => {
   return (
@@ -11,20 +10,12 @@ const UserProfile = () => {
         <div>
           <Tab.Group>
             <Tab.List className='grid grid-cols-2'>
-              <Tab as={Fragment}>
-                <TabButton>Account details</TabButton>
-              </Tab>
-              <Tab as={Fragment}>
-                <TabButton>Order history</TabButton>
-              </Tab>
+              <TabButton>Account details</TabButton>
+              <TabButton>Order history</TabButton>
             </Tab.List>
             <Tab.Panels>
-              <Tab.Panel>
-                <UserDetails />
-              </Tab.Panel>
-              <Tab.Panel>
-                <OrderHistory />
-              </Tab.Panel>
+              <Tab.Panel as={UserDetails} />
+              <Tab.Panel as={OrderHistory} />
             </Tab.Panels>
           </Tab.Group>
         </div>
@@ -44,9 +35,9 @@ interface TabButtonProps {
 
 const TabButton: React.FC<TabButtonProps> = ({ children }) => {
   return (
-    <button className='ui-selected:border-primary border-base-50 text-base-50 border-b-2 outline-none'>
+    <Tab className='ui-selected:border-primary border-base-500 text-base-50 font-title border-b-2 text-lg font-semibold uppercase outline-none'>
       {children}
-    </button>
+    </Tab>
   );
 };
 
