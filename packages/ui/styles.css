@@ -14,8 +14,17 @@ body {
     clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
   }
 
+  .clip-corner-md {
+    clip-path: polygon(7.5% 0, 100% 0, 100% 92.5%, 92.5% 100%, 0 100%, 0 7.5%);
+  }
+
   .clip-corner-sm {
     clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%);
+  }
+
+  /* clips only the bottom right corner */
+  .clip-corner-br-md {
+    clip-path: polygon(0 0, 100% 0, 100% 92.5%, 92.5% 100%, 0 100%, 0 7.5%);
   }
 
   .hide-scroll-bar {

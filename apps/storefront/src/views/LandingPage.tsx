@@ -1,3 +1,4 @@
+import TestimonialCard from '@/components/branding/TestimonialCard';
 import { Value } from '@/components/branding/Value';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
@@ -68,16 +69,21 @@ const LandingPage = () => {
 
           <section
             aria-labelledby='categories-title'
-            className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'
+            className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
           >
-            {categories?.map((category) => (
-              <div key={category.id} className='inline-block px-3'>
-                <div className='bg-base-800 aspect-square h-28 rounded-sm' />
-                <p className='text-center text-sm font-medium'>
-                  {category.name}
-                </p>
-              </div>
-            ))}
+            <div className='mx-auto flex w-fit justify-center gap-4'>
+              {categories?.map((category) => (
+                <div
+                  key={category.id}
+                  className='inline-block flex-shrink-0 px-3'
+                >
+                  <div className='bg-base-800 aspect-square h-28 rounded-sm' />
+                  <p className='text-center text-sm font-medium'>
+                    {category.name}
+                  </p>
+                </div>
+              ))}
+            </div>
           </section>
 
           <h2
@@ -89,21 +95,23 @@ const LandingPage = () => {
 
           <section
             aria-labelledby='featured-products-title'
-            className='max-sm:hide-scroll-bar flex w-full flex-nowrap justify-items-center gap-8 overflow-x-scroll pb-2'
+            className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
           >
-            {products?.map((product) => (
-              <ProductCard
-                key={product.id}
-                to={[RouteHref.PRODUCTS, product.id].join('/')}
-                name={product.name}
-                previousPrice={product.previousPrice}
-                shortDescription={product.shortDescription}
-                isDiscount={product.isDiscount}
-                price={product.price}
-                image={product.imageUrls[0]}
-                className='w-40 flex-shrink-0'
-              />
-            ))}
+            <div className='mx-auto flex w-fit justify-center gap-4'>
+              {products?.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  to={[RouteHref.PRODUCTS, product.id].join('/')}
+                  name={product.name}
+                  previousPrice={product.previousPrice}
+                  shortDescription={product.shortDescription}
+                  isDiscount={product.isDiscount}
+                  price={product.price}
+                  image={product.imageUrls[0]}
+                  className='w-40 flex-shrink-0'
+                />
+              ))}
+            </div>
           </section>
 
           <h2
@@ -113,24 +121,15 @@ const LandingPage = () => {
             Testimonials
           </h2>
 
-          <section aria-labelledby='testimonials-title'>
-            {TESTIMONIALS.map((testimonial, i) => (
-              <div
-                key={i}
-                className={clsx(
-                  'mb-8 flex gap-2',
-                  i % 2 !== 0 && 'flex-row-reverse text-right'
-                )}
-              >
-                <div className='bg-base-800 aspect-square h-24 self-center rounded-sm' />
-                <div className='max-w-lg'>
-                  <h3 className='font-title text-lg font-semibold'>
-                    {testimonial.name}, {testimonial.age}
-                  </h3>
-                  <p className='text-base-300 text-sm'>{testimonial.text}</p>
-                </div>
-              </div>
-            ))}
+          <section
+            aria-labelledby='testimonials-title'
+            className='overflow-x-scroll'
+          >
+            <div className='mx-auto flex w-fit justify-center gap-4'>
+              {TESTIMONIALS.map((testimonial, i) => (
+                <TestimonialCard key={i} {...testimonial} />
+              ))}
+            </div>
           </section>
 
           <h2
