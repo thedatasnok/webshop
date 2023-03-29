@@ -1,3 +1,4 @@
+import OrderConfirmation from '@/views/OrderConfirmation';
 import React from 'react';
 import {
   createBrowserRouter,
@@ -37,6 +38,7 @@ export const enum RouteHref {
   CHECKOUT = '/checkout',
   PROFILE = '/profile',
   SUPPORT = '/support',
+  ORDER_CONFIRMATION = '/order-confirmation',
 }
 
 /**
@@ -102,6 +104,11 @@ export const routes: ApplicationRoute[] = [
     path: RouteHref.SUPPORT,
     href: RouteHref.SUPPORT,
     element: <Support />,
+  },
+  {
+    path: RouteHref.ORDER_CONFIRMATION,
+    href: RouteHref.ORDER_CONFIRMATION,
+    element: <OrderConfirmation />,
   },
   {
     path: '*',
