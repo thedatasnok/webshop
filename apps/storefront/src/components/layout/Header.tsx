@@ -19,9 +19,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const { isLoggedIn } = useAuth();
-  const { items } = useCart();
-
-  const cartItems = Object.values(items).reduce((acc, item) => acc + item, 0);
+  const { isEmpty, itemQuantity } = useCart();
 
   return (
     <header className={clsx('border-base-200', className)}>
@@ -59,9 +57,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               size='sm'
             />
 
-            {cartItems > 0 && (
+            {!isEmpty && (
               <div className='bg-primary text-base-900 absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full px-1 text-xs font-semibold'>
-                {cartItems < 10 ? cartItems : '9+'}
+                {itemQuantity < 10 ? itemQuantity : '9+'}
               </div>
             )}
           </li>
