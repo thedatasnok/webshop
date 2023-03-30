@@ -20,11 +20,11 @@ abstract class UpdateVersionTask extends DefaultTask {
     }
     
     project.exec {
-      commandLine "git", "commit", "-m", "'build: update version for release `${newVersion}`'"
+      commandLine "git", "commit", "-m", "build: update version for release `${newVersion}`"
     }
 
     project.exec {
-      commandLine "git", "tag", "-a", "v${newVersion}", "-m", "'Release v${newVersion}'"
+      commandLine "git", "tag", "-a", "v${newVersion}", "-m", "Release v${newVersion}"
     }
   }
 
