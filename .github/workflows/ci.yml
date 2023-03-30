@@ -6,6 +6,7 @@ on:
 
 jobs:
   storefront-build:
+    name: Build storefront app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,6 +27,7 @@ jobs:
         run: cd apps/storefront && pnpm build
 
   dashboard-build:
+    name: Build dashboard app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -46,6 +48,7 @@ jobs:
         run: cd apps/dashboard && pnpm build
 
   backend-test:
+    name: Run backend tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -62,6 +65,7 @@ jobs:
         run: ./gradlew :apps:backend:test
 
   backend-build:
+    name: Build backend app
     runs-on: ubuntu-latest
     needs: [backend-test]
     steps:
@@ -82,6 +86,7 @@ jobs:
         run: ./gradlew :apps:backend:jibDockerBuild
 
   migrations-build:
+    name: Build migrations app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
