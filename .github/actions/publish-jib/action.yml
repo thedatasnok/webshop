@@ -4,6 +4,15 @@ description: Composes Docker actions in order to publish an artifact
 inputs:
   selector:
     description: The selector for targeting which subproject to run the jib task against
+    required: true
+
+  registry-username:
+    description: The username to use to authenticate with the container registry
+    required: true
+
+  registry-password:
+    description: The password to use to authenticate with the container registry
+    required: true
 
 runs:
   using: composite
@@ -22,8 +31,8 @@ runs:
     - uses: docker/login-action@v2
       with:
         registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ inputs.registry-username }}
+        password: ${{ inputs.registry-password }}
 
     - name: Run jib publish
       shell: bash
