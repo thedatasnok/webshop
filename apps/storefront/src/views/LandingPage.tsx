@@ -1,5 +1,6 @@
 import TestimonialCard from '@/components/branding/TestimonialCard';
 import { Value } from '@/components/branding/Value';
+import CategoryCard from '@/components/category/CategoryCard';
 import Header from '@/components/layout/Header';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
@@ -73,15 +74,16 @@ const LandingPage = () => {
           >
             <div className='mx-auto flex w-fit justify-center gap-4'>
               {categories?.map((category) => (
-                <div
+                <NavLink
                   key={category.id}
-                  className='inline-block flex-shrink-0 px-3'
+                  to={[RouteHref.PRODUCTS, '?category=', category.id].join('')}
                 >
-                  <div className='bg-base-800 aspect-square h-28 rounded-sm' />
-                  <p className='text-center text-sm font-medium'>
-                    {category.name}
-                  </p>
-                </div>
+                  <CategoryCard
+                    id={category.id}
+                    name={category.name}
+                    iconUrl={category.iconUrl}
+                  />
+                </NavLink>
               ))}
             </div>
           </section>

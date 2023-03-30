@@ -1,3 +1,4 @@
+import CategoryCard from '@/components/category/CategoryCard';
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
 import ProductListCard from '@/components/product/ProductListCard';
@@ -6,15 +7,20 @@ import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { RiGamepadLine, RiGridFill, RiListCheck } from 'react-icons/ri';
+import { RiGridFill, RiListCheck } from 'react-icons/ri';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductBrowser = () => {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryDto>();
-  const categoryId =
-    selectedCategory === undefined ? undefined : [selectedCategory.id];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paramCategoryId = searchParams.get('category');
+  const parsedCategoryId = paramCategoryId
+    ? parseInt(paramCategoryId)
+    : undefined;
+
   const { data: products } = useFindProductsQuery({
-    categoryId,
+    categoryId: parsedCategoryId ? [parsedCategoryId] : undefined,
   });
+
   const { data: categories } = useGetCategoriesQuery();
 
   const [isGridSelected, setIsGridSelected] = useState(true);
@@ -28,10 +34,10 @@ const ProductBrowser = () => {
   };
 
   function handleCategoryClick(category: CategoryDto) {
-    if (selectedCategory?.id === category.id) {
-      setSelectedCategory(undefined);
+    if (parsedCategoryId === category.id) {
+      setSearchParams({});
     } else {
-      setSelectedCategory(category);
+      setSearchParams({ category: category.id.toString() });
     }
   }
 
@@ -50,23 +56,15 @@ const ProductBrowser = () => {
             <div className='mx-auto mt-10 mb-5 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
               {categories?.map((category, i) => (
                 <button
-                  key={category.id}
                   onClick={() => handleCategoryClick(category)}
-                  className={clsx(
-                    'border-base-800 bg-base-800/10 sm:hover:border-primary flex aspect-square cursor-pointer',
-                    'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition ',
-                    selectedCategory?.id === category.id &&
-                      'text-primary  border-primary'
-                  )}
+                  key={category.id}
                 >
-                  <img
-                    src={category.iconUrl}
-                    className={clsx('aspect-square w-full invert', 
-                    selectedCategory?.id === category.id && 'icon-fill-primary' )}
+                  <CategoryCard
+                    id={category.id}
+                    name={category.name}
+                    iconUrl={category.iconUrl}
+                    selected={parsedCategoryId === category.id}
                   />
-                  <p className='text-center text-sm font-medium'>
-                    {category.name}
-                  </p>
                 </button>
               ))}
             </div>
