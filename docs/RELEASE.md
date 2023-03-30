@@ -10,6 +10,7 @@
 
 ```bash
 git push
+git push --tags
 ```
 
 The rest of the work is handled by GitHub Actions, where the following steps are executed:

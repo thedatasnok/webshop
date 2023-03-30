@@ -1,0 +1,65 @@
+name: Release new version
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  publish-storefront:
+    name: Publish dashboard artifact
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/publish-docker
+        with:
+          dockerfile: apps/storefront/Dockerfile
+          container-name: webshop-storefront
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-dashboard:
+    name: Publish dashboard artifact
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/publish-docker
+        with:
+          dockerfile: apps/dashboard/Dockerfile
+          container-name: webshop-dashboard
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-backend:
+    name: Publish backend artifact
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/publish-jib
+        with:
+          selector: :apps:backend
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-migrations:
+    name: Publish backend artifact
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/publish-jib
+        with:
+          selector: :packages:migrations
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
