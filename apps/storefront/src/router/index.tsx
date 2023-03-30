@@ -93,6 +93,7 @@ export const routes: ApplicationRoute[] = [
     path: RouteHref.CHECKOUT,
     href: RouteHref.CHECKOUT,
     element: <Checkout />,
+    authentication: 'logged-in',
   },
   {
     path: RouteHref.PROFILE,
@@ -109,6 +110,7 @@ export const routes: ApplicationRoute[] = [
     path: RouteHref.ORDER_CONFIRMATION,
     href: RouteHref.ORDER_CONFIRMATION,
     element: <OrderConfirmation />,
+    authentication: 'logged-in',
   },
   {
     path: '*',
