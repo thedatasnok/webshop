@@ -135,6 +135,14 @@ const Checkout = () => {
               <p className='text-xl'>Delivery information</p>
               <hr className='text-base-600 pb-4'></hr>
               <div className='flex w-full flex-col gap-1'>
+                {!showBillingAddress && (
+                  <h1 className='font-title text-3xl'>Address</h1>
+                )}
+
+                {showBillingAddress && (
+                  <h1 className='font-title text-3xl'>Invoice Address</h1>
+                )}
+
                 <div>
                   <InputLabel>Name</InputLabel>
                   <TextField placeholder='Full Name' />
@@ -179,6 +187,9 @@ const Checkout = () => {
             </div>
             {showBillingAddress && (
               <div>
+                {showBillingAddress && (
+                  <h1 className='font-title text-3xl'>Delivery Address</h1>
+                )}
                 <div>
                   <InputLabel>Country</InputLabel>
                   <TextField
