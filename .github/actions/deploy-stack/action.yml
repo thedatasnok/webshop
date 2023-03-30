@@ -1,0 +1,8 @@
+name: Reusable action for deploying a stack to a given namespace or server
+description: Reusable action meant to reduce duplication when deploying to multiple environments
+
+runs:
+  using: composite
+  steps:
+    - run: echo 'NOT YET IMPLEMENTED'
+      shell: bash
