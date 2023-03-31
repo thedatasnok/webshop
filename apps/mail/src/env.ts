@@ -3,8 +3,6 @@ import { z } from 'zod';
 
 dotenv.config();
 
-console.log(process.env);
-
 /**
  * Schema for validatinge environment variables.
  */
