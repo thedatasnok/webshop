@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "email dev",
     "export": "email export",
-    "start": "tsx src/index.tsx"
+    "start": "tsx src/index.tsx",
+    "build": "tsup src/index.tsx"
   },
   "dependencies": {
     "@react-email/components": "0.0.3",
     "@react-email/render": "^0.0.6",
+    "@webshop/contracts": "workspace:*",
     "@webshop/ui": "workspace:*",
     "dotenv": "^16.0.3",
     "nodemailer": "^6.9.1",
