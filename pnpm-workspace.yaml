@@ -1,5 +1,6 @@
 packages:
 - apps/storefront
 - apps/dashboard
+- apps/mail
 - packages/ui
 - packages/contracts
