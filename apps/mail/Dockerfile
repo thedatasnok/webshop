@@ -28,4 +28,4 @@ WORKDIR /app/apps/mail
 RUN pnpm install
 RUN pnpm run build
 
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "start:prod"]

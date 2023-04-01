@@ -1,12 +1,13 @@
 {
-  "name": "emails",
+  "name": "@webshop/mail",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "email dev",
     "export": "email export",
     "start": "tsx src/index.tsx",
-    "build": "tsup src/index.tsx"
+    "start:prod": "node dist/index.js",
+    "build": "tsup"
   },
   "dependencies": {
     "@react-email/components": "0.0.3",
