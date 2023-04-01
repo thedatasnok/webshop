@@ -83,13 +83,18 @@ public class OrderJdbcRepository {
           ON o.order_id = ol.fk_order_id
         INNER JOIN product p
           ON ol.fk_product_id = p.product_id
-          AND (:productName IS NULL OR p.name ILIKE '%' || :productName || '%')
         INNER JOIN product_price pp
           ON ol.fk_product_price_id = pp.product_price_id
         LEFT JOIN product_price prev_pp
           ON prev_pp.fk_product_id = p.product_id
           AND prev_pp.time_to = pp.time_from
-        WHERE o.fk_customer_id = :userId
+        WHERE 
+          (o.fk_customer_id = :userId) AND 
+          (o.order_id IN (
+            SELECT DISTINCT ol.fk_order_id FROM order_line ol
+            INNER JOIN product p ON ol.fk_product_id = p.product_id 
+            WHERE (:productName IS NULL OR p.name ILIKE '%' || :productName || '%')
+          ))
         GROUP BY o.order_id
         ORDER BY o.ordered_at DESC
       """, params, (rs, i) -> {
