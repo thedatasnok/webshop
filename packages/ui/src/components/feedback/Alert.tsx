@@ -16,15 +16,23 @@ export const enum AlertLevel {
 export interface AlertProps {
   level: AlertLevel;
   message: string;
+  show?: boolean;
   children?: React.ReactNode;
   onClose?: () => void;
 }
 
-const Alert: React.FC<AlertProps> = ({ level, message, children, onClose }) => {
+const Alert: React.FC<AlertProps> = ({
+  level,
+  message,
+  show,
+  children,
+  onClose,
+}) => {
   return (
     <div
       className={clsx(
-        'flex items-center gap-1 rounded-sm border px-1 py-1 shadow-sm',
+        'flex items-center gap-2 rounded-sm border p-1.5 shadow-sm',
+        !show && 'hidden',
         level === AlertLevel.INFO &&
           'bg-primary/10 border-primary-700 text-primary-600',
         level === AlertLevel.SUCCESS && 'bg-ok/10 border-ok text-ok-400',
@@ -33,7 +41,7 @@ const Alert: React.FC<AlertProps> = ({ level, message, children, onClose }) => {
       )}
     >
       <AlertIcon level={level} className='h-5 w-5' />
-      <span className='font-thin'>{message}</span>
+      <span className='text-sm font-thin leading-tight'>{message}</span>
       {children}
       {onClose && <RiCloseLine onClick={onClose} className='ml-auto' />}
     </div>

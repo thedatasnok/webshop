@@ -2,6 +2,8 @@ import { RouteHref } from '@/router';
 import { useForm, zodResolver } from '@mantine/form';
 import { SignInRequest } from '@webshop/contracts';
 import {
+  Alert,
+  AlertLevel,
   Button,
   ErrorLabel,
   InputLabel,
@@ -19,7 +21,7 @@ const schema = z.object({
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const [signIn] = useSignInMutation();
+  const [signIn, { isError, isLoading }] = useSignInMutation();
 
   const handleSubmit = async (values: SignInRequest) => {
     try {
@@ -84,11 +86,15 @@ const SignIn = () => {
               )}
             </div>
 
-            <div id='sign-in-button' className='my-2'>
-              <Button className='w-full rounded-sm text-2xl' type='submit'>
-                Sign in
-              </Button>
-            </div>
+            <Button className='mt-2 w-full' type='submit' isLoading={isLoading}>
+              Sign in
+            </Button>
+
+            <Alert
+              level={AlertLevel.ERROR}
+              show={isError}
+              message='Sign in failed, please verify your credentials.'
+            />
           </form>
         </div>
       </main>
