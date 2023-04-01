@@ -64,6 +64,7 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
         />
 
         <Popover.Button onClick={() => openOverlay()}>
+          <span className='sr-only'>Search</span>
           <RiSearchLine className='text-base-300 h-5 w-5' />
         </Popover.Button>
       </div>

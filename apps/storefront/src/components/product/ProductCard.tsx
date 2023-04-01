@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       to={to}
       className={clsx('border-base-700 block border-2 p-1', className)}
     >
-      <img src={image} className='aspect-square w-full'></img>
+      <img src={image} alt={name} className='aspect-square w-full' />
       <h2 className='font-title text-xl font-bold uppercase'>{name}</h2>
       <p className='pb-2 text-xs'>{shortDescription}</p>
 

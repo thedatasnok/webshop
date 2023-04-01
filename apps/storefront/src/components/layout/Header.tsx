@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     <header className={clsx('border-base-200', className)}>
       <nav className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
         <div className='flex justify-center'>
-          <NavLink to={RouteHref.HOME} className='w-64 sm:w-44'>
+          <NavLink to={RouteHref.HOME} className='w-64 sm:w-44' aria-label='home'>
             <Logo variant='big' />
           </NavLink>
         </div>

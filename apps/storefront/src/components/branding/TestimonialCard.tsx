@@ -10,11 +10,11 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 }) => {
   return (
     <div className='border-base-800 clip-corner-br-md mb-4 flex w-64 flex-shrink-0 flex-col justify-between gap-2 rounded-sm border drop-shadow-lg'>
-      <div className='relative mx-4 mt-4 mb-2'>
+      <div className='relative mx-4 mb-2 mt-4'>
         <Corner
           size='sm'
           sides='top-left'
-          className='text-primary-700 absolute -top-1 -left-1'
+          className='text-primary-700 absolute -left-1 -top-1'
         />
 
         <p className='text-base-200 p-2 text-sm font-medium italic'>{text}</p>
@@ -28,6 +28,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <div className='bg-base-800/50 border-base-800 flex items-center gap-3 rounded-b-sm border-t px-4 py-3'>
         <img
           src='https://st.depositphotos.com/1809585/4656/i/950/depositphotos_46562679-stock-photo-happy-man-with-white-teeth.jpg'
+          alt={'Picture of ' + name}
           className='aspect-square h-10 rounded-full'
         />
         <div>
