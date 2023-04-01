@@ -1,9 +1,11 @@
 import clsx from 'clsx';
+import { RiLoader3Line } from 'react-icons/ri';
 
 export interface ButtonProps {
   children?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  isLoading?: boolean;
   onClick?: () => void;
 }
 
@@ -11,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   type,
   className,
+  isLoading,
   onClick,
 }) => {
   const handleClick = () => {
@@ -21,9 +24,16 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={handleClick}
-      className={clsx('bg-primary-500 text-base-900 px-2 py-1', className)}
+      className={clsx(
+        'bg-primary text-base-900 font-title flex items-center justify-center rounded-sm border px-2 py-1 text-lg font-semibold uppercase outline-none',
+        className
+      )}
     >
-      {children}
+      {isLoading ? (
+        <RiLoader3Line className='h-5 w-5 animate-spin' />
+      ) : (
+        <>{children}</>
+      )}
     </button>
   );
 };
