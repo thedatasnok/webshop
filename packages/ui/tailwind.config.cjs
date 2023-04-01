@@ -49,9 +49,18 @@ module.exports = {
         800: '#71045E',
         900: '#3A0231',
       },
-      error: colors.red['500'],
-      warn: colors.yellow['500'],
-      ok: colors.green['500'],
+      error: {
+        DEFAULT: colors.red['500'],
+        ...colors.red,
+      },
+      warn: {
+        DEFAULT: colors.yellow['500'],
+        ...colors.yellow,
+      },
+      ok: {
+        DEFAULT: colors.emerald['500'],
+        ...colors.emerald,
+      },
     },
   },
   plugins: [require('@headlessui/tailwindcss'), require('@tailwindcss/forms')],
