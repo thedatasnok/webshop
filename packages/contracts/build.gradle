@@ -23,6 +23,9 @@ generateTypeScript {
   outputFileType = 'implementationFile'
   outputFile = 'src/gen/typescript/index.ts'
   noFileComment = true
+  nullableAnnotations = [
+    'no.ntnu.webshop.contracts.utility.annotation.Nullable'
+  ]
   classesWithAnnotations = [
     'no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript'
   ]
