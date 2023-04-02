@@ -82,7 +82,7 @@ export interface OrderLineDetails {
     productImageUrls: string[];
     quantity: number;
     wasDiscount: boolean;
-    previousUnitPrice: number;
+    previousUnitPrice: number | null;
     unitPrice: number;
     subtotal: number;
 }
