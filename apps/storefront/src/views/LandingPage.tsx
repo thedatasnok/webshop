@@ -44,7 +44,7 @@ const LandingPage = () => {
             <div className='from-base via-base/20 to-base flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-b'></div>
           </div>
 
-          <div className='absolute top-1/2 left-1/2 flex w-full -translate-y-1/4 -translate-x-1/2 flex-col items-center gap-2'>
+          <div className='absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/4 flex-col items-center gap-2'>
             <h1 className='font-title text-center text-3xl font-bold'>
               Gaming gear that just makes you better,{' '}
               <br className='hidden sm:block' />
@@ -52,9 +52,7 @@ const LandingPage = () => {
             </h1>
 
             <NavLink to={RouteHref.PRODUCTS}>
-              <Button className='font-title rounded-sm text-lg font-bold'>
-                Browse shop
-              </Button>
+              <Button className='px-3 font-bold normal-case'>Browse shop</Button>
             </NavLink>
           </div>
         </section>
@@ -90,7 +88,7 @@ const LandingPage = () => {
 
           <h2
             id='featured-products-title'
-            className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+            className='font-title mb-4 mt-8 text-center text-2xl font-bold uppercase tracking-wider'
           >
             Featured products
           </h2>
@@ -118,7 +116,7 @@ const LandingPage = () => {
 
           <h2
             id='testimonials-title'
-            className='font-title mt-12 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+            className='font-title mb-4 mt-12 text-center text-2xl font-bold uppercase tracking-wider'
           >
             Testimonials
           </h2>
@@ -136,7 +134,7 @@ const LandingPage = () => {
 
           <h2
             id='about-us-title'
-            className='font-title mt-8 mb-4 text-center text-2xl font-bold uppercase tracking-wider'
+            className='font-title mb-4 mt-8 text-center text-2xl font-bold uppercase tracking-wider'
           >
             About us
           </h2>
@@ -156,7 +154,7 @@ const LandingPage = () => {
               take your gaming to the next level.
             </p>
 
-            <h2 className='font-title mt-12 mb-4 text-center text-xl font-bold uppercase tracking-wider'>
+            <h2 className='font-title mb-4 mt-12 text-center text-xl font-bold uppercase tracking-wider'>
               Our values
             </h2>
 
@@ -178,7 +176,7 @@ const LandingPage = () => {
             </p>
           </section>
 
-          <h2 className='font-title mt-16 mb-4 text-center text-2xl font-bold uppercase tracking-wider'>
+          <h2 className='font-title mb-4 mt-16 text-center text-2xl font-bold uppercase tracking-wider'>
             Disclaimer
           </h2>
 
