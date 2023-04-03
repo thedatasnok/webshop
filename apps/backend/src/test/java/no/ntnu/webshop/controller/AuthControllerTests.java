@@ -21,7 +21,7 @@ import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
 @SpringBootTest
 @RequiredArgsConstructor
-public class AuthControllerTests {
+class AuthControllerTests {
   private final ObjectMapper objectMapper;
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final WebApplicationContext context;
