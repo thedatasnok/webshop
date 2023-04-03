@@ -31,9 +31,9 @@ public class UserContextControllerTests {
   private final WebApplicationContext context;
   private final ObjectMapper objectMapper;
 
-  private static final String fullName = "Bob";
-  private static final String email = "bob@example.com";
-  private static final String password = "password";
+  private static final String FULL_NAME = "Bob";
+  private static final String EMAIL = "bob@example.com";
+  private static final String PASSWORD = "password";
 
   private MockMvc mockMvc;
   private UserAccount user;
@@ -41,9 +41,9 @@ public class UserContextControllerTests {
   @BeforeEach
   void setup() {
     var account = new UserAccount(
-      fullName,
-      email,
-      this.passwordEncoder.encode(password),
+      FULL_NAME,
+      EMAIL,
+      this.passwordEncoder.encode(PASSWORD),
       UserAccountRole.CUSTOMER
     );
 
@@ -64,8 +64,8 @@ public class UserContextControllerTests {
   @Test
   void userProfileReflectsChanges() throws Exception {
     var signInRequest = new SignInRequest(
-      email,
-      password
+      EMAIL,
+      PASSWORD
     );
 
     var signInResult = this.mockMvc
@@ -87,11 +87,11 @@ public class UserContextControllerTests {
       )
       .andExpect(MockMvcResultMatchers.status().isOk())
       .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.fullName", Matchers.is(fullName)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is(email)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.fullName", Matchers.is(FULL_NAME)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is(EMAIL)))
       .andExpect(MockMvcResultMatchers.jsonPath("$.role", Matchers.is("CUSTOMER")));
 
-    this.userAccountJpaRepository.findByEmail(email).ifPresent(account -> {
+    this.userAccountJpaRepository.findByEmail(EMAIL).ifPresent(account -> {
       account.setRole(UserAccountRole.SHOP_OWNER);
       this.userAccountJpaRepository.save(account);
     });
@@ -104,8 +104,8 @@ public class UserContextControllerTests {
       )
       .andExpect(MockMvcResultMatchers.status().isOk())
       .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.fullName", Matchers.is(fullName)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is(email)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.fullName", Matchers.is(FULL_NAME)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is(EMAIL)))
       .andExpect(MockMvcResultMatchers.jsonPath("$.role", Matchers.is("SHOP_OWNER")));
   }
 
