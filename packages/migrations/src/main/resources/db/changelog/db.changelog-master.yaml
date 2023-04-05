@@ -75,3 +75,20 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.6.0/add-category-icon.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.7.0-refactor-products
+      author: thedatasnok
+      dbms: postgresql
+      changes:
+        - sqlFile:
+            path: changelog/0.7.0/remove-items.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.7.0/add-aggregate-products.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.7.0/add-product-categories.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: changelog/0.7.0/add-product-families.sql
+            relativeToChangelogFile: true

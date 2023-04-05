@@ -22,12 +22,12 @@ import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
-import no.ntnu.webshop.error.model.ItemNotFoundException;
 import no.ntnu.webshop.error.model.ProductNotFoundException;
 import no.ntnu.webshop.model.Product;
-import no.ntnu.webshop.model.ProductItem;
+import no.ntnu.webshop.model.ProductChild;
+import no.ntnu.webshop.model.ProductFamily;
 import no.ntnu.webshop.model.ProductPrice;
-import no.ntnu.webshop.repository.ItemJpaRepository;
+import no.ntnu.webshop.repository.ProductFamilyJpaRepository;
 import no.ntnu.webshop.repository.ProductJdbcRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
 import no.ntnu.webshop.repository.ProductPriceJpaRepository;
@@ -41,7 +41,7 @@ public class ProductController {
   private final ProductJpaRepository productJpaRepository;
   private final ProductJdbcRepository productJdbcRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
-  private final ItemJpaRepository itemJpaRepository;
+  private final ProductFamilyJpaRepository productFamilyJpaRepository;
 
   @Operation(summary = "Finds a list of products with optional filters")
   @GetMapping
@@ -78,10 +78,23 @@ public class ProductController {
   public ResponseEntity<ProductDetails> createProduct(
       @Valid @RequestBody CreateProductRequest request
   ) {
+    ProductFamily family = null;
+
+    if (request.familyId() != null) {
+      family = this.productFamilyJpaRepository.findById(request.familyId())
+        .orElseThrow(
+          () -> new ProductNotFoundException("Could not find product family with id: " + request.familyId())
+        );
+    }
+
     var product = new Product(
       request.name(),
+      request.shortName(),
       request.description(),
-      request.imageUrls()
+      request.shortDescription(),
+      request.imageUrls(),
+      family,
+      request.attributes()
     );
 
     var price = new ProductPrice(
@@ -92,19 +105,19 @@ public class ProductController {
 
     product.addPrice(price);
 
-    var itemIds = request.items().keySet();
-    var items = this.itemJpaRepository.findAllById(itemIds);
+    var productIds = request.children().keySet();
+    var children = this.productJpaRepository.findAllById(productIds);
 
-    if (items.size() != itemIds.size())
-      throw new ItemNotFoundException("One or more items were not found");
+    if (children.size() != productIds.size())
+      throw new ProductNotFoundException("One or more child products were not found");
 
     // adds the items to the product
-    for (var item : items) {
-      product.addItem(
-        new ProductItem(
+    for (var child : children) {
+      product.addChild(
+        new ProductChild(
           product,
-          item,
-          request.items().get(item.getId())
+          child,
+          request.children().get(child.getId())
         )
       );
     }
