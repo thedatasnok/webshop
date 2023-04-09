@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "storefront.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "storefront.name" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "storefront.name" . }}
+    spec:
+      containers:
+      - name: {{ include "storefront.name" . }}
+        image: "ghcr.io/thedatasnok/webshop-storefront:v{{ .Values.version }}"
+        imagePullPolicy: IfNotPresent
+        ports: 
+        - containerPort: {{ include "storefront.port" . }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ include "storefront.port" . }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ include "storefront.port" . }}

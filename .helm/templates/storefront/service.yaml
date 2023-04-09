@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "storefront.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    app: {{ include "storefront.name" . }}
+  ports:
+  - port: {{ include "storefront.port" . }}
+    targetPort: {{ include "storefront.port" . }}
+    protocol: TCP

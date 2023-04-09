@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dashboard.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "dashboard.name" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "dashboard.name" . }}
+    spec:
+      containers:
+      - name: {{ include "dashboard.name" . }}
+        image: "ghcr.io/thedatasnok/webshop-dashboard:v{{ .Values.version }}"
+        imagePullPolicy: IfNotPresent
+        ports: 
+        - containerPort: {{ include "dashboard.port" . }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ include "dashboard.port" . }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ include "dashboard.port" . }}

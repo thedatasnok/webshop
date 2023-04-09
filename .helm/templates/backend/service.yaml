@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "backend.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    app: {{ include "backend.name" . }}
+  ports:
+  - port: {{ include "backend.port" . }}
+    targetPort: {{ include "backend.port" . }}
+    protocol: TCP

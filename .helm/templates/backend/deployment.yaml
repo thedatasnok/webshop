@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  serviceName: {{ include "backend.name" . }}
+  selector:
+    matchLabels:
+      app: {{ include "backend.name" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "backend.name" . }}
+    spec:
+      initContainers:
+      - name: "init-{{ include "backend.name" . }}"
+        image: "ghcr.io/thedatasnok/webshop-migrations:{{ .Values.version }}"
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: {{ include "postgres.name" . }}
+        env:
+          - name: POSTGRES_DB
+            value: {{ include "postgres.database" . }}
+          - name: POSTGRES_HOST
+            value: {{ include "postgres.name" . }}
+          - name: POSTGRES_PORT
+            value: {{ include "postgres.port" . | quote }}
+
+      containers:
+      - name: {{ include "backend.name" . }}
+        image: "ghcr.io/thedatasnok/webshop-backend:{{ .Values.version }}"
+        imagePullPolicy: IfNotPresent
+        ports: 
+        - containerPort: {{ include "backend.port" . }}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ include "backend.port" . }}
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ include "backend.port" . }}
+        envFrom:
+          - secretRef:
+              name: {{ include "backend.name" . }}
+          - secretRef:
+              name: {{ include "postgres.name" . }}
+        env:
+          - name: POSTGRES_DB
+            value: {{ include "postgres.database" . }}
+          - name: POSTGRES_HOST
+            value: {{ include "postgres.name" . }}
+          - name: POSTGRES_PORT
+            value: {{ include "postgres.port" . | quote }}
+          - name: S3_REGION_NAME
+            value: {{ .Values.s3.region }}
+          - name: S3_BUCKET_NAME
+            value: {{ .Values.s3.bucket }}
+          - name: TOKEN_ISSUER
+            value: {{ .Values.hostname }}
