@@ -29,18 +29,22 @@ public class OrderJdbcRepository {
   /**
    * Finds all orders for a user.
    * 
-   * @param userId the id of the user
+   * @param userId the id of the user to find orders for
+   * @param productName optional product name to filter by
+   * @param orderId optional order id to filter by
    * 
    * @return a list of orders for that user
    */
   public List<OrderDetails> findOrdersByUserId(
       UUID userId,
-      Optional<String> productName
+      Optional<String> productName,
+      Optional<Long> orderId
   ) {
     var params = new MapSqlParameterSource();
 
     params.addValue("userId", userId);
     params.addValue("productName", productName.orElse(null), Types.VARCHAR);
+    params.addValue("orderId", orderId.orElse(null), Types.BIGINT);
 
     // not sure how
     return this.jdbcTemplate.query("""
@@ -93,7 +97,9 @@ public class OrderJdbcRepository {
           (o.order_id IN (
             SELECT DISTINCT ol.fk_order_id FROM order_line ol
             INNER JOIN product p ON ol.fk_product_id = p.product_id 
-            WHERE (:productName IS NULL OR p.name ILIKE '%' || :productName || '%')
+            WHERE 
+              (:productName IS NULL OR p.name ILIKE '%' || :productName || '%') AND
+              (:orderId IS NULL OR ol.fk_order_id = :orderId)
           ))
         GROUP BY o.order_id
         ORDER BY o.ordered_at DESC
