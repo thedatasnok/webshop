@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.model.UserAccount;
 import no.ntnu.webshop.model.UserAccountRole;
@@ -163,6 +164,7 @@ class AuthorizationTests {
 /**
  * Mock controller for testing the authorization annotations.
  */
+@Hidden
 @RestController
 class MockController {
 
