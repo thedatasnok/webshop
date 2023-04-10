@@ -1,4 +1,9 @@
 import {
+  GenericMailOptions,
+  defineMailEndpoint,
+  genericMailSchema,
+} from '@/lib';
+import {
   Body,
   Button,
   Column,
@@ -17,68 +22,13 @@ import {
   Text,
 } from '@react-email/components';
 import { AddressDto, OrderDetails, OrderLineDetails } from '@webshop/contracts';
+import { z } from 'zod';
 
-// TODO: Get rid of this whenever we wire up a proper way of getting the order from the backend
-const SAMPLE_ORDER: OrderDetails = {
-  id: 25,
-  customerName: 'Kalle Lindgren',
-  orderedAt: new Date('2023-04-01T18:13:44.159+00:00'),
-  deliveryAddress: {
-    country: 'Norway',
-    postalCode: '6002',
-    city: 'Ålesund',
-    street: 'Larsgårdsvegen 2',
-    careOf: null,
-  },
-  billingAddress: {
-    country: 'Norway',
-    postalCode: '6002',
-    city: 'Ålesund',
-    street: 'Larsgårdsvegen 2',
-    careOf: null,
-  },
-  lines: [
-    {
-      id: 45,
-      productId: 1,
-      productName: 'Xbox Pack',
-      productShortDescription: 'En episk',
-      productImageUrls: [],
-      quantity: 2,
-      wasDiscount: false,
-      previousUnitPrice: 4230.0,
-      unitPrice: 6820.0,
-      subtotal: 13640.0,
-    },
-    {
-      id: 46,
-      productId: 36,
-      productName: 'Mouse',
-      productShortDescription: 'Gaming mouse',
-      productImageUrls: [
-        'https://media.discordapp.net/attachments/1073313153137516626/1073357874132156548/00044-1602128532-masterpiece_best_quality_a_3d_render_of_a_futuristic_gaming_mouse_with_haptic_feedback_and_terrain_generation.png',
-      ],
-      quantity: 1,
-      wasDiscount: false,
-      previousUnitPrice: null,
-      unitPrice: 300.0,
-      subtotal: 300.0,
-    },
-  ],
-  total: 13940.0,
-  status: 'NEW',
-  paymentStatus: 'NEW',
-  paymentMethod: 'SMART_CONTRACT',
-  shippingMethod: 'DRONE',
-};
-
-interface OrderConfirmationProps {
+interface OrderConfirmationProps extends GenericMailOptions {
   order: OrderDetails;
 }
 
-const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
-  order = SAMPLE_ORDER,
-}) => {
+const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
   const getSavings = (line: OrderLineDetails) => {
     if (line.wasDiscount && line.previousUnitPrice) {
       return (line.previousUnitPrice - line.unitPrice) * line.quantity;
@@ -142,7 +92,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
 
             <Section className='w-1/2'>
               {order.lines.map((line) => (
-                <Row className='py-1'>
+                <Row className='py-1' key={line.id}>
                   <Link href='https://google.com'>
                     <Column className='w-24'>
                       <Img
@@ -238,4 +188,46 @@ const Address: React.FC<AddressProps> = ({
   );
 };
 
-export default OrderConfirmation;
+const addressSchema = z.object({
+  country: z.string(),
+  city: z.string(),
+  postalCode: z.string(),
+  street: z.string(),
+  careOf: z.string().nullable(),
+});
+
+const orderLineSchema = z.object({
+  id: z.number(),
+  productId: z.number(),
+  productName: z.string(),
+  productShortDescription: z.string(),
+  productImageUrls: z.array(z.string()),
+  quantity: z.number(),
+  wasDiscount: z.boolean(),
+  previousUnitPrice: z.number().nullable(),
+  unitPrice: z.number(),
+  subtotal: z.number(),
+});
+
+const propsSchema = genericMailSchema.extend({
+  order: z.object({
+    id: z.number(),
+    customerName: z.string(),
+    orderedAt: z.string(),
+    deliveryAddress: addressSchema,
+    billingAddress: addressSchema,
+    lines: z.array(orderLineSchema),
+    total: z.number(),
+    status: z.string(),
+    paymentStatus: z.string(),
+    paymentMethod: z.string(),
+    shippingMethod: z.string(),
+  }),
+});
+
+export default defineMailEndpoint({
+  url: '/mails/order-confirmation',
+  validator: propsSchema,
+  subject: ({ order }) => `Order confirmation ORD#${order.id}`,
+  render: OrderConfirmation as any, // TODO: find a way to type this properly
+});
