@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={handleClick}
       className={clsx(
-        'bg-primary text-base-900 font-title flex items-center justify-center rounded-sm border px-2 py-1 text-lg font-semibold uppercase outline-none',
+        'bg-primary text-base-900 font-title border-primary flex items-center justify-center rounded-sm border px-4 py-1 text-lg font-semibold uppercase outline-none',
         className
       )}
     >
