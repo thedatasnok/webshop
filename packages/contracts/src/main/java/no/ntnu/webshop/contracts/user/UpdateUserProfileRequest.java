@@ -8,8 +8,8 @@ import no.ntnu.webshop.contracts.validation.annotation.ValidPassword;
 
 @GenerateTypeScript
 public record UpdateUserProfileRequest(
-  @NotBlank String fullName,
   @NotBlank @Email String email,
+  @NotBlank String fullName,
   @ValidPassword String password,
   @ValidPassword String passwordConfirmation
 ) {
