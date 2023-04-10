@@ -65,20 +65,29 @@ With those installed, you can:
 3. Set up the following environment variables in an `.env` file and place it in the root of the project (See `.env.example`):
 
 `POSTGRES_HOST` address of the database
+
 `POSTGRES_PORT` port of the database
+
 `POSTGRES_DB` name of the database
+
 `POSTGRES_USER` user to authenticate as when connecting to the database
+
 `POSTGRES_PASSWORD` password of the aforementioned user
 
 `TOKEN_ISSUER` -
+
 `ACCESS_TOKEN_SECRET` -
+
 `REFRESH_TOKEN_SECRET` -
 
 If using Amazon S3, also set the following:
 
 `S3_ACCESS_KEY` -
+
 `S3_SECRET_ACCESS_KEY` -
+
 `S3_REGION_NAME` -
+
 `S3_BUCKET_NAME` -
 
 4. Start the docker container by running `docker compose up -d`
