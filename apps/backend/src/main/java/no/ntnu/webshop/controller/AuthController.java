@@ -1,5 +1,6 @@
 package no.ntnu.webshop.controller;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignInResponse;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
 import no.ntnu.webshop.contracts.auth.SignUpResponse;
+import no.ntnu.webshop.event.model.CustomerRegisteredEvent;
 import no.ntnu.webshop.model.UserAccount;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
@@ -38,6 +40,7 @@ public class AuthController {
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Operation(summary = "Signs up a new user")
   @PostMapping("/sign-up")
@@ -65,6 +68,8 @@ public class AuthController {
     var refreshToken = this.jwtUtility.generateToken(authentication, JwtTokenType.REFRESH_TOKEN);
 
     response.addCookie(this.jwtUtility.createCookie(refreshToken));
+
+    this.eventPublisher.publishEvent(new CustomerRegisteredEvent(savedAccount));
 
     return ResponseEntity.ok(
       SignUpResponse.builder()

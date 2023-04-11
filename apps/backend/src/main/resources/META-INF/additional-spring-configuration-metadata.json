@@ -44,6 +44,21 @@
       "name": "no.ntnu.webshop.s3.bucket-name",
       "type": "java.lang.String",
       "description": "Name of the S3 bucket to use"
+    },
+    {
+      "name": "no.ntnu.webshop.mail-service.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether or not the mail service is enabled"
+    },
+    {
+      "name": "no.ntnu.webshop.mail-service.host",
+      "type": "java.lang.String",
+      "description": "The hostname of the mail service"
+    },
+    {
+      "name": "no.ntnu.webshop.mail-service.port",
+      "type": "java.lang.Integer",
+      "description": "The port of the mail service"
     }
   ]
 }
