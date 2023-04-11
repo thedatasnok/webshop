@@ -2,5 +2,6 @@ packages:
 - apps/storefront
 - apps/dashboard
 - apps/mail
+- apps/mail/.react-email
 - packages/ui
 - packages/contracts

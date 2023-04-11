@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.PlaceOrderRequest;
 import no.ntnu.webshop.error.model.OrderNotFoundException;
 import no.ntnu.webshop.error.model.ProductNotFoundException;
+import no.ntnu.webshop.event.model.OrderConfirmationEvent;
 import no.ntnu.webshop.model.Address;
 import no.ntnu.webshop.model.Order;
 import no.ntnu.webshop.model.OrderLine;
@@ -42,6 +44,7 @@ public class UserContextOrderController {
   private final OrderJdbcRepository orderJdbcRepository;
   private final OrderJpaRepository orderJpaRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Operation(summary = "Lists all orders for the logged in user")
   @GetMapping
@@ -124,6 +127,13 @@ public class UserContextOrderController {
     }
 
     var savedOrder = this.orderJpaRepository.save(order);
+
+    this.eventPublisher.publishEvent(
+      new OrderConfirmationEvent(
+        customer,
+        savedOrder.getId()
+      )
+    );
 
     return ResponseEntity.created(URI.create("/api/v1/orders/" + savedOrder.getId()))
       .body(new GenericResponse("Order placed successfully"));
