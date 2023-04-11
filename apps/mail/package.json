@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "email dev",
+    "dev": "tsx watch src/api/main.ts",
     "export": "email export",
-    "start": "tsx watch src/index.ts",
     "start:prod": "node dist/index.js",
+    "preview": "email dev --dir src",
     "build": "tsup"
   },
   "dependencies": {
