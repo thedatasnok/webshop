@@ -155,8 +155,8 @@ export interface ProductListItem {
 export interface UpdateUserProfileRequest {
     email: string;
     fullName: string;
-    password: string;
-    passwordConfirmation: string;
+    password: string | null;
+    passwordConfirmation: string | null;
 }
 
 export interface UserProfile {
