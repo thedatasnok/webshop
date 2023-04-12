@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 /**
  * Represents the primary key of the ProductItem entity.
  * 
- * @see ProductItem
+ * @see ProductChild
  */
 @Data
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductItemId implements Serializable {
-  private Long product;
-  private Long item;
+public class ProductChildId implements Serializable {
+  private Long parent;
+  private Long child;
 }

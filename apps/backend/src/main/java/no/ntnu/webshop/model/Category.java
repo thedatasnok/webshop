@@ -36,16 +36,17 @@ public class Category {
 
   @Column(name = "name")
   private String name;
+
   @Column(name = "icon_url")
   private String iconUrl;
 
   @ManyToMany
   @JoinTable(
-    name = "item_category",
+    name = "product_category",
     joinColumns = @JoinColumn(name = "fk_category_id", referencedColumnName = Category.PRIMARY_KEY),
-    inverseJoinColumns = @JoinColumn(name = "fk_item_id", referencedColumnName = Item.PRIMARY_KEY)
+    inverseJoinColumns = @JoinColumn(name = "fk_product_id", referencedColumnName = Product.PRIMARY_KEY)
   )
-  private Set<Item> items = new HashSet<>();
+  private Set<Product> products = new HashSet<>();
 
   /**
    * Creates a new category with the given name.

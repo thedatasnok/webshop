@@ -1,7 +1,10 @@
 package no.ntnu.webshop.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -12,6 +15,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -38,40 +44,84 @@ public class Product {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "short_description")
-  private String shortDescription;
+  @Column(name = "short_name")
+  private String shortName;
 
   @Column(name = "description")
   private String description;
 
-  @Column(name = "image_urls")
+  @Column(name = "short_description")
+  private String shortDescription;
+
   @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "image_urls")
   private List<String> imageUrls;
 
-  @OneToMany(mappedBy = "product", cascade = {
+  @Column(name = "price_guidance")
+  private Double priceGuidance;
+
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "defined_attributes")
+  private Map<String, String> attributes;
+
+  @ManyToOne
+  @JoinColumn(name = "fk_product_family_id", referencedColumnName = ProductFamily.PRIMARY_KEY)
+  private ProductFamily family;
+
+  /**
+   * The child products of this product, which then compose this product.
+   */
+  @OneToMany(mappedBy = "parent", cascade = {
       CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
   })
-  private List<ProductItem> items = new ArrayList<>();
+  private List<ProductChild> children = new ArrayList<>();
 
+  /**
+   * The parent products of this product. This is a list because a product can be part of multiple
+   * aggregate products.
+   */
+  @OneToMany(mappedBy = "child", cascade = {
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
+  })
+  private List<ProductChild> parents = new ArrayList<>();
+
+  /**
+   * A list of the prices for this product. There is no guarantee of the existence of a price, and a
+   * product should be deemed inactive/not for sale if there are no prices. There should be at most
+   * one active price for the product.
+   */
   @OneToMany(mappedBy = "product", cascade = {
       CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
   })
   private List<ProductPrice> prices = new ArrayList<>();
 
+  @ManyToMany(mappedBy = "products")
+  private Set<Category> categories = new HashSet<>();
+
   /**
    * Creates a new product.
    * 
+   * @param name        the name of the product
    * @param description the description of the product
    * @param imageUrls   a list of image urls for the product
+   * @param family      the family the product belongs to, or null if none
    */
   public Product(
       String name,
+      String shortName,
       String description,
-      List<String> imageUrls
+      String shortDescription,
+      List<String> imageUrls,
+      ProductFamily family,
+      Map<String, String> attributes
   ) {
     this.name = name;
+    this.shortName = shortName;
     this.description = description;
+    this.shortDescription = shortDescription;
     this.imageUrls = imageUrls;
+    this.family = family;
+    this.attributes = attributes;
   }
 
   /**
@@ -79,23 +129,23 @@ public class Product {
    * 
    * @param item the item to add to this product
    */
-  public void addItem(
-      ProductItem item
+  public void addChild(
+      ProductChild child
   ) {
-    item.setProduct(this);
-    this.items.add(item);
+    child.setParent(this);
+    this.children.add(child);
   }
 
   /**
    * Removes a product from this product.
    * 
-   * @param item the item to remove from this product
+   * @param child the item to remove from this product
    */
-  public void removeItem(
-      ProductItem item
+  public void removeChild(
+      ProductChild child
   ) {
-    item.setProduct(null);
-    this.items.remove(item);
+    child.setParent(null);
+    this.children.remove(child);
   }
 
   /**
