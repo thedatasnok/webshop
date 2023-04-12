@@ -1,13 +1,5 @@
 databaseChangeLog:
   - changeSet:
-      id: 0.0.0-initialize
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.0.0/enable-uuid-extension.sql
-            relativeToChangelogFile: true
-  - changeSet:
       id: 0.1.0-user-accounts
       author: thedatasnok
       dbms: postgresql
