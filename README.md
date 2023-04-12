@@ -16,7 +16,8 @@
 ├───apps
 │   ├───backend (Spring Boot backend)
 │   ├───storefront (customer-facing frontend)
-│   └───dashboard (admin frontend)
+│   ├───dashboard (admin frontend)
+│   └───mail (mail microservice)
 └───packages
     ├───contracts (DTOs - shared between frontends and backend, including validation)
     ├───migrations (Liquibase database migrations)
@@ -51,8 +52,8 @@ In order to get started with development, you will need the following:
 
 - Java 17 (LTS)
 - Docker
-- pnpm
-- Node.js
+- PNPM 
+- Node.js 18 (LTS)
 
 With those installed, you can:
 
@@ -97,6 +98,15 @@ With those installed, you can:
 4. Start the docker container by running `docker compose up -d`
 
 5. Start the backend through the debug menu
+
+    Alternatively you can start the Java apps using `gradlew` from the command line using the following commands from the root of the project.
+
+    ```bash
+    ./gradlew :apps:backend:bootRun
+    ./gradlew :packages:migrations:bootRun
+    ```
+
+5. Install the PNPM dependencies by running `pnpm install` in the root of the project
 
 6. Start the frontend by running `pnpm --filter @webshop/storefront dev`
 
