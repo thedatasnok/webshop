@@ -9,18 +9,28 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
+import no.ntnu.webshop.contracts.utility.annotation.Nullable;
 
 @GenerateTypeScript
 public record CreateProductRequest(
   @NotBlank String name,
+  @Nullable String shortName,
   @NotNull String description,
+  @Nullable String shortDescription,
   @NotNull @Size(min = 1) List<String> imageUrls,
   @NotNull @Min(0) Double price,
   @NotNull Boolean isDiscount,
-  @Schema(description = "The amount of items keyed by the item id.", example = """
+  @Nullable Long familyId,
+  @Schema(description = "The attributes of the product, keyed by their name.", example = """
+    {
+      "color": "red",
+      "size": "large"
+    }
+    """) @Nullable Map<String, String> attributes,
+  @Schema(description = "The amount of children products keyed by the item id.", example = """
     {
       "1": 1,
       "2": 2
     }
-    """) @NotNull @Size(min = 1) Map<Long, Integer> items
+    """) @Nullable @Size(min = 1) Map<Long, Integer> children
 ) {}

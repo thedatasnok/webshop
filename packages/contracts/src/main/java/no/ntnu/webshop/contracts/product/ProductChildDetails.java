@@ -7,7 +7,7 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 
 @Builder
 @GenerateTypeScript
-public record ProductItemDetails(
+public record ProductChildDetails(
   Long id,
   Integer quantity,
   String name,

@@ -34,11 +34,9 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       ((COALESCE(:id) IS NULL AND :allowEmptyIdList = TRUE) OR p.id IN (:id)) AND
       (:name IS NULL OR p.name ILIKE %:name%) AND
       (COALESCE(:category) IS NULL OR p.id IN (
-        SELECT pi.product.id
-        FROM Item i
-        INNER JOIN ProductItem pi
-          ON pi.item = i
-        INNER JOIN i.categories c
+        SELECT DISTINCT p.id
+        FROM Category c
+        INNER JOIN c.products p
         WHERE c.id IN (:category)
       ))
     """)

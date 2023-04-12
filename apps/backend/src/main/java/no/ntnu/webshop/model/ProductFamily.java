@@ -24,14 +24,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = ItemFamily.TABLE_NAME)
-public class ItemFamily {
+@Table(name = ProductFamily.TABLE_NAME)
+public class ProductFamily {
 
-  public static final String TABLE_NAME = "item_family";
-  public static final String PRIMARY_KEY = "item_family_id";
+  public static final String TABLE_NAME = "product_family";
+  public static final String PRIMARY_KEY = "product_family_id";
 
   @Id
-  @Column(name = ItemFamily.PRIMARY_KEY)
+  @Column(name = ProductFamily.PRIMARY_KEY)
   private Long id;
 
   @Setter
@@ -65,7 +65,7 @@ public class ItemFamily {
   private Map<String, List<String>> attributeMap;
 
   @OneToMany(mappedBy = "family")
-  private List<Item> items = new ArrayList<>();
+  private List<Product> products = new ArrayList<>();
 
   /**
    * Creates a new item family with the given name, description, shared attributes and attribute map.
@@ -75,7 +75,7 @@ public class ItemFamily {
    * @param sharedAttributes the shared attributes of the item family
    * @param attributeMap     the attribute map of the item family
    */
-  public ItemFamily(
+  public ProductFamily(
       String name,
       String description,
       Map<String, String> sharedAttributes,
