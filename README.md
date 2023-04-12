@@ -45,12 +45,14 @@ For Kubernetes it is assumed that the cluster has a ClusterIssuer from [cert-man
 ExternalDNS on the other hand is not a requirement. But it is a "nice-to-have" as it can automate setting up A records for the services based on the ingress configuration. 
 
 
-## Getting started (WIP)
+## Getting started
 
 In order to get started with development, you will need the following:
 
 - Java 17 (LTS)
 - Docker
+- pnpm
+- Node.js
 
 With those installed, you can:
 
@@ -74,23 +76,23 @@ With those installed, you can:
 
     `POSTGRES_USER` user to authenticate as when connecting to the database
 
-    `POSTGRES_PASSWORD` password of the aforementioned user
+    `POSTGRES_PASSWORD` password of the user to authenticate as when connecting to the database
 
-    `TOKEN_ISSUER` -
+    `TOKEN_ISSUER` JWT token issuer (typically hostname)
 
-    `ACCESS_TOKEN_SECRET` -
+    `ACCESS_TOKEN_SECRET` secret used to sign access tokens
 
-    `REFRESH_TOKEN_SECRET` -
+    `REFRESH_TOKEN_SECRET` secret used to sign refresh tokens
 
     If using Amazon S3, also set the following:
 
-    `S3_ACCESS_KEY` -
+    `S3_ACCESS_KEY` access key used to access AWS S3
 
-    `S3_SECRET_ACCESS_KEY` -
+    `S3_SECRET_ACCESS_KEY` secret access key used to access AWS S3
 
-    `S3_REGION_NAME` -
+    `S3_REGION_NAME` name of the region to use for S3 
 
-    `S3_BUCKET_NAME` -
+    `S3_BUCKET_NAME` name of the S3 bucket to use
 
 4. Start the docker container by running `docker compose up -d`
 
