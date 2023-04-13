@@ -24,7 +24,7 @@ abstract class UpdateVersionTask extends DefaultTask {
     }
 
     project.exec {
-      commandLine "git", "tag", "-a", "v${newVersion}", "-m", "Release v${newVersion}"
+      commandLine "git", "tag", "-a", "${newVersion}", "-m", "Release v${newVersion}"
     }
   }
 
