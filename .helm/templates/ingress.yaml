@@ -34,9 +34,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "bot.name" . }}
+                name: {{ include "backend.name" . }}
                 port:
-                  number: {{ include "bot.port" . }}
+                  number: {{ include "backend.port" . }}
 
   tls:
     - hosts:

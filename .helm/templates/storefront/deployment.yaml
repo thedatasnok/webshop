@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ include "storefront.name" . }}
-        image: "ghcr.io/thedatasnok/webshop-storefront:v{{ .Values.version }}"
+        image: "ghcr.io/thedatasnok/webshop-storefront:{{ .Values.version }}"
         imagePullPolicy: IfNotPresent
         ports: 
         - containerPort: {{ include "storefront.port" . }}

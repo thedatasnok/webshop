@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ include "dashboard.name" . }}
-        image: "ghcr.io/thedatasnok/webshop-dashboard:v{{ .Values.version }}"
+        image: "ghcr.io/thedatasnok/webshop-dashboard:{{ .Values.version }}"
         imagePullPolicy: IfNotPresent
         ports: 
         - containerPort: {{ include "dashboard.port" . }}
