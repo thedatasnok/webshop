@@ -66,6 +66,7 @@ public class SecurityConfig {
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeHttpRequests()
+      // by default we permit all requests, but we can override this by using annotation on each endpoint
       .requestMatchers("/**")
       .permitAll()
       .anyRequest()

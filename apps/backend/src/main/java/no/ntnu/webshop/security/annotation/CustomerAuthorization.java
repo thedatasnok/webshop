@@ -10,6 +10,10 @@ import org.springframework.security.access.annotation.Secured;
 
 import no.ntnu.webshop.model.UserAccountRole;
 
+/**
+ * Annotation for securing classes or methods to customers. This annotation will cause only user
+ * accounts with the CUSTOMER role to be authorized for the annotated method or class.
+ */
 @Inherited
 @Target({
     ElementType.METHOD, ElementType.TYPE

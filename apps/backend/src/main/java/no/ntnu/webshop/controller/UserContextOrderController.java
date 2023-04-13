@@ -35,6 +35,11 @@ import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 import no.ntnu.webshop.security.annotation.CustomerAuthorization;
 
+/**
+ * Controller responsible for endpoints that regard orders for the currently loggged in user
+ * account. This is split out from the {@link UserContextController} {@link OrderController} to as
+ * an attempt to increase cohesiveness.
+ */
 @Tag(name = "User Context")
 @RestController
 @CustomerAuthorization

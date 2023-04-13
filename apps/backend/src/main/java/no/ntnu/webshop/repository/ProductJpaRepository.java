@@ -12,6 +12,17 @@ import no.ntnu.webshop.model.Product;
 
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
+  /**
+   * Finds a list of products based on the given parameters.
+   * 
+   * @param ids              an optionally empty list of product ids, if empty none will be returned
+   *                         unless specified otherwise by allowEmptyIdList
+   * @param name             a name to search for, if null no filtering will be done
+   * @param category         a list of category ids to search for, if null no filtering will be done
+   * @param allowEmptyIdList if true, and ids is empty, all products will be returned
+   * 
+   * @return a list of products
+   */
   @Query("""
     SELECT new no.ntnu.webshop.contracts.product.ProductListItem(
       p.id,
@@ -30,7 +41,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     LEFT JOIN ProductPrice prev_pp
       ON prev_pp.product = p
       AND prev_pp.to = pp.from
-    WHERE 
+    WHERE
       ((COALESCE(:id) IS NULL AND :allowEmptyIdList = TRUE) OR p.id IN (:id)) AND
       (:name IS NULL OR p.name ILIKE %:name%) AND
       (COALESCE(:category) IS NULL OR p.id IN (

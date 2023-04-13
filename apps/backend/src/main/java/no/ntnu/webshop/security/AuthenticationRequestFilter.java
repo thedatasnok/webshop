@@ -16,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
 /**
- * Filter for validating access tokens. Runs once per request.
+ * Authentication request filter for validating and parsing access tokens to set the SecurityContext
+ * for the given request. Runs once per request.
  */
 @Slf4j
 @Component

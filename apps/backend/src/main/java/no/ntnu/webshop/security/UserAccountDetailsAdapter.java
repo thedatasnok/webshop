@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import no.ntnu.webshop.model.UserAccount;
 
+/**
+ * Adapts a {@link UserAccount} to the {@link UserDetails} interface.
+ */
 public class UserAccountDetailsAdapter implements UserDetails {
   private UserAccount userAccount;
   private boolean enabled;

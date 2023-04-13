@@ -10,6 +10,11 @@ import no.ntnu.webshop.model.Category;
 
 public interface CategoryJpaRepository extends JpaRepository<Category, Long> {
 
+  /**
+   * Finds all categories and returns them in a list of CategoryDto objects.
+   * 
+   * @return all categories
+   */
   @Query("""
     SELECT new no.ntnu.webshop.contracts.category.CategoryDto(
       category.id,

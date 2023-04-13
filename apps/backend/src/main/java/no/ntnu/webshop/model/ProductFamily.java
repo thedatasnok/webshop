@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Represents an item family in the database. An item family consists of a number of items, with a
- * number of shared attributes. Each item in the family has a set of defined attributes that are
- * based off the attributes mapped in this entity.
+ * Represents a product family in the database. A product family consists of a number of products,
+ * with a number of shared attributes. Each product in the family has a set of defined attributes
+ * that are based off the attributes mapped in this entity.
  */
 @Entity
 @Getter
