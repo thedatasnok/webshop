@@ -13,20 +13,13 @@ const readAccessToken = () => {
   return window.localStorage.getItem(ACCESS_TOKEN_KEY);
 };
 
+/**
+ * Basic details of a JWT token with a tad more explicit naming.
+ */
 export interface TokenDetails {
   issuer: string;
   expiresAt: number;
   issuedAt: number;
-  role: string;
-}
-
-/**
- * State for the auth slice.
- */
-export interface AuthState {
-  isLoggedIn: boolean;
-  accessToken: string | null;
-  tokenDetails: TokenDetails | null;
 }
 
 /**
@@ -36,6 +29,21 @@ export interface AuthState {
 interface WebshopPayload {
   role: string;
   username: string;
+  fullName: string;
+}
+
+/**
+ * An intersection type of the token details and the webshop payload, representing the full details of JWT tokens used.
+ */
+export type WebshopToken = TokenDetails & WebshopPayload;
+
+/**
+ * State for the auth slice.
+ */
+export interface AuthState {
+  isLoggedIn: boolean;
+  accessToken: string | null;
+  tokenDetails: WebshopToken | null;
 }
 
 /**
@@ -45,14 +53,18 @@ interface WebshopPayload {
  *
  * @returns the token details
  */
-const destructureToken = (token: string): TokenDetails => {
-  const { iss, exp, iat, role } = jwtDecode<WebshopPayload & JwtPayload>(token);
+const destructureToken = (token: string): WebshopToken => {
+  const { iss, exp, iat, role, username, fullName } = jwtDecode<
+    WebshopPayload & JwtPayload
+  >(token);
 
   return {
     issuer: iss!,
     expiresAt: exp!,
     issuedAt: iat!,
     role,
+    username,
+    fullName,
   };
 };
 

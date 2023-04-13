@@ -98,6 +98,7 @@ public class JwtUtility {
     return JWT.create()
       .withIssuer(this.tokenIssuer)
       .withClaim("username", principal.getUsername())
+      .withClaim("fullName", principal.getUserAccount().getFullName())
       .withClaim("role", principal.getUserAccount().getRole().toString())
       .withIssuedAt(Instant.now())
       .withExpiresAt(Instant.now().plus(expirationMillis, ChronoUnit.MILLIS))
