@@ -32,5 +32,5 @@ public record CreateProductRequest(
       "1": 1,
       "2": 2
     }
-    """) @Nullable @Size(min = 1) Map<Long, Integer> children
+    """) @Nullable Map<Long, Integer> children
 ) {}
