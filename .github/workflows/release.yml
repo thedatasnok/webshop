@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-storefront:
-    name: Publish dashboard artifact
+    name: Publish storefront artifact
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -51,7 +51,7 @@ jobs:
           registry-password: ${{ secrets.GITHUB_TOKEN }}
 
   publish-migrations:
-    name: Publish backend artifact
+    name: Publish migrations artifact
     runs-on: ubuntu-latest
     permissions:
       packages: write
