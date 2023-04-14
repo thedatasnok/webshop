@@ -53,7 +53,7 @@ const ProductBrowser = () => {
             </p>
           </div>
           <section id='categories'>
-            <div className='mx-auto mt-10 mb-5 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
+            <div className='mx-auto mb-5 mt-10 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
               {categories?.map((category, i) => (
                 <button
                   onClick={() => handleCategoryClick(category)}
@@ -107,7 +107,7 @@ const ProductBrowser = () => {
           <section id='products'>
             <div
               className={clsx({
-                'grid grid-cols-2 gap-2 sm:grid-cols-3 lg:sm:grid-cols-4':
+                'grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5':
                   isGridSelected,
                 'mx-auto grid grid-cols-1': !isGridSelected,
               })}
@@ -116,6 +116,7 @@ const ProductBrowser = () => {
                 <div key={product.id}>
                   {isGridSelected ? (
                     <ProductCard
+                      id={product.id}
                       to={'/products/' + product.id}
                       name={product.name}
                       previousPrice={product.previousPrice}

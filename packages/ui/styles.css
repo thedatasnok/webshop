@@ -27,6 +27,16 @@ body {
     clip-path: polygon(0 0, 100% 0, 100% 92.5%, 92.5% 100%, 0 100%, 0 7.5%);
   }
 
+  /* clips only the top left corner */
+  .clip-corner-tl-sm {
+    clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%, 0 5%);
+  }
+
+  /* clips only the top right corner */
+  .clip-corner-tl-hero {
+    clip-path: polygon(2% 0, 100% 0, 100% 100%, 0 100%, 0 5%);
+  }
+
   .hide-scroll-bar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -46,7 +56,8 @@ body {
 }
 
 .icon-fill-primary {
-  filter: invert(82%) sepia(64%) saturate(549%) hue-rotate(101deg) brightness(111%) contrast(105%);
+  filter: invert(82%) sepia(64%) saturate(549%) hue-rotate(101deg)
+    brightness(111%) contrast(105%);
 }
 
 ::-webkit-scrollbar {

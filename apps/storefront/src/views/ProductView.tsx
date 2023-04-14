@@ -47,7 +47,7 @@ const ProductView = () => {
               src={productInfo?.imageUrls[0]}
               alt={undefined || productInfo?.name}
             />
-            <div className='bg-base-900 font-title absolute bottom-0 right-1/4 translate-y-1/2 translate-x-full px-2 py-1 font-bold uppercase tracking-widest '>
+            <div className='bg-base-900 font-title absolute bottom-0 right-1/4 translate-x-full translate-y-1/2 px-2 py-1 font-bold uppercase tracking-widest '>
               #98320
             </div>
           </div>
@@ -183,15 +183,16 @@ const ProductView = () => {
           </div>
         </div>
 
-        <h2 className='font-title mt-16 mb-4 text-center text-2xl font-bold uppercase tracking-wider sm:mt-32'>
+        <h2 className='font-title mb-4 mt-16 text-center text-2xl font-bold uppercase tracking-wider sm:mt-32'>
           Related products
         </h2>
 
         <section id='products-temp'>
-          <div className='mx-auto grid w-fit max-w-screen-xl grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-3'>
-            {products?.map((product, i) => (
+          <div className='mx-auto grid w-fit max-w-screen-xl grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
+            {products?.map((product) => (
               <ProductCard
                 key={product.id}
+                id={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
                 previousPrice={product.previousPrice}
