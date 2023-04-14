@@ -58,4 +58,37 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       @Param("allowEmptyIdList") Boolean allowEmptyIdList
   );
 
+  /**
+   * Finds a list of featured products, these are the 10 products that are currently on sale or have
+   * recently been created.
+   * 
+   * @return a list of featured products
+   */
+  @Query("""
+    SELECT new no.ntnu.webshop.contracts.product.ProductListItem(
+      p.id,
+      p.name,
+      p.shortDescription,
+      p.imageUrls,
+      pp.price,
+      pp.isDiscount,
+      prev_pp.price
+    )
+    FROM Product p
+    INNER JOIN ProductPrice pp
+      ON pp.product = p
+      AND pp.from <= NOW()
+      AND pp.to IS NULL
+    LEFT JOIN ProductPrice prev_pp
+      ON prev_pp.product = p
+      AND prev_pp.to = pp.from
+    ORDER BY
+      pp.isDiscount DESC,
+      p.id DESC
+    LIMIT 10
+    """)
+  // NOTE: the query assumes that higher ID = newer product, which is typically the case but can also
+  // not be true. would have to add a created_at column in order to garuantee this
+  List<ProductListItem> findFeaturedProducts();
+
 }

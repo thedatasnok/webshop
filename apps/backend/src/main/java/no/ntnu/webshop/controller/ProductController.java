@@ -61,6 +61,12 @@ public class ProductController {
     return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds));
   }
 
+  @Operation(summary = "Finds a list of featured products")
+  @GetMapping("/featured")
+  public ResponseEntity<List<ProductListItem>> findFeaturedProducts() {
+    return ResponseEntity.ok(this.productJpaRepository.findFeaturedProducts());
+  }
+
   @Operation(summary = "Finds a product by its id")
   @GetMapping("/{id}")
   public ResponseEntity<ProductDetails> findProductById(

@@ -1,5 +1,5 @@
 import { ProductDetails, ProductListItem } from '@webshop/contracts';
-import { buildQueryParams, QueryParams, webshopApi } from '@webshop/ui';
+import { QueryParams, buildQueryParams, webshopApi } from '@webshop/ui';
 
 export interface FindProductsQueryParams extends QueryParams {
   id?: number[];
@@ -20,6 +20,13 @@ export const productsApi = webshopApi.injectEndpoints({
     }),
 
     /**
+     * Finds all featured products.
+     */
+    featuredProducts: builder.query<ProductListItem[], void>({
+      query: () => '/v1/products/featured',
+    }),
+
+    /**
      * Finds a product by id
      */
     findProduct: builder.query<ProductDetails, number>({
@@ -28,4 +35,8 @@ export const productsApi = webshopApi.injectEndpoints({
   }),
 });
 
-export const { useFindProductQuery, useFindProductsQuery } = productsApi;
+export const {
+  useFindProductQuery,
+  useFeaturedProductsQuery,
+  useFindProductsQuery,
+} = productsApi;

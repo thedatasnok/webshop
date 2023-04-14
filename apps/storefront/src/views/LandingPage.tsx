@@ -6,16 +6,14 @@ import ExternalLink from '@/components/navigation/ExternalLink';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
-import { useFindProductsQuery } from '@/services/products';
+import { useFeaturedProductsQuery } from '@/services/products';
 import { TESTIMONIALS } from '@/static/testimonials';
 import { RiArrowRightLine, RiCpuLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
   const { data: categories } = useGetCategoriesQuery();
-  const { data: products } = useFindProductsQuery({
-    featured: true,
-  });
+  const { data: products } = useFeaturedProductsQuery();
 
   return (
     <PageLayout>
