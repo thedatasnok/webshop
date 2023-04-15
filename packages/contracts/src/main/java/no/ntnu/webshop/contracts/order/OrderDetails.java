@@ -12,6 +12,7 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 public record OrderDetails(
   Long id,
   String customerName,
+  String customerEmail,
   Date orderedAt,
   AddressDto deliveryAddress,
   AddressDto billingAddress,

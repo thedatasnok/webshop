@@ -64,6 +64,9 @@ public class Order {
   @Column(name = "customer_name")
   private String customerName;
 
+  @Column(name = "customer_email")
+  private String customerEmail;
+
   @Embedded
   @AttributeOverride(name = "country", column = @Column(name = "delivery_country"))
   @AttributeOverride(name = "postalCode", column = @Column(name = "delivery_postal_code"))
@@ -123,6 +126,7 @@ public class Order {
   ) {
     this.customer = customer;
     this.customerName = customer.getFullName();
+    this.customerEmail = customer.getEmail();
     this.deliveryAddress = deliveryAddress;
     this.invoiceAddress = invoiceAddress;
     this.paymentMethod = paymentMethod;
