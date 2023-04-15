@@ -3,6 +3,7 @@ package no.ntnu.webshop.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -55,7 +56,8 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       @Param("id") List<Long> ids,
       @Param("name") Optional<String> name,
       @Param("category") List<Integer> category,
-      @Param("allowEmptyIdList") Boolean allowEmptyIdList
+      @Param("allowEmptyIdList") Boolean allowEmptyIdList,
+      Sort direction
   );
 
   /**
@@ -90,5 +92,45 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
   // NOTE: the query assumes that higher ID = newer product, which is typically the case but can also
   // not be true. would have to add a created_at column in order to garuantee this
   List<ProductListItem> findFeaturedProducts();
+
+  /**
+   * Finds a list of products sorted by its relation to a given product. Related products are products
+   * existing in the same categories as the given product.
+   * 
+   * @param id the id of the product to find related products for
+   * 
+   * @return a list of products, sorted by their relation to the given product
+   */
+  @Query("""
+    SELECT new no.ntnu.webshop.contracts.product.ProductListItem(
+      p.id,
+      p.name,
+      p.shortDescription,
+      p.imageUrls,
+      pp.price,
+      pp.isDiscount,
+      prev_pp.price
+    )
+    FROM Product p
+    INNER JOIN ProductPrice pp
+      ON pp.product = p
+      AND pp.from <= NOW()
+      AND pp.to IS NULL
+    LEFT JOIN ProductPrice prev_pp
+      ON prev_pp.product = p
+      AND prev_pp.to = pp.from
+    LEFT JOIN p.categories c
+    WHERE p.id != :id
+    ORDER BY CASE WHEN c.id IN (
+      SELECT DISTINCT related_category.id
+      FROM Product related_product
+      INNER JOIN related_product.categories related_category
+      WHERE related_product.id = :id
+    ) THEN TRUE ELSE FALSE END DESC
+    LIMIT 10
+    """)
+  List<ProductListItem> findRelatedProducts(
+      @Param("id") Long id
+  );
 
 }

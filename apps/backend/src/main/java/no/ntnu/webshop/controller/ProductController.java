@@ -3,6 +3,8 @@ package no.ntnu.webshop.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,11 +56,27 @@ public class ProductController {
       @Parameter(description = "A list of categories the products should be associated with")
       @RequestParam(value = "categoryId", required = false) List<Integer> category,
       @Parameter(description = "If true, the query will return products without being passed a list of ids.")
-      @RequestParam(value = "allowEmptyIdList", required = false) Optional<Boolean> allowEmptyIdList
+      @RequestParam(value = "allowEmptyIdList", required = false) Optional<Boolean> allowEmptyIdList,
+      @Parameter(description = "The column to sort by, can be id, name, price or discount")
+      @RequestParam(value = "sortBy", required = false) Optional<String> sortBy,
+      @Parameter(description = "The direction to sort by, can be asc or desc")
+      @RequestParam(value = "sortDirection", required = false) Optional<Direction> sortDirection
   ) {
     var allowEmptyIds = allowEmptyIdList.orElse(true);
 
-    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds));
+    // maps the sortBy parameter to the correct column name in the query
+    // if the parameter is not recognized, the default is to sort by id, could also throw an exception
+    // if that is more suited
+    var column = switch (sortBy.orElse("id").toLowerCase()) {
+      case "name" -> "p.name";
+      case "price" -> "pp.price";
+      case "discount" -> "pp.isDiscount";
+      default -> "p.id";
+    };
+
+    var sort = Sort.by(sortDirection.orElse(Direction.ASC), column);
+
+    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds, sort));
   }
 
   @Operation(summary = "Finds a list of featured products")
@@ -76,6 +94,17 @@ public class ProductController {
       throw new ProductNotFoundException("Could not find product with id: " + id);
 
     return ResponseEntity.ok(this.productJdbcRepository.findById(id));
+  }
+
+  @Operation(summary = "Finds a list of related products by a given products id")
+  @GetMapping("/{id}/related")
+  public ResponseEntity<List<ProductListItem>> findRelatedProducts(
+      @PathVariable Long id
+  ) {
+    if (!this.productJpaRepository.existsById(id))
+      throw new ProductNotFoundException("Cannot find related products for non a existing product");
+
+    return ResponseEntity.ok(this.productJpaRepository.findRelatedProducts(id));
   }
 
   @Operation(summary = "Creates a new product")

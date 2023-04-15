@@ -5,20 +5,29 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
+import { SortByField, SortDirection } from '@webshop/ui';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { RiGridFill, RiListCheck } from 'react-icons/ri';
 import { useSearchParams } from 'react-router-dom';
 
+const PRODUCT_SORT_FIELDS = ['Price', 'Name', 'Discount'];
+
 const ProductBrowser = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramCategoryId = searchParams.get('category');
   const parsedCategoryId = paramCategoryId
-    ? parseInt(paramCategoryId)
+    ? Number(paramCategoryId)
     : undefined;
+
+  const paramSortField = searchParams.get('sortBy') || PRODUCT_SORT_FIELDS[0];
+  const paramSortDirection =
+    (searchParams.get('sortDirection') as SortDirection) || SortDirection.ASC;
 
   const { data: products } = useFindProductsQuery({
     categoryId: parsedCategoryId ? [parsedCategoryId] : undefined,
+    sortBy: paramSortField,
+    sortDirection: paramSortDirection,
   });
 
   const { data: categories } = useGetCategoriesQuery();
@@ -35,11 +44,25 @@ const ProductBrowser = () => {
 
   function handleCategoryClick(category: CategoryDto) {
     if (parsedCategoryId === category.id) {
-      setSearchParams({});
+      setSearchParams((old) => {
+        old.delete('category');
+        return old;
+      });
     } else {
-      setSearchParams({ category: category.id.toString() });
+      setSearchParams((old) => {
+        old.set('category', category.id.toString());
+        return old;
+      });
     }
   }
+
+  const onSortChange = (field: string, direction: SortDirection) => {
+    setSearchParams((old) => {
+      old.set('sortBy', field);
+      old.set('sortDirection', direction);
+      return old;
+    });
+  };
 
   return (
     <PageLayout>
@@ -73,18 +96,13 @@ const ProductBrowser = () => {
             <h2 className=''>showing x results for ""</h2>
 
             <div className='my-2 mr-0 flex items-center sm:gap-2'>
-              <div className='w-full'>
-                <select
-                  id='sort'
-                  defaultValue='name'
-                  className='bg-base-800 border-base-800 h-8 w-full border'
-                >
-                  <option value='name'>Name</option>
-                  <option value='pricelowtohigh'>Price low-high</option>
-                  <option value='pricehightolow'>Price high-low</option>
-                  <option value='discount'>Discount</option>
-                </select>
-              </div>
+              <span>Sort:</span>
+              <SortByField
+                direction={paramSortDirection}
+                field={paramSortField}
+                fields={PRODUCT_SORT_FIELDS}
+                onChange={onSortChange}
+              />
 
               <button onClick={handleGridButtonClick}>
                 <RiGridFill
