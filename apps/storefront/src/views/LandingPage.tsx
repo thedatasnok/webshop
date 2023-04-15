@@ -8,7 +8,7 @@ import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFeaturedProductsQuery } from '@/services/products';
 import { TESTIMONIALS } from '@/static/testimonials';
-import { RiArrowRightLine, RiCpuLine } from 'react-icons/ri';
+import { RiArrowRightLine, RiCpuLine, RiStore2Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const LandingPage = () => {
@@ -102,6 +102,21 @@ const LandingPage = () => {
                 className='w-48 flex-shrink-0'
               />
             ))}
+            {products && products.length > 1 && (
+              <NavLink
+                to={RouteHref.PRODUCTS}
+                className='border-base-800 bg-base-800/30 hover:bg-primary-900/10 hover:text-primary-600 hover:border-primary-800 flex w-48 flex-col items-center justify-center rounded-sm border'
+              >
+                <RiStore2Line className='h-16 w-16' />
+
+                <div className='flex items-center'>
+                  <span className='font-title font-semibold uppercase'>
+                    Browse more
+                  </span>
+                  <RiArrowRightLine className='h-5 w-5' />
+                </div>
+              </NavLink>
+            )}
           </div>
         </section>
 
