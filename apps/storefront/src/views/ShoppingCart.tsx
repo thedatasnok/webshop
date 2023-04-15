@@ -8,6 +8,7 @@ import { Button } from '@webshop/ui';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { formatPrice } from '@webshop/ui/src/utilities';
 
 const ShoppingCart = () => {
   const { items, isEmpty } = useCart();
@@ -90,7 +91,8 @@ const ShoppingCart = () => {
                 className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
               >
                 <a className='self-end sm:py-4'>
-                  Sum: ${totalPrice?.toFixed(2)}
+                  {/* default value to 0 if products are not loaded  */}
+                  Sum: {formatPrice(totalPrice || 0)}
                 </a>
               </div>
               <div id='checkout' className='flex w-full justify-end text-xl'>
@@ -141,10 +143,12 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
             'flex flex-row items-center': !isDiscount,
           })}
         >
-          <h3 className='flex w-16 justify-end text-xl'>${totalPrice}</h3>
+          <h3 className='flex w-16 justify-end text-xl'>
+            {formatPrice(totalPrice)}
+          </h3>
           {isDiscount && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              -${previousTotal - totalPrice}
+              -{formatPrice(previousTotal - totalPrice)}
             </div>
           )}
         </div>

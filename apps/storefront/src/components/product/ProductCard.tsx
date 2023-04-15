@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
+import { formatPrice } from '@webshop/ui/src/utilities';
 
 interface ProductCardProps {
   id: number;
@@ -24,8 +25,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   image = 'https://placehold.co/256x256/007676/007676.png',
   className,
 }) => {
-  const formatter = Intl.NumberFormat('en-US');
-
   return (
     <NavLink
       to={to}
@@ -59,11 +58,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             isDiscount && 'text-primary-600'
           )}
         >
-          ${formatter.format(price)}
+          {formatPrice(price)}
         </span>
         {isDiscount && (
           <span className='text-base-400 ml-2 text-sm'>
-            PREV. ${formatter.format(previousPrice)}
+            PREV. {formatPrice(previousPrice)}
           </span>
         )}
       </p>

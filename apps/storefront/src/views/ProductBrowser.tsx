@@ -5,6 +5,7 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
+import { formatPrice } from '@webshop/ui/src/utilities';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { RiGridFill, RiListCheck } from 'react-icons/ri';
@@ -168,11 +169,11 @@ const ProductListActions: React.FC<ProductListActionsProps> = ({
           '': !isDiscount,
         })}
       >
-        ${price}
+        {formatPrice(price)}
       </h3>
       {isDiscount && (
         <div className='text-base-400 ml-1 mt-1 flex justify-end whitespace-nowrap line-through'>
-          ${previousPrice}
+          {formatPrice(previousPrice)}
         </div>
       )}
     </div>

@@ -6,6 +6,7 @@ import { useFindProductsQuery } from '@/services/products';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
+import { formatPrice } from '@webshop/ui/src/utilities';
 import {
   Button,
   InputLabel,
@@ -301,7 +302,8 @@ const Checkout = () => {
                   className='font-title w-full rounded-sm text-2xl font-semibold uppercase'
                   type='submit'
                 >
-                  Pay: ${totalPrice}
+                  {/* default value to 0 if products are not loaded  */}
+                  Pay: {formatPrice(totalPrice || 0)}
                 </Button>
               </div>
             </div>
@@ -360,11 +362,11 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
       </span>
       <div className='flex flex-col items-end gap-1'>
         <h3 className='flex w-16 items-end justify-end text-xl'>
-          ${totalPrice}
+          {formatPrice(totalPrice)}
         </h3>
         {isDiscount && (
           <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-            -${previousTotal - totalPrice}
+            -{formatPrice(previousTotal - totalPrice)}
           </div>
         )}
       </div>
