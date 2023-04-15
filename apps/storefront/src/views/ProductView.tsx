@@ -1,11 +1,13 @@
 import PageLayout from '@/components/layout/PageLayout';
+import NavigationItem from '@/components/navigation/NavigationItem';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
 import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
-import { RiArrowUpSLine } from 'react-icons/ri';
+import { formatPrice } from '@webshop/ui/src/utilities';
+import { RiArrowUpSLine, RiStore2Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 
@@ -20,6 +22,40 @@ const ProductView = () => {
       dispatch(addToCart(productInfo.id));
     }
   };
+
+  if (!productInfo) {
+    return (
+      <main>
+        <div>
+          <PageLayout>
+            <div className='mx-auto mt-4 max-w-screen-xl pb-2'>
+              <div className='text-base-400 space-x-2 text-sm'>
+                <NavLink to={RouteHref.HOME} className='hover:underline'>
+                  Home
+                </NavLink>
+                <span>/</span>
+                <NavLink to={RouteHref.PRODUCTS} className='hover:underline'>
+                  Browse
+                </NavLink>
+              </div>
+            </div>
+
+            <div className='flex flex-col items-center sm:py-8 bg-base-800/20 mx-auto max-w-screen-xl w-full justify-center border border-primary/60'>
+              <p className='font-title flex text-4xl font-semibold'>#{id}</p>
+              <p className='pb-4'>product does not exist</p>
+              <div className=''>
+                <NavigationItem
+                  to={RouteHref.PRODUCTS}
+                  name='Click here to browse products'
+                  icon={RiStore2Line}
+                />
+              </div>
+            </div>
+          </PageLayout>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <PageLayout>
@@ -59,7 +95,7 @@ const ProductView = () => {
               {productInfo?.description}
             </p>
             <h2 className='text-base-50 text-xl font-semibold'>
-              {'$' + productInfo?.price}
+              {formatPrice(productInfo?.price)}
             </h2>
             <Button
               onClick={add}
