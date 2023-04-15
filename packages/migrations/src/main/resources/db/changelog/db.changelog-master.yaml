@@ -84,3 +84,11 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/0.7.0/add-product-families.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 0.8.0-order-customer-email
+      author: GBFur
+      dbms: postgresql
+      changes:
+        - sqlFile:
+            path: changelog/0.8.0/add-order-customer-email.sql
+            relativeToChangelogFile: true

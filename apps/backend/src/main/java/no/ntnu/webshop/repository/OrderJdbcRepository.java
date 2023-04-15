@@ -51,6 +51,7 @@ public class OrderJdbcRepository {
         SELECT
           o.order_id,
           o.customer_name,
+          o.customer_email,
           o.ordered_at,
           o.order_status,
           o.payment_status,
@@ -108,6 +109,7 @@ public class OrderJdbcRepository {
         return OrderDetails.builder()
           .id(rs.getLong("order_id"))
           .customerName(rs.getString("customer_name"))
+          .customerEmail(rs.getString("customer_email"))
           .orderedAt(rs.getTimestamp("ordered_at"))
           .deliveryAddress(
             new AddressDto(
