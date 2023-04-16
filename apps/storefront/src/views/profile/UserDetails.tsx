@@ -5,6 +5,7 @@ import {
   useSignOutMutation,
   ErrorLabel,
   InputLabel,
+  useAuth,
 } from '@webshop/ui';
 import { useForm, zodResolver } from '@mantine/form';
 import { UpdateUserProfileRequest } from '@webshop/contracts';
@@ -31,6 +32,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
       }
     };
 
+    const { tokenDetails } = useAuth();
+
     const schema = z
       .object({
         email: z.string().email({ message: 'Invalid email' }),
@@ -50,8 +53,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     const form = useForm({
       validate: zodResolver(schema),
       initialValues: {
-        email: '',
-        fullName: '',
+        email: tokenDetails?.username || '',
+        fullName: tokenDetails?.fullName || '',
         password: '',
         passwordConfirmation: '',
       },
