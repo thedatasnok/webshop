@@ -1,6 +1,6 @@
 export type QueryParams = Record<
   string,
-  string | number | boolean | string[] | number[] | undefined
+  string | number | boolean | string[] | number[] | undefined | null
 >;
 
 /**
@@ -18,7 +18,7 @@ export const buildQueryParams = (params: QueryParams) => {
   };
 
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined) {
+    if (value !== undefined && value !== null) {
       if (Array.isArray(value)) {
         value.forEach((v) => append(key, v));
       } else {

@@ -17,6 +17,7 @@ const PRODUCT_SORT_FIELDS = ['Price', 'Name', 'Discount'];
 const ProductBrowser = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramCategoryId = searchParams.get('category');
+  const paramSearch = searchParams.get('search');
   const parsedCategoryId = paramCategoryId
     ? Number(paramCategoryId)
     : undefined;
@@ -29,6 +30,7 @@ const ProductBrowser = () => {
     categoryId: parsedCategoryId ? [parsedCategoryId] : undefined,
     sortBy: paramSortField,
     sortDirection: paramSortDirection,
+    name: paramSearch,
   });
 
   const { data: categories } = useGetCategoriesQuery();
@@ -70,15 +72,18 @@ const ProductBrowser = () => {
       <main>
         <div className='mx-auto w-full max-w-screen-xl'>
           <div id='cart-title' className='py-4'>
-            <h1 className='mb-4 flex text-3xl'>Browse</h1>
-            <p>
+            <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase'>
+              Browse
+            </h1>
+
+            <p className='text-base-300 text-sm'>
               Explore our newest insane gaming gear that will enhance your aim
               in CS:GO Source 7 and Half life 3
             </p>
           </div>
           <section id='categories'>
-            <div className='mx-auto mb-5 mt-10 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
-              {categories?.map((category, i) => (
+            <div className='mx-auto my-2 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
+              {categories?.map((category) => (
                 <button
                   onClick={() => handleCategoryClick(category)}
                   key={category.id}
@@ -93,11 +98,20 @@ const ProductBrowser = () => {
               ))}
             </div>
           </section>
-          <div className='mt-12 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between'>
-            <h2 className=''>showing x results for ""</h2>
+          <div className='mt-2 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between'>
+            <h2
+              className={clsx(
+                'text-base-200 font-title text-sm font-semibold uppercase tracking-wide',
+                !paramSearch && 'invisible'
+              )}
+            >
+              Showing {products?.length} results for "{paramSearch}"
+            </h2>
 
             <div className='my-2 mr-0 flex items-center sm:gap-2'>
-              <span>Sort:</span>
+              <span className='text-base-200 font-title text-sm font-semibold uppercase tracking-wide'>
+                Sorting by
+              </span>
               <SortByField
                 direction={paramSortDirection}
                 field={paramSortField}
@@ -105,21 +119,27 @@ const ProductBrowser = () => {
                 onChange={onSortChange}
               />
 
-              <button onClick={handleGridButtonClick}>
-                <RiGridFill
-                  className={clsx('h-8 w-8', {
-                    'text-primary-300': isGridSelected,
-                  })}
-                ></RiGridFill>
-              </button>
+              <div className='flex items-center'>
+                <button
+                  onClick={handleGridButtonClick}
+                  className={clsx(
+                    'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
+                    isGridSelected && 'text-primary'
+                  )}
+                >
+                  <RiGridFill className='h-7 w-7' />
+                </button>
 
-              <button onClick={handleListButtonClick}>
-                <RiListCheck
-                  className={clsx('h-8 w-8', {
-                    'text-primary-300': !isGridSelected,
-                  })}
-                />
-              </button>
+                <button
+                  onClick={handleListButtonClick}
+                  className={clsx(
+                    'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
+                    !isGridSelected && 'text-primary'
+                  )}
+                >
+                  <RiListCheck className='h-7 w-7' />
+                </button>
+              </div>
             </div>
           </div>
 

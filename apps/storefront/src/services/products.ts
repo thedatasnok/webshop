@@ -3,7 +3,7 @@ import { QueryParams, buildQueryParams, webshopApi } from '@webshop/ui';
 
 export interface FindProductsQueryParams extends QueryParams {
   id?: number[];
-  name?: string;
+  name?: string | null;
   short_description?: string;
   categoryId?: number[];
   allowEmptyIdList?: boolean;
