@@ -8,7 +8,7 @@ import {
 } from '@webshop/ui';
 import { useForm, zodResolver } from '@mantine/form';
 import { UpdateUserProfileRequest } from '@webshop/contracts';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { RiLogoutBoxLine } from 'react-icons/ri';
 import { z } from 'zod';
 import clsx from 'clsx';
@@ -30,13 +30,6 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
         console.log(err);
       }
     };
-
-    const [showChangePasswordFields, setShowChangePasswordFields] =
-      useState(false);
-
-    function handleChangePasswordClick() {
-      setShowChangePasswordFields((prevState) => !prevState);
-    }
 
     const schema = z
       .object({
@@ -91,56 +84,39 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
             )}
           </div>
 
-          {showChangePasswordFields && (
+          <div>
             <div>
-              <div>
-                <InputLabel>Password</InputLabel>
-                <TextField
-                  type='password'
-                  {...form.getInputProps('password')}
-                />
-                {form.errors.password && (
-                  <ErrorLabel text={form.errors.password as string} />
-                )}
-              </div>
-
-              <div>
-                <InputLabel>Confirm password</InputLabel>
-                <TextField
-                  type='password'
-                  {...form.getInputProps('passwordConfirmation')}
-                />
-                {form.errors.passwordConfirmation && (
-                  <ErrorLabel
-                    text={form.errors.passwordConfirmation as string}
-                  />
-                )}
-              </div>
+              <InputLabel>New password</InputLabel>
+              <TextField type='password' {...form.getInputProps('password')} />
+              {form.errors.password && (
+                <ErrorLabel text={form.errors.password as string} />
+              )}
             </div>
-          )}
+
+            <div>
+              <InputLabel>Confirm new password</InputLabel>
+              <TextField
+                type='password'
+                {...form.getInputProps('passwordConfirmation')}
+              />
+              {form.errors.passwordConfirmation && (
+                <ErrorLabel text={form.errors.passwordConfirmation as string} />
+              )}
+            </div>
+          </div>
 
           <div className='mt-2 flex justify-between gap-4'>
-            <Button
-              className={clsx(
-                'text-primary border-primary rounded-sm border bg-transparent px-4',
-                showChangePasswordFields && 'invisible'
-              )}
-              onClick={handleChangePasswordClick}
-              type='button'
+            <button
+              onClick={() => signOut()}
+              className='border-error text-error mt-2 flex items-center gap-0.5 rounded-sm border bg-transparent px-2 py-1 pr-2.5'
             >
-              Change password
-            </Button>
+              <RiLogoutBoxLine />
+              <p>Sign out</p>
+            </button>
+
             <Button type='submit'>Save</Button>
           </div>
         </form>
-
-        <button
-          onClick={() => signOut()}
-          className='border-error text-error mt-2 flex items-center gap-0.5 rounded-sm border bg-transparent px-2 py-1 pr-2.5'
-        >
-          <RiLogoutBoxLine />
-          <p>Sign out</p>
-        </button>
       </div>
     );
   }
