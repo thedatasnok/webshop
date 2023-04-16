@@ -159,4 +159,26 @@ public class Product {
     this.prices.add(price);
   }
 
+  /**
+   * Checks whether the product adheres to the family's defined attribute map.
+   * 
+   * @return true if the product adhered to the family's defined attribute map, false otherwise
+   */
+  public boolean isAttributesValid() {
+    if (this.family == null || this.family.getAttributeMap() == null)
+      return true;
+
+    for (var key : this.family.getAttributeMap().keySet()) {
+      // missing attribute
+      if (!this.attributes.containsKey(key))
+        return false;
+
+      // the value of the attribute is not within the family's defined values
+      if (!this.family.getAttributeMap().get(key).contains(this.attributes.get(key)))
+        return false;
+    }
+
+    return true;
+  }
+
 }
