@@ -1,12 +1,11 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { useFindProductsQuery } from '@/services/products';
+import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
-import { formatPrice } from '@webshop/ui/src/utilities';
 import {
   Button,
   InputLabel,
@@ -15,6 +14,7 @@ import {
   RadioGroup,
   ShippingMethod,
   TextField,
+  formatPrice,
 } from '@webshop/ui';
 import { useState } from 'react';
 import {
