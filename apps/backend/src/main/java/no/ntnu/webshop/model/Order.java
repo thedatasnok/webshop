@@ -119,13 +119,14 @@ public class Order {
    */
   public Order(
       UserAccount customer,
+      String customerName,
       Address deliveryAddress,
       Address invoiceAddress,
       PaymentMethod paymentMethod,
       ShippingMethod shippingMethod
   ) {
     this.customer = customer;
-    this.customerName = customer.getFullName();
+    this.customerName = customerName;
     this.customerEmail = customer.getEmail();
     this.deliveryAddress = deliveryAddress;
     this.invoiceAddress = invoiceAddress;

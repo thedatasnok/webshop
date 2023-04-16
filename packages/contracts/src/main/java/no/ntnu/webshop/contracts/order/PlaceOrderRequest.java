@@ -11,6 +11,7 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 
 @GenerateTypeScript
 public record PlaceOrderRequest(
+  String customerName,
   @NotNull AddressDto shippingAddress,
   @Nullable AddressDto billingAddress,
   boolean differentBillingAddress,

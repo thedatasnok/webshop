@@ -105,6 +105,7 @@ public class UserContextOrderController {
 
     var order = new Order(
       customer,
+      orderRequest.customerName(),
       deliveryAddress,
       billingAddress,
       PaymentMethod.fromString(orderRequest.paymentMethod()),

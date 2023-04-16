@@ -1,12 +1,11 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { useFindProductsQuery } from '@/services/products';
+import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
-import { formatPrice } from '@webshop/ui/src/utilities';
 import {
   Button,
   InputLabel,
@@ -15,8 +14,9 @@ import {
   RadioGroup,
   ShippingMethod,
   TextField,
+  formatPrice,
+  useAuth,
 } from '@webshop/ui';
-import { useState } from 'react';
 import {
   RiBitCoinLine,
   RiClipboardLine,
@@ -29,7 +29,30 @@ import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+const schema = z.object({
+  customerName: z.string().nonempty(),
+  shippingAddress: z.object({
+    country: z
+      .string()
+      .min(2, { message: 'Name should have at least 2 letters' }),
+    city: z.string().min(2),
+    street: z.string().min(2),
+    postalCode: z.string().min(2),
+    careOf: z.string().optional(),
+  }),
+  billingAddress: z.object({
+    country: z.string(),
+    postalCode: z.string(),
+    city: z.string(),
+    street: z.string(),
+  }),
+  differentBillingAddress: z.boolean(),
+  shippingMethod: z.string(),
+  paymentMethod: z.string(),
+});
+
 const Checkout = () => {
+  const { tokenDetails } = useAuth();
   const { items } = useCart();
   const navigate = useNavigate();
   const { data: products } = useFindProductsQuery({
@@ -38,7 +61,6 @@ const Checkout = () => {
   });
 
   const [placeOrder] = usePlaceOrderMutation();
-  const [showBillingAddress, setShowBillingAddress] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
@@ -58,30 +80,10 @@ const Checkout = () => {
     return total + items[product.id] * product.price;
   }, 0);
 
-  const schema = z.object({
-    shippingAddress: z.object({
-      country: z
-        .string()
-        .min(2, { message: 'Name should have at least 2 letters' }),
-      city: z.string().min(2),
-      street: z.string().min(2),
-      postalCode: z.string().min(2),
-      careOf: z.string().optional(),
-    }),
-    billingAddress: z.object({
-      country: z.string(),
-      postalCode: z.string(),
-      city: z.string(),
-      street: z.string(),
-    }),
-    differentBillingAddress: z.boolean(),
-    shippingMethod: z.string(),
-    paymentMethod: z.string(),
-  });
-
   const form = useForm({
     validate: zodResolver(schema),
     initialValues: {
+      customerName: tokenDetails?.fullName ?? '',
       shippingAddress: {
         country: '',
         postalCode: '',
@@ -108,7 +110,6 @@ const Checkout = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) {
     const checked = e.target.checked;
-    setShowBillingAddress(checked);
     form.setFieldValue('differentBillingAddress', checked);
   }
 
@@ -134,42 +135,39 @@ const Checkout = () => {
           >
             <div className='flex flex-col rounded-sm'>
               <p className='text-xl'>Delivery information</p>
-              <hr className='text-base-600 pb-4'></hr>
+              <hr className='text-base-600 pb-4' />
               <div className='flex w-full flex-col gap-1'>
-                {!showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Address</h1>
-                )}
-
-                {showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Invoice Address</h1>
-                )}
-
                 <div>
                   <InputLabel>Name</InputLabel>
-                  <TextField placeholder='Full Name' />
+                  <TextField {...form.getInputProps('customerName')} />
                 </div>
-                <InputLabel>Country</InputLabel>
+
                 <div>
+                  <InputLabel>Country</InputLabel>
                   <TextField
                     {...form.getInputProps('shippingAddress.country')}
                   />
                 </div>
-                <InputLabel>City</InputLabel>
+
                 <div>
+                  <InputLabel>City</InputLabel>
                   <TextField {...form.getInputProps('shippingAddress.city')} />
                 </div>
-                <InputLabel>Street</InputLabel>
+
                 <div>
+                  <InputLabel>Street</InputLabel>
                   <TextField
                     {...form.getInputProps('shippingAddress.street')}
                   />
                 </div>
+
                 <div>
                   <InputLabel>Postal Code</InputLabel>
                   <TextField
                     {...form.getInputProps('shippingAddress.postalCode')}
                   />
                 </div>
+
                 <div>
                   <InputLabel>C/O Address (optional)</InputLabel>
                   <TextField
@@ -178,39 +176,48 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-            <div className='flex flex-row gap-2 p-2'>
+
+            <div className='flex items-center gap-2'>
               <input
+                id='different-billing-address'
                 type='checkbox'
                 className='border-base-600 bg-base-600'
                 onChange={handleDifferentBillingAddress}
               />
-              <p>Different billing address</p>
+ 
+              <InputLabel htmlFor='different-billing-address'>
+                Different billing address
+              </InputLabel>
             </div>
-            {showBillingAddress && (
+
+            {form.values.differentBillingAddress && (
               <div>
-                {showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Delivery Address</h1>
-                )}
+                <h1 className='font-title text-3xl'>Billing address</h1>
+
                 <div>
                   <InputLabel>Country</InputLabel>
                   <TextField
                     {...form.getInputProps('billingAddress.country')}
                   />
                 </div>
+
                 <div>
                   <InputLabel>City</InputLabel>
                   <TextField {...form.getInputProps('billingAddress.city')} />
                 </div>
+
                 <div>
                   <InputLabel>Street</InputLabel>
                   <TextField {...form.getInputProps('billingAddress.street')} />
                 </div>
+
                 <div>
                   <InputLabel>Postal Code</InputLabel>
                   <TextField
                     {...form.getInputProps('billingAddress.postalCode')}
                   />
                 </div>
+
                 <div>
                   <InputLabel>C/O Address (optional)</InputLabel>
                   <TextField {...form.getInputProps('billingAddress.careOf')} />
@@ -219,7 +226,7 @@ const Checkout = () => {
             )}
             <div className='mt-2'>
               <h2 className='font-title text-lg font-semibold uppercase'>
-                Shipping methods
+                Shipping method
               </h2>
 
               <RadioGroup
@@ -261,7 +268,7 @@ const Checkout = () => {
 
             <div className='mt-2 pb-8'>
               <h2 className='font-title text-lg font-semibold uppercase'>
-                Payment methods
+                Payment method
               </h2>
 
               <RadioGroup
