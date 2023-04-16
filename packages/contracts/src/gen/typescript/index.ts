@@ -63,6 +63,7 @@ export interface CreateItemRequest {
 export interface OrderDetails {
     id: number;
     customerName: string;
+    customerEmail: string;
     orderedAt: Date;
     deliveryAddress: AddressDto;
     billingAddress: AddressDto;
@@ -112,14 +113,29 @@ export interface UpdateProductPriceRequest {
 
 export interface CreateProductRequest {
     name: string;
+    shortName: string | null;
     description: string;
+    shortDescription: string | null;
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
+    familyId: number | null;
     /**
-     * The amount of items keyed by the item id.
+     * The attributes of the product, keyed by their name.
      */
-    items: { [index: string]: number };
+    attributes: { [index: string]: string } | null;
+    /**
+     * The amount of children products keyed by the item id.
+     */
+    children: { [index: string]: number } | null;
+}
+
+export interface ProductChildDetails {
+    id: number;
+    quantity: number;
+    name: string;
+    description: string;
+    attributes: { [index: string]: string };
 }
 
 export interface ProductDetails {
@@ -131,15 +147,8 @@ export interface ProductDetails {
     price: number;
     isDiscount: boolean;
     previousPrice: number;
-    items: ProductItemDetails[];
-}
-
-export interface ProductItemDetails {
-    id: number;
-    quantity: number;
-    name: string;
-    description: string;
-    attributes: { [index: string]: string };
+    children: ProductChildDetails[];
+    variants: ProductVariant[];
 }
 
 export interface ProductListItem {
@@ -150,6 +159,18 @@ export interface ProductListItem {
     price: number;
     isDiscount: boolean;
     previousPrice: number;
+}
+
+export interface ProductVariant {
+    id: number;
+    shortName: string;
+}
+
+export interface CreateProductFamilyRequest {
+    name: string;
+    description: string;
+    sharedAttributes: { [index: string]: string };
+    attributeMap: { [index: string]: string[] };
 }
 
 export interface UpdateUserProfileRequest {

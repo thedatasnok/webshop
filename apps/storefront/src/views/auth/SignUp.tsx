@@ -87,11 +87,9 @@ const SignUp = () => {
     <div>
       <main>
         <div className='flex h-screen flex-col items-center justify-center'>
-          <div className='w-32 pb-10'>
-            <NavLink to={RouteHref.HOME} className='flex w-32 items-center'>
-              <Logo variant='small' />
-            </NavLink>
-          </div>
+          <NavLink to={RouteHref.HOME} className='w-32 pb-10'>
+            <Logo variant='small' />
+          </NavLink>
 
           <form
             id='sign-up-form'

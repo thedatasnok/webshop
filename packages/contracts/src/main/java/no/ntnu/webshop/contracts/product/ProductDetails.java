@@ -16,5 +16,6 @@ public record ProductDetails(
   Double price,
   Boolean isDiscount,
   Double previousPrice,
-  List<ProductChildDetails> children
+  List<ProductChildDetails> children,
+  List<ProductVariant> variants
 ) {}
