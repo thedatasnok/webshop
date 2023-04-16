@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.product.ProductDetails;
+import no.ntnu.webshop.contracts.product.ProductVariant;
 import no.ntnu.webshop.contracts.product.ProductChildDetails;
 import no.ntnu.webshop.error.model.MappingException;
 
@@ -22,6 +23,7 @@ public class ProductJdbcRepository {
 
   private static final TypeReference<List<String>> STRING_LIST_TYPE_REF = new TypeReference<>(){};
   private static final TypeReference<List<ProductChildDetails>> PRODUCT_CHILD_DETAILS_LIST_TYPE_REF = new TypeReference<>(){};
+  private static final TypeReference<List<ProductVariant>> PRODUCT_VARIANT_LIST_TYPE_REF = new TypeReference<>(){};
 
   /**
    * Finds a product by its id, including its items and price.
@@ -52,7 +54,11 @@ public class ProductJdbcRepository {
           'name', child.name,
           'description', child.description,
           'attributes', child.defined_attributes
-        )) FILTER (WHERE child.product_id IS NOT NULL), '[]') AS children
+        )) FILTER (WHERE child.product_id IS NOT NULL), '[]') AS children,
+        COALESCE(JSON_AGG(JSON_BUILD_OBJECT(
+          'id', p_variants.product_id,
+          'shortName', p_variants.short_name
+        )) FILTER (WHERE p_variants.product_id IS NOT NULL), '[]') AS variants
       FROM product p
       LEFT JOIN product_price pp ON
         (pp.fk_product_id = :id) AND
@@ -65,6 +71,8 @@ public class ProductJdbcRepository {
         ON p_child.fk_parent_id = :id
       LEFT JOIN product child
         ON child.product_id = p_child.fk_child_id
+      LEFT JOIN product p_variants
+        ON p_variants.fk_product_family_id = p.fk_product_family_id
       WHERE
         p.product_id = :id
       GROUP BY
@@ -82,7 +90,8 @@ public class ProductJdbcRepository {
           rs.getDouble("price"),
           rs.getBoolean("is_discount"),
           rs.getDouble("previous_price"),
-          this.objectMapper.readValue(rs.getString("children"), PRODUCT_CHILD_DETAILS_LIST_TYPE_REF)
+          this.objectMapper.readValue(rs.getString("children"), PRODUCT_CHILD_DETAILS_LIST_TYPE_REF),
+          this.objectMapper.readValue(rs.getString("variants"), PRODUCT_VARIANT_LIST_TYPE_REF)
         );
       } catch (Exception e) {
         throw new MappingException("Failed to convert product to ProductDetails");

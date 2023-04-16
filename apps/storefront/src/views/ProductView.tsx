@@ -7,6 +7,7 @@ import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button } from '@webshop/ui';
 import { formatPrice } from '@webshop/ui/src/utilities';
+import clsx from 'clsx';
 import { RiArrowUpSLine, RiStore2Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
@@ -40,7 +41,7 @@ const ProductView = () => {
               </div>
             </div>
 
-            <div className='flex flex-col items-center sm:py-8 bg-base-800/20 mx-auto max-w-screen-xl w-full justify-center border border-primary/60'>
+            <div className='bg-base-800/20 border-primary/60 mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center border sm:py-8'>
               <p className='font-title flex text-4xl font-semibold'>#{id}</p>
               <p className='pb-4'>product does not exist</p>
               <div className=''>
@@ -87,6 +88,7 @@ const ProductView = () => {
               #98320
             </div>
           </div>
+
           <div className='flex-1 px-4'>
             <h1 className='font-title text-base-50 mb-2 text-4xl font-bold uppercase'>
               {productInfo?.name}
@@ -94,6 +96,23 @@ const ProductView = () => {
             <p className='text-base-300 mb-8 max-w-lg'>
               {productInfo?.description}
             </p>
+
+            <div className='mb-2 flex flex-wrap items-center gap-1'>
+              {productInfo.variants.map((variant) => (
+                <NavLink
+                  key={variant.id}
+                  to={[RouteHref.PRODUCTS, variant.id].join('/')}
+                  className={clsx(
+                    'border-base-800 font-title rounded-sm border px-1 uppercase tracking-wide',
+                    variant.id === productInfo.id &&
+                      'border-primary text-primary bg-base-900/10'
+                  )}
+                >
+                  {variant.shortName}
+                </NavLink>
+              ))}
+            </div>
+
             <h2 className='text-base-50 text-xl font-semibold'>
               {formatPrice(productInfo?.price)}
             </h2>
