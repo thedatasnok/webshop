@@ -1,4 +1,4 @@
-import { PlaceOrderRequest } from '@webshop/contracts';
+import { OrderDetails, PlaceOrderRequest } from '@webshop/contracts';
 import { webshopApi } from '@webshop/ui/src/services/base';
 
 export const userContextOrdersApi = webshopApi.injectEndpoints({
@@ -23,7 +23,14 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
         },
       }),
     }),
+    /**
+     * Finds all orders in user context
+     */
+    findOrders: builder.query<OrderDetails[], void>({
+      query: () => '/v1/me/orders',
+    }),
   }),
 });
 
-export const { usePlaceOrderMutation } = userContextOrdersApi;
+export const { usePlaceOrderMutation, useFindOrdersQuery } =
+  userContextOrdersApi;
