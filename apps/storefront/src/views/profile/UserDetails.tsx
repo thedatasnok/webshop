@@ -42,8 +42,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
           .min(2, { message: 'Name should have at least 2 letters' }),
         password: z.string().min(10, {
           message: 'Password should contain atleast 10 characters',
-        }),
-        passwordConfirmation: z.string(),
+        }).nullable(),
+        passwordConfirmation: z.string().nullable(),
       })
       .refine((data) => data.password === data.passwordConfirmation, {
         message: "Passwords don't match",
@@ -60,7 +60,6 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
       },
     });
 
-    //TODO: allow submission of empty pw fields
     return (
       <div ref={ref} className={clsx(className)}>
         <h1 className='font-title mb-2 mt-4 hidden text-3xl font-semibold uppercase md:block'>
