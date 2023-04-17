@@ -24,40 +24,36 @@ const DialogPrompt: React.FC<DialogProps> = ({
     <Transition appear show={isOpen}>
       <Dialog
         as='div'
-        className='fixed inset-0 overflow-y-auto'
+        className='fixed left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto'
+        style={{ transform: 'translateY(-30%)' }}
         onClose={closeModal}
       >
-        {/* This element is to center the modal contents. */}
-        <span className='fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center'>
-          <span style={{ transform: 'translateY(-100%)' }}>
-            <Transition.Child
-              enter='ease-out duration-300'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'
+        <Transition.Child
+          enter='ease-out duration-300'
+          enterFrom='opacity-0 scale-95'
+          enterTo='opacity-100 scale-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100 scale-100'
+          leaveTo='opacity-0 scale-95'
+        >
+          <div className='border-primary-600 bg-base-900 flex max-h-screen max-w-md flex-col rounded-sm border p-6'>
+            <Dialog.Title
+              as='h3'
+              className='font-title text-xl font-semibold uppercase'
             >
-              <div className='border-primary-600 bg-base-900 flex max-w-md flex-col rounded-sm border p-6'>
-                <Dialog.Title
-                  as='h3'
-                  className='font-title text-xl font-semibold uppercase'
-                >
-                  {title}
-                </Dialog.Title>
-                <div className='mt-2'>
-                  <p className='text-sm'>{message}</p>
-                </div>
+              {title}
+            </Dialog.Title>
+            <div className='mt-2'>
+              <p className='text-sm'>{message}</p>
+            </div>
 
-                <div className='flex flex-row justify-between gap-2 pt-4'>
-                  <Button onClick={action}>{title}</Button>
+            <div className='flex flex-row justify-between gap-2 pt-4'>
+              <Button onClick={action}>{title}</Button>
 
-                  <Button onClick={closeModal}>cancel</Button>
-                </div>
-              </div>
-            </Transition.Child>
-          </span>
-        </span>
+              <Button onClick={closeModal}>cancel</Button>
+            </div>
+          </div>
+        </Transition.Child>
       </Dialog>
     </Transition>
   );
