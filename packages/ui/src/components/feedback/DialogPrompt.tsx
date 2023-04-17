@@ -24,8 +24,7 @@ const DialogPrompt: React.FC<DialogProps> = ({
     <Transition appear show={isOpen}>
       <Dialog
         as='div'
-        className='fixed left-0 top-0 flex h-full w-full items-center justify-center overflow-y-auto'
-        style={{ transform: 'translateY(-30%)' }}
+        className='bg-base-900/90 fixed top-0 flex h-full w-full justify-center pt-24'
         onClose={closeModal}
       >
         <Transition.Child
@@ -36,7 +35,7 @@ const DialogPrompt: React.FC<DialogProps> = ({
           leaveFrom='opacity-100 scale-100'
           leaveTo='opacity-0 scale-95'
         >
-          <div className='border-primary-600 bg-base-900 flex max-h-screen max-w-md flex-col rounded-sm border p-6'>
+          <div className='border-primary-600 bg-base-900 flex max-w-md flex-col rounded-sm border p-6'>
             <Dialog.Title
               as='h3'
               className='font-title text-xl font-semibold uppercase'
