@@ -43,19 +43,21 @@ const ShoppingCart = () => {
       <main>
         <div className='mx-auto max-w-screen-xl py-4'>
           <div id='cart-title' className='flex justify-between'>
-            <h1 className='font-title text-3xl'>Shopping cart</h1>
-            <button onClick={handleClearCart} className='text-sm underline'>
+            <h1 className='font-title text-2xl font-semibold uppercase'>
+              Shopping cart
+            </h1>
+            <button onClick={handleClearCart} className='text-xs underline'>
               clear cart
             </button>
           </div>
 
           <div className='font-title'>
             <div className='mr-2 flex flex-row justify-end gap-4 text-lg sm:mr-0 sm:gap-6 md:gap-7'>
-              <h3 className='hidden pr-2 sm:block sm:pr-14 md:pr-16'>
+              <h2 className='hidden pr-2 sm:block sm:pr-14 md:pr-16'>
                 Quantity
-              </h3>
-              <h3>Total</h3>
-              <h3 className='hidden sm:block'>Delete</h3>
+              </h2>
+              <h2>Total</h2>
+              <h2 className='hidden sm:block'>Delete</h2>
             </div>
           </div>
 
@@ -88,18 +90,19 @@ const ShoppingCart = () => {
             <div>
               <div
                 id='cart-total'
-                className='my-8 flex w-full justify-center text-xl sm:my-0 sm:flex-col'
+                className='flex w-full justify-center pt-2 text-xl sm:flex-col'
               >
-                <a className='self-end sm:py-4'>
+                <div className='font-title self-end text-xl font-semibold uppercase sm:pt-2'>
                   {/* default value to 0 if products are not loaded  */}
                   Sum: {formatPrice(totalPrice || 0)}
-                </a>
+                </div>
               </div>
-              <div id='checkout' className='flex w-full justify-end text-xl'>
+              <div
+                id='checkout'
+                className='flex w-full justify-center text-xl sm:justify-end'
+              >
                 <NavLink to={RouteHref.CHECKOUT}>
-                  <Button className='h-10 w-full px-6 font-semibold uppercase sm:w-fit'>
-                    Checkout
-                  </Button>
+                  <Button className='w-32'>Checkout</Button>
                 </NavLink>
               </div>
             </div>
@@ -143,9 +146,9 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
             'flex flex-row items-center': !isDiscount,
           })}
         >
-          <h3 className='flex w-16 justify-end text-xl'>
+          <div className='flex w-16 justify-end text-xl'>
             {formatPrice(totalPrice)}
-          </h3>
+          </div>
           {isDiscount && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
               -{formatPrice(previousTotal - totalPrice)}
@@ -227,19 +230,19 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
   return (
     <div className='bg-base-800/40 font-title relative mt-1 flex flex-row justify-end'>
       <button onClick={decrementQuantity} disabled={quantity === 1}>
-        <p
+        <div
           className={clsx('font-title mx-2 text-2xl sm:mx-4 sm:text-4xl ', {
             'text-base-600': quantity === 1,
           })}
         >
           -
-        </p>
+        </div>
       </button>
-      <p className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
+      <div className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
         {quantity}
-      </p>
+      </div>
       <button onClick={incrementQuantity}>
-        <p className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</p>
+        <div className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</div>
       </button>
     </div>
   );

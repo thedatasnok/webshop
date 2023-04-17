@@ -59,10 +59,13 @@ const Checkout = () => {
   }, 0);
 
   const schema = z.object({
+    fullName: z
+      .string()
+      .min(2, { message: 'Name should have at least 2 letters' }),
     shippingAddress: z.object({
       country: z
         .string()
-        .min(2, { message: 'Name should have at least 2 letters' }),
+        .min(2, { message: 'Country should have at least 2 letters' }),
       city: z.string().min(2),
       street: z.string().min(2),
       postalCode: z.string().min(2),
@@ -82,6 +85,7 @@ const Checkout = () => {
   const form = useForm({
     validate: zodResolver(schema),
     initialValues: {
+      fullName: '',
       shippingAddress: {
         country: '',
         postalCode: '',
@@ -133,33 +137,33 @@ const Checkout = () => {
             onSubmit={form.onSubmit(handleSubmit)}
           >
             <div className='flex flex-col rounded-sm'>
-              <p className='text-xl'>Delivery information</p>
+              <h1 className='font-title text-2xl font-semibold uppercase'>
+                Delivery information
+              </h1>
               <hr className='text-base-600 pb-4'></hr>
               <div className='flex w-full flex-col gap-1'>
-                {!showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Address</h1>
-                )}
-
                 {showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Invoice Address</h1>
+                  <h2 className='font-title text-xl font-semibold uppercase'>
+                    Invoice Address
+                  </h2>
                 )}
 
                 <div>
                   <InputLabel>Name</InputLabel>
-                  <TextField placeholder='Full Name' />
+                  <TextField {...form.getInputProps('fullName')} />
                 </div>
-                <InputLabel>Country</InputLabel>
                 <div>
+                  <InputLabel>Country</InputLabel>
                   <TextField
                     {...form.getInputProps('shippingAddress.country')}
                   />
                 </div>
-                <InputLabel>City</InputLabel>
                 <div>
+                  <InputLabel>City</InputLabel>
                   <TextField {...form.getInputProps('shippingAddress.city')} />
                 </div>
-                <InputLabel>Street</InputLabel>
                 <div>
+                  <InputLabel>Street</InputLabel>
                   <TextField
                     {...form.getInputProps('shippingAddress.street')}
                   />
@@ -189,7 +193,9 @@ const Checkout = () => {
             {showBillingAddress && (
               <div>
                 {showBillingAddress && (
-                  <h1 className='font-title text-3xl'>Delivery Address</h1>
+                  <h2 className='font-title text-xl font-semibold uppercase'>
+                    Delivery Address
+                  </h2>
                 )}
                 <div>
                   <InputLabel>Country</InputLabel>
@@ -218,7 +224,7 @@ const Checkout = () => {
               </div>
             )}
             <div className='mt-2'>
-              <h2 className='font-title text-lg font-semibold uppercase'>
+              <h2 className='font-title text-xl font-semibold uppercase'>
                 Shipping methods
               </h2>
 
@@ -260,7 +266,7 @@ const Checkout = () => {
             </div>
 
             <div className='mt-2 pb-8'>
-              <h2 className='font-title text-lg font-semibold uppercase'>
+              <h2 className='font-title text-xl font-semibold uppercase'>
                 Payment methods
               </h2>
 
@@ -311,7 +317,9 @@ const Checkout = () => {
 
           <div className='h-max lg:flex lg:flex-col-reverse'>
             <div>
-              <p className='text-xl text-gray-400'>Shopping cart</p>
+              <h1 className='font-title text-2xl font-semibold uppercase'>
+                Shopping cart
+              </h1>
               <hr className='text-base-600 pb-2'></hr>
               <div>
                 {products?.map((product, i) => (
@@ -361,9 +369,9 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
         qty: {quantity}
       </span>
       <div className='flex flex-col items-end gap-1'>
-        <h3 className='flex w-16 items-end justify-end text-xl'>
+        <div className='flex w-16 items-end justify-end text-xl'>
           {formatPrice(totalPrice)}
-        </h3>
+        </div>
         {isDiscount && (
           <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
             -{formatPrice(previousTotal - totalPrice)}

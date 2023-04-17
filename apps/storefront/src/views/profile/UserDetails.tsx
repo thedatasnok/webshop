@@ -60,7 +60,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     //TODO: allow submission of empty pw fields
     return (
       <div ref={ref} className={clsx(className)}>
-        <h1 className='font-title mb-2 mt-4 hidden text-3xl font-semibold uppercase md:block'>
+        <h1 className='font-title mb-2 mt-4 hidden text-2xl font-semibold uppercase md:block'>
           Account Details
         </h1>
         <form

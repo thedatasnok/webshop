@@ -12,7 +12,7 @@ const OrderHistory = forwardRef<HTMLDivElement, OrderHistoryProps>(
   ({ className }, ref) => {
     return (
       <div ref={ref} className={clsx(className)}>
-        <h1 className='font-title mb-2 mt-4 hidden text-3xl font-semibold uppercase md:block'>
+        <h1 className='font-title mb-2 mt-4 hidden text-2xl font-semibold uppercase md:block'>
           Order History
         </h1>
         <div className='border-base-700 mb-4 mt-4 flex-1 rounded-sm border px-2 py-1 md:mt-0'>
