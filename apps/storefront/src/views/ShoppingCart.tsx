@@ -4,11 +4,10 @@ import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
-import { Button } from '@webshop/ui';
+import { Button, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { formatPrice } from '@webshop/ui/src/utilities';
 
 const ShoppingCart = () => {
   const { items, isEmpty } = useCart();

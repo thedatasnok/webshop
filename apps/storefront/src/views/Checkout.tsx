@@ -1,12 +1,11 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { useFindProductsQuery } from '@/services/products';
+import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
-import { formatPrice } from '@webshop/ui/src/utilities';
 import {
   Button,
   InputLabel,
@@ -15,9 +14,12 @@ import {
   RadioGroup,
   ShippingMethod,
   TextField,
+  formatPrice,
+  useAuth,
 } from '@webshop/ui';
-import { useState } from 'react';
+import clsx from 'clsx';
 import {
+  RiArrowLeftSLine,
   RiBitCoinLine,
   RiClipboardLine,
   RiFingerprintLine,
@@ -29,7 +31,30 @@ import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+const schema = z.object({
+  customerName: z.string().nonempty(),
+  shippingAddress: z.object({
+    country: z
+      .string()
+      .min(2, { message: 'Name should have at least 2 letters' }),
+    city: z.string().min(2),
+    street: z.string().min(2),
+    postalCode: z.string().min(2),
+    careOf: z.string().optional(),
+  }),
+  billingAddress: z.object({
+    country: z.string(),
+    postalCode: z.string(),
+    city: z.string(),
+    street: z.string(),
+  }),
+  differentBillingAddress: z.boolean(),
+  shippingMethod: z.string(),
+  paymentMethod: z.string(),
+});
+
 const Checkout = () => {
+  const { tokenDetails } = useAuth();
   const { items } = useCart();
   const navigate = useNavigate();
   const { data: products } = useFindProductsQuery({
@@ -38,7 +63,6 @@ const Checkout = () => {
   });
 
   const [placeOrder] = usePlaceOrderMutation();
-  const [showBillingAddress, setShowBillingAddress] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
@@ -58,34 +82,10 @@ const Checkout = () => {
     return total + items[product.id] * product.price;
   }, 0);
 
-  const schema = z.object({
-    fullName: z
-      .string()
-      .min(2, { message: 'Name should have at least 2 letters' }),
-    shippingAddress: z.object({
-      country: z
-        .string()
-        .min(2, { message: 'Country should have at least 2 letters' }),
-      city: z.string().min(2),
-      street: z.string().min(2),
-      postalCode: z.string().min(2),
-      careOf: z.string().optional(),
-    }),
-    billingAddress: z.object({
-      country: z.string(),
-      postalCode: z.string(),
-      city: z.string(),
-      street: z.string(),
-    }),
-    differentBillingAddress: z.boolean(),
-    shippingMethod: z.string(),
-    paymentMethod: z.string(),
-  });
-
   const form = useForm({
     validate: zodResolver(schema),
     initialValues: {
-      fullName: '',
+      customerName: tokenDetails?.fullName ?? '',
       shippingAddress: {
         country: '',
         postalCode: '',
@@ -112,12 +112,11 @@ const Checkout = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) {
     const checked = e.target.checked;
-    setShowBillingAddress(checked);
     form.setFieldValue('differentBillingAddress', checked);
   }
 
   return (
-    <div>
+    <>
       <header className='mx-auto flex flex-col items-center justify-center py-10'>
         <NavLink
           to={RouteHref.HOME}
@@ -129,223 +128,211 @@ const Checkout = () => {
         </NavLink>
       </header>
 
-      <main>
-        <div className='mx-auto grid max-w-screen-xl gap-0 px-2 lg:grid-cols-2 lg:gap-8'>
-          <form
-            id='check-out-form'
-            className='flex w-full flex-col gap-2'
-            onSubmit={form.onSubmit(handleSubmit)}
-          >
-            <div className='flex flex-col rounded-sm'>
-              <h1 className='font-title text-2xl font-semibold uppercase'>
-                Delivery information
-              </h1>
-              <hr className='text-base-600 pb-4'></hr>
-              <div className='flex w-full flex-col gap-1'>
-                {showBillingAddress && (
-                  <h2 className='font-title text-xl font-semibold uppercase'>
-                    Invoice Address
-                  </h2>
-                )}
+      <div className='mx-auto max-w-screen-xl pl-1'>
+        <NavLink
+          className='font-title text-base-400 hover:text-base-300 flex w-fit items-center text-sm font-semibold uppercase transition-colors hover:underline'
+          to={RouteHref.CART}
+        >
+          <RiArrowLeftSLine className='h-5 w-5' />
+          <span>Back to shopping cart</span>
+        </NavLink>
+      </div>
 
-                <div>
-                  <InputLabel>Name</InputLabel>
-                  <TextField {...form.getInputProps('fullName')} />
-                </div>
-                <div>
-                  <InputLabel>Country</InputLabel>
-                  <TextField
-                    {...form.getInputProps('shippingAddress.country')}
-                  />
-                </div>
-                <div>
-                  <InputLabel>City</InputLabel>
-                  <TextField {...form.getInputProps('shippingAddress.city')} />
-                </div>
-                <div>
-                  <InputLabel>Street</InputLabel>
-                  <TextField
-                    {...form.getInputProps('shippingAddress.street')}
-                  />
-                </div>
-                <div>
-                  <InputLabel>Postal Code</InputLabel>
-                  <TextField
-                    {...form.getInputProps('shippingAddress.postalCode')}
-                  />
-                </div>
-                <div>
-                  <InputLabel>C/O Address (optional)</InputLabel>
-                  <TextField
-                    {...form.getInputProps('shippingAddress.careOf')}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='flex flex-row gap-2 p-2'>
-              <input
-                type='checkbox'
-                className='border-base-600 bg-base-600'
-                onChange={handleDifferentBillingAddress}
-              />
-              <p>Different billing address</p>
-            </div>
-            {showBillingAddress && (
-              <div>
-                {showBillingAddress && (
-                  <h2 className='font-title text-xl font-semibold uppercase'>
-                    Delivery Address
-                  </h2>
-                )}
-                <div>
-                  <InputLabel>Country</InputLabel>
-                  <TextField
-                    {...form.getInputProps('billingAddress.country')}
-                  />
-                </div>
-                <div>
-                  <InputLabel>City</InputLabel>
-                  <TextField {...form.getInputProps('billingAddress.city')} />
-                </div>
-                <div>
-                  <InputLabel>Street</InputLabel>
-                  <TextField {...form.getInputProps('billingAddress.street')} />
-                </div>
-                <div>
-                  <InputLabel>Postal Code</InputLabel>
-                  <TextField
-                    {...form.getInputProps('billingAddress.postalCode')}
-                  />
-                </div>
-                <div>
-                  <InputLabel>C/O Address (optional)</InputLabel>
-                  <TextField {...form.getInputProps('billingAddress.careOf')} />
-                </div>
-              </div>
-            )}
-            <div className='mt-2'>
-              <h2 className='font-title text-xl font-semibold uppercase'>
-                Shipping methods
-              </h2>
+      <main className='mx-auto grid max-w-screen-xl gap-0 px-2 lg:grid-cols-2 lg:gap-8'>
+        <form
+          id='check-out-form'
+          className='flex w-full flex-col gap-1'
+          onSubmit={form.onSubmit(handleSubmit)}
+        >
+          <SectionHeader title='Delivery address' />
 
-              <RadioGroup
-                value={form.values.shippingMethod}
-                onChange={(shippingMethod) =>
-                  form.setValues({ shippingMethod })
-                }
-                options={[
-                  {
-                    name: 'Instant teleportation',
-                    description:
-                      'Have your gaming gear instantly appear in your home.',
-                    value: ShippingMethod.INSTANT_TELEPORTATION,
-                    icon: RiMagicLine,
-                  },
-                  {
-                    name: 'Drone',
-                    description:
-                      'Let one of our drones fly your gear in no time.',
-                    value: ShippingMethod.DRONE,
-                    icon: RiTruckLine,
-                  },
-                  {
-                    name: 'Self-driving truck',
-                    description:
-                      'One of our self-driving trucks will drop off your gear',
-                    value: ShippingMethod.SELF_DRIVING_TRUCK,
-                    icon: RiTruckLine,
-                  },
-                  {
-                    name: 'Hyperloop',
-                    description: 'Your gear packaged in a vacuum-sealed pod',
-                    value: ShippingMethod.HYPERLOOP,
-                    icon: RiTruckLine,
-                  },
-                ]}
-              />
-            </div>
-
-            <div className='mt-2 pb-8'>
-              <h2 className='font-title text-xl font-semibold uppercase'>
-                Payment methods
-              </h2>
-
-              <RadioGroup
-                value={form.values.paymentMethod}
-                onChange={(paymentMethod) => form.setValues({ paymentMethod })}
-                options={[
-                  {
-                    name: 'Biometric',
-                    description: 'Pay using your fingerprint or face scan',
-                    value: PaymentMethod.BIOMETRIC,
-                    icon: RiFingerprintLine,
-                  },
-                  {
-                    name: 'Crypto',
-                    description: 'Pay with your cryptocurrency of choice',
-                    value: PaymentMethod.CRYPTO,
-                    icon: RiBitCoinLine,
-                  },
-                  {
-                    name: 'Virtual wallet',
-                    description: 'Pay with your favorite virtual wallet.',
-                    value: PaymentMethod.VIRTUAL_WALLET,
-                    icon: RiWalletLine,
-                  },
-                  {
-                    name: 'Smart contract',
-                    description: 'Sign a smart contract to pay for your order',
-                    value: PaymentMethod.SMART_CONTRACT,
-                    icon: RiClipboardLine,
-                  },
-                ]}
-              />
-            </div>
-
-            <div className='flex flex-col pb-8 lg:items-center lg:justify-end'>
-              <div>
-                <Button
-                  className='font-title w-full rounded-sm text-2xl font-semibold uppercase'
-                  type='submit'
-                >
-                  {/* default value to 0 if products are not loaded  */}
-                  Pay: {formatPrice(totalPrice || 0)}
-                </Button>
-              </div>
-            </div>
-          </form>
-
-          <div className='h-max lg:flex lg:flex-col-reverse'>
-            <div>
-              <h1 className='font-title text-2xl font-semibold uppercase'>
-                Shopping cart
-              </h1>
-              <hr className='text-base-600 pb-2'></hr>
-              <div>
-                {products?.map((product, i) => (
-                  <ProductListCard
-                    key={product.id}
-                    to={'/products/' + product.id}
-                    name={product.name}
-                    shortDescription={product.shortDescription}
-                    image={product.imageUrls[0]}
-                  >
-                    <ProductListCardCartActions
-                      quantity={items[product.id]}
-                      price={product.price}
-                      previousPrice={product.previousPrice}
-                      isDiscount={product.isDiscount}
-                    />
-                  </ProductListCard>
-                ))}
-              </div>
-            </div>
+          <div>
+            <InputLabel>Name</InputLabel>
+            <TextField {...form.getInputProps('customerName')} />
           </div>
+
+          <div>
+            <InputLabel>Country</InputLabel>
+            <TextField {...form.getInputProps('shippingAddress.country')} />
+          </div>
+          <div>
+            <InputLabel>City</InputLabel>
+            <TextField {...form.getInputProps('shippingAddress.city')} />
+          </div>
+          <div>
+            <InputLabel>Street</InputLabel>
+            <TextField {...form.getInputProps('shippingAddress.street')} />
+          </div>
+
+          <div>
+            <InputLabel>Postal Code</InputLabel>
+            <TextField {...form.getInputProps('shippingAddress.postalCode')} />
+          </div>
+
+          <div>
+            <InputLabel>C/O Address (optional)</InputLabel>
+            <TextField {...form.getInputProps('shippingAddress.careOf')} />
+          </div>
+
+          <div className='flex items-center gap-2'>
+            <input
+              id='different-billing-address'
+              type='checkbox'
+              className='border-base-600 bg-base-600'
+              onChange={handleDifferentBillingAddress}
+            />
+
+            <InputLabel htmlFor='different-billing-address'>
+              Different billing address
+            </InputLabel>
+          </div>
+
+          {form.values.differentBillingAddress && (
+            <>
+              <SectionHeader title='Billing address' className='mt-2' />
+
+              <div>
+                <InputLabel>Country</InputLabel>
+                <TextField {...form.getInputProps('billingAddress.country')} />
+              </div>
+
+              <div>
+                <InputLabel>City</InputLabel>
+                <TextField {...form.getInputProps('billingAddress.city')} />
+              </div>
+
+              <div>
+                <InputLabel>Street</InputLabel>
+                <TextField {...form.getInputProps('billingAddress.street')} />
+              </div>
+
+              <div>
+                <InputLabel>Postal Code</InputLabel>
+                <TextField
+                  {...form.getInputProps('billingAddress.postalCode')}
+                />
+              </div>
+
+              <div>
+                <InputLabel>C/O Address (optional)</InputLabel>
+                <TextField {...form.getInputProps('billingAddress.careOf')} />
+              </div>
+            </>
+          )}
+
+          <SectionHeader title='Shipping method' className='mt-2 text-xl' />
+
+          <RadioGroup
+            value={form.values.shippingMethod}
+            onChange={(shippingMethod) => form.setValues({ shippingMethod })}
+            options={[
+              {
+                name: 'Instant teleportation',
+                description:
+                  'Have your gaming gear instantly appear in your home.',
+                value: ShippingMethod.INSTANT_TELEPORTATION,
+                icon: RiMagicLine,
+              },
+              {
+                name: 'Drone',
+                description: 'Let one of our drones fly your gear in no time.',
+                value: ShippingMethod.DRONE,
+                icon: RiTruckLine,
+              },
+              {
+                name: 'Self-driving truck',
+                description:
+                  'One of our self-driving trucks will drop off your gear',
+                value: ShippingMethod.SELF_DRIVING_TRUCK,
+                icon: RiTruckLine,
+              },
+              {
+                name: 'Hyperloop',
+                description: 'Your gear packaged in a vacuum-sealed pod',
+                value: ShippingMethod.HYPERLOOP,
+                icon: RiTruckLine,
+              },
+            ]}
+          />
+
+          <SectionHeader title='Payment method' className='mt-2 text-xl' />
+
+          <RadioGroup
+            value={form.values.paymentMethod}
+            onChange={(paymentMethod) => form.setValues({ paymentMethod })}
+            options={[
+              {
+                name: 'Biometric',
+                description: 'Pay using your fingerprint or face scan',
+                value: PaymentMethod.BIOMETRIC,
+                icon: RiFingerprintLine,
+              },
+              {
+                name: 'Crypto',
+                description: 'Pay with your cryptocurrency of choice',
+                value: PaymentMethod.CRYPTO,
+                icon: RiBitCoinLine,
+              },
+              {
+                name: 'Virtual wallet',
+                description: 'Pay with your favorite virtual wallet.',
+                value: PaymentMethod.VIRTUAL_WALLET,
+                icon: RiWalletLine,
+              },
+              {
+                name: 'Smart contract',
+                description: 'Sign a smart contract to pay for your order',
+                value: PaymentMethod.SMART_CONTRACT,
+                icon: RiClipboardLine,
+              },
+            ]}
+          />
+
+          <Button
+            className='font-title my-4 w-fit self-center rounded-sm text-2xl font-semibold uppercase'
+            type='submit'
+          >
+            {/* default value to 0 if products are not loaded  */}
+            Pay: {formatPrice(totalPrice || 0)}
+          </Button>
+        </form>
+
+        <div className='h-max lg:flex lg:flex-col'>
+          <SectionHeader title='Shopping cart' />
+
+          {products?.map((product, i) => (
+            <ProductListCard
+              key={product.id}
+              to={'/products/' + product.id}
+              name={product.name}
+              shortDescription={product.shortDescription}
+              image={product.imageUrls[0]}
+            >
+              <ProductListCardCartActions
+                quantity={items[product.id]}
+                price={product.price}
+                previousPrice={product.previousPrice}
+                isDiscount={product.isDiscount}
+              />
+            </ProductListCard>
+          ))}
         </div>
       </main>
-    </div>
+    </>
   );
 };
+
+const SectionHeader: React.FC<{ title: string; className?: string }> = ({
+  title,
+  className,
+}) => (
+  <div
+    className={clsx('font-title text-2xl font-semibold uppercase', className)}
+  >
+    <h2>{title}</h2>
+    <hr className='text-base-700' />
+  </div>
+);
 
 interface CheckoutCardCartActionsProps {
   price: number;

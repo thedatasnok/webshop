@@ -96,8 +96,8 @@ const mapRoute = (route: ApplicationRoute) => {
 const router = createBrowserRouter(
   createRoutesFromElements(routes.map(mapRoute)),
   {
-    basename: '/admin'
-} 
+    basename: '/admin',
+  }
 );
 
 export default router;

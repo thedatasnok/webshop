@@ -5,6 +5,7 @@ import {
   useSignOutMutation,
   ErrorLabel,
   InputLabel,
+  useAuth,
 } from '@webshop/ui';
 import { useForm, zodResolver } from '@mantine/form';
 import { UpdateUserProfileRequest } from '@webshop/contracts';
@@ -31,6 +32,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
       }
     };
 
+    const { tokenDetails } = useAuth();
+
     const schema = z
       .object({
         email: z.string().email({ message: 'Invalid email' }),
@@ -39,8 +42,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
           .min(2, { message: 'Name should have at least 2 letters' }),
         password: z.string().min(10, {
           message: 'Password should contain atleast 10 characters',
-        }),
-        passwordConfirmation: z.string(),
+        }).nullable(),
+        passwordConfirmation: z.string().nullable(),
       })
       .refine((data) => data.password === data.passwordConfirmation, {
         message: "Passwords don't match",
@@ -50,17 +53,16 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     const form = useForm({
       validate: zodResolver(schema),
       initialValues: {
-        email: '',
-        fullName: '',
+        email: tokenDetails?.username || '',
+        fullName: tokenDetails?.fullName || '',
         password: '',
         passwordConfirmation: '',
       },
     });
 
-    //TODO: allow submission of empty pw fields
     return (
       <div ref={ref} className={clsx(className)}>
-        <h1 className='font-title mb-2 mt-4 hidden text-2xl font-semibold uppercase md:block'>
+        <h1 className='font-title mb-2 hidden text-2xl font-semibold uppercase md:block'>
           Account Details
         </h1>
         <form

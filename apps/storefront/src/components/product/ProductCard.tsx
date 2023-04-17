@@ -1,6 +1,6 @@
+import { formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import { formatPrice } from '@webshop/ui/src/utilities';
 
 interface ProductCardProps {
   id: number;

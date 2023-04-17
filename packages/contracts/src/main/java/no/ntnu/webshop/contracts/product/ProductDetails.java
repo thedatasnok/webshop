@@ -1,6 +1,7 @@
 package no.ntnu.webshop.contracts.product;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Builder;
 import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
@@ -16,5 +17,7 @@ public record ProductDetails(
   Double price,
   Boolean isDiscount,
   Double previousPrice,
-  List<ProductChildDetails> children
+  Map<String, String> attributes,
+  List<ProductChildDetails> children,
+  List<ProductVariant> variants
 ) {}

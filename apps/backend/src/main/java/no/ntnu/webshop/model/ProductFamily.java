@@ -3,12 +3,15 @@ package no.ntnu.webshop.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -31,6 +34,7 @@ public class ProductFamily {
   public static final String PRIMARY_KEY = "product_family_id";
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = ProductFamily.PRIMARY_KEY)
   private Long id;
 
@@ -62,7 +66,7 @@ public class ProductFamily {
    */
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "attribute_map")
-  private Map<String, List<String>> attributeMap;
+  private Map<String, Set<String>> attributeMap;
 
   @OneToMany(mappedBy = "family")
   private List<Product> products = new ArrayList<>();
@@ -79,7 +83,7 @@ public class ProductFamily {
       String name,
       String description,
       Map<String, String> sharedAttributes,
-      Map<String, List<String>> attributeMap
+      Map<String, Set<String>> attributeMap
   ) {
     this.name = name;
     this.description = description;
