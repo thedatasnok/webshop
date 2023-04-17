@@ -300,13 +300,15 @@ const Checkout = () => {
         <div className='h-max lg:flex lg:flex-col'>
           <SectionHeader title='Shopping cart' />
 
-          {products?.map((product, i) => (
+          {products?.map((product, i, array) => (
             <ProductListCard
               key={product.id}
               to={'/products/' + product.id}
               name={product.name}
               shortDescription={product.shortDescription}
               image={product.imageUrls[0]}
+              cart={true}
+              className={i !== array.length - 1 ? 'border-b' : ''}
             >
               <ProductListCardCartActions
                 quantity={items[product.id]}

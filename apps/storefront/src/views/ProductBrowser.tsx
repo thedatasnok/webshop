@@ -143,44 +143,44 @@ const ProductBrowser = () => {
           </div>
         </div>
 
-        <section id='products'>
-          <div
-            className={clsx({
-              'grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5':
-                isGridSelected,
-              'mx-auto grid grid-cols-1': !isGridSelected,
-            })}
-          >
-            {products?.map((product, i) => (
-              <div key={product.id}>
-                {isGridSelected ? (
-                  <ProductCard
-                    id={product.id}
-                    to={'/products/' + product.id}
-                    name={product.name}
-                    previousPrice={product.previousPrice}
+        {/* section or div? */}
+        <section
+          className={clsx({
+            'grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5':
+              isGridSelected,
+          })}
+        >
+          {products?.map((product, i, array) => (
+            <div key={product.id}>
+              {isGridSelected ? (
+                <ProductCard
+                  id={product.id}
+                  to={'/products/' + product.id}
+                  name={product.name}
+                  previousPrice={product.previousPrice}
+                  price={product.price}
+                  shortDescription={product.shortDescription}
+                  isDiscount={product.isDiscount}
+                  image={product.imageUrls[0]}
+                />
+              ) : (
+                <ProductListCard
+                  to={'/products/' + product.id}
+                  id={product.id}
+                  name={product.name}
+                  shortDescription={product.shortDescription}
+                  isDiscount={product.isDiscount}
+                  image={product.imageUrls[0]}
+                >
+                  <ProductListActions
                     price={product.price}
-                    shortDescription={product.shortDescription}
                     isDiscount={product.isDiscount}
-                    image={product.imageUrls[0]}
+                    previousPrice={product.previousPrice}
                   />
-                ) : (
-                  <ProductListCard
-                    to={'/products/' + product.id}
-                    name={product.name}
-                    shortDescription={product.shortDescription}
-                    image={product.imageUrls[0]}
-                  >
-                    <ProductListActions
-                      price={product.price}
-                      isDiscount={product.isDiscount}
-                      previousPrice={product.previousPrice}
-                    />
-                  </ProductListCard>
-                )}
-              </div>
-            ))}
-          </div>
+                </ProductListCard>
+              )}
+            </div>
+          ))}
         </section>
       </main>
     </PageLayout>
@@ -200,19 +200,21 @@ const ProductListActions: React.FC<ProductListActionsProps> = ({
 }) => {
   return (
     <div className='flex flex-col-reverse'>
-      <h3
-        className={clsx({
-          'text-primary-200 flex justify-end text-xl': isDiscount,
-          '': !isDiscount,
-        })}
-      >
-        {formatPrice(price)}
-      </h3>
-      {isDiscount && (
-        <div className='text-base-400 ml-1 mt-1 flex justify-end whitespace-nowrap line-through'>
-          {formatPrice(previousPrice)}
-        </div>
-      )}
+      <p className='font-title truncate font-semibold tracking-wide'>
+        <span
+          className={clsx(
+            'group-hover:text-primary-600 text-xl',
+            isDiscount && 'text-primary-600'
+          )}
+        >
+          {formatPrice(price)}
+        </span>
+        {isDiscount && (
+          <span className='text-base-400 ml-2 text-sm'>
+            PREV. {formatPrice(previousPrice)}
+          </span>
+        )}
+      </p>
     </div>
   );
 };
