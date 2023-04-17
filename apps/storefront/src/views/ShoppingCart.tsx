@@ -60,15 +60,17 @@ const ShoppingCart = () => {
             </div>
           </div>
 
-          <div className='mx-auto flex w-fit grid-cols-2 flex-col gap-2'>
-            {products?.map((product, i) => (
+          <div className='mx-auto flex w-fit flex-col'>
+            {products?.map((product, i, array) => (
               <ProductListCard
                 key={product.id}
+                id={product.id}
                 to={'/products/' + product.id}
                 name={product.name}
                 shortDescription={product.shortDescription}
                 image={product.imageUrls[0]}
                 cart={true}
+                className={i !== array.length - 1 ? 'border-b' : ''}
               >
                 <ProductListCardCartActions
                   productId={product.id}
@@ -132,7 +134,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
   const previousTotal = previousPrice * quantity;
 
   return (
-    <div className='z-20 flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-0'>
+    <div className='flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-0'>
       <div className='flex sm:gap-8 md:gap-10'>
         {/* Counter */}
         <div className='hidden sm:block'>
@@ -175,7 +177,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
         </div>
         {/* Mobile Delete */}
         <button
-          className='z-10 flex aspect-square items-end justify-end sm:hidden'
+          className='flex aspect-square items-end justify-end sm:hidden'
           onClick={() => {
             dispatch(removeCartItem(productId));
           }}
