@@ -27,7 +27,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
   return (
     <div
       className={clsx('border-base-800 relative flex p-1', className, {
-        ' hover:bg-primary-900/10 hover:border-primary-900 rounded-sm border transition-colors':
+        ' hover:bg-primary-900/10 hover:border-primary-800 rounded-sm border transition-colors group':
           cart == false,
       })}
     >
