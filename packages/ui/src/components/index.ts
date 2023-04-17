@@ -7,6 +7,7 @@ import InputLabel from './input/InputLabel';
 import RadioGroup from './input/RadioGroup';
 import TextField from './input/TextField';
 import SortByField from './input/SortByField';
+import DialogPrompt from './feedback/DialogPrompt';
 
 export * from './feedback/Alert';
 export * from './input/SortByField';
@@ -21,4 +22,5 @@ export {
   ErrorLabel,
   RadioGroup,
   SortByField,
+  DialogPrompt,
 };

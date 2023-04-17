@@ -4,8 +4,9 @@ import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
-import { Button, formatPrice } from '@webshop/ui';
+import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -24,30 +25,48 @@ const ShoppingCart = () => {
   }, 0);
 
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
 
-  /**
-   * Clears the cart prompting the user for confirmation
-   */
+  function openDialog() {
+    setIsOpen(true);
+  }
+
+  function closeDialog() {
+    setIsOpen(false);
+  }
+
   function handleClearCart() {
-    const confirmed = window.confirm(
-      'Are you sure you want to clear your cart?'
-    );
-    if (confirmed) {
-      dispatch(clearCart());
-    }
+    dispatch(clearCart());
+    setIsOpen(false);
   }
 
   return (
     <PageLayout>
       <main>
         <div className='mx-auto max-w-screen-xl py-4'>
-          <div id='cart-title' className='flex justify-between'>
+          <div id='cart-title' className='flex items-center justify-center'>
             <h1 className='font-title text-2xl font-semibold uppercase'>
               Shopping cart
             </h1>
-            <button onClick={handleClearCart} className='text-xs underline'>
-              clear cart
-            </button>
+            <div className='ml-auto'>
+              {isEmpty ? (
+                ''
+              ) : (
+                <button
+                  onClick={openDialog}
+                  className='hover:text-base-300 text-base-400 text-xs hover:underline'
+                >
+                  clear cart
+                </button>
+              )}
+              <DialogPrompt
+                isOpen={isOpen}
+                onClose={closeDialog}
+                title='clear cart'
+                message='Are you sure you want to clear your cart?'
+                action={handleClearCart}
+              />
+            </div>
           </div>
 
           <div className='font-title'>
