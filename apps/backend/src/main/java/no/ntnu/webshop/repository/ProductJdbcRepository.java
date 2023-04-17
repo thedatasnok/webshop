@@ -22,6 +22,7 @@ public class ProductJdbcRepository {
   private final ObjectMapper objectMapper;
 
   private static final TypeReference<List<String>> STRING_LIST_TYPE_REF = new TypeReference<>(){};
+  private static final TypeReference<Map<String, String>> STRING_MAP_TYPE_REF = new TypeReference<>(){};
   private static final TypeReference<List<ProductChildDetails>> PRODUCT_CHILD_DETAILS_LIST_TYPE_REF = new TypeReference<>(){};
   private static final TypeReference<List<ProductVariant>> PRODUCT_VARIANT_LIST_TYPE_REF = new TypeReference<>(){};
 
@@ -48,6 +49,14 @@ public class ProductJdbcRepository {
         pp.is_discount,
         pp.price,
         prev_pp.price AS previous_price,
+        -- Merges the defined attributes of the product with the shared attributes of the family
+        COALESCE(
+          p.defined_attributes::jsonb || p_family.shared_attributes::jsonb, 
+          p.defined_attributes::jsonb, 
+          p_family.shared_attributes::jsonb, 
+          '{}'
+        ) AS attributes,
+        -- Finds all children products and groups them into a JSON array
         COALESCE(JSON_AGG(JSON_BUILD_OBJECT(
           'id', child.product_id,
           'quantity', p_child.quantity,
@@ -55,6 +64,7 @@ public class ProductJdbcRepository {
           'description', child.description,
           'attributes', child.defined_attributes
         )) FILTER (WHERE child.product_id IS NOT NULL), '[]') AS children,
+        -- Finds all variants in the same family as the product and groups them into a JSON array
         COALESCE(JSON_AGG(JSON_BUILD_OBJECT(
           'id', p_variants.product_id,
           'shortName', p_variants.short_name
@@ -73,12 +83,15 @@ public class ProductJdbcRepository {
         ON child.product_id = p_child.fk_child_id
       LEFT JOIN product p_variants
         ON p_variants.fk_product_family_id = p.fk_product_family_id
+      LEFT JOIN product_family p_family
+        ON p.fk_product_family_id = p_family.product_family_id
       WHERE
         p.product_id = :id
       GROUP BY
         p.product_id,
         pp.product_price_id,
-        prev_pp.product_price_id
+        prev_pp.product_price_id,
+        p_family.product_family_id
       """, Map.of("id", id), (rs, rowNum) -> {
       try {
         return new ProductDetails(
@@ -90,10 +103,12 @@ public class ProductJdbcRepository {
           rs.getDouble("price"),
           rs.getBoolean("is_discount"),
           rs.getDouble("previous_price"),
+          this.objectMapper.readValue(rs.getString("attributes"), STRING_MAP_TYPE_REF),
           this.objectMapper.readValue(rs.getString("children"), PRODUCT_CHILD_DETAILS_LIST_TYPE_REF),
           this.objectMapper.readValue(rs.getString("variants"), PRODUCT_VARIANT_LIST_TYPE_REF)
         );
       } catch (Exception e) {
+        e.printStackTrace();
         throw new MappingException("Failed to convert product to ProductDetails");
       }
     });
