@@ -46,7 +46,9 @@ END $$;
 
 CREATE TABLE IF NOT EXISTS "order" (
   order_id BIGINT GENERATED ALWAYS AS IDENTITY,
-  total NUMERIC NOT NULL,
+
+  ordered_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
 
   order_status webshop_order_status NOT NULL,
   payment_status webshop_payment_status NOT NULL,
