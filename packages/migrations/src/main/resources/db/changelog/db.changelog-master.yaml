@@ -1,94 +1,21 @@
 databaseChangeLog:
   - changeSet:
-      id: 0.1.0-user-accounts
-      author: thedatasnok
-      dbms: postgresql
+      id: 000-initial
+      author: thedatasnok, GBfur, dawsta27
       changes:
         - sqlFile:
-            path: changelog/0.1.0/create-user-account-table.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.2.0-domain-entities
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.2.0/create-category-table.sql
+            path: changelog/000-initial/000-h2-utils.sql
+            dbms: h2
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/0.2.0/create-item-tables.sql
+            path: changelog/000-initial/001-user-account.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/0.2.0/create-product-tables.sql
+            path: changelog/000-initial/002-category.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/0.2.0/create-order-tables.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.2.1-product-name
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.2.1/add-product-name.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.3.0-update-order
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.3.0/update-order-table.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.4.0
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.4.0/add-product-short-description.sql
+            path: changelog/000-initial/003-products.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/0.4.0/update-payment-enum.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.5.0-shipping-enum
-      author: dawsta27
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.5.0/add-shipping-enum.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.6.0-category-icon
-      author: GBFur
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.6.0/add-category-icon.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.7.0-refactor-products
-      author: thedatasnok
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.7.0/remove-items.sql
-            relativeToChangelogFile: true
-        - sqlFile:
-            path: changelog/0.7.0/add-aggregate-products.sql
-            relativeToChangelogFile: true
-        - sqlFile:
-            path: changelog/0.7.0/add-product-categories.sql
-            relativeToChangelogFile: true
-        - sqlFile:
-            path: changelog/0.7.0/add-product-families.sql
-            relativeToChangelogFile: true
-  - changeSet:
-      id: 0.8.0-order-customer-email
-      author: GBFur
-      dbms: postgresql
-      changes:
-        - sqlFile:
-            path: changelog/0.8.0/add-order-customer-email.sql
+            path: changelog/000-initial/004-orders.sql
             relativeToChangelogFile: true

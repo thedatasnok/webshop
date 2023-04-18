@@ -1,6 +1,10 @@
-CREATE TYPE user_account_role AS ENUM ('SHOP_OWNER', 'SHOP_WORKER', 'CUSTOMER');
+DO $$ BEGIN
+  CREATE TYPE user_account_role AS ENUM ('SHOP_OWNER', 'SHOP_WORKER', 'CUSTOMER');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
 
-CREATE TABLE user_account (
+CREATE TABLE IF NOT EXISTS user_account  (
   user_account_id UUID DEFAULT gen_random_uuid(),
   full_name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
