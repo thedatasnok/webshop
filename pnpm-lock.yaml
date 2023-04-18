@@ -35,7 +35,7 @@ importers:
       react-redux: ^8.0.5
       react-router-dom: ^6.9.0
       recharts: ^2.5.0
-      tailwindcss: ^3.2.7
+      tailwindcss: ^3.3.1
       typescript: ^4.9.5
       vite: ^4.2.1
       zod: ^3.21.4
@@ -57,15 +57,15 @@ importers:
       recharts: 2.5.0_v2m5e27vhdewzwhryxwfaorcca
       zod: 3.21.4
     devDependencies:
-      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.2.7
-      '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
+      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.3.1
+      '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.1
       '@types/node': 18.15.10
       '@types/react': 18.0.29
       '@types/react-dom': 18.0.11
       '@vitejs/plugin-react': 3.1.0_vite@4.2.1
       autoprefixer: 10.4.14_postcss@8.4.21
       postcss: 8.4.21
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.3.1_postcss@8.4.21
       typescript: 4.9.5
       vite: 4.2.1_@types+node@18.15.10
 
@@ -204,7 +204,7 @@ importers:
       react-icons: ^4.8.0
       react-redux: ^8.0.5
       react-router-dom: ^6.9.0
-      tailwindcss: ^3.2.7
+      tailwindcss: ^3.3.1
       typescript: ^4.9.5
       vite: ^4.2.1
       zod: ^3.21.4
@@ -224,15 +224,15 @@ importers:
       react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
       zod: 3.21.4
     devDependencies:
-      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.2.7
-      '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
+      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.3.1
+      '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.1
       '@types/node': 18.15.10
       '@types/react': 18.0.29
       '@types/react-dom': 18.0.11
       '@vitejs/plugin-react': 3.1.0_vite@4.2.1
       autoprefixer: 10.4.14_postcss@8.4.21
       postcss: 8.4.21
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.3.1_postcss@8.4.21
       typescript: 4.9.5
       vite: 4.2.1_@types+node@18.15.10
 
@@ -256,7 +256,7 @@ importers:
       react-dom: ^18.2.0
       react-icons: ^4.8.0
       react-redux: ^8.0.5
-      tailwindcss: ^3.2.7
+      tailwindcss: ^3.3.1
       typescript: ^4.9.5
     dependencies:
       '@headlessui/react': 1.7.13_biqbaboplfbrettd7655fr4n2y
@@ -267,15 +267,15 @@ importers:
       react-icons: 4.8.0_react@18.2.0
       react-redux: 8.0.5_dgjuf3aqqre24bd27wvsbnxpoe
     devDependencies:
-      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.2.7
-      '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
+      '@headlessui/tailwindcss': 0.1.2_tailwindcss@3.3.1
+      '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.1
       '@types/react': 18.0.29
       '@types/react-dom': 18.0.11
       autoprefixer: 10.4.14_postcss@8.4.21
       postcss: 8.4.21
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.3.1_postcss@8.4.21
       typescript: 4.9.5
 
 packages:
@@ -1026,13 +1026,13 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@headlessui/tailwindcss/0.1.2_tailwindcss@3.2.7:
+  /@headlessui/tailwindcss/0.1.2_tailwindcss@3.3.1:
     resolution: {integrity: sha512-AQNESz+f1grCxifrocOE6hDMDFqhqY0g3xrSGOS0ocGkmVkssaBzXaAPAPNSs/nHmr4ZUhfl5THQpYrvaouWlQ==}
     engines: {node: '>=10'}
     peerDependencies:
       tailwindcss: ^3.0
     dependencies:
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.3.1_postcss@8.4.21
     dev: true
 
   /@jridgewell/gen-mapping/0.1.1:
@@ -1052,6 +1052,15 @@ packages:
       '@jridgewell/trace-mapping': 0.3.17
     dev: true
 
+  /@jridgewell/gen-mapping/0.3.3:
+    resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@jridgewell/set-array': 1.1.2
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/trace-mapping': 0.3.18
+    dev: true
+
   /@jridgewell/resolve-uri/3.1.0:
     resolution: {integrity: sha512-F2msla3tad+Mfht5cJq7LSXcdudKTWCVYUgw6pLFOOHSTtZlj6SWNYAp+AhuqLmWdBO2X5hPrLcu8cVP8fy28w==}
     engines: {node: '>=6.0.0'}
@@ -1066,8 +1075,19 @@ packages:
     resolution: {integrity: sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==}
     dev: true
 
+  /@jridgewell/sourcemap-codec/1.4.15:
+    resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
+    dev: true
+
   /@jridgewell/trace-mapping/0.3.17:
     resolution: {integrity: sha512-MCNzAp77qzKca9+W/+I0+sEpaUnZoeasnghNeVc41VZCEKaCH73Vq3BZZ/SzWIgrqE4H4ceI+p+b6C0mHf9T4g==}
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.0
+      '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@jridgewell/trace-mapping/0.3.18:
+    resolution: {integrity: sha512-w+niJYzMHdd7USdiH2U6869nqhD2nbfZXND5Yp93qIbEmnDNk7PD48o+YchRVpzMU7M6jVCbenTR7PA1FLQ9pA==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
@@ -1879,13 +1899,13 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@tailwindcss/forms/0.5.3_tailwindcss@3.2.7:
+  /@tailwindcss/forms/0.5.3_tailwindcss@3.3.1:
     resolution: {integrity: sha512-y5mb86JUoiUgBjY/o6FJSFZSEttfb3Q5gllE4xoKjAAD+vBrnIhE4dViwUuow3va8mpH4s9jyUbUbrRGoRdc2Q==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.3.1_postcss@8.4.21
     dev: true
 
   /@types/classnames/2.3.1:
@@ -3330,6 +3350,11 @@ packages:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
     dev: false
+
+  /jiti/1.18.2:
+    resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
+    hasBin: true
+    dev: true
 
   /jju/1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
@@ -4800,6 +4825,20 @@ packages:
       ts-interface-checker: 0.1.13
     dev: true
 
+  /sucrase/3.32.0:
+    resolution: {integrity: sha512-ydQOU34rpSyj2TGyz4D2p8rbktIOZ8QY9s+DGLvFU1i5pWJE8vkpruCjGCMHsdXwnD7JDcS+noSwM/a7zyNFDQ==}
+    engines: {node: '>=8'}
+    hasBin: true
+    dependencies:
+      '@jridgewell/gen-mapping': 0.3.3
+      commander: 4.1.1
+      glob: 7.1.6
+      lines-and-columns: 1.2.4
+      mz: 2.7.0
+      pirates: 4.0.5
+      ts-interface-checker: 0.1.13
+    dev: true
+
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -4883,6 +4922,42 @@ packages:
       resolve: 1.22.1
     transitivePeerDependencies:
       - ts-node
+    dev: false
+
+  /tailwindcss/3.3.1_postcss@8.4.21:
+    resolution: {integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==}
+    engines: {node: '>=12.13.0'}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
+    dependencies:
+      arg: 5.0.2
+      chokidar: 3.5.3
+      color-name: 1.1.4
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.2.12
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.18.2
+      lilconfig: 2.1.0
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.21
+      postcss-import: 14.1.0_postcss@8.4.21
+      postcss-js: 4.0.1_postcss@8.4.21
+      postcss-load-config: 3.1.4_postcss@8.4.21
+      postcss-nested: 6.0.0_postcss@8.4.21
+      postcss-selector-parser: 6.0.11
+      postcss-value-parser: 4.2.0
+      quick-lru: 5.1.1
+      resolve: 1.22.1
+      sucrase: 3.32.0
+    transitivePeerDependencies:
+      - ts-node
+    dev: true
 
   /thenify-all/1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
