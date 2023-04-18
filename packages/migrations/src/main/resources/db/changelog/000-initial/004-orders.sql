@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS "order" (
   invoice_care_of TEXT,
 
   PRIMARY KEY (order_id),
-  FOREIGN KEY (fk_customer_id) REFERENCES user_account(user_account_id)
+  FOREIGN KEY (fk_customer_id) REFERENCES user_account(user_account_id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS order_line (
