@@ -1,5 +1,9 @@
 import { OrderDetails, PlaceOrderRequest } from '@webshop/contracts';
-import { webshopApi } from '@webshop/ui/src/services/base';
+import { QueryParams, buildQueryParams, webshopApi } from '@webshop/ui';
+
+export interface FindOrdersQueryParams extends QueryParams {
+  productName?: string;
+}
 
 export const userContextOrdersApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,8 +30,8 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
     /**
      * Finds all orders in user context
      */
-    findOrders: builder.query<OrderDetails[], void>({
-      query: () => '/v1/me/orders',
+    findOrders: builder.query<OrderDetails[], FindOrdersQueryParams>({
+      query: (params) => '/v1/me/orders?' + buildQueryParams(params),
     }),
   }),
 });
