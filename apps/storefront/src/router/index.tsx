@@ -39,6 +39,7 @@ export const enum RouteHref {
   PROFILE = '/profile',
   SUPPORT = '/support',
   ORDER_CONFIRMATION = '/order-confirmation',
+  NOT_FOUND = '/not-found',
 }
 
 /**

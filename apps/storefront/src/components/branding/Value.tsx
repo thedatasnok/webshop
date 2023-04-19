@@ -7,9 +7,11 @@ interface ValueProps {
 
 export const Value: React.FC<ValueProps> = ({ icon: Icon, text }) => {
   return (
-    <div className='text-base-200 flex w-16 flex-col items-center justify-center'>
-      <Icon className='h-12 w-12' />
-      <p className='font-title text-sm font-semibold uppercase'>{text}</p>
+    <div className='bg-gradient-radial from-primary via-primary-600 to-primary-800 flex w-20 flex-col items-center justify-center bg-clip-text text-transparent'>
+      <Icon className='text-primary h-16 w-16' />
+      <h2 className='font-title whitespace-nowrap font-bold tracking-wide uppercase'>
+        {text}
+      </h2>
     </div>
   );
 };

@@ -14,6 +14,9 @@ module.exports = {
         title: ['Rajdhani', ...defaultTheme.fontFamily.sans],
         sans: ['Roboto Condensed', ...defaultTheme.fontFamily.sans],
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
     },
     colors: {
       transparent: 'transparent',

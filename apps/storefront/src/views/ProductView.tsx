@@ -1,5 +1,4 @@
 import PageLayout from '@/components/layout/PageLayout';
-import NavigationItem from '@/components/navigation/NavigationItem';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
@@ -7,13 +6,13 @@ import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { RiArrowUpSLine, RiStore2Line } from 'react-icons/ri';
+import { RiArrowUpSLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, Navigate, useParams } from 'react-router-dom';
 
 const ProductView = () => {
   const { id } = useParams();
-  const { data: productInfo } = useFindProductQuery(parseInt(id!));
+  const { data: productInfo, isError } = useFindProductQuery(parseInt(id!));
   const { data: products } = useFindProductsQuery({});
   const dispatch = useDispatch();
 
@@ -23,38 +22,8 @@ const ProductView = () => {
     }
   };
 
-  if (!productInfo) {
-    return (
-      <main>
-        <div>
-          <PageLayout>
-            <div className='mx-auto mt-4 max-w-screen-xl pb-2'>
-              <div className='text-base-400 space-x-2 text-sm'>
-                <NavLink to={RouteHref.HOME} className='hover:underline'>
-                  Home
-                </NavLink>
-                <span>/</span>
-                <NavLink to={RouteHref.PRODUCTS} className='hover:underline'>
-                  Browse
-                </NavLink>
-              </div>
-            </div>
-
-            <div className='bg-base-800/20 border-primary/60 mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center border sm:py-8'>
-              <p className='font-title flex text-4xl font-semibold'>#{id}</p>
-              <p className='pb-4'>product does not exist</p>
-              <div className=''>
-                <NavigationItem
-                  to={RouteHref.PRODUCTS}
-                  name='Click here to browse products'
-                  icon={RiStore2Line}
-                />
-              </div>
-            </div>
-          </PageLayout>
-        </div>
-      </main>
-    );
+  if (!productInfo && isError) {
+    return <Navigate to={RouteHref.NOT_FOUND} />;
   }
 
   return (
@@ -106,7 +75,7 @@ const ProductView = () => {
             </p>
 
             <div className='mb-2 flex flex-wrap items-center gap-1'>
-              {productInfo.variants.map((variant) => (
+              {productInfo?.variants.map((variant) => (
                 <NavLink
                   key={variant.id}
                   to={[RouteHref.PRODUCTS, variant.id].join('/')}
@@ -122,7 +91,7 @@ const ProductView = () => {
             </div>
 
             <h2 className='text-base-50 text-xl font-semibold'>
-              {formatPrice(productInfo?.price)}
+              {formatPrice(productInfo?.price || 0)}
             </h2>
             <Button
               onClick={add}
