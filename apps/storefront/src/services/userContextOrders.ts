@@ -33,8 +33,14 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
     findOrders: builder.query<OrderDetails[], FindOrdersQueryParams>({
       query: (params) => '/v1/me/orders?' + buildQueryParams(params),
     }),
+    /**
+     * Gets the specified order
+     */
+    getOrder: builder.query<OrderDetails, number>({
+      query: (id) => `/v1/me/orders/${id}`,
+    }),
   }),
 });
 
-export const { usePlaceOrderMutation, useFindOrdersQuery } =
+export const { usePlaceOrderMutation, useFindOrdersQuery, useGetOrderQuery } =
   userContextOrdersApi;

@@ -2,7 +2,10 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
-import { usePlaceOrderMutation } from '@/services/userContextOrders';
+import {
+  useGetOrderQuery,
+  usePlaceOrderMutation,
+} from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
@@ -28,7 +31,7 @@ import {
   RiWalletLine,
 } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -67,9 +70,9 @@ const Checkout = () => {
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
     try {
-      await placeOrder(values).unwrap();
+      const orderId = await placeOrder(values).unwrap();
       dispatch(clearCart());
-      navigate(RouteHref.ORDER_CONFIRMATION);
+      navigate([RouteHref.ORDER_CONFIRMATION, orderId].join('/'));
     } catch (err) {
       console.log(err);
     }
