@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS product_family (
+CREATE TABLE product_family (
   product_family_id BIGINT GENERATED ALWAYS AS IDENTITY,
   name TEXT UNIQUE NOT NULL,
   description TEXT,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS product_family (
   PRIMARY KEY (product_family_id)
 );
 
-CREATE TABLE IF NOT EXISTS product (
+CREATE TABLE product (
   product_id BIGINT GENERATED ALWAYS AS IDENTITY,
   fk_product_family_id BIGINT,
   name TEXT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS product (
   FOREIGN KEY (fk_product_family_id) REFERENCES product_family(product_family_id)
 );
 
-CREATE TABLE IF NOT EXISTS product_category (
+CREATE TABLE product_category (
   fk_product_id BIGINT NOT NULL,
   fk_category_id BIGINT NOT NULL,
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS product_category (
 );
 
 
-CREATE TABLE IF NOT EXISTS product_child (
+CREATE TABLE product_child (
   fk_parent_id BIGINT NOT NULL,
   fk_child_id BIGINT NOT NULL,
   quantity INT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS product_child (
   FOREIGN KEY (fk_child_id) REFERENCES product(product_id)
 );
 
-CREATE TABLE IF NOT EXISTS product_price (
+CREATE TABLE product_price (
   product_price_id BIGINT GENERATED ALWAYS AS IDENTITY,
   fk_product_id BIGINT NOT NULL,
   price NUMERIC NOT NULL,

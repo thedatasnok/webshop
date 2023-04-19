@@ -1,50 +1,34 @@
-DO $$ BEGIN
-  CREATE TYPE webshop_order_status AS ENUM (
-    'NEW',
-    'IN_PROGRESS',
-    'SHIPPED',
-    'DELIVERED',
-    'CANCELLED'
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE webshop_order_status AS ENUM (
+  'NEW',
+  'IN_PROGRESS',
+  'SHIPPED',
+  'DELIVERED',
+  'CANCELLED'
+);
 
-DO $$ BEGIN
-  CREATE TYPE webshop_payment_status AS ENUM (
-    'NEW',
-    'IN_PROGRESS',
-    'PAID',
-    'CANCELLED'
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE webshop_payment_status AS ENUM (
+  'NEW',
+  'IN_PROGRESS',
+  'PAID',
+  'CANCELLED'
+);
 
-DO $$ BEGIN
-  CREATE TYPE webshop_payment_method AS ENUM (
-    'BIOMETRIC',
-    'CRYPTO',
-    'VIRTUAL_WALLET',
-    'SMART_CONTRACT',
-    'CREDIT_CARD'
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE webshop_payment_method AS ENUM (
+  'BIOMETRIC',
+  'CRYPTO',
+  'VIRTUAL_WALLET',
+  'SMART_CONTRACT',
+  'CREDIT_CARD'
+);
 
-DO $$ BEGIN
-  CREATE TYPE webshop_shipping_method AS ENUM (
-    'INSTANT_TELEPORTATION',
-    'DRONE',
-    'SELF_DRIVING_TRUCK',
-    'HYPERLOOP'
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE webshop_shipping_method AS ENUM (
+  'INSTANT_TELEPORTATION',
+  'DRONE',
+  'SELF_DRIVING_TRUCK',
+  'HYPERLOOP'
+);
 
-CREATE TABLE IF NOT EXISTS "order" (
+CREATE TABLE "order" (
   order_id BIGINT GENERATED ALWAYS AS IDENTITY,
 
   ordered_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -80,7 +64,7 @@ CREATE TABLE IF NOT EXISTS "order" (
   FOREIGN KEY (fk_customer_id) REFERENCES user_account(user_account_id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS order_line (
+CREATE TABLE order_line (
   order_line_id BIGINT GENERATED ALWAYS AS IDENTITY,
   fk_order_id BIGINT NOT NULL,
   fk_product_id BIGINT NOT NULL,
