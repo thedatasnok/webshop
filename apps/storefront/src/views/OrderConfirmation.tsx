@@ -3,14 +3,14 @@ import { RouteHref } from '@/router';
 import { useGetOrderQuery } from '@/services/userContextOrders';
 import { Button } from '@webshop/ui';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, Navigate, useParams } from 'react-router-dom';
 
 const OrderConfirmation = () => {
   const { id } = useParams();
-  const { data: orderDetails } = useGetOrderQuery(Number(id!));
+  const { data: orderDetails, isError } = useGetOrderQuery(Number(id!));
 
-  if (!orderDetails) {
-    return <main>Order does not exist</main>;
+  if (!orderDetails && isError) {
+    return <Navigate to={RouteHref.NOT_FOUND} />;
   }
 
   return (
