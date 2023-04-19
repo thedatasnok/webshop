@@ -22,7 +22,7 @@ public class ProductJdbcRepository {
   private final ObjectMapper objectMapper;
 
   private static final TypeReference<List<String>> STRING_LIST_TYPE_REF = new TypeReference<>(){};
-  private static final TypeReference<Map<String, String>> STRING_MAP_TYPE_REF = new TypeReference<>(){};
+  private static final TypeReference<Map<String, Map<String, String>>> ATTRIBUTE_MAP_TYPE_REF = new TypeReference<>(){};
   private static final TypeReference<List<ProductChildDetails>> PRODUCT_CHILD_DETAILS_LIST_TYPE_REF = new TypeReference<>(){};
   private static final TypeReference<List<ProductVariant>> PRODUCT_VARIANT_LIST_TYPE_REF = new TypeReference<>(){};
 
@@ -103,7 +103,7 @@ public class ProductJdbcRepository {
           rs.getDouble("price"),
           rs.getBoolean("is_discount"),
           rs.getDouble("previous_price"),
-          this.objectMapper.readValue(rs.getString("attributes"), STRING_MAP_TYPE_REF),
+          this.objectMapper.readValue(rs.getString("attributes"), ATTRIBUTE_MAP_TYPE_REF),
           this.objectMapper.readValue(rs.getString("children"), PRODUCT_CHILD_DETAILS_LIST_TYPE_REF),
           this.objectMapper.readValue(rs.getString("variants"), PRODUCT_VARIANT_LIST_TYPE_REF)
         );

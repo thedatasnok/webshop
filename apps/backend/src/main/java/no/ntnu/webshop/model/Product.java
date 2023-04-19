@@ -62,7 +62,7 @@ public class Product {
 
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "defined_attributes")
-  private Map<String, String> attributes;
+  private Map<String, Map<String, String>> attributes;
 
   @ManyToOne
   @JoinColumn(name = "fk_product_family_id", referencedColumnName = ProductFamily.PRIMARY_KEY)
@@ -113,7 +113,7 @@ public class Product {
       String shortDescription,
       List<String> imageUrls,
       ProductFamily family,
-      Map<String, String> attributes
+      Map<String, Map<String, String>> attributes
   ) {
     this.name = name;
     this.shortName = shortName;
@@ -193,14 +193,23 @@ public class Product {
     if (this.family == null || this.family.getAttributeMap() == null)
       return true;
 
-    for (var key : this.family.getAttributeMap().keySet()) {
-      // missing attribute
-      if (!this.attributes.containsKey(key))
+    for (var groupKey : this.family.getAttributeMap().keySet()) {
+      // missing attribute group
+      if (!this.attributes.containsKey(groupKey))
         return false;
 
-      // the value of the attribute is not within the family's defined values
-      if (!this.family.getAttributeMap().get(key).contains(this.attributes.get(key)))
-        return false;
+      var group = this.attributes.get(groupKey);
+      var familyGroup = this.family.getAttributeMap().get(groupKey);
+
+      for (var attributeEntry : familyGroup.entrySet()) {
+        // missing attribute
+        if (!group.containsKey(attributeEntry.getKey()))
+          return false;
+
+        // the value of the attribute is not within the family's defined values
+        if (!attributeEntry.getValue().contains(group.get(attributeEntry.getKey())))
+          return false;
+      }
     }
 
     return true;

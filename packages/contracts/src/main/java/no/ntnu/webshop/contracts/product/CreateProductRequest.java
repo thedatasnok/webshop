@@ -23,12 +23,16 @@ public record CreateProductRequest(
   @NotNull Boolean isDiscount,
   @Nullable Long familyId,
   @NotNull Set<Integer> categoryIds,
-  @Schema(description = "The attributes of the product, keyed by their name.", example = """
+  @Schema(description = "The attributes of the product grouped by .", example = """
     {
-      "color": "red",
-      "size": "large"
+      "General": {
+        "Guarantee": "2 years"
+      },
+      "Power": {
+        "Power consumption": "100W"
+      }
     }
-    """) @Nullable Map<String, String> attributes,
+    """) @Nullable Map<String, Map<String, String>> attributes,
   @Schema(description = "The amount of children products keyed by the item id.", example = """
     {
       "1": 1,

@@ -17,7 +17,7 @@ public record ProductDetails(
   Double price,
   Boolean isDiscount,
   Double previousPrice,
-  Map<String, String> attributes,
+  Map<String, Map<String, String>> attributes,
   List<ProductChildDetails> children,
   List<ProductVariant> variants
 ) {}

@@ -11,6 +11,6 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 public record CreateProductFamilyRequest(
   @NotBlank String name,
   @NotNull String description,
-  @NotNull Map<String, String> sharedAttributes,
-  @NotNull Map<String, Set<String>> attributeMap
+  @NotNull Map<String, Map<String, String>> sharedAttributes,
+  @NotNull Map<String, Map<String, Set<String>>> attributeMap
 ) {}

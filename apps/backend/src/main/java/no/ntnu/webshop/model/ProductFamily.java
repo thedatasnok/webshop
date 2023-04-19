@@ -55,7 +55,7 @@ public class ProductFamily {
    */
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "shared_attributes")
-  private Map<String, String> sharedAttributes;
+  private Map<String, Map<String, String>> sharedAttributes;
 
   /**
    * Holds a map of attributes that can be set by items in this family. The key is the name of the
@@ -66,7 +66,7 @@ public class ProductFamily {
    */
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "attribute_map")
-  private Map<String, Set<String>> attributeMap;
+  private Map<String, Map<String, Set<String>>> attributeMap;
 
   @OneToMany(mappedBy = "family")
   private List<Product> products = new ArrayList<>();
@@ -82,39 +82,13 @@ public class ProductFamily {
   public ProductFamily(
       String name,
       String description,
-      Map<String, String> sharedAttributes,
-      Map<String, Set<String>> attributeMap
+      Map<String, Map<String, String>> sharedAttributes,
+      Map<String, Map<String, Set<String>>> attributeMap
   ) {
     this.name = name;
     this.description = description;
     this.sharedAttributes = sharedAttributes;
     this.attributeMap = attributeMap;
-  }
-
-  /**
-   * Adds a shared attribute to the item family.
-   * 
-   * @param key   the name of the attribute
-   * @param value the value of the shared attribute
-   */
-  public void addSharedAttribute(
-      String key,
-      String value
-  ) {
-    this.sharedAttributes.put(key, value);
-  }
-
-  /**
-   * Adds a new attribute to the map of attributes a item in this family can define.
-   * 
-   * @param key   the name of the attribute
-   * @param value a possible value for the attribute
-   */
-  public void addAttribute(
-      String key,
-      String value
-  ) {
-    this.attributeMap.get(key).add(value);
   }
 
 }
