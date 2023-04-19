@@ -10,7 +10,6 @@ import {
 import { Role } from '@/app/constants';
 
 const Dashboard = React.lazy(() => import('@/views/Dashboard'));
-const ItemManagement = React.lazy(() => import('@/views/ItemManagement'));
 const OrderManagement = React.lazy(() => import('@/views/OrderManagement'));
 const ProductManagement = React.lazy(() => import('@/views/ProductManagement'));
 const UserManagement = React.lazy(() => import('@/views/UserManagement'));
@@ -33,15 +32,6 @@ const dashboardRoutes: ApplicationRoute[] = [
     roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
     href: RouteHref.ORDER_MANAGEMENT,
     element: <OrderManagement />,
-  },
-  {
-    name: 'Items',
-    path: 'items',
-    sidebar: true,
-    icon: RiQuestionLine,
-    roles: [Role.SHOP_WORKER, Role.SHOP_OWNER],
-    href: RouteHref.ITEM_MANAGEMENT,
-    element: <ItemManagement />,
   },
   {
     name: 'Products',
