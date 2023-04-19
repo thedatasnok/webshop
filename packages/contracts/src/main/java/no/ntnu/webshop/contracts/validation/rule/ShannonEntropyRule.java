@@ -1,7 +1,6 @@
 package no.ntnu.webshop.contracts.validation.rule;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.passay.PasswordData;
 import org.passay.Rule;
@@ -27,8 +26,8 @@ public class ShannonEntropyRule implements Rule {
     if (entropy < this.minimumEntropyBits) {
       result.setValid(false);
       result.addError(
-        "PASSWORD_TOO_WEAK",
-        Map.of("minimumEntropyBits", this.minimumEntropyBits, "actualEntropyBits", entropy)
+        String.format("Password must be at least %d bits of entropy, but was: %.02f", this.minimumEntropyBits, entropy),
+        null
       );
     }
 
