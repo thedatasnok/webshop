@@ -4,7 +4,7 @@ import { RouteHref } from '@/router';
 import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
 import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
-import { Button, formatPrice } from '@webshop/ui';
+import { Button, GroupedTable, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { RiArrowUpSLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
@@ -59,10 +59,11 @@ const ProductView = () => {
             <img
               className='clip-edges clip-corner-sm'
               src={productInfo?.imageUrls[0]}
-              alt={undefined || productInfo?.name}
+              alt={productInfo?.name}
             />
-            <div className='bg-base-900 font-title absolute bottom-0 right-1/4 translate-x-full translate-y-1/2 px-2 py-1 font-bold uppercase tracking-widest '>
-              #98320
+
+            <div className='bg-base-950 font-title absolute bottom-0 right-1/4 translate-x-full translate-y-1/2 px-2 py-1 font-bold uppercase tracking-widest '>
+              #{productInfo?.id.toString().padStart(4, '0')}
             </div>
           </div>
 
@@ -70,8 +71,9 @@ const ProductView = () => {
             <h1 className='font-title text-base-50 mb-2 text-4xl font-bold uppercase'>
               {productInfo?.name}
             </h1>
-            <p className='text-base-300 mb-8 max-w-lg'>
-              {productInfo?.description}
+
+            <p className='text-base-400 mb-2 max-w-lg text-sm'>
+              {productInfo?.shortDescription}
             </p>
 
             <div className='mb-2 flex flex-wrap items-center gap-1'>
@@ -90,9 +92,10 @@ const ProductView = () => {
               ))}
             </div>
 
-            <h2 className='text-base-50 text-xl font-semibold'>
+            <h2 className='text-base-100 font-title text-2xl font-bold'>
               {formatPrice(productInfo?.price || 0)}
             </h2>
+
             <Button
               onClick={add}
               className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'
@@ -101,41 +104,28 @@ const ProductView = () => {
             </Button>
           </div>
         </div>
-        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-24 md:grid md:grid-cols-2'>
+
+        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-16 md:grid md:grid-cols-2'>
           <div>
-            <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
+            <h2 className='font-title text-3xl font-semibold uppercase'>
               Description
             </h2>
-            <hr className='mb-8'></hr>
-            <p>
-              This mouse pad is made of a special type of polymer that can
-              change its shape and texture in response to different in-game
-              environments. The pad has advanced sensors that detect the
-              player's movements and translate them into in-game actions,
-              allowing for precise and intuitive control. This pad is connected
-              to a gaming computer or console, and would be able to display
-              different dimensions and environments through the use of
-              holographic technology. This mouse pad is made of a special type
-              of polymer that can change its shape and texture in response to
-              different in-game environments. The pad has advanced sensors that
-              detect the player's movements and translate them into in-game
-              actions, allowing for precise and intuitive control. This pad is
-              connected to a gaming computer or console, and would be able to
-              display different dimensions and environments through the use of
-              holographic technology.
+
+            <hr className='text-base-800 mb-2' />
+
+            <p className='text-base-300 whitespace-pre-line text-sm'>
+              {productInfo?.description}
             </p>
           </div>
+
           <div>
-            <h2 className='font-title mb-2 text-3xl font-semibold uppercase'>
+            <h2 className='font-title text-3xl font-semibold uppercase'>
               Specs
             </h2>
-            <hr className='mb-8'></hr>
-            <ul>
-              <li>- 100k dpi</li>
-              <li>- 10000000k colors</li>
-              <li>- incredible precision</li>
-              <li>- for kill in video fps games, -turbo mode neon-</li>
-            </ul>
+
+            <hr className='text-base-800 mb-2' />
+
+            {productInfo && <GroupedTable data={productInfo.attributes} />}
           </div>
         </div>
 
@@ -145,38 +135,25 @@ const ProductView = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className='w-full py-2'>
-                      <h2 className='font-title items-center justify-center text-3xl font-semibold uppercase'>
+                    <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
+                      <h2 className='font-title text-3xl font-semibold uppercase'>
                         Description
                       </h2>
-                      <span>
-                        <RiArrowUpSLine
-                          className={
-                            open ? 'w-full rotate-180 transform' : 'w-full'
-                          }
-                        ></RiArrowUpSLine>
-                      </span>
 
-                      <hr className='mb-4'></hr>
+                      <RiArrowUpSLine
+                        className={clsx(
+                          'h-4 w-4',
+                          open && 'rotate-180 transform'
+                        )}
+                      />
                     </Disclosure.Button>
-                    <Disclosure.Panel className='pb-8 text-gray-500'>
-                      This mouse pad is made of a special type of polymer that
-                      can change its shape and texture in response to different
-                      in-game environments. The pad has advanced sensors that
-                      detect the player's movements and translate them into
-                      in-game actions, allowing for precise and intuitive
-                      control. This pad is connected to a gaming computer or
-                      console, and would be able to display different dimensions
-                      and environments through the use of holographic
-                      technology. This mouse pad is made of a special type of
-                      polymer that can change its shape and texture in response
-                      to different in-game environments. The pad has advanced
-                      sensors that detect the player's movements and translate
-                      them into in-game actions, allowing for precise and
-                      intuitive control. This pad is connected to a gaming
-                      computer or console, and would be able to display
-                      different dimensions and environments through the use of
-                      holographic technology.
+
+                    <hr className='text-base-800 mb-2' />
+
+                    <Disclosure.Panel className='pb-4 text-gray-500'>
+                      <p className='text-base-300 whitespace-pre-line text-sm'>
+                        {productInfo?.description}
+                      </p>
                     </Disclosure.Panel>
                   </>
                 )}
@@ -184,30 +161,30 @@ const ProductView = () => {
             </div>
             <p></p>
           </div>
+
           <div className='block md:hidden'>
             <Disclosure>
               {({ open }) => (
                 <>
-                  <Disclosure.Button className='w-full py-2'>
-                    <h2 className='font-title items-center justify-center text-3xl font-semibold uppercase'>
-                      SPECS
+                  <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
+                    <h2 className='font-title text-3xl font-semibold uppercase'>
+                      Specs
                     </h2>
-                    <span>
-                      <RiArrowUpSLine
-                        className={
-                          open ? 'w-full rotate-180 transform' : 'w-full'
-                        }
-                      ></RiArrowUpSLine>
-                    </span>
-                    <hr className='mb-4'></hr>
+
+                    <RiArrowUpSLine
+                      className={clsx(
+                        'h-4 w-4',
+                        open && 'rotate-180 transform'
+                      )}
+                    />
                   </Disclosure.Button>
-                  <Disclosure.Panel className='pb-8 text-gray-500'>
-                    <ul>
-                      <li>- 100k dpi</li>
-                      <li>- 10000000k colors</li>
-                      <li>- incredible precision</li>
-                      <li>- for kill in video fps games, -turbo mode neon-</li>
-                    </ul>
+
+                  <hr className='text-base-800 mb-2' />
+
+                  <Disclosure.Panel className='pb-4 text-gray-500'>
+                    {productInfo && (
+                      <GroupedTable data={productInfo.attributes} />
+                    )}
                   </Disclosure.Panel>
                 </>
               )}
@@ -215,7 +192,7 @@ const ProductView = () => {
           </div>
         </div>
 
-        <h2 className='font-title mb-4 mt-16 text-center text-2xl font-bold uppercase tracking-wider sm:mt-32'>
+        <h2 className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'>
           Related products
         </h2>
 

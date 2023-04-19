@@ -1,17 +1,17 @@
 import Logo from './branding/Logo';
 import Corner from './decoration/Corner';
 import Alert from './feedback/Alert';
+import DialogPrompt from './feedback/DialogPrompt';
 import ErrorLabel from './feedback/ErrorLabel';
+import GroupedTable from './grid/GroupedTable';
 import Button from './input/Button';
 import InputLabel from './input/InputLabel';
 import RadioGroup from './input/RadioGroup';
-import TextField from './input/TextField';
 import SortByField from './input/SortByField';
-import DialogPrompt from './feedback/DialogPrompt';
+import TextField from './input/TextField';
 
 export * from './feedback/Alert';
 export * from './input/SortByField';
-
 export {
   Alert,
   Button,
@@ -23,4 +23,5 @@ export {
   RadioGroup,
   SortByField,
   DialogPrompt,
+  GroupedTable,
 };
