@@ -24,11 +24,13 @@ import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
+import no.ntnu.webshop.error.model.CategoryNotFoundException;
 import no.ntnu.webshop.error.model.ProductNotFoundException;
 import no.ntnu.webshop.model.Product;
 import no.ntnu.webshop.model.ProductChild;
 import no.ntnu.webshop.model.ProductFamily;
 import no.ntnu.webshop.model.ProductPrice;
+import no.ntnu.webshop.repository.CategoryJpaRepository;
 import no.ntnu.webshop.repository.ProductFamilyJpaRepository;
 import no.ntnu.webshop.repository.ProductJdbcRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
@@ -44,6 +46,7 @@ public class ProductController {
   private final ProductJdbcRepository productJdbcRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
   private final ProductFamilyJpaRepository productFamilyJpaRepository;
+  private final CategoryJpaRepository categoryJpaRepository;
 
   @Operation(summary = "Finds a list of products with optional filters")
   @GetMapping
@@ -155,6 +158,15 @@ public class ProductController {
           request.children().get(child.getId())
         )
       );
+    }
+
+    var categories = this.categoryJpaRepository.findAllById(request.categoryIds());
+
+    if (categories.size() != request.categoryIds().size())
+      throw new CategoryNotFoundException("One or more categories were not found");
+
+    for (var category : categories) {
+      product.addCategory(category);
     }
 
     var savedProduct = this.productJpaRepository.save(product);

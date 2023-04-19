@@ -160,6 +160,31 @@ public class Product {
   }
 
   /**
+   * Adds a category to this product. This will also update the Category side of the relationship.
+   * 
+   * @param category the category to add to this product
+   */
+  public void addCategory(
+      Category category
+  ) {
+    this.categories.add(category);
+    category.addProduct(this);
+  }
+
+  /**
+   * Removes a category from this product. This will also update the Category side of the
+   * relationship.
+   * 
+   * @param category the category to remove from this product
+   */
+  public void removeCategory(
+      Category category
+  ) {
+    this.categories.remove(category);
+    category.removeProduct(this);
+  }
+
+  /**
    * Checks whether the product adheres to the family's defined attribute map.
    * 
    * @return true if the product adhered to the family's defined attribute map, false otherwise

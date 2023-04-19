@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import no.ntnu.webshop.contracts.category.CategoryDto;
 import no.ntnu.webshop.model.Category;
 
-public interface CategoryJpaRepository extends JpaRepository<Category, Long> {
+public interface CategoryJpaRepository extends JpaRepository<Category, Integer> {
 
   /**
    * Finds all categories and returns them in a list of CategoryDto objects.

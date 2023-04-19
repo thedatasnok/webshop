@@ -2,6 +2,7 @@ package no.ntnu.webshop.contracts.product;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -21,6 +22,7 @@ public record CreateProductRequest(
   @NotNull @Min(0) Double price,
   @NotNull Boolean isDiscount,
   @Nullable Long familyId,
+  @NotNull Set<Integer> categoryIds,
   @Schema(description = "The attributes of the product, keyed by their name.", example = """
     {
       "color": "red",

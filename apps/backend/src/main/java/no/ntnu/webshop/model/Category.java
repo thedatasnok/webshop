@@ -61,4 +61,22 @@ public class Category {
     this.iconUrl = iconUrl;
   }
 
+  /**
+   * Adds a product to the category.
+   * 
+   * @param product the product to add to the category
+   */
+  public void addProduct(Product product) {
+    this.products.add(product);
+  }
+
+  /**
+   * Removes a product from the category.
+   * 
+   * @param product the product to remove from the category
+   */
+  public void removeProduct(Product product) {
+    this.products.remove(product);
+  }
+
 }
