@@ -1,12 +1,16 @@
 import PageLayout from '@/components/layout/PageLayout';
-import { RiAccountCircleLine, RiMailLine, RiPhoneLine } from 'react-icons/ri';
+import { RiMailLine, RiPhoneLine, RiStore2Line } from 'react-icons/ri';
 
 const Support = () => {
   return (
     <PageLayout>
-      <main>
-        <div className='flex flex-col items-center'>
-          <p className='max-w-xl text-center sm:pt-8'>
+      <main className='mx-auto flex max-w-screen-xl justify-center p-2'>
+        <div className='border-base-800 border p-4'>
+          <h1 className='font-title flex pb-2 text-2xl font-semibold uppercase'>
+            Support
+          </h1>
+
+          <p className='max-w-screen-xl'>
             Cyberpunk gaming gear are dedicated to providing you with the best
             shopping experience possible, and that includes offering top-notch
             support for all of your inquiries. Whether you have a question about
@@ -16,21 +20,42 @@ const Support = () => {
             is most convenient for you.
           </p>
 
-          <div className='flex flex-row gap-8 py-4'>
-            <a href='tel: 4713371337' className='flex flex-col items-center'>
-              <RiPhoneLine className='h-16 w-16' />
+          <div className='flex flex-col gap-2 pt-8'>
+            <a
+              href='tel:4713371337'
+              className='hover:text-primary-400 flex gap-2 transition-colors'
+            >
+              <RiPhoneLine className='h-6 w-6' />
               <p>+47 13371337</p>
             </a>
 
             <a
-              href='mailto: support@cgg.no'
-              className='flex flex-col items-center'
+              href='mailto:support@cgg.no'
+              className='hover:text-primary-400 flex gap-2 transition-colors'
             >
-              <RiMailLine className='h-16 w-16' />
+              <RiMailLine className='h-6 w-6' />
               <p>support@cgg.no</p>
+            </a>
+
+            <a
+              href='https://goo.gl/maps/tqLrUkjo9FnoLowPA'
+              target='_blank'
+              className='hover:text-primary-400 flex gap-2 transition-colors'
+            >
+              <RiStore2Line className='h-6 w-6' />
+              <p>Larsgårdsvegen 2, 6009 Ålesund</p>
             </a>
           </div>
         </div>
+        <section
+          aria-label='storefront-image'
+          className='border-base-800 hidden border lg:flex'
+        >
+          <img
+            src='https://cdn.discordapp.com/attachments/1091009232498860134/1098196534849437816/dudleif_The_front_of_the_Cyberpunk_Gaming_Gear_store_at_night_i_46a20040-2b5b-4591-889d-7a03f5fb7ba5.jpg'
+            className='border-base-800'
+          />
+        </section>
       </main>
     </PageLayout>
   );
