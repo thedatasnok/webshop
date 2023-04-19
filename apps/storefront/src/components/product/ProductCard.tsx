@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <NavLink
       to={to}
       className={clsx(
-        'border-base-800 bg-base-800/30 hover:bg-primary-900/10 hover:border-primary-800 group  relative flex flex-col rounded-sm border transition-colors',
+        'border-base-800 bg-base-900/30 hover:bg-primary-900/10 hover:border-primary-800 group  relative flex flex-col rounded-sm border transition-colors',
         className
       )}
     >

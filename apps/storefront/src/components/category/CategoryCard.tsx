@@ -16,7 +16,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   return (
     <div
       className={clsx(
-        'border-base-800 bg-base-800/10 sm:hover:border-primary group flex aspect-square cursor-pointer',
+        'border-base-800 bg-base-900/30 hover:border-primary-800 hover:text-primary-600 group flex aspect-square cursor-pointer',
         'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition ',
         selected && 'text-primary  border-primary'
       )}
@@ -33,9 +33,10 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           mask: `url(${iconUrl}) no-repeat center`,
         }}
       />
-      <p className='group-hover:text-primary text-center text-sm font-medium'>
+
+      <span className='group-hover:text-primary font-title text-center text-sm font-semibold uppercase tracking-wide'>
         {name}
-      </p>
+      </span>
     </div>
   );
 };

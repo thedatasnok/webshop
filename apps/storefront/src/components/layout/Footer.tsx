@@ -97,7 +97,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
           <div className='border-base-600 w-full border-t' />
         </div>
         <div className='relative flex justify-center'>
-          <div className='bg-base w-32 px-4'>
+          <div className='bg-base-950 w-32 px-4'>
             <Logo variant='small' />
           </div>
         </div>
