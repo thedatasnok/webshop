@@ -107,7 +107,7 @@ export const routes: ApplicationRoute[] = [
     element: <Support />,
   },
   {
-    path: RouteHref.ORDER_CONFIRMATION,
+    path: `${RouteHref.ORDER_CONFIRMATION}/:id`,
     href: RouteHref.ORDER_CONFIRMATION,
     element: <OrderConfirmation />,
     authentication: 'logged-in',
