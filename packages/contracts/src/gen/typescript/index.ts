@@ -5,6 +5,17 @@ export interface GenericResponse {
     message: string;
 }
 
+export interface ValidationError {
+    message: string;
+    rejectedValue: any;
+}
+
+export interface ValidationErrorResponse {
+    statusCode: number;
+    code: string;
+    errors: { [index: string]: ValidationError[] };
+}
+
 export interface AddressDto {
     country: string;
     postalCode: string;
@@ -95,6 +106,7 @@ export interface OrderSummary {
 }
 
 export interface PlaceOrderRequest {
+    customerName: string;
     shippingAddress: AddressDto;
     billingAddress: AddressDto;
     differentBillingAddress: boolean;
@@ -120,10 +132,11 @@ export interface CreateProductRequest {
     price: number;
     isDiscount: boolean;
     familyId: number | null;
+    categoryIds: number[];
     /**
-     * The attributes of the product, keyed by their name.
+     * The attributes of the product grouped by .
      */
-    attributes: { [index: string]: string } | null;
+    attributes: { [index: string]: { [index: string]: string } } | null;
     /**
      * The amount of children products keyed by the item id.
      */
@@ -147,6 +160,7 @@ export interface ProductDetails {
     price: number;
     isDiscount: boolean;
     previousPrice: number;
+    attributes: { [index: string]: { [index: string]: string } };
     children: ProductChildDetails[];
     variants: ProductVariant[];
 }
@@ -169,8 +183,8 @@ export interface ProductVariant {
 export interface CreateProductFamilyRequest {
     name: string;
     description: string;
-    sharedAttributes: { [index: string]: string };
-    attributeMap: { [index: string]: string[] };
+    sharedAttributes: { [index: string]: { [index: string]: string } };
+    attributeMap: { [index: string]: { [index: string]: string[] } };
 }
 
 export interface UpdateUserProfileRequest {
