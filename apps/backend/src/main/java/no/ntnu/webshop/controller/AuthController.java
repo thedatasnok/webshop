@@ -30,6 +30,7 @@ import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.security.JwtTokenType;
 import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
+import no.ntnu.webshop.service.UserAccountService;
 
 @Tag(name = "Authentication")
 @RestController
@@ -38,7 +39,7 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 public class AuthController {
   private final JwtUtility jwtUtility;
   private final UserAccountJpaRepository userAccountJpaRepository;
-  private final PasswordEncoder passwordEncoder;
+  private final UserAccountService userAccountService;
   private final AuthenticationManager authenticationManager;
   private final ApplicationEventPublisher eventPublisher;
 
@@ -48,15 +49,14 @@ public class AuthController {
       @RequestBody @Valid SignUpRequest request,
       HttpServletResponse response
   ) {
-    var userAccount = new UserAccount(
+    var userAccount = this.userAccountService.createUserAccount(
       request.fullName(),
       request.email(),
-      passwordEncoder.encode(request.password()),
+      request.password(),
       UserAccountRole.CUSTOMER
     );
 
-    var savedAccount = this.userAccountJpaRepository.save(userAccount);
-    var userDetails = new UserAccountDetailsAdapter(savedAccount);
+    var userDetails = new UserAccountDetailsAdapter(userAccount);
 
     var authentication = new UsernamePasswordAuthenticationToken(
       userDetails,
@@ -69,13 +69,13 @@ public class AuthController {
 
     response.addCookie(this.jwtUtility.createCookie(refreshToken));
 
-    this.eventPublisher.publishEvent(new CustomerRegisteredEvent(savedAccount));
+    this.eventPublisher.publishEvent(new CustomerRegisteredEvent(userAccount));
 
     return ResponseEntity.ok(
       SignUpResponse.builder()
-        .id(savedAccount.getId())
-        .fullName(savedAccount.getFullName())
-        .email(savedAccount.getEmail())
+        .id(userAccount.getId())
+        .fullName(userAccount.getFullName())
+        .email(userAccount.getEmail())
         .accessToken(accessToken)
         .build()
     );

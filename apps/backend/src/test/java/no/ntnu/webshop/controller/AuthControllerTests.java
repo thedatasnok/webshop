@@ -1,11 +1,13 @@
 package no.ntnu.webshop.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,24 +20,28 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
+import no.ntnu.webshop.utility.AuthorizationTestUtility;
 
 @SpringBootTest
 @RequiredArgsConstructor
 class AuthControllerTests {
   private final ObjectMapper objectMapper;
   private final UserAccountJpaRepository userAccountJpaRepository;
+  private final AuthorizationTestUtility authorizationTestUtility;
   private final WebApplicationContext context;
 
   private MockMvc mockMvc;
 
   @BeforeEach
   void setup() {
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+      .apply(SecurityMockMvcConfigurers.springSecurity())
+      .build();
   }
 
   @Test
   void userRegistrationWorks() throws Exception {
-    var email = "kalle@noreply.org";
+    var email = "bob@mocker.org";
     var password = "thisPasswordShouldPassTheStrengthValidation321";
 
     var signUpRequest = new SignUpRequest(
@@ -45,7 +51,7 @@ class AuthControllerTests {
       password
     );
 
-    assertEquals(0, this.userAccountJpaRepository.count());
+    var countBefore = this.userAccountJpaRepository.count();
 
     this.mockMvc
       .perform(
@@ -58,7 +64,7 @@ class AuthControllerTests {
       .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
       .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isString());
 
-    assertEquals(1, this.userAccountJpaRepository.count());
+    assertEquals(countBefore + 1, this.userAccountJpaRepository.count());
 
     var signInRequest = new SignInRequest(
       email,
@@ -74,6 +80,19 @@ class AuthControllerTests {
       .andExpect(MockMvcResultMatchers.status().isOk())
       .andExpect(MockMvcResultMatchers.cookie().exists("refresh-token"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isString());
+
+    var foundAccount = this.userAccountJpaRepository.findByEmail(email);
+
+    assertNotNull(foundAccount, "Could not find the account we just created");
+
+    this.mockMvc
+      .perform(
+        MockMvcRequestBuilders.delete("/api/v1/me")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(this.objectMapper.writeValueAsString(signInRequest))
+          .header("Authorization", this.authorizationTestUtility.generateJwt(foundAccount.get()))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
 }

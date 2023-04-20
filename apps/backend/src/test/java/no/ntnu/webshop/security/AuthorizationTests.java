@@ -1,11 +1,11 @@
 package no.ntnu.webshop.security;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -24,14 +24,16 @@ import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.security.annotation.CustomerAuthorization;
 import no.ntnu.webshop.security.annotation.ShopOwnerAuthorization;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
+import no.ntnu.webshop.service.UserAccountService;
+import no.ntnu.webshop.utility.AuthorizationTestUtility;
 
 @SpringBootTest
 @RequiredArgsConstructor
 class AuthorizationTests {
   private final WebApplicationContext context;
+  private final UserAccountService userAccountService;
   private final UserAccountJpaRepository userAccountJpaRepository;
-  private final PasswordEncoder passwordEncoder;
-  private final JwtUtility jwtUtility;
+  private final AuthorizationTestUtility authorizationTestUtility;
 
   private MockMvc mockMvc;
   private UserAccount customer;
@@ -44,40 +46,20 @@ class AuthorizationTests {
       .apply(SecurityMockMvcConfigurers.springSecurity())
       .build();
 
-    this.customer = this.userAccountJpaRepository.save(
-      new UserAccount(
-        "customer",
-        "customer@example.com",
-        this.passwordEncoder.encode("customer123"),
-        UserAccountRole.CUSTOMER
-      )
-    );
+    this.customer = this.userAccountService
+      .createUserAccount("customer", "customer@example.com", "customer123", UserAccountRole.CUSTOMER);
 
-    this.shopWorker = this.userAccountJpaRepository.save(
-      new UserAccount(
-        "shopworker",
-        "shopworker@example.com",
-        this.passwordEncoder.encode("shopworker123"),
-        UserAccountRole.SHOP_WORKER
-      )
-    );
+    this.shopWorker = this.userAccountService
+      .createUserAccount("shopworker", "shopworker@example.com", "shopworker123", UserAccountRole.SHOP_WORKER);
 
-    this.shopOwner = this.userAccountJpaRepository.save(
-      new UserAccount(
-        "shopowner",
-        "shopowner@example.com",
-        this.passwordEncoder.encode("shopowner123"),
-        UserAccountRole.SHOP_OWNER
-      )
-    );
+    this.shopOwner = this.userAccountService
+      .createUserAccount("shopowner", "shopowner@example.com", "shopowner123", UserAccountRole.SHOP_OWNER);
   }
 
   @AfterEach
   void cleanup() {
     // there might be a more effective way to do this
-    this.userAccountJpaRepository.delete(this.customer);
-    this.userAccountJpaRepository.delete(this.shopWorker);
-    this.userAccountJpaRepository.delete(this.shopOwner);
+    this.userAccountJpaRepository.deleteAll(List.of(this.customer, this.shopWorker, this.shopOwner));
   }
 
   @Test
@@ -137,26 +119,7 @@ class AuthorizationTests {
       String url,
       UserAccount user
   ) {
-    return MockMvcRequestBuilders.get(url).header("Authorization", this.generateJwt(user));
-  }
-
-  /**
-   * Utility method to generate a JWT token header for a given user account.
-   * 
-   * @param account the account to generate a JWT token for
-   * 
-   * @return a JWT token header, including the "Bearer " prefix
-   */
-  private String generateJwt(
-      UserAccount account
-  ) {
-    var userDetails = new UserAccountDetailsAdapter(account);
-    var authentication = new UsernamePasswordAuthenticationToken(
-      userDetails,
-      null,
-      userDetails.getAuthorities()
-    );
-    return "Bearer ".concat(this.jwtUtility.generateToken(authentication, JwtTokenType.ACCESS_TOKEN));
+    return MockMvcRequestBuilders.get(url).header("Authorization", this.authorizationTestUtility.generateJwt(user));
   }
 
 }

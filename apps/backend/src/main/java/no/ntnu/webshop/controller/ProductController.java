@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -198,6 +199,28 @@ public class ProductController {
     this.productPriceJpaRepository.saveAll(List.of(currentPrice, newPrice));
 
     return ResponseEntity.ok(this.productJdbcRepository.findById(productId));
+  }
+
+  @Operation(summary = "Deletes a product from the system")
+  @DeleteMapping("/{id}")
+  @ShopWorkerAuthorization
+  public ResponseEntity<Object> deleteProduct(
+      @PathVariable Long id,
+      @Parameter(description = "If true, the product will be forcefully deleted along with it's references")
+      @RequestParam(value = "force", required = false) Optional<Boolean> force
+  ) {
+    if (!this.productJpaRepository.existsById(id))
+      throw new ProductNotFoundException("Could not find product to delete with id: " + id);
+
+    if (force.orElse(false)) {
+      this.productPriceJpaRepository.deleteAllByProductId(id);
+      this.productJpaRepository.deleteById(id);
+      return ResponseEntity.ok(null);
+    }
+
+    this.productJpaRepository.deleteById(id);
+
+    return ResponseEntity.ok(null);
   }
 
 }

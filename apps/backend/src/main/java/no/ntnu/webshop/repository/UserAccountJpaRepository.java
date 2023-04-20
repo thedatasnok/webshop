@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.model.UserAccount;
@@ -44,6 +45,11 @@ public interface UserAccountJpaRepository extends JpaRepository<UserAccount, UUI
     """)
   UserProfile findProfile(
       @Param("id") UUID id
+  );
+
+  @Transactional
+  void deleteByEmail(
+      String email
   );
 
 }
