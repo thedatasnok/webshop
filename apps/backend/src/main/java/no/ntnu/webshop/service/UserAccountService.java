@@ -2,6 +2,7 @@ package no.ntnu.webshop.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.model.UserAccount;
@@ -24,6 +25,7 @@ public class UserAccountService {
    * 
    * @return the created user account
    */
+  @Transactional
   public UserAccount createUserAccount(
       String fullName,
       String email,
