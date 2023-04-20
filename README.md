@@ -106,11 +106,41 @@ With those installed, you can:
     ./gradlew :packages:migrations:bootRun
     ```
 
-5. Install the PNPM dependencies by running `pnpm install` in the root of the project
+6. Install the PNPM dependencies by running `pnpm install` in the root of the project
 
-6. Start the frontend by running `pnpm --filter @webshop/storefront dev`
+7. Start the frontend by running `pnpm --filter @webshop/storefront dev`
 
 Once completed, you can access the frontend at http://localhost:5173/
+
+
+### Running tests
+
+<details>
+
+<summary>In case you are using VS Code, expand and read this note</summary>
+
+Add the following to your `settings.json` to enable running tests from VS Code:
+
+```json
+{
+  "java.test.config": [
+    {
+      "name": "local",
+      "workingDirectory": "${workspaceFolder}",
+      "env": { 
+        "spring.config.location": "${workspaceFolder}/apps/backend/src/test/resources/",
+      },
+    },
+  ]
+}
+```
+</details>
+
+In order to run tests, you need to have a Postgres instance to run the tests against. Ideally we wanted to use an in-memory H2 database, but it has some errors when handling JSON columns together with Hibernate so the idea was abandoned for now.
+
+This can be accomplished by defining a `.env` file in the root of the project, refer to the steps in [Getting started](#getting-started) for more information, followed by running this command: `docker compose up -d database`
+
+Once you have set up the database, run the tests from your editor or through `./gradlew :apps:backend:test`.
 
 
 ## License
