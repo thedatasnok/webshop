@@ -50,6 +50,23 @@ jobs:
   backend-test:
     name: Run backend tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:alpine
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+      
     steps:
       - uses: actions/checkout@v3
 
@@ -63,6 +80,12 @@ jobs:
 
       - name: Run tests
         run: ./gradlew :apps:backend:test
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
 
   backend-build:
     name: Build backend app
