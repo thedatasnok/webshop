@@ -42,7 +42,7 @@ const DialogPrompt: React.FC<DialogProps> = ({
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='border-primary-600 bg-base-900 flex max-w-md flex-col rounded-sm border p-6'>
+              <Dialog.Panel className='border-base-800 bg-base-950 flex max-w-md flex-col rounded-sm border p-6'>
                 <Dialog.Title
                   as='h3'
                   className='font-title text-xl font-semibold uppercase'
@@ -53,10 +53,10 @@ const DialogPrompt: React.FC<DialogProps> = ({
                   <p className='text-sm'>{message}</p>
                 </div>
 
-                <div className='flex flex-row justify-between gap-2 pt-4'>
-                  <Button onClick={action}>{title}</Button>
+                <div className='flex flex-row justify-between pt-4'>
+                  <Button onClick={action} variant='destructive'>{title}</Button>
 
-                  <Button onClick={onClose}>cancel</Button>
+                  <Button onClick={onClose} variant='neutral'>cancel</Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
