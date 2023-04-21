@@ -49,6 +49,10 @@ body {
   .grid-cols-inherit {
     grid-template-columns: inherit;
   }
+
+  .preserve-line {
+    @apply after:inline-block after:content-[""];
+  }
 }
 @media (min-width: 0px) {
   .max-w-180 {

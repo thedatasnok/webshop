@@ -6,7 +6,7 @@ import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button, GroupedTable, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { RiArrowUpSLine } from 'react-icons/ri';
+import { RiArrowUpSLine, RiShoppingCartLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink, Navigate, useParams } from 'react-router-dom';
 
@@ -72,7 +72,7 @@ const ProductView = () => {
               {productInfo?.name}
             </h1>
 
-            <p className='text-base-400 mb-2 max-w-lg text-sm'>
+            <p className='text-base-400 preserve-line mb-2 max-w-lg text-sm'>
               {productInfo?.shortDescription}
             </p>
 
@@ -82,7 +82,7 @@ const ProductView = () => {
                   key={variant.id}
                   to={[RouteHref.PRODUCTS, variant.id].join('/')}
                   className={clsx(
-                    'border-base-800 font-title rounded-sm border px-1 uppercase tracking-wide',
+                    'border-base-800 font-title rounded-sm border px-1 uppercase tracking-wide outline-none',
                     variant.id === productInfo.id &&
                       'border-primary text-primary bg-base-900/10'
                   )}
@@ -92,15 +92,29 @@ const ProductView = () => {
               ))}
             </div>
 
-            <h2 className='text-base-100 font-title text-2xl font-bold'>
-              {formatPrice(productInfo?.price || 0)}
-            </h2>
-
-            <Button
-              onClick={add}
-              className='mt-2 h-10 w-full px-6 font-semibold uppercase sm:w-fit'
+            <span
+              className={clsx(
+                'text-base-100 font-title text-2xl font-bold',
+                productInfo?.isDiscount && 'text-primary'
+              )}
             >
-              Add to Cart
+              {formatPrice(productInfo?.price || 0)}
+            </span>
+
+            <span
+              title={`Previously ${formatPrice(
+                productInfo?.previousPrice || 0
+              )}`}
+              className='text-base-400 font-title preserve-line ml-2 font-semibold uppercase'
+            >
+              {productInfo?.isDiscount && (
+                <>Prev. {formatPrice(productInfo.previousPrice)}</>
+              )}
+            </span>
+
+            <Button size='md' onClick={add} className='mt-4 block'>
+              <span>Add to Cart</span>
+              <RiShoppingCartLine className='-mt-0.5 h-4 w-4' />
             </Button>
           </div>
         </div>
