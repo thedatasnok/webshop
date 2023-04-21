@@ -15,8 +15,9 @@ import { NavLink, Navigate, useParams } from 'react-router-dom';
 
 const ProductView = () => {
   const { id } = useParams();
-  const { data: productInfo, isError } = useFindProductQuery(parseInt(id!));
-  const { data: relatedProducts } = useRelatedProductsQuery(parseInt(id!));
+  const parsedId = Number(id);
+  const { data: productInfo, isError } = useFindProductQuery(parsedId);
+  const { data: relatedProducts } = useRelatedProductsQuery(parsedId);
   const dispatch = useDispatch();
 
   const add = () => {
@@ -33,7 +34,7 @@ const ProductView = () => {
     <PageLayout>
       <main>
         <div className='mx-auto mt-4 max-w-screen-xl'>
-          <div className='text-base-400 space-x-2 text-sm'>
+          <div className='text-base-400 font-title space-x-2 text-sm font-semibold uppercase transition-all'>
             <NavLink
               to={RouteHref.HOME}
               className='hover:text-base-300 transition-colors hover:underline'
@@ -50,7 +51,7 @@ const ProductView = () => {
             <span>/</span>
             <NavLink
               to='#'
-              className='hover:text-base-300 transition-colors hover:underline'
+              className='text-base-300 transition-colors hover:underline'
             >
               {productInfo?.name}
             </NavLink>
