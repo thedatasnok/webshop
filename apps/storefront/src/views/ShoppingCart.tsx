@@ -42,7 +42,7 @@ const ShoppingCart = () => {
 
   return (
     <PageLayout>
-      <main className='mx-auto max-w-screen-xl py-4'>
+      <main className='mx-auto max-w-screen-xl'>
         <div className='mx-auto flex max-w-screen-xl items-center justify-center py-4'>
           <h1 className='font-title text-2xl font-semibold uppercase'>
             Shopping cart
