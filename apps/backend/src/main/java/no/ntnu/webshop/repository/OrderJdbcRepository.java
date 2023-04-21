@@ -1,7 +1,9 @@
 package no.ntnu.webshop.repository;
 
 import java.sql.Types;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.address.AddressDto;
 import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.OrderLineDetails;
+import no.ntnu.webshop.contracts.order.OrderSummary;
 import no.ntnu.webshop.error.model.MappingException;
 
 @Repository
@@ -27,11 +30,43 @@ public class OrderJdbcRepository {
   private static final TypeReference<List<OrderLineDetails>> ORDER_LINE_DETAILS_LIST_TYPE_REF = new TypeReference<>(){};
 
   /**
+   * Finds a daily order summary since a given date.
+   * 
+   * @param since the date to start from
+   * 
+   * @return a list of daily order summaries, since the given date
+   */
+  public List<OrderSummary> findDailyOrderSummary(
+      Date since
+  ) {
+    return this.jdbcTemplate.query(
+      """
+        SELECT
+          DATE_TRUNC('day', date_series) AS date,
+          COUNT(DISTINCT o.order_id) AS number_of_sales,
+          SUM(ol.subtotal) AS sum_of_sales
+        FROM
+          GENERATE_SERIES(NOW() - INTERVAL '7 days', NOW(), INTERVAL '1 day') AS date_series
+        LEFT JOIN "order" o ON (DATE_TRUNC('day', o.ordered_at) = DATE_TRUNC('day', date_series))
+        LEFT JOIN order_line ol ON (ol.fk_order_id = o.order_id)
+        GROUP BY date
+        ORDER BY date ASC
+        """,
+      Map.of("since", since),
+      (rs, i) -> new OrderSummary(
+        rs.getDate("date"),
+        rs.getLong("number_of_sales"),
+        rs.getDouble("sum_of_sales")
+      )
+    );
+  }
+
+  /**
    * Finds all orders for a user.
    * 
-   * @param userId the id of the user to find orders for
+   * @param userId      the id of the user to find orders for
    * @param productName optional product name to filter by
-   * @param orderId optional order id to filter by
+   * @param orderId     optional order id to filter by
    * 
    * @return a list of orders for that user
    */
@@ -93,12 +128,12 @@ public class OrderJdbcRepository {
         LEFT JOIN product_price prev_pp
           ON prev_pp.fk_product_id = p.product_id
           AND prev_pp.time_to = pp.time_from
-        WHERE 
-          (o.fk_customer_id = :userId) AND 
+        WHERE
+          (o.fk_customer_id = :userId) AND
           (o.order_id IN (
             SELECT DISTINCT ol.fk_order_id FROM order_line ol
-            INNER JOIN product p ON ol.fk_product_id = p.product_id 
-            WHERE 
+            INNER JOIN product p ON ol.fk_product_id = p.product_id
+            WHERE
               (:productName IS NULL OR p.name ILIKE '%' || :productName || '%') AND
               (:orderId IS NULL OR ol.fk_order_id = :orderId)
           ))

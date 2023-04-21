@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.order.OrderSummary;
-import no.ntnu.webshop.repository.OrderJpaRepository;
+import no.ntnu.webshop.repository.OrderJdbcRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
 @Tag(name = "Orders")
@@ -25,7 +25,7 @@ import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 public class OrderController {
-  private final OrderJpaRepository orderJpaRepository;
+  private final OrderJdbcRepository orderJdbcRepository;
 
   @GetMapping("/summary")
   public ResponseEntity<List<OrderSummary>> findDailyOrderSummary(
@@ -33,7 +33,7 @@ public class OrderController {
   ) {
     var sinceInstant = since.orElse(Instant.now().minus(7, ChronoUnit.DAYS));
 
-    return ResponseEntity.ok(this.orderJpaRepository.findDailyOrderSummary(Date.from(sinceInstant)));
+    return ResponseEntity.ok(this.orderJdbcRepository.findDailyOrderSummary(Date.from(sinceInstant)));
   }
 
   @GetMapping

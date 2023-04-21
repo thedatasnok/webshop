@@ -18,7 +18,10 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
    * @param since the date to start from
    * 
    * @return a list of daily order summaries, since the given date
+   * 
+   * @deprecated the version in {@link OrderJdbcRepository} replaces this
    */
+  @Deprecated
   @Query("""
       SELECT new no.ntnu.webshop.contracts.order.OrderSummary(
         EXTRACT(date FROM o.orderedAt),
