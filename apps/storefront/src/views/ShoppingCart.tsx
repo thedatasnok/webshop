@@ -42,92 +42,86 @@ const ShoppingCart = () => {
 
   return (
     <PageLayout>
-      <main>
-        <div className='mx-auto max-w-screen-xl py-4'>
-          <div id='cart-title' className='flex items-center justify-center'>
-            <h1 className='font-title text-2xl font-semibold uppercase'>
-              Shopping cart
-            </h1>
-            <div className='ml-auto'>
-              {isEmpty ? (
-                ''
-              ) : (
-                <button
-                  onClick={openDialog}
-                  className='hover:text-base-300 text-base-400 text-xs hover:underline'
-                >
-                  clear cart
-                </button>
-              )}
-              <DialogPrompt
-                isOpen={isOpen}
-                onClose={closeDialog}
-                title='clear cart'
-                message='Are you sure you want to clear your cart?'
-                action={handleClearCart}
-              />
-            </div>
-          </div>
-
-          <div className='font-title'>
-            <div className='mr-2 flex flex-row justify-end gap-4 text-lg sm:mr-0 sm:gap-6 md:gap-7'>
-              <h2 className='hidden pr-2 sm:block sm:pr-14 md:pr-16'>
-                Quantity
-              </h2>
-              <h2>Total</h2>
-              <h2 className='hidden sm:block'>Delete</h2>
-            </div>
-          </div>
-
-          <div className='mx-auto flex w-fit flex-col'>
-            {products?.map((product, i, array) => (
-              <ProductListCard
-                key={product.id}
-                id={product.id}
-                to={'/products/' + product.id}
-                name={product.name}
-                shortDescription={product.shortDescription}
-                image={product.imageUrls[0]}
-                cart={true}
-                className={i !== array.length - 1 ? 'border-b' : ''}
+      <main className='mx-auto max-w-screen-xl'>
+        <div className='mx-auto flex max-w-screen-xl items-center justify-center py-4'>
+          <h1 className='font-title text-2xl font-semibold uppercase'>
+            Shopping cart
+          </h1>
+          <div className='ml-auto'>
+            {isEmpty ? (
+              ''
+            ) : (
+              <button
+                onClick={openDialog}
+                className='hover:text-base-300 text-base-400 text-xs hover:underline'
               >
-                <ProductListCardCartActions
-                  productId={product.id}
-                  quantity={items[product.id]}
-                  price={product.price}
-                  previousPrice={product.previousPrice}
-                  isDiscount={product.isDiscount}
-                />
-              </ProductListCard>
-            ))}
+                clear cart
+              </button>
+            )}
+            <DialogPrompt
+              isOpen={isOpen}
+              onClose={closeDialog}
+              title='clear cart'
+              message='Are you sure you want to clear your cart?'
+              action={handleClearCart}
+            />
           </div>
-          {isEmpty ? (
-            <div className='flex flex-col items-center justify-center gap-2 pt-8'>
-              <hr className='text-base-700 w-full'></hr>
-              Cart is empty
-            </div>
-          ) : (
-            <div>
-              <div
-                id='cart-total'
-                className='flex w-full justify-center pt-2 text-xl sm:flex-col'
-              >
-                <div className='font-title self-end text-xl font-semibold uppercase sm:pt-2'>
-                  {/* default value to 0 if products are not loaded  */}
-                  Sum: {formatPrice(totalPrice || 0)}
-                </div>
-              </div>
-              <div
-                id='checkout'
-                className='flex w-full justify-center text-xl sm:justify-end'
-              >
-                <NavLink to={RouteHref.CHECKOUT}>
-                  <Button className='w-32'>Checkout</Button>
-                </NavLink>
-              </div>
-            </div>
-          )}
         </div>
+
+        <div className='font-title mr-1 flex flex-row justify-end gap-4 uppercase sm:mr-0 sm:gap-4 md:gap-7'>
+          <h3 className='hidden sm:block sm:pr-16'>Quantity</h3>
+          <h3>Total</h3>
+          <h3 className='hidden sm:block'>Delete</h3>
+        </div>
+
+        <div className='mx-auto flex w-fit flex-col'>
+          {products?.map((product, i, array) => (
+            <ProductListCard
+              key={product.id}
+              id={product.id}
+              to={'/products/' + product.id}
+              name={product.name}
+              shortDescription={product.shortDescription}
+              image={product.imageUrls[0]}
+              cart={true}
+              className={i !== array.length - 1 ? 'border-b' : ''}
+            >
+              <ProductListCardCartActions
+                productId={product.id}
+                quantity={items[product.id]}
+                price={product.price}
+                previousPrice={product.previousPrice}
+                isDiscount={product.isDiscount}
+              />
+            </ProductListCard>
+          ))}
+        </div>
+        {isEmpty ? (
+          <div className='flex flex-col items-center justify-center gap-2 pt-8'>
+            <hr className='text-base-700 w-full'></hr>
+            Cart is empty
+          </div>
+        ) : (
+          <>
+            <div
+              id='cart-total'
+              className='flex w-full justify-center pt-2 text-xl sm:flex-col'
+            >
+              <div className='font-title self-end text-xl font-semibold uppercase sm:pt-2'>
+                {/* default value to 0 if products are not loaded  */}
+                Sum: {formatPrice(totalPrice || 0)}
+              </div>
+            </div>
+            <div
+              id='checkout'
+              className='flex w-full justify-center text-xl sm:justify-end'
+            >
+              <NavLink to={RouteHref.CHECKOUT}>
+                <Button className='w-32'>Checkout</Button>
+              </NavLink>
+            </div>
+          </>
+        )}
       </main>
     </PageLayout>
   );

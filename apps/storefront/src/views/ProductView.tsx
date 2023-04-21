@@ -1,7 +1,10 @@
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
-import { useFindProductQuery, useFindProductsQuery } from '@/services/products';
+import {
+  useFindProductQuery,
+  useRelatedProductsQuery,
+} from '@/services/products';
 import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button, GroupedTable, formatPrice } from '@webshop/ui';
@@ -13,7 +16,7 @@ import { NavLink, Navigate, useParams } from 'react-router-dom';
 const ProductView = () => {
   const { id } = useParams();
   const { data: productInfo, isError } = useFindProductQuery(parseInt(id!));
-  const { data: products } = useFindProductsQuery({});
+  const { data: relatedProducts } = useRelatedProductsQuery(parseInt(id!));
   const dispatch = useDispatch();
 
   const add = () => {
@@ -212,7 +215,7 @@ const ProductView = () => {
 
         <section id='products-temp'>
           <div className='mx-auto grid w-fit max-w-screen-xl grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
-            {products?.map((product) => (
+            {relatedProducts?.map((product) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
