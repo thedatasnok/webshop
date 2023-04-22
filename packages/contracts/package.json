@@ -1,7 +1,7 @@
 {
   "name": "@webshop/contracts",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "main": "src/gen/typescript/index.ts",
   "module": "src/gen/typescript/index.ts",
