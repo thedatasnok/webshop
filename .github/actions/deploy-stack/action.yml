@@ -78,5 +78,5 @@ runs:
           --set mail.port=${{ inputs.mail-port }} \
           --set mail.username=${{ inputs.mail-username }} \
           --set mail.password=${{ inputs.mail-password }} \
-          --set mail.sender=${{ input.mail-sender }}
+          --set mail.sender=${{ inputs.mail-sender }}
       shell: bash
