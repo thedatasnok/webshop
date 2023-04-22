@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/api/main.ts",
     "export": "email export",
-    "start:prod": "node dist/index.js",
+    "start:prod": "node dist/main.js",
     "preview": "email dev --dir src",
     "build": "tsup"
   },
