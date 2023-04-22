@@ -18,6 +18,7 @@ importers:
       '@mantine/hooks': ^5.10.5
       '@reduxjs/toolkit': ^1.9.3
       '@tailwindcss/forms': ^0.5.3
+      '@tanstack/react-table': ^8.8.5
       '@types/node': ^18.15.10
       '@types/react': ^18.0.29
       '@types/react-dom': ^18.0.11
@@ -44,6 +45,7 @@ importers:
       '@mantine/form': 5.10.5_react@18.2.0
       '@mantine/hooks': 5.10.5_react@18.2.0
       '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
+      '@tanstack/react-table': 8.8.5_biqbaboplfbrettd7655fr4n2y
       '@webshop/contracts': link:../../packages/contracts
       '@webshop/ui': link:../../packages/ui
       clsx: 1.2.1
@@ -1907,6 +1909,23 @@ packages:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.3.1_postcss@8.4.21
     dev: true
+
+  /@tanstack/react-table/8.8.5_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-g/t21E/ICHvaCOJOhsDNr5QaB/6aDQEHFbx/YliwwU/CJThMqG+dS28vnToIBV/5MBgpeXoGRi2waDJVJlZrtg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.8.5
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@tanstack/table-core/8.8.5:
+    resolution: {integrity: sha512-Xnwa1qxpgvSW7ozLiexmKp2PIYcLBiY/IizbdGriYCL6OOHuZ9baRhrrH51zjyz+61ly6K59rmt6AI/3RR+97Q==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@types/classnames/2.3.1:
     resolution: {integrity: sha512-zeOWb0JGBoVmlQoznvqXbE0tEC/HONsnoUNH19Hc96NFsTAwTXbTqb8FMYkru1F/iqp7a18Ws3nWJvtA1sHD1A==}
