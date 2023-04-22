@@ -1,8 +1,82 @@
 name: Reusable action for deploying a stack to a given namespace or server
 description: Reusable action meant to reduce duplication when deploying to multiple environments
 
+inputs:
+  k8s-url:
+    description: The URL of the k8s api to use
+    required: true
+  k8s-secret:
+    description: The secret to use for making changes in k8s
+    required: true
+  github-token:
+    description: The GitHub token to use for installing Helm without being rate limited
+    required: true
+  namespace: 
+    description: The namespace to deploy to
+    required: true
+
+  # required app metadata
+  hostname:
+    description: The hostname to deploy to
+    required: true
+  cluster-issuer: 
+    description: The cluster issuer to use
+    required: true
+  app-version:
+    description: The version of the application to deploy
+    required: true
+  
+  mail-hostname:
+    description: Hostname of the mail server to use
+  mail-port:
+    description: The port of the mail server
+  mail-username:
+    description: The username to use for authenticating against the mail server
+  mail-password:
+    description: The password for the mail user
+  mail-sender:
+    description: The sender address to use when sending emails
+
+  # environment s3 config
+  s3-region: 
+    description: S3 region name
+  s3-bucket: 
+    description: S3 bucket name
+  s3-access-key:
+    description: S3 access key
+  s3-secret-access-key: 
+    description: S3 secret access key
+
 runs:
   using: composite
   steps:
-    - run: echo 'NOT YET IMPLEMENTED'
+    - uses: azure/setup-kubectl@v3
+
+    - uses: azure/k8s-set-context@v3
+      with:
+        method: service-account
+        k8s-url: ${{ inputs.k8s-url }}
+        k8s-secret: ${{ inputs.k8s-secret }}
+    
+    - uses: azure/setup-helm@v3
+      with:
+        token: ${{ inputs.github-token }}
+
+    - run: |
+        helm upgrade ${{ inputs.namespace }} ./.helm \
+          --kube-insecure-skip-tls-verify \
+          --install \
+          --namespace ${{ inputs.namespace }} \
+          --set hostname=${{ inputs.hostname }} \
+          --set clusterIssuer=${{ inputs.cluster-issuer }} \
+          --set version=${{ inputs.app-version }} \
+          --set s3.region=${{ inputs.s3-region }} \
+          --set s3.bucket=${{ inputs.s3-bucket }} \
+          --set s3.accessKey=${{ inputs.s3-access-key }} \
+          --set s3.secretAccessKey=${{ inputs.s3-secret-access-key }} \
+          --set mail.hostname=${{ inputs.mail-hostname }} \
+          --set mail.port=${{ inputs.mail-port }} \
+          --set mail.username=${{ inputs.mail-username }} \
+          --set mail.password=${{ inputs.mail-password }} \
+          --set mail.sender=${{ input.mail-sender }}
       shell: bash
