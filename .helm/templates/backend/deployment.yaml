@@ -5,7 +5,6 @@ metadata:
   labels:
     {{ include "chart.labels" . }}
 spec:
-  serviceName: {{ include "backend.name" . }}
   selector:
     matchLabels:
       app: {{ include "backend.name" . }}
@@ -62,3 +61,9 @@ spec:
             value: {{ .Values.s3.bucket }}
           - name: TOKEN_ISSUER
             value: {{ .Values.hostname }}
+          - name: MAIL_SERVICE_ENABLED
+            value: "true"
+          - name: MAIL_SERVICE_HOST
+            value: {{ include "mail.name" . }}
+          - name: MAIL_SERVICE_PORT
+            value: {{ include "mail.port" . | quote }}

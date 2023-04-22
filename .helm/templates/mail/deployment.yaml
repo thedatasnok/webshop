@@ -35,6 +35,6 @@ spec:
           - name: MAIL_SERVER_HOSTNAME
             value: {{ .Values.mail.hostname }}
           - name: MAIL_SERVER_PORT
-            value: {{ .Values.mail.port }}
+            value: {{ .Values.mail.port | quote }}
           - name: MAIL_SENDER
             value: {{ .Values.mail.sender }}
