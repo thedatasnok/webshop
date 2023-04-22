@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mail.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mail.name" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "mail.name" . }}
+    spec:
+      containers:
+      - name: {{ include "mail.name" . }}
+        image: "ghcr.io/thedatasnok/webshop-mail:{{ .Values.version }}"
+        imagePullPolicy: IfNotPresent
+        ports: 
+        - containerPort: {{ include "mail.port" . }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ include "mail.port" . }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ include "mail.port" . }}
+        envFrom:
+          - secretRef:
+              name: {{ include "mail.name" . }}
+        env:
+          - name: MAIL_SERVER_HOSTNAME
+            value: {{ .Values.mail.hostname }}
+          - name: MAIL_SERVER_PORT
+            value: {{ .Values.mail.port }}
+          - name: MAIL_SENDER
+            value: {{ .Values.mail.sender }}

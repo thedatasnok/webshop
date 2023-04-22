@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mail.name" . }}
+  labels:
+    {{ include "chart.labels" . }}
+spec:
+  selector:
+    app: {{ include "mail.name" . }}
+  ports:
+  - port: {{ include "mail.port" . }}
+    targetPort: {{ include "mail.port" . }}
+    protocol: TCP

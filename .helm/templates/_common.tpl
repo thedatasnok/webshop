@@ -37,3 +37,11 @@ chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 {{- define "postgres.database" -}}
 {{- printf "webshop" -}}
 {{- end -}}
+
+{{- define "mail.name" -}}
+{{- printf "%s-%s" .Chart.Name "mail" -}}
+{{- end -}}
+
+{{- define "mail.port" -}}
+{{- 4000 -}}
+{{- end -}}
