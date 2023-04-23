@@ -9,7 +9,7 @@ import {
 } from '@webshop/ui';
 import { useForm, zodResolver } from '@mantine/form';
 import { UpdateUserProfileRequest } from '@webshop/contracts';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import { RiLogoutBoxLine } from 'react-icons/ri';
 import { z } from 'zod';
 import clsx from 'clsx';
@@ -40,9 +40,12 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
         fullName: z
           .string()
           .min(2, { message: 'Name should have at least 2 letters' }),
-        password: z.string().min(10, {
-          message: 'Password should contain atleast 10 characters',
-        }).nullable(),
+        password: z
+          .string()
+          .min(10, {
+            message: 'Password should contain atleast 10 characters',
+          })
+          .nullable(),
         passwordConfirmation: z.string().nullable(),
       })
       .refine((data) => data.password === data.passwordConfirmation, {
@@ -60,61 +63,80 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
       },
     });
 
+    const formId = useId();
+
+    // input field ids
+    const emailId = useId();
+    const nameId = useId();
+    const newPasswordId = useId();
+    const confirmNewPasswordId = useId();
+
     return (
       <div ref={ref} className={clsx(className)}>
         <h1 className='font-title mb-2 hidden text-2xl font-semibold uppercase md:block'>
           Account Details
         </h1>
         <form
-          id='update-profile-form'
+          id={formId}
           className='mt-4 md:mt-0'
           onSubmit={form.onSubmit(handleSubmit)}
         >
           <div>
-            <InputLabel>Email</InputLabel>
-            <TextField type='email' {...form.getInputProps('email')} />
+            <InputLabel htmlFor={emailId}>Email</InputLabel>
+            <TextField
+              id={emailId}
+              type='email'
+              {...form.getInputProps('email')}
+            />
             {form.errors.email && (
               <ErrorLabel text={form.errors.email as string} />
             )}
           </div>
 
           <div>
-            <InputLabel>Name</InputLabel>
-            <TextField {...form.getInputProps('fullName')} />
+            <InputLabel htmlFor={nameId}>Name</InputLabel>
+            <TextField id={nameId} {...form.getInputProps('fullName')} />
             {form.errors.fullName && (
               <ErrorLabel text={form.errors.fullName as string} />
             )}
           </div>
 
           <div>
-            <div>
-              <InputLabel>New password</InputLabel>
-              <TextField type='password' {...form.getInputProps('password')} />
-              {form.errors.password && (
-                <ErrorLabel text={form.errors.password as string} />
-              )}
-            </div>
+            <InputLabel htmlFor={newPasswordId}>New password</InputLabel>
+            <TextField
+              id={newPasswordId}
+              type='password'
+              {...form.getInputProps('password')}
+            />
+            {form.errors.password && (
+              <ErrorLabel text={form.errors.password as string} />
+            )}
+          </div>
 
-            <div>
-              <InputLabel>Confirm new password</InputLabel>
-              <TextField
-                type='password'
-                {...form.getInputProps('passwordConfirmation')}
-              />
-              {form.errors.passwordConfirmation && (
-                <ErrorLabel text={form.errors.passwordConfirmation as string} />
-              )}
-            </div>
+          <div>
+            <InputLabel htmlFor={confirmNewPasswordId}>
+              Confirm new password
+            </InputLabel>
+            <TextField
+              id={confirmNewPasswordId}
+              type='password'
+              {...form.getInputProps('passwordConfirmation')}
+            />
+            {form.errors.passwordConfirmation && (
+              <ErrorLabel text={form.errors.passwordConfirmation as string} />
+            )}
           </div>
 
           <div className='mt-2 flex justify-between gap-4'>
-            <button
-              onClick={() => signOut()}
-              className='border-error text-error mt-2 flex items-center gap-0.5 rounded-sm border bg-transparent px-2 py-1 pr-2.5'
+            <Button
+              type='button'
+              onClick={signOut}
+              style='outline'
+              variant='destructive'
             >
-              <RiLogoutBoxLine />
+              <RiLogoutBoxLine className='-ml-1' />
               <p>Sign out</p>
-            </button>
+            </Button>
 
             <Button type='submit'>Save</Button>
           </div>

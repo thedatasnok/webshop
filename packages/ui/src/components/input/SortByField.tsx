@@ -89,6 +89,7 @@ const SortByField: React.FC<SortByFieldProps> = ({
         onClick={toggleDirection}
         className='border-base-800 bg-base-800/30 hover:bg-base-800 border-l px-1'
       >
+        <span className='sr-only'>{direction}</span>
         {direction === SortDirection.ASC ? (
           <RiSortAsc className='h-5 w-5' />
         ) : (

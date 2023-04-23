@@ -5,7 +5,6 @@
  */
 export const enum RouteHref {
   SIGN_IN = '/auth/sign-in',
-  SIGN_UP = '/auth/sign-up',
   DASHBOARD = '/',
   ITEM_MANAGEMENT = '/items',
   ORDER_MANAGEMENT = '/orders',

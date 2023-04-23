@@ -127,6 +127,7 @@ const ProductBrowser = () => {
                   isGridSelected && 'text-primary'
                 )}
               >
+                <span className='sr-only'>Display as grid</span>
                 <RiGridFill className='h-7 w-7' />
               </button>
 
@@ -137,6 +138,7 @@ const ProductBrowser = () => {
                   !isGridSelected && 'text-primary'
                 )}
               >
+                <span className='sr-only'>Display as list</span>
                 <RiListCheck className='h-7 w-7' />
               </button>
             </div>

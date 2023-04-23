@@ -52,6 +52,7 @@ const Support = () => {
           className='border-base-800 hidden border lg:flex'
         >
           <img
+            alt='storefront'
             src='https://cdn.discordapp.com/attachments/1091009232498860134/1098196534849437816/dudleif_The_front_of_the_Cyberpunk_Gaming_Gear_store_at_night_i_46a20040-2b5b-4591-889d-7a03f5fb7ba5.jpg'
             className='border-base-800'
           />

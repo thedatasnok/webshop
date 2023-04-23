@@ -87,7 +87,7 @@ const SignUp = () => {
     <div>
       <main>
         <div className='flex h-screen flex-col items-center justify-center'>
-          <NavLink to={RouteHref.HOME} className='w-32 pb-10'>
+          <NavLink title='Home' to={RouteHref.HOME} className='w-32 pb-10'>
             <Logo variant='small' />
           </NavLink>
 
@@ -112,32 +112,43 @@ const SignUp = () => {
             </p>
 
             <div>
-              <InputLabel>Email</InputLabel>
-              <TextField type='email' {...form.getInputProps('email')} />
+              <InputLabel htmlFor='email'>Email</InputLabel>
+              <TextField
+                id='email'
+                type='email'
+                {...form.getInputProps('email')}
+              />
               {form.errors.email && (
                 <ErrorLabel text={form.errors.email as string} />
               )}
             </div>
 
             <div>
-              <InputLabel>Name</InputLabel>
-              <TextField {...form.getInputProps('fullName')} />
+              <InputLabel htmlFor='name'>Name</InputLabel>
+              <TextField id='name' {...form.getInputProps('fullName')} />
               {form.errors.fullName && (
                 <ErrorLabel text={form.errors.fullName as string} />
               )}
             </div>
 
             <div>
-              <InputLabel>Password</InputLabel>
-              <TextField type='password' {...form.getInputProps('password')} />
+              <InputLabel htmlFor='password'>Password</InputLabel>
+              <TextField
+                id='password'
+                type='password'
+                {...form.getInputProps('password')}
+              />
               {form.errors.password && (
                 <ErrorLabel text={form.errors.password as string} />
               )}
             </div>
 
             <div>
-              <InputLabel>Confirm password</InputLabel>
+              <InputLabel htmlFor='password-confirmation'>
+                Confirm password
+              </InputLabel>
               <TextField
+                id='password-confirmation'
                 type='password'
                 {...form.getInputProps('passwordConfirmation')}
               />
@@ -173,11 +184,9 @@ const SignUp = () => {
               ]}
             />
 
-            <div id='sign-up-button' className='my-2'>
-              <Button className='w-full rounded-sm text-2xl' type='submit'>
-                Sign up
-              </Button>
-            </div>
+            <Button className='w-full' type='submit'>
+              Sign up
+            </Button>
           </form>
         </div>
       </main>

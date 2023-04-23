@@ -58,31 +58,38 @@ const SignIn = () => {
             </h1>
 
             <div>
-              <InputLabel>Email</InputLabel>
-              <TextField type='email' {...form.getInputProps('email')} />
+              <InputLabel htmlFor='email'>Email</InputLabel>
+              <TextField
+                id='email'
+                type='email'
+                {...form.getInputProps('email')}
+              />
               {form.errors.email && (
                 <ErrorLabel text={form.errors.email as string} />
               )}
             </div>
 
             <div>
-              <InputLabel>Password</InputLabel>
-              <TextField type='password' {...form.getInputProps('password')} />
+              <InputLabel htmlFor='password'>Password</InputLabel>
+              <TextField
+                id='password'
+                type='password'
+                {...form.getInputProps('password')}
+              />
               {form.errors.password && (
                 <ErrorLabel text={form.errors.password as string} />
               )}
             </div>
 
-            <Button className='w-full' type='submit' isLoading={isLoading}>
+            <Button className='mt-2 w-full' type='submit' isLoading={isLoading}>
               Sign in
             </Button>
 
-            {isError && (
-              <Alert
-                level={AlertLevel.ERROR}
-                message='Sign in failed, please verify your credentials.'
-              />
-            )}
+            <Alert
+              level={AlertLevel.ERROR}
+              show={isError}
+              message='Sign in failed, please verify your credentials.'
+            />
           </form>
         </div>
       </main>
