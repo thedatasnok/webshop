@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import no.ntnu.webshop.contracts.ErrorResponse;
 import no.ntnu.webshop.contracts.ValidationError;
 import no.ntnu.webshop.contracts.ValidationErrorResponse;
+import no.ntnu.webshop.error.model.InternalValidationException;
 import no.ntnu.webshop.error.model.StatusCodeException;
 
 /**
@@ -57,6 +58,40 @@ public class ExceptionAdvice {
         errors.get(fieldError.getField()).add(error);
       } else {
         errors.put(fieldError.getField(), new ArrayList<>(List.of(error)));
+      }
+    });
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(
+        new ValidationErrorResponse(
+          HttpStatus.BAD_REQUEST.value(),
+          "VALIDATION_ERROR",
+          errors
+        )
+      );
+  }
+
+  /**
+   * Handles exception of type {@link InternalValidationException} and maps them to a response.
+   */
+  @ExceptionHandler(value = InternalValidationException.class)
+  public ResponseEntity<ValidationErrorResponse> handleInternalValidationException(
+      InternalValidationException e
+  ) {
+    var errors = new HashMap<String, List<ValidationError>>();
+
+    e.getViolations().forEach(violation -> {
+      var error = new ValidationError(
+        violation.getMessage(),
+        violation.getInvalidValue()
+      );
+
+      var key = violation.getPropertyPath().toString();
+
+      if (errors.containsKey(key)) {
+        errors.get(key).add(error);
+      } else {
+        errors.put(key, new ArrayList<>(List.of(error)));
       }
     });
 

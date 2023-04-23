@@ -1,14 +1,17 @@
 package no.ntnu.webshop.service;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.error.model.CategoryNotFoundException;
+import no.ntnu.webshop.error.model.InternalValidationException;
 import no.ntnu.webshop.error.model.ProductNotFoundException;
 import no.ntnu.webshop.model.Product;
 import no.ntnu.webshop.model.ProductChild;
@@ -26,6 +29,7 @@ public class ProductService {
   private final ProductFamilyJpaRepository productFamilyJpaRepository;
   private final CategoryJpaRepository categoryJpaRepository;
   private final FileService fileService;
+  private final Validator validator;
 
   /**
    * Creates a new product.
@@ -35,7 +39,7 @@ public class ProductService {
    * @return the created product
    */
   public Product createProduct(
-      @Valid CreateProductRequest request
+      CreateProductRequest request
   ) {
     ProductFamily family = null;
 
@@ -104,13 +108,22 @@ public class ProductService {
    * @throws IOException if the file could not be uploaded
    */
   public Product createProduct(
-      @Valid CreateProductRequest request,
+      CreateProductRequest request,
       MultipartFile file
   ) throws IOException {
     var url = this.fileService.uploadFile(file, FileCategory.PRODUCT);
 
-    request.imageUrls().clear();
-    request.imageUrls().add(url);
+    // only process if not null to avoid nullpointer exception
+    if (request.imageUrls() != null) {
+      request.imageUrls().clear();
+      request.imageUrls().add(url);
+    }
+
+    Set<ConstraintViolation<Object>> violations = this.validator.validate(request);
+
+    if (!violations.isEmpty()) {
+      throw new InternalValidationException(violations);
+    }
 
     return this.createProduct(request);
   }

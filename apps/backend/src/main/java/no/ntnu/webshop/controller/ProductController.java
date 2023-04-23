@@ -123,12 +123,16 @@ public class ProductController {
     return ResponseEntity.ok(this.productJdbcRepository.findById(savedProduct.getId()));
   }
 
-  @Operation(summary = "Creates a product with a set image")
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @Operation(summary = "Creates a product with an uploaded image set image")
+  // overloading works fine here, but springdoc openapi doesn't correctly reflect the overloads
+  // so we'll postfix it with "with-img" to differentiate them
+  @PostMapping(value = "/with-img", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ShopWorkerAuthorization
   public ResponseEntity<ProductDetails> createProduct(
+      @Parameter(description = "A stringified JSON object, matching the CreateProductRequest schema")
       @RequestParam("product") String productString,
-      @RequestParam MultipartFile image
+      @Parameter(description = "An image of the product that will be uploaded to the configured S3 bucket")
+      @RequestParam("image") MultipartFile image
   ) {
     try {
       // deserialize string - would otherwise have to create a custom converter class, it's a one off
