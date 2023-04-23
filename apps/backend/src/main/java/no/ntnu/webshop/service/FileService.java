@@ -52,11 +52,11 @@ public class FileService {
    */
   public String uploadFile(
       MultipartFile file,
-      String fileName
+      FileCategory category
   ) throws IOException {
     var metadata = new ObjectMetadata();
     metadata.setContentType(file.getContentType());
-    var key = "images/".concat(fileName);
+    var key = String.join("/", "images", category.getIdentifier(), file.getOriginalFilename());
 
     // only proceed to upload if image does not already exist
     // could probably just put it anyway, but this prevents replacing existing images
@@ -67,6 +67,27 @@ public class FileService {
     }
 
     return this.client.getUrl(this.bucketName, key).toString();
+  }
+
+  /**
+   * Enum for file categories, used to differentiate the types and thus place them in separate
+   * locations in the configured S3 bucket.
+   */
+  public enum FileCategory {
+    CATEGORY("categories"),
+    PRODUCT("products");
+
+    private String identifier;
+
+    private FileCategory(
+        String identifier
+    ) {
+      this.identifier = identifier;
+    }
+
+    public String getIdentifier() {
+      return identifier;
+    }
   }
 
 }

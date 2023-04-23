@@ -1,13 +1,16 @@
 package no.ntnu.webshop.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,18 +31,14 @@ import no.ntnu.webshop.contracts.pricing.UpdateProductPriceRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
-import no.ntnu.webshop.error.model.CategoryNotFoundException;
+import no.ntnu.webshop.error.model.FileUploadException;
 import no.ntnu.webshop.error.model.ProductNotFoundException;
-import no.ntnu.webshop.model.Product;
-import no.ntnu.webshop.model.ProductChild;
-import no.ntnu.webshop.model.ProductFamily;
 import no.ntnu.webshop.model.ProductPrice;
-import no.ntnu.webshop.repository.CategoryJpaRepository;
-import no.ntnu.webshop.repository.ProductFamilyJpaRepository;
 import no.ntnu.webshop.repository.ProductJdbcRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
 import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
+import no.ntnu.webshop.service.ProductService;
 
 @Tag(name = "Products")
 @RestController
@@ -46,8 +48,8 @@ public class ProductController {
   private final ProductJpaRepository productJpaRepository;
   private final ProductJdbcRepository productJdbcRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
-  private final ProductFamilyJpaRepository productFamilyJpaRepository;
-  private final CategoryJpaRepository categoryJpaRepository;
+  private final ProductService productService;
+  private final ObjectMapper objectMapper;
 
   @Operation(summary = "Finds a list of products with optional filters")
   @GetMapping
@@ -117,62 +119,27 @@ public class ProductController {
   public ResponseEntity<ProductDetails> createProduct(
       @Valid @RequestBody CreateProductRequest request
   ) {
-    ProductFamily family = null;
-
-    if (request.familyId() != null) {
-      family = this.productFamilyJpaRepository.findById(request.familyId())
-        .orElseThrow(
-          () -> new ProductNotFoundException("Could not find product family with id: " + request.familyId())
-        );
-    }
-
-    var product = new Product(
-      request.name(),
-      request.shortName(),
-      request.description(),
-      request.shortDescription(),
-      request.imageUrls(),
-      family,
-      request.attributes()
-    );
-
-    var price = new ProductPrice(
-      product,
-      request.price(),
-      request.isDiscount()
-    );
-
-    product.addPrice(price);
-
-    var productIds = request.children().keySet();
-    var children = this.productJpaRepository.findAllById(productIds);
-
-    if (children.size() != productIds.size())
-      throw new ProductNotFoundException("One or more child products were not found");
-
-    // adds the items to the product
-    for (var child : children) {
-      product.addChild(
-        new ProductChild(
-          product,
-          child,
-          request.children().get(child.getId())
-        )
-      );
-    }
-
-    var categories = this.categoryJpaRepository.findAllById(request.categoryIds());
-
-    if (categories.size() != request.categoryIds().size())
-      throw new CategoryNotFoundException("One or more categories were not found");
-
-    for (var category : categories) {
-      product.addCategory(category);
-    }
-
-    var savedProduct = this.productJpaRepository.save(product);
+    var savedProduct = this.productService.createProduct(request);
 
     return ResponseEntity.ok(this.productJdbcRepository.findById(savedProduct.getId()));
+  }
+
+  @Operation(summary = "Creates a product with a set image")
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ShopWorkerAuthorization
+  public ResponseEntity<ProductDetails> createProduct(
+      @RequestParam("product") String productString,
+      @RequestParam MultipartFile image
+  ) {
+    try {
+      // deserialize string - would otherwise have to create a custom converter class, it's a one off
+      // so this is fine for now
+      var product = this.objectMapper.readValue(productString, CreateProductRequest.class);
+      var savedProduct = this.productService.createProduct(product, image);
+      return ResponseEntity.ok(this.productJdbcRepository.findById(savedProduct.getId()));
+    } catch (IOException e) {
+      throw new FileUploadException("Failed to upload file either due to deserialization or file uploading");
+    }
   }
 
   @Operation(summary = "Updates the price of a product")
@@ -220,7 +187,7 @@ public class ProductController {
 
     this.productJpaRepository.deleteById(id);
 
-    return ResponseEntity.ok(null);
+    return ResponseEntity.noContent().build();
   }
 
 }
