@@ -6,7 +6,10 @@ export interface ErrorLabelProps {
 
 const ErrorLabel: React.FC<ErrorLabelProps> = ({ text }) => {
   return (
-    <strong role='alert' className={clsx('text-error', !text && 'hidden')}>
+    <strong
+      role='alert'
+      className={clsx('text-error text-sm font-normal', !text && 'hidden')}
+    >
       {text}
     </strong>
   );

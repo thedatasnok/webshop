@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import type { IconType } from 'react-icons';
 
 export interface TextFieldProps {
+  id?: string;
   className?: string;
   placeholder?: string;
   value?: string;
@@ -14,6 +15,7 @@ export interface TextFieldProps {
 }
 
 const TextField: React.FC<TextFieldProps> = ({
+  id,
   className,
   placeholder,
   value,
@@ -41,14 +43,15 @@ const TextField: React.FC<TextFieldProps> = ({
       )}
       <input
         {...inputProps}
+        id={id}
         className={clsx(
-          'border-base-50 w-full rounded-sm border bg-transparent p-2 focus:outline-none focus:ring-0',
+          'border-base-600 w-full rounded-sm border bg-transparent p-2 focus:outline-none focus:ring-0',
           Icon && [
             iconSide === 'left' && 'pl-8',
             iconSide === 'right' && 'pr-8',
           ],
           !error && 'focus:border-primary',
-          error && 'border-error',
+          error && 'border-error focus:border-error',
           className
         )}
         placeholder={placeholder}
