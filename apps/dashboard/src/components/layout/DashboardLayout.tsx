@@ -11,35 +11,37 @@ const DashboardLayout = () => {
 
   return (
     <div className='flex h-screen w-screen overflow-hidden'>
-      <aside className='border-base-700 flex w-24 flex-shrink-0 flex-col border-r'>
+      <aside className='border-base-800 flex w-24 flex-shrink-0 flex-col border-r'>
         <NavLink to={RouteHref.DASHBOARD} className='my-2 h-10 p-2'>
           <Logo variant='small' />
         </NavLink>
 
         <nav className='flex-1'>
-          {dashboardRoutes.map(({ icon: Icon, name, href }) => (
-            <ul key={name}>
-              <li>
-                <NavLink
-                  to={href || RouteHref.DASHBOARD}
-                  className={({ isActive }) =>
-                    clsx(
-                      'flex flex-col items-center p-2',
-                      isActive && 'text-primary'
-                    )
-                  }
-                >
-                  {Icon && <Icon className='h-8 w-8' />}
-                  <p className='font-title font-semibold'>{name}</p>
-                </NavLink>
-              </li>
-            </ul>
-          ))}
+          {dashboardRoutes
+            .filter((route) => route.sidebar)
+            .map(({ icon: Icon, name, href }) => (
+              <ul key={name}>
+                <li>
+                  <NavLink
+                    to={href || RouteHref.DASHBOARD}
+                    className={({ isActive }) =>
+                      clsx(
+                        'flex flex-col items-center p-2',
+                        isActive && 'text-primary'
+                      )
+                    }
+                  >
+                    {Icon && <Icon className='h-8 w-8' />}
+                    <p className='font-title font-semibold'>{name}</p>
+                  </NavLink>
+                </li>
+              </ul>
+            ))}
         </nav>
 
         <button
           onClick={() => signOut()}
-          className='hover:bg-base-800 flex items-center justify-center gap-1 px-2 py-1'
+          className='hover:bg-base-900 flex items-center justify-center gap-1 px-2 py-1'
         >
           <RiLogoutBoxLine className='h-6 w-6' />
         </button>

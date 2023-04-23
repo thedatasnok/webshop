@@ -11,5 +11,6 @@ export const enum RouteHref {
   ORDER_MANAGEMENT = '/orders',
   USER_MANAGEMENT = '/users',
   PRODUCT_MANAGEMENT = '/products',
+  NEW_PRODUCT = '/products/new',
   FORBIDDEN = '/forbidden',
 }
