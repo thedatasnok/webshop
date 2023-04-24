@@ -9,7 +9,6 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import {
   RiArrowRightSLine,
-  RiShoppingBag2Fill,
   RiShoppingCartLine,
 } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
