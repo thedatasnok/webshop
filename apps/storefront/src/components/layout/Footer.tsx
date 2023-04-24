@@ -26,7 +26,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             <li>
               <NavLink to={RouteHref.HOME}>
                 <div className='flex items-center gap-1'>
-                  <RiHome4Line className='h-6 w-6'></RiHome4Line>
+                  <RiHome4Line className='h-5 w-5'></RiHome4Line>
                   <p className='hover:underline'>Home</p>
                 </div>
               </NavLink>
@@ -35,7 +35,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             <li>
               <NavLink to={RouteHref.PRODUCTS}>
                 <div className='flex items-center gap-1'>
-                  <RiStore2Line className='h-6 w-6'></RiStore2Line>
+                  <RiStore2Line className='h-5 w-5'></RiStore2Line>
                   <p className='hover:underline'>Browse</p>
                 </div>
               </NavLink>
@@ -44,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             <li>
               <NavLink to={RouteHref.SUPPORT}>
                 <div className='flex items-center gap-1'>
-                  <RiHeadphoneLine className='h-6 w-6'></RiHeadphoneLine>
+                  <RiHeadphoneLine className='h-5 w-5'></RiHeadphoneLine>
                   <p className='hover:underline'>Support</p>
                 </div>
               </NavLink>
@@ -74,7 +74,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             <li>
               <a href='tel: 4713371337'>
                 <div className='flex items-center gap-1'>
-                  <RiPhoneLine className='h-6 w-6'></RiPhoneLine>
+                  <RiPhoneLine className='h-5 w-5'></RiPhoneLine>
                   <p className='hover:underline'>+47 13371337</p>
                 </div>
               </a>
@@ -83,7 +83,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             <li>
               <a href='mailto: support@cgg.no'>
                 <div className='flex items-center gap-1'>
-                  <RiMailLine className='h-6 w-6'></RiMailLine>
+                  <RiMailLine className='h-5 w-5'></RiMailLine>
                   <p className='hover:underline'>support@cgg.no</p>
                 </div>
               </a>
