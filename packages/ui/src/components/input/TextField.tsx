@@ -8,6 +8,7 @@ export interface TextFieldProps {
   value?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   onChange?: (value: string) => void;
+  onClick?: () => void;
   icon?: IconType;
   iconSide?: 'left' | 'right';
   type?: 'text' | 'password' | 'email';
@@ -21,6 +22,7 @@ const TextField: React.FC<TextFieldProps> = ({
   value,
   inputProps,
   onChange,
+  onClick,
   icon: Icon,
   iconSide = 'left',
   type = 'text',
@@ -57,6 +59,7 @@ const TextField: React.FC<TextFieldProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={(event) => emitUpdate(event.target.value)}
+        onClick={onClick}
         type={type}
       />
     </div>
