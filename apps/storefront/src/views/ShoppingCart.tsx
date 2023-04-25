@@ -83,7 +83,6 @@ const ShoppingCart = () => {
               name={product.name}
               shortDescription={product.shortDescription}
               image={product.imageUrls[0]}
-              cart={true}
               className={i !== array.length - 1 ? 'border-b' : ''}
             >
               <ProductListCardCartActions
@@ -112,14 +111,15 @@ const ShoppingCart = () => {
                 Sum: {formatPrice(totalPrice || 0)}
               </div>
             </div>
-            <div
-              id='checkout'
-              className='flex w-full justify-center text-xl sm:justify-end'
+
+            <NavLink
+              to={RouteHref.CHECKOUT}
+              className='ml-auto mt-2 block h-fit w-fit'
             >
-              <NavLink to={RouteHref.CHECKOUT}>
-                <Button className='w-32'>Checkout</Button>
-              </NavLink>
-            </div>
+              <Button type='button' className='text-lg font-semibold'>
+                Checkout
+              </Button>
+            </NavLink>
           </>
         )}
       </main>

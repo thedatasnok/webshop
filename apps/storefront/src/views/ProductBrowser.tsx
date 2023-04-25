@@ -173,7 +173,8 @@ const ProductBrowser = () => {
                   shortDescription={product.shortDescription}
                   isDiscount={product.isDiscount}
                   image={product.imageUrls[0]}
-                >
+                  hoverEffects
+                > 
                   <ProductListActions
                     price={product.price}
                     isDiscount={product.isDiscount}

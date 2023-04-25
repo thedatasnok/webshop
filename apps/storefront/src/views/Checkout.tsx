@@ -292,11 +292,11 @@ const Checkout = () => {
           />
 
           <Button
-            className='font-title my-4 w-fit self-center rounded-sm text-2xl font-semibold uppercase'
+            className='mt-2 w-fit self-center text-lg font-semibold'
             type='submit'
           >
             {/* default value to 0 if products are not loaded  */}
-            Pay: {formatPrice(totalPrice || 0)}
+            Pay {formatPrice(totalPrice || 0)}
           </Button>
         </form>
 
@@ -307,10 +307,10 @@ const Checkout = () => {
             <ProductListCard
               key={product.id}
               to={'/products/' + product.id}
+              id={product.id}
               name={product.name}
               shortDescription={product.shortDescription}
               image={product.imageUrls[0]}
-              cart={true}
               className={i !== array.length - 1 ? 'border-b' : ''}
             >
               <ProductListCardCartActions
