@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import no.ntnu.webshop.contracts.GenericResponse;
 import no.ntnu.webshop.contracts.user.UpdateUserProfileRequest;
 import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
+import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 
 /**
@@ -40,6 +43,7 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 public class UserContextController {
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final PasswordEncoder passwordEncoder;
+  private final JwtUtility jwtUtility;
 
   @Operation(summary = "Returns the user profile of the logged in user")
   @GetMapping
@@ -76,7 +80,9 @@ public class UserContextController {
   )
   @DeleteMapping
   public ResponseEntity<Object> deleteAccount(
-      @AuthenticationPrincipal UserAccountDetailsAdapter adapter
+      @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
+      @CookieValue("refresh-token") String refreshToken,
+      HttpServletResponse response
   ) {
     try {
       this.userAccountJpaRepository.deleteById(adapter.getUserAccount().getId());
@@ -84,7 +90,7 @@ public class UserContextController {
       log.error("Failed to delete user account: {}", e.getMessage());
       log.debug("Failed to delete user account", e);
 
-      return ResponseEntity.badRequest()
+      return ResponseEntity.internalServerError()
         .body(
           new ErrorResponse(
             500,
@@ -93,6 +99,13 @@ public class UserContextController {
           )
         );
     }
+
+    var cookie = this.jwtUtility.createCookie(refreshToken);
+
+    // expire the refresh token cookie
+    cookie.setMaxAge(0);
+
+    response.addCookie(cookie);
 
     return ResponseEntity.ok(GenericResponse.builder().message("User account deleted").build());
   }
