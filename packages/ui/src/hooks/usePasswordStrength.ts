@@ -50,13 +50,13 @@ export const calculateEntropy = (password: string) => {
  * @returns the password strength code
  */
 export const getStrength = (entropy: number): PasswordStrengthCode => {
-  if (entropy <= 32) {
+  if (entropy <= 12) {
     return 'VERY_WEAK';
-  } else if (entropy <= 48) {
+  } else if (entropy <= 24) {
     return 'WEAK';
-  } else if (entropy <= 64) {
+  } else if (entropy <= 36) {
     return 'REASONABLE';
-  } else if (entropy <= 80) {
+  } else if (entropy <= 48) {
     return 'STRONG';
   } else {
     return 'VERY_STRONG';

@@ -35,7 +35,7 @@ public @interface ValidPassword {
    * 
    * @return the minimum bits of entropy required for the password
    */
-  int minEntropy() default 36;
+  int minEntropy() default 24;
 
   /**
    * The minimum length of the password.

@@ -65,6 +65,7 @@ const SignUp = () => {
         lowercaseSatisfied: false,
         uppercaseSatisfied: false,
         numberSatisfied: false,
+        strengthSatisfied: false,
       },
     },
   });
@@ -72,7 +73,7 @@ const SignUp = () => {
   const strength = usePasswordStrength(form.values.password);
 
   useEffect(() => {
-    const { strength: strengthCode, charsets, length } = strength;
+    const { strength: strengthCode, charsets, length, entropy } = strength;
 
     form.setFieldValue('passwordStrength', {
       strengthCode: strengthCode satisfies PasswordStrengthCode,
@@ -80,6 +81,7 @@ const SignUp = () => {
       lowercaseSatisfied: charsets.lowercase,
       uppercaseSatisfied: charsets.uppercase,
       numberSatisfied: charsets.numbers,
+      strengthSatisfied: entropy >= 24,
     });
   }, [strength]);
 
@@ -175,6 +177,10 @@ const SignUp = () => {
                 {
                   label: 'At least 1 number',
                   satisfied: form.values.passwordStrength.numberSatisfied,
+                },
+                {
+                  label: 'Password is strong enough',
+                  satisfied: form.values.passwordStrength.strengthSatisfied,
                 },
                 {
                   label: 'Passwords match',
