@@ -83,13 +83,12 @@ class AuthControllerTests {
 
     var foundAccount = this.userAccountJpaRepository.findByEmail(email);
 
-    assertNotNull(foundAccount, "Could not find the account we just created");
+    assertNotNull(foundAccount.get(), "Could not find the account we just created");
 
     this.mockMvc
       .perform(
         MockMvcRequestBuilders.delete("/api/v1/me")
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(this.objectMapper.writeValueAsString(signInRequest))
+          .cookie(this.authorizationTestUtility.generateJwtCookie(foundAccount.get()))
           .header("Authorization", this.authorizationTestUtility.generateJwt(foundAccount.get()))
       )
       .andExpect(MockMvcResultMatchers.status().isOk());
