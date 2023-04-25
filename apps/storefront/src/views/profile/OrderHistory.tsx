@@ -65,8 +65,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
             Options
           </h2>
           <div className='text-base-300'>
-            <p>Payment method: {order.paymentMethod}</p>
-            <p>Shipping method: {order.shippingMethod}</p>
+            <p>Payment method: {order.paymentMethod.replace('_', ' ')}</p>
+            <p>Shipping method: {order.shippingMethod.replace('_', ' ')}</p>
           </div>
         </section>
 
