@@ -90,7 +90,7 @@ public class UserContextController {
       log.error("Failed to delete user account: {}", e.getMessage());
       log.debug("Failed to delete user account", e);
 
-      return ResponseEntity.badRequest()
+      return ResponseEntity.internalServerError()
         .body(
           new ErrorResponse(
             500,
