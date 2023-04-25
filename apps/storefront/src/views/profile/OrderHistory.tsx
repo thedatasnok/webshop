@@ -7,10 +7,7 @@ import { OrderDetails } from '@webshop/contracts';
 import { formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
-import {
-  RiArrowRightSLine,
-  RiShoppingCartLine,
-} from 'react-icons/ri';
+import { RiArrowRightSLine, RiShoppingCartLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 export interface OrderHistoryProps {
@@ -34,7 +31,49 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
         </div>
       </Disclosure.Button>
       <Disclosure.Panel className='px-4 py-2'>
-        <section>
+        <section className='flex justify-between'>
+          <div>
+            <h2 className='font-title text-lg font-semibold uppercase'>
+              Billing address
+            </h2>
+            <div className='text-base-300'>
+              <p>{order.billingAddress.careOf}</p>
+              <p>{order.billingAddress.street}</p>
+              <p>
+                {order.billingAddress.postalCode} {order.billingAddress.city}
+              </p>
+              <p>{order.billingAddress.country}</p>
+            </div>
+          </div>
+          <div>
+            <h2 className='font-title text-lg font-semibold uppercase'>
+              Delivery address
+            </h2>
+            <div className='text-base-300'>
+              <p>{order.deliveryAddress.careOf}</p>
+              <p>{order.deliveryAddress.street}</p>
+              <p>
+                {order.deliveryAddress.postalCode} {order.deliveryAddress.city}
+              </p>
+              <p>{order.deliveryAddress.country}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className='mt-4'>
+          <h2 className='font-title text-lg font-semibold uppercase'>
+            Options
+          </h2>
+          <div className='text-base-300'>
+            <p>Payment method: {order.paymentMethod}</p>
+            <p>Shipping method: {order.shippingMethod}</p>
+          </div>
+        </section>
+
+        <section className='mt-4'>
+          <h2 className='font-title text-lg font-semibold uppercase'>
+            Products
+          </h2>
           {order.lines.map((line) => (
             <ProductListCard
               key={line.productId}
@@ -47,6 +86,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
               <p>{formatPrice(line.subtotal)}</p>
             </ProductListCard>
           ))}
+
+          <p className='mt-2 flex justify-end'>
+            Total: {formatPrice(order.total)}
+          </p>
         </section>
       </Disclosure.Panel>
     </Disclosure>
