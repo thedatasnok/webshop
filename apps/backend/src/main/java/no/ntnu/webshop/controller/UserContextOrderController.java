@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ import no.ntnu.webshop.event.model.OrderConfirmationEvent;
 import no.ntnu.webshop.model.Address;
 import no.ntnu.webshop.model.Order;
 import no.ntnu.webshop.model.OrderLine;
+import no.ntnu.webshop.model.OrderStatus;
 import no.ntnu.webshop.model.PaymentMethod;
 import no.ntnu.webshop.model.ShippingMethod;
 import no.ntnu.webshop.repository.OrderJdbcRepository;
@@ -35,6 +37,7 @@ import no.ntnu.webshop.repository.OrderJpaRepository;
 import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 import no.ntnu.webshop.security.annotation.CustomerAuthorization;
+import no.ntnu.webshop.service.OrderService;
 
 /**
  * Controller responsible for endpoints that regard orders for the currently loggged in user
@@ -51,6 +54,7 @@ public class UserContextOrderController {
   private final OrderJpaRepository orderJpaRepository;
   private final ProductPriceJpaRepository productPriceJpaRepository;
   private final ApplicationEventPublisher eventPublisher;
+  private final OrderService orderService;
 
   @Operation(summary = "Lists all orders for the logged in user")
   @GetMapping
@@ -59,8 +63,7 @@ public class UserContextOrderController {
       @RequestParam("productName") Optional<String> productName
   ) {
     var userId = adapter.getUserAccount().getId();
-    return ResponseEntity
-      .ok(this.orderJdbcRepository.findOrdersByUserId(Optional.of(userId), productName, Optional.empty()));
+    return ResponseEntity.ok(this.orderJdbcRepository.findOrders(Optional.of(userId), productName, Optional.empty()));
   }
 
   @Operation(summary = "Finds a specific order for the logged in user")
@@ -70,8 +73,7 @@ public class UserContextOrderController {
       @PathVariable Long orderId
   ) {
     var userId = adapter.getUserAccount().getId();
-    var results = this.orderJdbcRepository
-      .findOrdersByUserId(Optional.of(userId), Optional.empty(), Optional.of(orderId));
+    var results = this.orderJdbcRepository.findOrders(Optional.of(userId), Optional.empty(), Optional.of(orderId));
 
     if (results.isEmpty())
       throw new OrderNotFoundException("Could not find an order with id: " + orderId);
@@ -146,6 +148,24 @@ public class UserContextOrderController {
 
     return ResponseEntity.created(URI.create("/api/v1/orders/" + savedOrder.getId()))
       .body(new GenericResponse("Order placed successfully"));
+  }
+
+  @Operation(summary = "Cancels an order for the logged in user")
+  @PatchMapping("/{orderId}/cancel")
+  public ResponseEntity<OrderDetails> cancelOrder(
+      @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
+      @PathVariable Long orderId
+  ) {
+    // we find by id and customer to ensure that the order belongs to the logged in user
+    // this prevents users from cancelling other users orders
+    var order = this.orderJpaRepository.findByIdAndCustomer(orderId, adapter.getUserAccount().getId())
+      .orElseThrow(() -> new OrderNotFoundException("Could not find an order with id: " + orderId));
+
+    order.setOrderStatus(OrderStatus.CANCELLED);
+
+    this.orderJpaRepository.save(order);
+
+    return ResponseEntity.ok(this.orderService.findById(orderId));
   }
 
 }
