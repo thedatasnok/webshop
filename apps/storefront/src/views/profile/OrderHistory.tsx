@@ -7,7 +7,18 @@ import { OrderDetails } from '@webshop/contracts';
 import { formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
-import { RiArrowRightSLine, RiShoppingCartLine } from 'react-icons/ri';
+import {
+  RiAddCircleFill,
+  RiAddCircleLine,
+  RiAddLine,
+  RiArrowRightSLine,
+  RiCloseLine,
+  RiPlayListAddLine,
+  RiQuestionMark,
+  RiSearchLine,
+  RiShoppingCartLine,
+  RiStore2Line,
+} from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 export interface OrderHistoryProps {
@@ -153,36 +164,56 @@ const OrderHistory = forwardRef<HTMLDivElement, OrderHistoryProps>(
           Order History
         </h1>
 
-        {orders?.length === 0 ? (
-          <NavLink
-            className={clsx(
-              'border-base-800 bg-base-900/30 hover:border-primary-800 hover:text-primary-600 group flex cursor-pointer',
-              'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
-            )}
-            to={RouteHref.PRODUCTS}
-          >
-            <RiShoppingCartLine className='h-8 w-8'></RiShoppingCartLine>
-            <p>Looks like you haven't ordered anything yet!</p>
-            <p>Click here to go shopping</p>
-          </NavLink>
-        ) : (
+        <div className='border-base-700 mb-4 mt-4 flex-1 rounded-sm border px-2 py-1 md:mt-0'>
+          <input
+            type='text'
+            className='w-full border-0 bg-transparent p-0 outline-none focus:outline-none focus:ring-0'
+            placeholder='Search...'
+            aria-label='Search'
+            onChange={(e) => setSearchString(e.target.value)}
+          />
+        </div>
+
+        {orders?.length === 0 && searchString.length > 0 && (
           <div>
-            <div className='border-base-700 mb-4 mt-4 flex-1 rounded-sm border px-2 py-1 md:mt-0'>
-              <input
-                type='text'
-                className='w-full border-0 bg-transparent p-0 outline-none focus:outline-none focus:ring-0'
-                placeholder='Search...'
-                aria-label='Search'
-                onChange={(e) => setSearchString(e.target.value)}
-              />
-            </div>
-            <div className='flex flex-col gap-2'>
-              {orders?.map((order, i) => (
-                <OrderCard key={order.id} order={order} isLast={i === 0} />
-              ))}
+            <div
+              className={clsx(
+                'text-base-400 group flex border-none',
+                'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
+              )}
+            >
+              <RiSearchLine className='h-16 w-16' />
+              <p className='text-center'>
+                Could not find orders matching "{searchString}".
+              </p>
             </div>
           </div>
         )}
+
+        {orders?.length === 0 && searchString.length === 0 && (
+          <div>
+            <NavLink
+              className={clsx(
+                'border-base-950 hover:text-primary-600 text-base-400 group flex cursor-pointer',
+                'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
+              )}
+              to={RouteHref.PRODUCTS}
+            >
+              <RiAddLine className='absolute h-8 w-8 -translate-y-14 translate-x-9' />
+              <RiShoppingCartLine className='h-16 w-16' />
+              <p className='text-center'>
+                Looks like you haven't ordered anything yet. <br />
+                Go shopping!
+              </p>
+            </NavLink>
+          </div>
+        )}
+
+        <div className='flex flex-col gap-2'>
+          {orders?.map((order, i) => (
+            <OrderCard key={order.id} order={order} isLast={i === 0} />
+          ))}
+        </div>
       </div>
     );
   }
