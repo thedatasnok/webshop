@@ -22,13 +22,12 @@ const LandingPage = () => {
         {/* Hero section */}
         <section
           aria-label='hero'
-          className='clip-corner-tl-hero border-base-900 relative flex rounded-r-md rounded-bl-md border'
+          className='border-base-900 relative flex aspect-[2/1] w-full rounded-md border bg-cover bg-center sm:aspect-[3/1]'
+          style={{
+            backgroundImage:
+              'url(https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/branding/hero.jpg)',
+          }}
         >
-          <img
-            src='https://media.discordapp.net/attachments/1073986585516834826/1095760268006527076/dudleif_the_city_of_alesund_at_night_in_the_year_2077_with_skys_39cf0c9b-2ca5-47d0-ba44-43fc5d02446b_1.png'
-            className='aspect-[2/1] w-full rounded-md sm:aspect-[3/1]'
-          />
-
           <div className='absolute right-0 top-1/2 h-full w-full -translate-y-1/2 flex-col justify-center rounded-r-md bg-gradient-to-r from-transparent via-[#000000]/80 to-[#000000]/80 p-2 px-4 md:w-5/12'>
             <div className='flex h-full flex-col items-center justify-center'>
               <h1 className='font-title text-center text-xl font-bold uppercase sm:text-2xl md:text-3xl'>
