@@ -206,59 +206,64 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
   const numberInputRef = useRef<HTMLInputElement>(null);
 
   /**
-   * If the quantity is higher than 1, decrements the quantity by 1.
-   * Updates to local storage.
+   * Decrements the quantity by 1.
+   * Ignores if the quantity is above 1.
    */
   function decrementQuantity() {
-    if (quantity > 1) {
-      dispatch(
-        updateCartItem({
-          productId,
-          quantity: quantity - 1,
-        })
-      );
-    }
+    if (quantity > 1) updateQuantity(quantity - 1);
   }
 
   /**
-   * Increments the quantity by 1 and updates to local storage.
+   * Increments the quantity by 1.
+   * Ignores if the quantity is above 999.
    */
   function incrementQuantity() {
+    if (quantity < 999) updateQuantity(quantity + 1);
+  }
+
+  /**
+   * Updates the quantity, writing it to the store which further updates local storage.
+   *
+   * @param newQuantity the new quantity of the product
+   */
+  const updateQuantity = (newQuantity: number) => {
     dispatch(
       updateCartItem({
         productId,
-        quantity: quantity + 1,
+        quantity: newQuantity,
       })
     );
-  }
 
-  function updateQuantity(inputQuantity: number) {
-    if (isNaN(inputQuantity)) {
-      dispatch(
-        updateCartItem({
-          productId,
-          quantity: 1,
-        })
-      );
-    }
-    if (inputQuantity >= 1 && inputQuantity <= 999) {
-      dispatch(
-        updateCartItem({
-          productId,
-          quantity: inputQuantity,
-        })
-      );
-    }
-  }
+    if (numberInputRef.current)
+      numberInputRef.current.valueAsNumber = newQuantity;
+  };
+
+  /**
+   * Handles the change event emitted by the number input, updating the quantity with the new value given its valid.
+   */
+  const handleNumberChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const parsedNumber = parseInt(e.target.value);
+
+    if (parsedNumber >= 1 && parsedNumber <= 999) updateQuantity(parsedNumber);
+    else if (parsedNumber > 999) updateQuantity(999);
+  };
+
+  /**
+   * When user focus exits the input, we need to make sure that the number is valid.
+   */
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (isNaN(e.target.valueAsNumber) || e.target.valueAsNumber <= 0)
+      updateQuantity(1);
+
+    if (e.target.valueAsNumber > 999) updateQuantity(999);
+  };
 
   return (
     <div className='border-base-700 flex rounded-sm border'>
       <button
         onClick={decrementQuantity}
         disabled={quantity === 1}
-        className={clsx(' hover:bg-base-900 transition-colors', {
-          'pointer-events-none': quantity === 1,
-        })}
+        className='hover:bg-base-900 transition-colors disabled:pointer-events-none'
       >
         <RiSubtractLine
           className={clsx(
@@ -269,19 +274,20 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
           )}
         />
       </button>
+
       <input
         type='number'
         ref={numberInputRef}
-        onChange={(e) => updateQuantity(parseInt(e.target.value))}
+        defaultValue={quantity}
+        onChange={handleNumberChanged}
+        onBlur={handleBlur}
         className='bg-base-950 focus:border-base-700 border-base-700 h-6 w-14 border-b-transparent border-t-transparent text-center focus:border-b-transparent focus:border-t-transparent focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none'
       />
 
       <button
         onClick={incrementQuantity}
         disabled={quantity === 999}
-        className={clsx(' hover:bg-base-800  transition-colors', {
-          'pointer-events-none': quantity === 999,
-        })}
+        className='hover:bg-base-800 transition-colors disabled:pointer-events-none'
       >
         <RiAddLine
           className={clsx(
