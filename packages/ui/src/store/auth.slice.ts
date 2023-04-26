@@ -1,6 +1,7 @@
 import { authApi } from '../services/auth';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import jwtDecode, { type JwtPayload } from 'jwt-decode';
+import { userContextApi } from '../services';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 
@@ -191,6 +192,14 @@ export const authSlice = createSlice({
      */
     builder.addMatcher(authApi.endpoints.signOut.matchFulfilled, (state) =>
       authSlice.caseReducers.clearCredentials(state)
+    );
+
+    /**
+     * Whenever the user is deleted from the backend, we clear the credentials.
+     */
+    builder.addMatcher(
+      userContextApi.endpoints.deleteUserProfile.matchFulfilled,
+      (state) => authSlice.caseReducers.clearCredentials(state)
     );
   },
 });

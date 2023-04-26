@@ -10,7 +10,14 @@ export const userContextApi = webshopApi.injectEndpoints({
         body,
       }),
     }),
+    deleteUserProfile: builder.mutation<void, void>({
+      query: () => ({
+        url: '/v1/me',
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useUpdateUserProfileMutation } = userContextApi;
+export const { useUpdateUserProfileMutation, useDeleteUserProfileMutation } =
+  userContextApi;

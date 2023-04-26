@@ -1,21 +1,28 @@
-import {
-  useUpdateUserProfileMutation,
-  Button,
-  TextField,
-  useSignOutMutation,
-  ErrorLabel,
-  InputLabel,
-  useAuth,
-  usePasswordStrength,
-  PasswordStrengthCode,
-} from '@webshop/ui';
+import PasswordStrength from '@/components/auth/PasswordStrength';
+import { Disclosure } from '@headlessui/react';
 import { useForm, zodResolver } from '@mantine/form';
 import { UpdateUserProfileRequest } from '@webshop/contracts';
-import { forwardRef, useEffect, useId, useState } from 'react';
-import { RiLogoutBoxLine } from 'react-icons/ri';
-import { z } from 'zod';
+import {
+  Button,
+  DialogPrompt,
+  ErrorLabel,
+  InputLabel,
+  PasswordStrengthCode,
+  TextField,
+  useAuth,
+  useDeleteUserProfileMutation,
+  usePasswordStrength,
+  useSignOutMutation,
+  useUpdateUserProfileMutation,
+} from '@webshop/ui';
 import clsx from 'clsx';
-import PasswordStrength from '@/components/auth/PasswordStrength';
+import { forwardRef, useEffect, useId, useState } from 'react';
+import {
+  RiArrowUpSLine,
+  RiDeleteBin6Line,
+  RiLogoutBoxLine,
+} from 'react-icons/ri';
+import { z } from 'zod';
 
 export interface UserDetailsProps {
   className?: string;
@@ -25,6 +32,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
   ({ className }, ref) => {
     const [signOut] = useSignOutMutation();
     const [updateUserProfile] = useUpdateUserProfileMutation();
+    const [deleteUserProfile] = useDeleteUserProfileMutation();
 
     const handleSubmit = async (values: UpdateUserProfileRequest) => {
       try {
@@ -89,9 +97,15 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     const confirmNewPasswordId = useId();
 
     const [showPasswordStrength, setShowPasswordStrength] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     function handlePasswordFieldClick() {
       setShowPasswordStrength(true);
+    }
+
+    function handleDeleteUserProfile() {
+      signOut();
+      deleteUserProfile();
     }
 
     const strength = usePasswordStrength(form.values.password);
@@ -176,7 +190,6 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
               <RiLogoutBoxLine className='-ml-1' />
               <p>Sign out</p>
             </Button>
-
             <Button type='submit'>Save</Button>
           </div>
 
@@ -211,6 +224,35 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
             </div>
           )}
         </form>
+
+        <Disclosure>
+          <Disclosure.Button className='text-base-400 ui-open:text-base-50 mt-4 flex flex-row items-center gap-1'>
+            <p className='font-title'>extra options</p>
+            <RiArrowUpSLine className='ui-open:rotate-180 transform' />
+          </Disclosure.Button>
+
+          <Disclosure.Panel>
+            <div className='flex w-fit flex-col gap-2 pt-2'>
+              <Button
+                type='button'
+                onClick={() => setDeleteOpen(true)}
+                style='outline'
+                variant='destructive'
+              >
+                <RiDeleteBin6Line />
+                <p>Delete user profile</p>
+              </Button>
+            </div>
+          </Disclosure.Panel>
+        </Disclosure>
+
+        <DialogPrompt
+          isOpen={deleteOpen}
+          onClose={() => setDeleteOpen(false)}
+          title='delete user account'
+          message='This will permanently delete your user account.'
+          action={handleDeleteUserProfile}
+        />
       </div>
     );
   }
