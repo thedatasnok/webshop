@@ -26,18 +26,36 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
           return -1;
         },
       }),
+      invalidatesTags: [
+        {
+          type: 'Order',
+          id: 'LIST',
+        },
+      ],
     }),
     /**
      * Finds all orders in user context
      */
     findOrders: builder.query<OrderDetails[], FindOrdersQueryParams>({
       query: (params) => '/v1/me/orders?' + buildQueryParams(params),
+      providesTags: [
+        {
+          type: 'Order',
+          id: 'LIST',
+        },
+      ],
     }),
     /**
      * Gets the specified order
      */
     getOrder: builder.query<OrderDetails, number>({
       query: (id) => `/v1/me/orders/${id}`,
+      providesTags: (_order, _error, id) => [
+        {
+          type: 'Order',
+          id,
+        },
+      ],
     }),
   }),
 });
