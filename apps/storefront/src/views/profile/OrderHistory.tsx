@@ -14,6 +14,45 @@ export interface OrderHistoryProps {
   className?: string;
 }
 
+interface ProductListCardOrderHistoryActionsProps {
+  price: number;
+  previousPrice: number | null;
+  quantity: number;
+  isDiscount: boolean;
+}
+
+const ProductListCardOrderHistoryActions: React.FC<
+  ProductListCardOrderHistoryActionsProps
+> = ({ price, previousPrice, quantity, isDiscount }) => {
+  const totalPrice = price * quantity;
+
+  return (
+    <div className='flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-0'>
+      <div className='flex'>
+        <p>{quantity}&nbsp;x&nbsp;</p>
+        {formatPrice(price)}
+        <div
+          className={clsx({
+            'flex flex-col items-end': isDiscount,
+            'flex flex-row items-center': !isDiscount,
+          })}
+        >
+          <div className='flex w-16 justify-end'>{formatPrice(totalPrice)}</div>
+          {isDiscount && previousPrice && (
+            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
+              -{formatPrice(previousPrice * quantity - totalPrice)}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className='flex gap-2'>
+        <div className='block sm:hidden'>{quantity}</div>
+      </div>
+    </div>
+  );
+};
+
 interface OrderCardProps {
   order: OrderDetails;
   isLast?: boolean;
@@ -83,7 +122,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
               shortDescription={line.productShortDescription}
               image={line.productImageUrls[0]}
             >
-              <p>{formatPrice(line.subtotal)}</p>
+              <ProductListCardOrderHistoryActions
+                quantity={line.quantity}
+                price={line.unitPrice}
+                previousPrice={line.previousUnitPrice}
+                isDiscount={line.wasDiscount}
+              />
             </ProductListCard>
           ))}
 
