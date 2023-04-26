@@ -54,11 +54,6 @@ body {
     @apply after:inline-block after:content-[""];
   }
 }
-@media (min-width: 0px) {
-  .max-w-180 {
-    max-width: 180px;
-  }
-}
 
 ::-webkit-scrollbar {
   @apply h-2 w-2;
