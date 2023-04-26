@@ -98,17 +98,17 @@ const ProductBrowser = () => {
           </div>
         </section>
 
-        <div className='mt-2 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between'>
+        <div className='mt-2 flex flex-col sm:flex-row sm:justify-between'>
           <h2
             className={clsx(
-              'text-base-200 font-title text-sm font-semibold uppercase tracking-wide',
+              'text-base-200 font-title preserve-line text-sm font-semibold uppercase tracking-wide',
               !paramSearch && 'invisible'
             )}
           >
             Showing {products?.length} results for "{paramSearch}"
           </h2>
 
-          <div className='my-2 mr-0 flex items-center sm:gap-2'>
+          <div className='my-1 mr-0 flex items-center justify-end gap-2'>
             <span className='text-base-200 font-title text-sm font-semibold uppercase tracking-wide'>
               Sorting by
             </span>
@@ -147,12 +147,14 @@ const ProductBrowser = () => {
 
         {/* section or div? */}
         <section
-          className={clsx({
-            'grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5':
-              isGridSelected,
-          })}
+          className={clsx(
+            'gap-2',
+            !isGridSelected && 'flex flex-col',
+            isGridSelected &&
+              'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'
+          )}
         >
-          {products?.map((product, i, array) => (
+          {products?.map((product) => (
             <div key={product.id}>
               {isGridSelected ? (
                 <ProductCard
@@ -174,7 +176,7 @@ const ProductBrowser = () => {
                   isDiscount={product.isDiscount}
                   image={product.imageUrls[0]}
                   hoverEffects
-                > 
+                >
                   <ProductListActions
                     price={product.price}
                     isDiscount={product.isDiscount}
@@ -192,7 +194,7 @@ const ProductBrowser = () => {
 
 interface ProductListActionsProps {
   price: number;
-  previousPrice: number;
+  previousPrice: number | null;
   isDiscount: boolean;
 }
 
@@ -202,8 +204,8 @@ const ProductListActions: React.FC<ProductListActionsProps> = ({
   isDiscount,
 }) => {
   return (
-    <div className='flex flex-col-reverse'>
-      <p className='font-title truncate font-semibold tracking-wide'>
+    <div className='flex w-fit flex-col-reverse'>
+      <p className='font-title truncate text-right font-semibold tracking-wide'>
         <span
           className={clsx(
             'group-hover:text-primary-600 text-xl',
@@ -212,8 +214,8 @@ const ProductListActions: React.FC<ProductListActionsProps> = ({
         >
           {formatPrice(price)}
         </span>
-        {isDiscount && (
-          <span className='text-base-400 ml-2 text-sm'>
+        {isDiscount && previousPrice && (
+          <span className='text-base-400 ml-2 block text-sm sm:inline'>
             PREV. {formatPrice(previousPrice)}
           </span>
         )}

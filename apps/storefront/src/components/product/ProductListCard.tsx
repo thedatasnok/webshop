@@ -27,14 +27,18 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
   return (
     <div
       className={clsx(
-        'border-base-800 relative flex p-1',
+        'border-base-800 relative grid grid-cols-5 overflow-hidden p-1',
         hoverEffects &&
           'hover:bg-primary-900/10 hover:border-primary-800 group rounded-sm border transition-colors',
         className
       )}
     >
-      <NavLink to={to} className='flex flex-1'>
-        <img src={image} alt={name} className='aspect-square w-4/12 md:w-1/6' />
+      <NavLink to={to} className='col-span-3 flex flex-1 overflow-hidden'>
+        <img
+          src={image}
+          alt={name}
+          className='aspect-square w-1/3 h-fit md:w-1/6'
+        />
 
         {/* Top-left on sale pill */}
         {isDiscount && (
@@ -43,21 +47,16 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
           </span>
         )}
 
-        <div className='flex flex-col overflow-hidden text-ellipsis sm:max-w-xs md:max-w-md'>
+        <div className='flex flex-col overflow-hidden'>
           <h3 className='font-title group-hover:text-primary-600 mt-0.5 truncate px-2 text-xl font-bold uppercase'>
             {name}
           </h3>
-          <p className='group-hover:text-primary-700 mb-0.5 truncate px-2 text-xs after:inline-block after:content-[""]'>
+          <p className='group-hover:text-primary-700 text-base-400 preserve-line -mt-1 mb-0.5 line-clamp-2 px-2 text-xs'>
             {shortDescription}
           </p>
         </div>
-
-        {/* Bottom left id decoration */}
-        <span className='text-base-400 font-title absolute bottom-1 -mb-0.5 -mt-2 mr-0.5 rounded-sm px-0.5 text-right text-xs tracking-wide'>
-          #{id?.toString().padStart(4, '0')}
-        </span>
       </NavLink>
-      <div className='flex justify-end'>{children}</div>
+      <div className='col-span-2 flex justify-end'>{children}</div>
     </div>
   );
 };

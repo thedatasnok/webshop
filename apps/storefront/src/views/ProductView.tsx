@@ -111,7 +111,7 @@ const ProductView = () => {
               )}`}
               className='text-base-400 font-title preserve-line ml-2 font-semibold uppercase'
             >
-              {productInfo?.isDiscount && (
+              {productInfo?.isDiscount && productInfo.previousPrice && (
                 <>Prev. {formatPrice(productInfo.previousPrice)}</>
               )}
             </span>
