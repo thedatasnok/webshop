@@ -100,9 +100,9 @@ public class ProductJdbcRepository {
           rs.getString("short_description"),
           rs.getString("description"),
           this.objectMapper.readValue(rs.getString("image_urls"), STRING_LIST_TYPE_REF),
-          rs.getDouble("price"),
+          rs.getBigDecimal("price"),
           rs.getBoolean("is_discount"),
-          rs.getDouble("previous_price"),
+          rs.getBigDecimal("previous_price"),
           this.objectMapper.readValue(rs.getString("attributes"), ATTRIBUTE_MAP_TYPE_REF),
           this.objectMapper.readValue(rs.getString("children"), PRODUCT_CHILD_DETAILS_LIST_TYPE_REF),
           this.objectMapper.readValue(rs.getString("variants"), PRODUCT_VARIANT_LIST_TYPE_REF)
