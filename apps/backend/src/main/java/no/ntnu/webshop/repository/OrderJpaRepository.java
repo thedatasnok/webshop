@@ -2,6 +2,8 @@ package no.ntnu.webshop.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,6 +37,20 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
     """)
   List<OrderSummary> findDailyOrderSummary(
       @Param("since") Date since
+  );
+
+  /**
+   * Finds an order by its id and the customers id.
+   * 
+   * @param id         the id of the order to find
+   * @param customerId the id of the customer that owns the order
+   * 
+   * @return an optional containing the order, if found
+   */
+  @Query("SELECT o FROM Order o WHERE o.id = :id AND o.customer.id = :customerId")
+  Optional<Order> findByIdAndCustomer(
+      @Param("id") Long id,
+      @Param("customerId") UUID customerId
   );
 
 }

@@ -70,7 +70,7 @@ public class OrderJdbcRepository {
    * 
    * @return a list of orders for that user
    */
-  public List<OrderDetails> findOrdersByUserId(
+  public List<OrderDetails> findOrders(
       Optional<UUID> userId,
       Optional<String> productName,
       Optional<Long> orderId
