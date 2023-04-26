@@ -3,7 +3,9 @@ package no.ntnu.webshop.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.category.CategoryDto;
 import no.ntnu.webshop.contracts.category.CreateCategoryRequest;
+import no.ntnu.webshop.error.model.CategoryNotFoundException;
 import no.ntnu.webshop.model.Category;
 import no.ntnu.webshop.repository.CategoryJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
@@ -53,4 +56,18 @@ public class CategoryController {
       )
     );
   }
+
+  @Operation(summary = "Deletes a category by ID")
+  @DeleteMapping("/{id}")
+  @ShopWorkerAuthorization
+  public ResponseEntity<Object> deleteCategory(
+      @PathVariable Integer id
+  ) {
+    if (!this.categoryJpaRepository.existsById(id))
+      throw new CategoryNotFoundException("Could not find category with id: " + id);
+
+    categoryJpaRepository.deleteById(id);
+    return ResponseEntity.ok("Category with ID " + id + " has been deleted.");
+  }
+
 }
