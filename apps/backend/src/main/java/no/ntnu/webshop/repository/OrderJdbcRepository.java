@@ -71,13 +71,13 @@ public class OrderJdbcRepository {
    * @return a list of orders for that user
    */
   public List<OrderDetails> findOrdersByUserId(
-      UUID userId,
+      Optional<UUID> userId,
       Optional<String> productName,
       Optional<Long> orderId
   ) {
     var params = new MapSqlParameterSource();
 
-    params.addValue("userId", userId);
+    params.addValue("userId", userId.orElse(null), Types.VARCHAR);
     params.addValue("productName", productName.orElse(null), Types.VARCHAR);
     params.addValue("orderId", orderId.orElse(null), Types.BIGINT);
 
@@ -129,7 +129,7 @@ public class OrderJdbcRepository {
           ON prev_pp.fk_product_id = p.product_id
           AND prev_pp.time_to = pp.time_from
         WHERE
-          (o.fk_customer_id = :userId) AND
+          (:userId IS NULL OR o.fk_customer_id = :userId::uuid) AND
           (o.order_id IN (
             SELECT DISTINCT ol.fk_order_id FROM order_line ol
             INNER JOIN product p ON ol.fk_product_id = p.product_id

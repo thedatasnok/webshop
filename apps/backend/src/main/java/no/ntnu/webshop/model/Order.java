@@ -25,6 +25,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import no.ntnu.webshop.utility.EnumTypes.OrderStatusEnumType;
 import no.ntnu.webshop.utility.EnumTypes.PaymentMethodEnumType;
 import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
@@ -88,11 +89,13 @@ public class Order {
   @AttributeOverride(name = "careOf", column = @Column(name = "invoice_care_of"))
   private Address invoiceAddress;
 
+  @Setter
   @Enumerated(EnumType.STRING)
   @Type(OrderStatusEnumType.class)
   @Column(name = "order_status")
   private OrderStatus orderStatus;
 
+  @Setter
   @Enumerated(EnumType.STRING)
   @Type(PaymentStatusEnumType.class)
   @Column(name = "payment_status")
@@ -146,12 +149,6 @@ public class Order {
       OrderLine orderLine
   ) {
     this.lines.add(orderLine);
-  }
-
-  public void setOrderStatus(
-      OrderStatus orderStatus
-  ) {
-    this.orderStatus = orderStatus;
   }
 
 }
