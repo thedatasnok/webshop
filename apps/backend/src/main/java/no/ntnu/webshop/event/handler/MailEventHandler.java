@@ -51,7 +51,7 @@ public class MailEventHandler {
       return;
 
     var placedOrder = this.orderJdbcRepository
-      .findOrdersByUserId(event.customer().getId(), Optional.empty(), Optional.of(event.orderId()));
+      .findOrdersByUserId(Optional.of(event.customer().getId()), Optional.empty(), Optional.of(event.orderId()));
 
     try {
       this.restTemplate.postForObject(

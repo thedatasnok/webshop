@@ -59,7 +59,8 @@ public class UserContextOrderController {
       @RequestParam("productName") Optional<String> productName
   ) {
     var userId = adapter.getUserAccount().getId();
-    return ResponseEntity.ok(this.orderJdbcRepository.findOrdersByUserId(userId, productName, Optional.empty()));
+    return ResponseEntity
+      .ok(this.orderJdbcRepository.findOrdersByUserId(Optional.of(userId), productName, Optional.empty()));
   }
 
   @Operation(summary = "Finds a specific order for the logged in user")
@@ -69,7 +70,8 @@ public class UserContextOrderController {
       @PathVariable Long orderId
   ) {
     var userId = adapter.getUserAccount().getId();
-    var results = this.orderJdbcRepository.findOrdersByUserId(userId, Optional.empty(), Optional.of(orderId));
+    var results = this.orderJdbcRepository
+      .findOrdersByUserId(Optional.of(userId), Optional.empty(), Optional.of(orderId));
 
     if (results.isEmpty())
       throw new OrderNotFoundException("Could not find an order with id: " + orderId);
