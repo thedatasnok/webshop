@@ -6,7 +6,8 @@ import { useFindProductsQuery } from '@/services/products';
 import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { RiAddLine, RiCloseLine, RiSubtractLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -69,7 +70,7 @@ const ShoppingCart = () => {
         </div>
 
         <div className='font-title mr-1 flex flex-row justify-end gap-4 uppercase sm:mr-0 sm:gap-4 md:gap-7'>
-          <h3 className='hidden sm:block sm:pr-16'>Quantity</h3>
+          <h3 className='hidden sm:block sm:pr-16 md:pr-14'>Quantity</h3>
           <h3>Total</h3>
           <h3 className='hidden sm:block'>Delete</h3>
         </div>
@@ -148,19 +149,14 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
 
   return (
     <div className='flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-0'>
-      <div className='flex sm:gap-8 md:gap-10'>
+      <div className='flex sm:items-center sm:gap-8 md:gap-10'>
         {/* Counter */}
         <div className='hidden sm:block'>
           <Counter productId={productId} quantity={quantity} />
         </div>
         {/* Total price */}
-        <div
-          className={clsx({
-            'flex flex-col items-end': isDiscount,
-            'flex flex-row items-center': !isDiscount,
-          })}
-        >
-          <div className='flex w-16 justify-end text-xl'>
+        <div className='font-title flex flex-col items-end font-semibold'>
+          <div className='flex w-16 flex-col items-end justify-end text-xl'>
             {formatPrice(totalPrice)}
           </div>
           {isDiscount && (
@@ -175,30 +171,24 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
             dispatch(removeCartItem(productId));
           }}
         >
-          <div className='bg-base-800 relative hidden h-6 w-6 items-center justify-center bg-opacity-40 sm:flex'>
-            <span className='text-base-400 font-title absolute pb-1 text-3xl'>
-              x
-            </span>
+          <div className='border-base-700 hidden aspect-square items-center justify-center rounded-sm border sm:flex'>
+            <RiCloseLine className='hover:fill-error w-6' />
           </div>
         </button>
       </div>
 
-      <div className='flex gap-2'>
+      <div className='flex items-end gap-2 sm:hidden'>
         {/* Mobile Counter */}
-        <div className='block sm:hidden'>
-          <Counter productId={productId} quantity={quantity} />
-        </div>
+        <Counter productId={productId} quantity={quantity} />
+
         {/* Mobile Delete */}
         <button
-          className='flex aspect-square items-end justify-end sm:hidden'
           onClick={() => {
             dispatch(removeCartItem(productId));
           }}
         >
-          <div className='bg-base-800/40 relative flex aspect-square h-8 w-8 items-center justify-center pt-1'>
-            <span className='text-base-400 font-title absolute pb-1 text-xl'>
-              x
-            </span>
+          <div className='border-base-700 flex aspect-square items-center justify-end rounded-sm border sm:hidden'>
+            <RiCloseLine className='w-6' />
           </div>
         </button>
       </div>
@@ -213,6 +203,7 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
   const dispatch = useDispatch();
+  const numberInputRef = useRef<HTMLInputElement>(null);
 
   /**
    * If the quantity is higher than 1, decrements the quantity by 1.
@@ -241,22 +232,65 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
     );
   }
 
+  function updateQuantity(inputQuantity: number) {
+    if (isNaN(inputQuantity)) {
+      dispatch(
+        updateCartItem({
+          productId,
+          quantity: 1,
+        })
+      );
+    }
+    if (inputQuantity >= 1 && inputQuantity <= 999) {
+      dispatch(
+        updateCartItem({
+          productId,
+          quantity: inputQuantity,
+        })
+      );
+    }
+  }
+
   return (
-    <div className='bg-base-800/40 font-title relative mt-1 flex flex-row justify-end'>
-      <button onClick={decrementQuantity} disabled={quantity === 1}>
-        <div
-          className={clsx('font-title mx-2 text-2xl sm:mx-4 sm:text-4xl ', {
-            'text-base-600': quantity === 1,
-          })}
-        >
-          -
-        </div>
+    <div className='border-base-700 flex rounded-sm border'>
+      <button
+        onClick={decrementQuantity}
+        disabled={quantity === 1}
+        className={clsx(' hover:bg-base-900 transition-colors', {
+          'pointer-events-none': quantity === 1,
+        })}
+      >
+        <RiSubtractLine
+          className={clsx(
+            {
+              'fill-base-600': quantity === 1,
+            },
+            'w-6'
+          )}
+        />
       </button>
-      <div className='flex w-6 items-center justify-center text-xl sm:text-2xl'>
-        {quantity}
-      </div>
-      <button onClick={incrementQuantity}>
-        <div className='mx-2 text-2xl sm:mx-4 sm:text-4xl'>+</div>
+      <input
+        type='number'
+        ref={numberInputRef}
+        onChange={(e) => updateQuantity(parseInt(e.target.value))}
+        className='bg-base-950 focus:border-base-700 border-base-700 h-6 w-14 border-b-transparent border-t-transparent text-center focus:border-b-transparent focus:border-t-transparent focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none'
+      />
+
+      <button
+        onClick={incrementQuantity}
+        disabled={quantity === 999}
+        className={clsx(' hover:bg-base-800  transition-colors', {
+          'pointer-events-none': quantity === 999,
+        })}
+      >
+        <RiAddLine
+          className={clsx(
+            {
+              'fill-base-600': quantity === 999,
+            },
+            'w-6'
+          )}
+        />
       </button>
     </div>
   );
