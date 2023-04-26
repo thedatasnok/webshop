@@ -53,6 +53,11 @@ export interface CategoryDto {
     iconUrl: string;
 }
 
+export interface CreateCategoryRequest {
+    name: string;
+    iconUrl: string;
+}
+
 export interface CreateItemRequest {
     name: string;
     description: string;
@@ -159,7 +164,7 @@ export interface ProductDetails {
     imageUrls: string[];
     price: number;
     isDiscount: boolean;
-    previousPrice: number;
+    previousPrice: number | null;
     attributes: { [index: string]: { [index: string]: string } };
     children: ProductChildDetails[];
     variants: ProductVariant[];
