@@ -103,19 +103,14 @@ const ShoppingCart = () => {
           </div>
         ) : (
           <>
-            <div
-              id='cart-total'
-              className='flex w-full justify-center pt-2 text-xl sm:flex-col'
-            >
-              <div className='font-title self-end text-xl font-semibold uppercase sm:pt-2'>
-                {/* default value to 0 if products are not loaded  */}
-                Sum: {formatPrice(totalPrice || 0)}
-              </div>
+            <div className='font-title pt-2 text-center text-xl font-semibold uppercase sm:pt-2 sm:text-right'>
+              {/* default value to 0 if products are not loaded  */}
+              Sum: {formatPrice(totalPrice || 0)}
             </div>
 
             <NavLink
               to={RouteHref.CHECKOUT}
-              className='ml-auto mt-2 block h-fit w-fit'
+              className='mx-auto mt-2 block h-fit w-fit sm:ml-auto sm:mr-0'
             >
               <Button type='button' className='text-lg font-semibold'>
                 Checkout
@@ -159,21 +154,21 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
           <div className='flex w-16 flex-col items-end justify-end text-xl'>
             {formatPrice(totalPrice)}
           </div>
-          {isDiscount && (
-            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              -{formatPrice(previousTotal - totalPrice)}
-            </div>
-          )}
+          <div
+            className={clsx(
+              'bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs',
+              !isDiscount && 'invisible sm:hidden'
+            )}
+          >
+            -{formatPrice(previousTotal - totalPrice)}
+          </div>
         </div>
         {/* Delete */}
         <button
-          onClick={() => {
-            dispatch(removeCartItem(productId));
-          }}
+          onClick={() => dispatch(removeCartItem(productId))}
+          className='border-base-700 hidden aspect-square items-center justify-center rounded-sm border sm:flex'
         >
-          <div className='border-base-700 hidden aspect-square items-center justify-center rounded-sm border sm:flex'>
-            <RiCloseLine className='hover:fill-error w-6' />
-          </div>
+          <RiCloseLine className='hover:fill-error w-6' />
         </button>
       </div>
 

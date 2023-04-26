@@ -7,7 +7,7 @@ interface ProductCardProps {
   to: string;
   name: string;
   price: number;
-  previousPrice: number;
+  previousPrice: number | null;
   isDiscount: boolean;
   shortDescription: string;
   image?: string;
@@ -60,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         >
           {formatPrice(price)}
         </span>
-        {isDiscount && (
+        {isDiscount && previousPrice && (
           <span className='text-base-400 ml-2 text-sm'>
             PREV. {formatPrice(previousPrice)}
           </span>
