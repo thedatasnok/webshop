@@ -40,12 +40,12 @@ export const defineMailEndpoint = <T extends GenericMailOptions>(
  * Nodemailer transport, used to send the rendered emails.
  */
 const transporter = nodemailer.createTransport({
-  host: environment.hostname,
-  port: environment.port,
+  host: environment.mail.hostname,
+  port: environment.mail.port,
   secure: true,
   auth: {
-    user: environment.username,
-    pass: environment.password,
+    user: environment.mail.username,
+    pass: environment.mail.password,
   },
 });
 
@@ -74,7 +74,7 @@ export const registerEndpoint = <T extends GenericMailOptions>(
         typeof subject === 'function' ? subject(props) : subject;
 
       transporter.sendMail({
-        from: environment.sender,
+        from: environment.mail.sender,
         to: props.to,
         subject: mailSubject,
         html,

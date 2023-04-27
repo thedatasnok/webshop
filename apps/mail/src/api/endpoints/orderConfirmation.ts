@@ -44,6 +44,7 @@ export type OrderConfirmationProps = z.infer<typeof propsSchema>;
 export default defineMailEndpoint({
   url: '/mails/order-confirmation',
   validator: propsSchema,
-  subject: ({ order }) => `Order confirmation ORD#${order.id}`,
+  subject: ({ order }) =>
+    `Order confirmation ORD#${order.id.toString().padStart(4, '0')}`,
   render: OrderConfirmation,
 });

@@ -18,6 +18,7 @@ import {
 } from '@react-email/components';
 import { AddressDto, OrderLineDetails } from '@webshop/contracts';
 import { OrderConfirmationProps } from './api/endpoints/orderConfirmation';
+import environment from './api/env';
 
 const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
   const getSavings = (line: OrderLineDetails) => {
@@ -34,6 +35,10 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
     0
   );
 
+  const preview = `Order confirmation ORD#${order.id
+    .toString()
+    .padStart(4, '0')}`;
+
   return (
     <Html>
       <Head>
@@ -49,13 +54,13 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
         />
       </Head>
 
-      <Preview>Order confirmation ORD#00033</Preview>
+      <Preview>{preview}</Preview>
 
       <Tailwind>
         <Body className='rounded-md bg-black font-sans text-zinc-50'>
           <Container className='mt-8'>
             <Img
-              src='https://github.com/thedatasnok/webshop/raw/main/docs/assets/logo-big.svg'
+              src='https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/branding/logo-big.png'
               className='mx-auto w-1/2'
             />
 
@@ -84,7 +89,9 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
             <Section className='w-1/2'>
               {order.lines.map((line) => (
                 <Row className='py-1' key={line.id}>
-                  <Link href='https://google.com'>
+                  <Link
+                    href={`https://${environment.hostname}/products/${line.productId}`}
+                  >
                     <Column className='w-24'>
                       <Img
                         src={line.productImageUrls[0]}
@@ -136,7 +143,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
               <Column align='center'>
                 <Button
                   className='mb-4 font-semibold text-zinc-300'
-                  href='https://google.com'
+                  href={`https://${environment.hostname}/profile`}
                 >
                   View your order status online
                 </Button>
