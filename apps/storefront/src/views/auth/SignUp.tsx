@@ -7,6 +7,7 @@ import {
   ErrorLabel,
   InputLabel,
   Logo,
+  MINIMUM_ENTROPY_BITS,
   PasswordStrengthCode,
   TextField,
   usePasswordStrength,
@@ -81,7 +82,7 @@ const SignUp = () => {
       lowercaseSatisfied: charsets.lowercase,
       uppercaseSatisfied: charsets.uppercase,
       numberSatisfied: charsets.numbers,
-      strengthSatisfied: entropy >= 24,
+      strengthSatisfied: entropy >= MINIMUM_ENTROPY_BITS,
     });
   }, [strength]);
 

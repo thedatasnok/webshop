@@ -10,6 +10,8 @@ export const PasswordStrengthCodes = [
 
 export type PasswordStrengthCode = (typeof PasswordStrengthCodes)[number];
 
+export const MINIMUM_ENTROPY_BITS = 24;
+
 // Note:
 // The entropy is calculated using Shannon entropy.
 // It is inspired by tai-password-strength, but it increased the bundle size the

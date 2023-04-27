@@ -7,6 +7,7 @@ import {
   DialogPrompt,
   ErrorLabel,
   InputLabel,
+  MINIMUM_ENTROPY_BITS,
   PasswordStrengthCode,
   TextField,
   useAuth,
@@ -84,6 +85,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
           lowercaseSatisfied: false,
           uppercaseSatisfied: false,
           numberSatisfied: false,
+          strengthSatisfied: false,
         },
       },
     });
@@ -111,7 +113,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     const strength = usePasswordStrength(form.values.password);
 
     useEffect(() => {
-      const { strength: strengthCode, charsets, length } = strength;
+      const { strength: strengthCode, charsets, length, entropy } = strength;
 
       form.setFieldValue('passwordStrength', {
         strengthCode: strengthCode satisfies PasswordStrengthCode,
@@ -119,6 +121,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
         lowercaseSatisfied: charsets.lowercase,
         uppercaseSatisfied: charsets.uppercase,
         numberSatisfied: charsets.numbers,
+        strengthSatisfied: entropy >= MINIMUM_ENTROPY_BITS,
       });
     }, [strength]);
 
@@ -215,6 +218,10 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
                     satisfied: form.values.passwordStrength.numberSatisfied,
                   },
                   {
+                    label: 'Password is strong enough',
+                    satisfied: form.values.passwordStrength.strengthSatisfied,
+                  },
+                  {
                     label: 'Passwords match',
                     satisfied:
                       form.values.passwordConfirmation === form.values.password,
@@ -228,7 +235,7 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
         <Disclosure>
           <Disclosure.Button className='text-base-400 ui-open:text-base-50 mt-4 flex flex-row items-center gap-1'>
             <p className='font-title uppercase'>Extra options</p>
-            <RiArrowUpSLine className='ui-open:rotate-180 transform w-4 h-4' />
+            <RiArrowUpSLine className='ui-open:rotate-180 h-4 w-4 transform' />
           </Disclosure.Button>
 
           <Disclosure.Panel>
