@@ -11,16 +11,12 @@ import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { forwardRef, useState } from 'react';
 import {
-  RiAddCircleFill,
-  RiAddCircleLine,
   RiAddLine,
   RiArrowRightSLine,
-  RiCloseLine,
-  RiPlayListAddLine,
-  RiQuestionMark,
+  RiBitCoinLine,
   RiSearchLine,
   RiShoppingCartLine,
-  RiStore2Line,
+  RiTruckLine,
 } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
@@ -88,13 +84,26 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
   return (
     <>
       <Disclosure defaultOpen={isLast}>
-        <Disclosure.Button className='bg-base-900 font-title ui-open:border-primary border-b-base-400 flex items-center rounded-sm border-b-2 px-2 py-2 text-xl font-semibold uppercase'>
+        <Disclosure.Button className='bg-base-900 font-title ui-open:border-primary border-b-base-400 focus:bg-base-800 flex items-center rounded-sm border-b-2 px-2 py-2 text-xl font-semibold uppercase outline-none'>
           <RiArrowRightSLine className='ui-open:rotate-90 ui-open:transform' />
-          <div className='flex w-full justify-between pl-1'>
+          <div className='grid w-full grid-cols-4 items-center justify-items-start pl-1'>
             <p>Order #{order.id.toString().padStart(4, '0')}</p>
-            <p>{order.paymentStatus}</p>
-            <p>{order.status}</p>
-            <p>{order.orderedAt.toString().substring(0, 10)}</p>
+
+            <p className='inline-flex items-center gap-1'>
+              <RiBitCoinLine className='h-6 w-6' />
+              <span className='sr-only'>Payment status:</span>
+              <span>{order.paymentStatus}</span>
+            </p>
+
+            <p className='inline-flex items-center gap-1'>
+              <RiTruckLine className='h-6 w-6' />
+              <span className='sr-only'>Order status:</span>
+              <span>{order.status}</span>
+            </p>
+
+            <p className='justify-self-end'>
+              {order.orderedAt.toString().substring(0, 10)}
+            </p>
           </div>
         </Disclosure.Button>
         <Disclosure.Panel className='px-4 py-2'>
@@ -178,7 +187,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
       <DialogPrompt
         action={handleCancelOrder}
         isOpen={showCancelConfirmation}
-        message='This will cancel your order'
+        message='Are you sure you want to cancel this order?'
         onClose={() => setShowCancelConfirmation(false)}
         title={`Cancel order #${order.id.toString().padStart(4, '0')}`}
       />

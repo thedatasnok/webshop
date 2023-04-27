@@ -227,8 +227,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
 
         <Disclosure>
           <Disclosure.Button className='text-base-400 ui-open:text-base-50 mt-4 flex flex-row items-center gap-1'>
-            <p className='font-title'>extra options</p>
-            <RiArrowUpSLine className='ui-open:rotate-180 transform' />
+            <p className='font-title uppercase'>Extra options</p>
+            <RiArrowUpSLine className='ui-open:rotate-180 transform w-4 h-4' />
           </Disclosure.Button>
 
           <Disclosure.Panel>
