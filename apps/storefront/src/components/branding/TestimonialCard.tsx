@@ -7,6 +7,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   age,
   name,
   text,
+  avatarUrl,
 }) => {
   return (
     <div className='border-base-900 clip-corner-br-md mb-4 flex w-64 flex-shrink-0 flex-col justify-between gap-2 rounded-sm border drop-shadow-lg'>
@@ -27,8 +28,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       </div>
       <div className='bg-base-900/60 border-base-900 flex items-center gap-3 rounded-b-sm border-t px-4 py-3'>
         <img
-          src='https://st.depositphotos.com/1809585/4656/i/950/depositphotos_46562679-stock-photo-happy-man-with-white-teeth.jpg'
-          alt={'Picture of ' + name}
+          src={avatarUrl}
+          alt={'Picture of ' + name + ', ' + age}
           className='aspect-square h-10 rounded-full'
         />
         <div>
