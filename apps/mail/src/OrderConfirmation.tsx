@@ -79,10 +79,10 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
 
             <Section className='mx-auto w-3/4'>
               <Column>
-                <Address header='Delivery address' {...order.deliveryAddress} />
+                <Address header='Billing address' {...order.deliveryAddress} />
               </Column>
               <Column>
-                <Address header='Invoice address' {...order.deliveryAddress} />
+                <Address header='Delivery address' {...order.deliveryAddress} />
               </Column>
             </Section>
 
