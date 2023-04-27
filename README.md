@@ -67,7 +67,7 @@ With those installed, you can:
 
     A default launch.json is already provided for VSCode.
 
-3. Set up the following environment variables in an `.env` file and place it in the root of the project (See `.env.example`):
+3. Set up the following environment variables in an `.env` file and place it in the root of the project (See [.env.example](.env.example)):
 
     `POSTGRES_HOST` address of the database
 
@@ -94,6 +94,14 @@ With those installed, you can:
     `S3_REGION_NAME` name of the region to use for S3 
 
     `S3_BUCKET_NAME` name of the S3 bucket to use
+
+    The following has to be set for mail service: 
+
+    `MAIL_SERVICE_ENABLED` set to `true` to enable the mail service (remote calls will be ignored if set to `false`)
+    
+    `MAIL_SERVICE_HOST` the host of the mail service
+
+    `MAIL_SERVICE_PORT` the port of the mail service
 
 4. Start the docker container by running `docker compose up -d`
 
