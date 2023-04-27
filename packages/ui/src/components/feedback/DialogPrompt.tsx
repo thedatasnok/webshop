@@ -53,7 +53,7 @@ const DialogPrompt: React.FC<DialogProps> = ({
                   <p className='text-sm'>{message}</p>
                 </div>
 
-                <div className='flex flex-row justify-between pt-4'>
+                <div className='flex flex-row justify-between pt-4 gap-2'>
                   <Button onClick={action} variant='destructive'>{title}</Button>
 
                   <Button onClick={onClose} variant='neutral'>cancel</Button>
