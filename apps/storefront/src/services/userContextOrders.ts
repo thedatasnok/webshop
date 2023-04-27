@@ -57,8 +57,23 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
         },
       ],
     }),
+
+    /**
+     * Cancels the specified order.
+     */
+    cancelOrder: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/v1/me/orders/${id}/cancel`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['Order'],
+    }),
   }),
 });
 
-export const { usePlaceOrderMutation, useFindOrdersQuery, useGetOrderQuery } =
-  userContextOrdersApi;
+export const {
+  usePlaceOrderMutation,
+  useFindOrdersQuery,
+  useGetOrderQuery,
+  useCancelOrderMutation,
+} = userContextOrdersApi;

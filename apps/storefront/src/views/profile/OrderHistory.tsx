@@ -1,12 +1,15 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { RouteHref } from '@/router';
-import { useFindOrdersQuery } from '@/services/userContextOrders';
+import {
+  useCancelOrderMutation,
+  useFindOrdersQuery,
+} from '@/services/userContextOrders';
 import { Disclosure } from '@headlessui/react';
 import { useDebouncedState } from '@mantine/hooks';
 import { OrderDetails } from '@webshop/contracts';
-import { formatPrice } from '@webshop/ui';
+import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import {
   RiAddCircleFill,
   RiAddCircleLine,
@@ -70,84 +73,116 @@ interface OrderCardProps {
 }
 
 const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+  const [cancelOrder] = useCancelOrderMutation();
+
+  const handleCancelOrder = async () => {
+    try {
+      cancelOrder(order.id);
+      setShowCancelConfirmation(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <Disclosure defaultOpen={isLast}>
-      <Disclosure.Button className='bg-base-900 font-title ui-open:border-primary border-b-base-400 flex items-center rounded-sm border-b-2 px-2 py-2 text-xl font-semibold uppercase'>
-        <RiArrowRightSLine className='ui-open:rotate-90 ui-open:transform' />
-        <div className='flex w-full justify-between pl-1'>
-          <p>Order #{order.id.toString().padStart(4, '0')}</p>
-          <p>{order.paymentStatus}</p>
-          <p>{order.orderedAt.toString().substring(0, 10)}</p>
-        </div>
-      </Disclosure.Button>
-      <Disclosure.Panel className='px-4 py-2'>
-        <section className='flex justify-between'>
-          <div>
+    <>
+      <Disclosure defaultOpen={isLast}>
+        <Disclosure.Button className='bg-base-900 font-title ui-open:border-primary border-b-base-400 flex items-center rounded-sm border-b-2 px-2 py-2 text-xl font-semibold uppercase'>
+          <RiArrowRightSLine className='ui-open:rotate-90 ui-open:transform' />
+          <div className='flex w-full justify-between pl-1'>
+            <p>Order #{order.id.toString().padStart(4, '0')}</p>
+            <p>{order.paymentStatus}</p>
+            <p>{order.status}</p>
+            <p>{order.orderedAt.toString().substring(0, 10)}</p>
+          </div>
+        </Disclosure.Button>
+        <Disclosure.Panel className='px-4 py-2'>
+          <section className='flex justify-between'>
+            <div>
+              <h2 className='font-title text-lg font-semibold uppercase'>
+                Billing address
+              </h2>
+              <div className='text-base-300'>
+                <p>{order.billingAddress.careOf}</p>
+                <p>{order.billingAddress.street}</p>
+                <p>
+                  {order.billingAddress.postalCode} {order.billingAddress.city}
+                </p>
+                <p>{order.billingAddress.country}</p>
+              </div>
+            </div>
+            <div>
+              <h2 className='font-title text-lg font-semibold uppercase'>
+                Delivery address
+              </h2>
+              <div className='text-base-300'>
+                <p>{order.deliveryAddress.careOf}</p>
+                <p>{order.deliveryAddress.street}</p>
+                <p>
+                  {order.deliveryAddress.postalCode}{' '}
+                  {order.deliveryAddress.city}
+                </p>
+                <p>{order.deliveryAddress.country}</p>
+              </div>
+            </div>
+            <div className={clsx(order.status === 'CANCELLED' && 'invisible')}>
+              <Button
+                variant='neutral'
+                className='mt-1.5 h-fit'
+                onClick={() => setShowCancelConfirmation(true)}
+              >
+                Cancel order
+              </Button>
+            </div>
+          </section>
+
+          <section className='mt-4'>
             <h2 className='font-title text-lg font-semibold uppercase'>
-              Billing address
+              Options
             </h2>
             <div className='text-base-300'>
-              <p>{order.billingAddress.careOf}</p>
-              <p>{order.billingAddress.street}</p>
-              <p>
-                {order.billingAddress.postalCode} {order.billingAddress.city}
-              </p>
-              <p>{order.billingAddress.country}</p>
+              <p>Payment method: {order.paymentMethod.replace('_', ' ')}</p>
+              <p>Shipping method: {order.shippingMethod.replace('_', ' ')}</p>
             </div>
-          </div>
-          <div>
+          </section>
+
+          <section className='mt-4'>
             <h2 className='font-title text-lg font-semibold uppercase'>
-              Delivery address
+              Products
             </h2>
-            <div className='text-base-300'>
-              <p>{order.deliveryAddress.careOf}</p>
-              <p>{order.deliveryAddress.street}</p>
-              <p>
-                {order.deliveryAddress.postalCode} {order.deliveryAddress.city}
-              </p>
-              <p>{order.deliveryAddress.country}</p>
-            </div>
-          </div>
-        </section>
+            {order.lines.map((line) => (
+              <ProductListCard
+                key={line.productId}
+                to={'/products/' + line.productId}
+                name={line.productName}
+                id={line.productId}
+                shortDescription={line.productShortDescription}
+                image={line.productImageUrls[0]}
+              >
+                <ProductListCardOrderHistoryActions
+                  quantity={line.quantity}
+                  price={line.unitPrice}
+                  previousPrice={line.previousUnitPrice}
+                  isDiscount={line.wasDiscount}
+                />
+              </ProductListCard>
+            ))}
 
-        <section className='mt-4'>
-          <h2 className='font-title text-lg font-semibold uppercase'>
-            Options
-          </h2>
-          <div className='text-base-300'>
-            <p>Payment method: {order.paymentMethod.replace('_', ' ')}</p>
-            <p>Shipping method: {order.shippingMethod.replace('_', ' ')}</p>
-          </div>
-        </section>
-
-        <section className='mt-4'>
-          <h2 className='font-title text-lg font-semibold uppercase'>
-            Products
-          </h2>
-          {order.lines.map((line) => (
-            <ProductListCard
-              key={line.productId}
-              to={'/products/' + line.productId}
-              name={line.productName}
-              id={line.productId}
-              shortDescription={line.productShortDescription}
-              image={line.productImageUrls[0]}
-            >
-              <ProductListCardOrderHistoryActions
-                quantity={line.quantity}
-                price={line.unitPrice}
-                previousPrice={line.previousUnitPrice}
-                isDiscount={line.wasDiscount}
-              />
-            </ProductListCard>
-          ))}
-
-          <p className='mt-2 flex justify-end'>
-            Total: {formatPrice(order.total)}
-          </p>
-        </section>
-      </Disclosure.Panel>
-    </Disclosure>
+            <p className='mt-2 flex justify-end'>
+              Total: {formatPrice(order.total)}
+            </p>
+          </section>
+        </Disclosure.Panel>
+      </Disclosure>
+      <DialogPrompt
+        action={handleCancelOrder}
+        isOpen={showCancelConfirmation}
+        message='This will cancel your order'
+        onClose={() => setShowCancelConfirmation(false)}
+        title={`Cancel order #${order.id.toString().padStart(4, '0')}`}
+      />
+    </>
   );
 };
 
