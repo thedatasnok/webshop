@@ -47,12 +47,13 @@ public class AuthController {
       @RequestBody @Valid SignUpRequest request,
       HttpServletResponse response
   ) {
-    var userAccount = this.userAccountService.createUserAccount(
-      request.fullName(),
-      request.email(),
-      request.password(),
-      UserAccountRole.CUSTOMER
-    );
+    // if no shop owner is registered, the user will be signed up as a shop owner
+    var role = this.userAccountJpaRepository.hasRegisteredOfRole(UserAccountRole.SHOP_OWNER.toString())
+        ? UserAccountRole.CUSTOMER
+        : UserAccountRole.SHOP_OWNER;
+
+    var userAccount = this.userAccountService
+      .createUserAccount(request.fullName(), request.email(), request.password(), role);
 
     var userDetails = new UserAccountDetailsAdapter(userAccount);
 

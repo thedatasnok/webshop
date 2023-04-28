@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
+import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
 @SpringBootTest
@@ -50,6 +51,7 @@ class AuthControllerTests {
     );
 
     var countBefore = this.userAccountJpaRepository.count();
+    var wasInitialized = this.userAccountJpaRepository.hasRegisteredOfRole(UserAccountRole.SHOP_OWNER.toString());
 
     this.mockMvc
       .perform(
@@ -82,6 +84,12 @@ class AuthControllerTests {
     var foundAccount = this.userAccountJpaRepository.findByEmail(email);
 
     assertNotNull(foundAccount.get(), "Could not find the account we just created");
+
+    if (!wasInitialized) {
+      assertEquals(UserAccountRole.SHOP_OWNER, foundAccount.get().getRole());
+    } else {
+      assertEquals(UserAccountRole.CUSTOMER, foundAccount.get().getRole());
+    }
 
     this.userAccountJpaRepository.delete(foundAccount.get());
   }
