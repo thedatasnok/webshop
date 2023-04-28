@@ -20,14 +20,12 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
-import no.ntnu.webshop.utility.AuthorizationTestUtility;
 
 @SpringBootTest
 @RequiredArgsConstructor
 class AuthControllerTests {
   private final ObjectMapper objectMapper;
   private final UserAccountJpaRepository userAccountJpaRepository;
-  private final AuthorizationTestUtility authorizationTestUtility;
   private final WebApplicationContext context;
 
   private MockMvc mockMvc;
@@ -85,13 +83,7 @@ class AuthControllerTests {
 
     assertNotNull(foundAccount.get(), "Could not find the account we just created");
 
-    this.mockMvc
-      .perform(
-        MockMvcRequestBuilders.delete("/api/v1/me")
-          .cookie(this.authorizationTestUtility.generateJwtCookie(foundAccount.get()))
-          .header("Authorization", this.authorizationTestUtility.generateJwt(foundAccount.get()))
-      )
-      .andExpect(MockMvcResultMatchers.status().isOk());
+    this.userAccountJpaRepository.delete(foundAccount.get());
   }
 
 }

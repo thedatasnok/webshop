@@ -1,5 +1,7 @@
 package no.ntnu.webshop.controller;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,7 @@ import no.ntnu.webshop.contracts.auth.SignInResponse;
 import no.ntnu.webshop.model.UserAccount;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
+import no.ntnu.webshop.utility.AuthorizationTestUtility;
 
 @SpringBootTest
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ class UserContextControllerTests {
   private final PasswordEncoder passwordEncoder;
   private final WebApplicationContext context;
   private final ObjectMapper objectMapper;
+  private final AuthorizationTestUtility authorizationTestUtility;
 
   private static final String FULL_NAME = "Bob";
   private static final String EMAIL = "bob@example.com";
@@ -47,7 +51,7 @@ class UserContextControllerTests {
       UserAccountRole.CUSTOMER
     );
 
-    user = this.userAccountJpaRepository.save(account);
+    this.user = this.userAccountJpaRepository.save(account);
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
       .apply(SecurityMockMvcConfigurers.springSecurity())
       .build();
@@ -55,7 +59,9 @@ class UserContextControllerTests {
 
   @AfterEach
   void cleanup() {
-    this.userAccountJpaRepository.delete(user);
+    if (this.user != null) {
+      this.userAccountJpaRepository.delete(user);
+    }
   }
 
   /**
@@ -107,6 +113,22 @@ class UserContextControllerTests {
       .andExpect(MockMvcResultMatchers.jsonPath("$.fullName", Matchers.is(FULL_NAME)))
       .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is(EMAIL)))
       .andExpect(MockMvcResultMatchers.jsonPath("$.role", Matchers.is("SHOP_OWNER")));
+  }
+
+  @Test
+  void userDeletionWorks() throws Exception {
+    this.mockMvc
+      .perform(
+        MockMvcRequestBuilders.delete("/api/v1/me")
+          .cookie(this.authorizationTestUtility.generateJwtCookie(this.user))
+          .header("Authorization", this.authorizationTestUtility.generateJwt(this.user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
+
+    assertFalse(this.userAccountJpaRepository.existsById(this.user.getId()), "User should have been deleted, but wasn't");
+
+    // prevents the cleanup method from deleting the user again, as it has already been deleted
+    this.user = null;
   }
 
 }
