@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.contracts.ErrorResponse;
 import no.ntnu.webshop.contracts.ValidationError;
 import no.ntnu.webshop.contracts.ValidationErrorResponse;
@@ -19,6 +21,7 @@ import no.ntnu.webshop.error.model.StatusCodeException;
 /**
  * Controller advice for handling exceptions.
  */
+@Slf4j
 @RestControllerAdvice
 public class ExceptionAdvice {
 
@@ -101,6 +104,25 @@ public class ExceptionAdvice {
           HttpStatus.BAD_REQUEST.value(),
           "VALIDATION_ERROR",
           errors
+        )
+      );
+  }
+
+  /**
+   * Handles exception of type {@link DataIntegrityViolationException} and maps them to a response.
+   */
+  @ExceptionHandler(value = DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(
+      DataIntegrityViolationException e
+  ) {
+    log.error("Data integrity violation occured: {}", e.getMessage());
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(
+        new ErrorResponse(
+          HttpStatus.BAD_REQUEST.value(),
+          "GENERIC_INTEGRITY_ERROR",
+          "The request could not be processed due to a violation of data integrity."
         )
       );
   }
