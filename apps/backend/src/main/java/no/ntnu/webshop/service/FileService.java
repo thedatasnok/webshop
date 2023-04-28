@@ -13,6 +13,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.webshop.error.model.FileUploadDisabledException;
+import no.ntnu.webshop.error.model.FileUploadException;
 
 /**
  * Service for uploading files to S3.
@@ -22,6 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class FileService {
   private AmazonS3 client;
   private String bucketName;
+  private boolean isDisabled;
+
+  private static final String DISABLED_VALUE = "disabled";
 
   public FileService(
       @Value("${no.ntnu.webshop.s3.access-key}") String accessKey,
@@ -32,6 +37,15 @@ public class FileService {
     var credentials = new BasicAWSCredentials(
       accessKey,
       secretAccessKey
+    );
+
+    // if any of the values are set to disabled we disable file upload due to configuration missing
+    this.isDisabled = accessKey.equals(DISABLED_VALUE) || secretAccessKey.equals(DISABLED_VALUE)
+        || regionName.equals(DISABLED_VALUE) || bucketName.equals(DISABLED_VALUE);
+
+    log.info(
+      "Disabling S3 image file uploads due to one of the configured values being set to 'disabled',"
+          + "the environment variables need to be reviewed and updated for it to work"
     );
 
     this.client = AmazonS3ClientBuilder.standard()
@@ -54,19 +68,26 @@ public class FileService {
       MultipartFile file,
       FileCategory category
   ) throws IOException {
+    if (this.isDisabled)
+      throw new FileUploadDisabledException("File upload is not configured, cannot upload file");
+
     var metadata = new ObjectMetadata();
     metadata.setContentType(file.getContentType());
     var key = String.join("/", "images", category.getIdentifier(), file.getOriginalFilename());
 
-    // only proceed to upload if image does not already exist
-    // could probably just put it anyway, but this prevents replacing existing images
-    // TODO: catch exceptions for remote calls
-    if (!this.client.doesObjectExist(this.bucketName, key)) {
-      this.client.putObject(this.bucketName, key, file.getInputStream(), metadata);
-      log.debug("Successfully uploaded image to S3 bucket");
-    }
+    try {
+      // only uploads image if it does not already exist instead of overwriting
+      if (!this.client.doesObjectExist(this.bucketName, key)) {
+        this.client.putObject(this.bucketName, key, file.getInputStream(), metadata);
+        log.debug("Successfully uploaded image to S3 bucket");
+      }
 
-    return this.client.getUrl(this.bucketName, key).toString();
+      return this.client.getUrl(this.bucketName, key).toString();
+    } catch (Exception e) {
+      log.error("Failed to upload image to configured bucket: {}", e.getMessage());
+      log.debug("Image upload failure stacktrace:", e);
+      throw new FileUploadException("Something went wrong uploading file to configured bucket");
+    }
   }
 
   /**
