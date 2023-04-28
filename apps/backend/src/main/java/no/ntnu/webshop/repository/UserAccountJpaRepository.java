@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.model.UserAccount;
@@ -47,9 +46,20 @@ public interface UserAccountJpaRepository extends JpaRepository<UserAccount, UUI
       @Param("id") UUID id
   );
 
-  @Transactional
-  void deleteByEmail(
-      String email
+  /**
+   * Query that checks if any user account is registered with the given role.
+   * 
+   * @param role the role to check if any user account is registered with
+   * 
+   * @return true if at least one user account is registered with the given role, otherwise false
+   */
+  @Query("""
+    SELECT CASE WHEN EXISTS(
+      SELECT 1 FROM UserAccount u WHERE CAST(u.role AS STRING) = :role
+    ) THEN TRUE ELSE FALSE END
+    """)
+  boolean hasRegisteredOfRole(
+      @Param("role") String role
   );
 
 }
