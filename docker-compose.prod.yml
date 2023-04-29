@@ -1,0 +1,75 @@
+version: '3.9'
+
+name: webshop-prod
+
+services:
+  proxy: 
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      # modify & uncomment these lines to configure HTTPS
+      # - "--entrypoints.websecure.address=:443"
+      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      # - "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
+      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      # make changes here to listen to regular HTTP ports
+      # - "80:80"
+      # - "443:443"
+      - "8080:80"
+      - "8081:8080"
+    volumes:
+      # - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  database:
+    image: postgres:alpine
+    env_file: .env
+
+  migrations:
+    image: ghcr.io/thedatasnok/webshop-migrations:latest
+    env_file: .env
+    environment:
+      POSTGRES_HOST: database
+    depends_on:
+      - database
+
+  backend:
+    image: ghcr.io/thedatasnok/webshop-backend:latest
+    env_file: .env
+    environment:
+      POSTGRES_HOST: database
+      MAIL_SERVICE_HOST: mail
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      database:
+        condition: service_started
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+
+  mail:
+    image: ghcr.io/thedatasnok/webshop-mail:latest
+    env_file: .env
+
+  storefront:
+    image: ghcr.io/thedatasnok/webshop-storefront:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storefront.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.storefront.entrypoints=web"
+
+  dashboard:
+    image: ghcr.io/thedatasnok/webshop-dashboard:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)"
+      - "traefik.http.middlewares.dashboard-strip.stripprefix.prefixes=/admin"
+      - "traefik.http.routers.dashboard.middlewares=dashboard-strip"
+      - "traefik.http.routers.dashboard.entrypoints=web"

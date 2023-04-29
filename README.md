@@ -53,6 +53,8 @@ ExternalDNS on the other hand is not a requirement. But it is a "nice-to-have" a
 - [Environment variables](#environment-variables)
 - [Development](#development)
 - [Running tests](#running-tests)
+- [Deployment](#deployment)
+
 
 ### Environment variables
 
@@ -164,6 +166,15 @@ This can be accomplished by defining a `.env` file in the root of the project, r
 
 Once you have set up the database, run the tests from your editor or through `./gradlew :apps:backend:test`.
 
+### Deployment
+
+Our own environments are defined in GitHub and deployed from GitHub Actions using [this workflow](.github/workflows/release.yml) and [this re-usable action script](.github/actions/deploy-stack/action.yml). The environments are namespaces in a Kubernetes cluster, and uses our own [Helm chart](.helm/) to template the deployment. The following assumptions are made about the configuration in the cluster:
+
+- ClusterIssuer for TLS certificates
+- ExternalDNS for setting up DNS records (optional)
+- Storage provisioner for the persistant volume claims
+
+If you wish to run the stack using Docker Compose, you can use the [docker-compose.prod.yml](docker-compose.prod.yml) file. For HTTPS to work, you will have to modify the commented out segments of the Traefik reverse proxy service.
 
 ## License
 
