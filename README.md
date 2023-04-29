@@ -42,11 +42,7 @@ A high-level overview of the architecture is in the diagram below, and should de
 </div>
 
 
-It assumed that the application is going to be deployed as a set of containers to a Kubernetes cluster, however running it within any other container orchestration system should be possible. The reverse proxy part would have to be swapped out with an equivalent solution for the chosen system.
-
-For Kubernetes it is assumed that the cluster has a ClusterIssuer from [cert-manager](https://cert-manager.io/) installed, which will be used to issue TLS certificates.
-ExternalDNS on the other hand is not a requirement. But it is a "nice-to-have" as it can automate setting up A records for the services based on the ingress configuration.
-
+It assumed that the application is going to be deployed as a set of containers to a Kubernetes cluster, however running it within any other container orchestration system should be possible. The reverse proxy part would have to be swapped out with an equivalent solution for the chosen system. Further details can be found under [Deployment](#deployment).
 
 ## Getting started
 
@@ -172,7 +168,7 @@ Our own environments are defined in GitHub and deployed from GitHub Actions usin
 
 - ClusterIssuer for TLS certificates
 - ExternalDNS for setting up DNS records (optional)
-- Storage provisioner for the persistant volume claims
+- Storage provisioner for the persistent volume claims
 
 If you wish to run the stack using Docker Compose, you can use the [docker-compose.prod.yml](docker-compose.prod.yml) file. For HTTPS to work, you will have to modify the commented out segments of the Traefik reverse proxy service.
 
