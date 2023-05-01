@@ -7,7 +7,12 @@ import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import { RiAddLine, RiCloseLine, RiSubtractLine } from 'react-icons/ri';
+import {
+  RiAddLine,
+  RiCloseLine,
+  RiShoppingCartLine,
+  RiSubtractLine,
+} from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -97,9 +102,21 @@ const ShoppingCart = () => {
           ))}
         </div>
         {isEmpty ? (
-          <div className='flex flex-col items-center justify-center gap-2 pt-8'>
-            <hr className='text-base-700 w-full'></hr>
-            Cart is empty
+          <div>
+            <NavLink
+              className={clsx(
+                'border-base-950 hover:text-primary-600 text-base-400 group flex cursor-pointer',
+                'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
+              )}
+              to={RouteHref.PRODUCTS}
+            >
+              <RiAddLine className='absolute h-8 w-8 -translate-y-14 translate-x-9' />
+              <RiShoppingCartLine className='h-16 w-16' />
+              <p className='text-center'>
+                Looks like there is nothing in your cart yet. <br />
+                Go shopping!
+              </p>
+            </NavLink>
           </div>
         ) : (
           <>
