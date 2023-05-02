@@ -54,9 +54,7 @@ const ShoppingCart = () => {
             Shopping cart
           </h1>
           <div className='ml-auto'>
-            {isEmpty ? (
-              ''
-            ) : (
+            {!isEmpty && (
               <Button
                 onClick={openDialog}
                 style='outline'
