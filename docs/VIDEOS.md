@@ -20,8 +20,8 @@
   - Dashboard
     - Recent orders
     - User accounts
-  - Emails
   - Shared UI components
+  - Emails
 
 ## IDATA2306 Application Development
 
@@ -40,3 +40,6 @@
   - Orders
   - Amazon S3 (file uploads, static asset store)
   - Emails (internal microservice)
+  - Deployment
+    - Docker Compose
+    - Kubernetes (using Helm)
