@@ -15,7 +15,7 @@ public interface ProductChildJpaRepository extends JpaRepository<ProductChild, P
    * @param parent the parent to delete all product children by
    */
   @Transactional
-  public void deleteAllByParent(
+  void deleteAllByParent(
       Product parent
   );
 
