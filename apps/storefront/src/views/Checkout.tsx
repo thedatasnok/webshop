@@ -300,7 +300,7 @@ const Checkout = () => {
           </Button>
         </form>
 
-        <div className='h-max lg:flex lg:flex-col'>
+        <div className='h-max pt-4 sm:pt-0 lg:flex lg:flex-col'>
           <SectionHeader title='Shopping cart' />
 
           {products?.map((product, i, array) => (
@@ -356,19 +356,20 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
   const previousTotal = previousPrice * quantity;
 
   return (
-    <div className='flex flex-row items-end justify-end gap-4 sm:gap-8'>
-      <span className='bg-base-800/40 font-title flex whitespace-nowrap rounded-sm px-1 text-xl'>
-        qty: {quantity}
-      </span>
-      <div className='flex flex-col items-end gap-1'>
-        <div className='flex w-16 items-end justify-end text-xl'>
-          {formatPrice(totalPrice)}
+    <div className='flex flex-col justify-center'>
+      <div className='flex items-center gap-4 sm:gap-4'>
+        <p className='border-base-700 flex h-fit flex-row items-center border px-1 uppercase'>
+          qty: {quantity}
+        </p>
+
+        <div className='flex flex-col items-end font-semibold sm:min-w-[5rem]'>
+          <div className='text-xl'>{formatPrice(totalPrice)}</div>
+          {isDiscount && (
+            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
+              -{formatPrice(previousTotal - totalPrice)}
+            </div>
+          )}
         </div>
-        {isDiscount && (
-          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-            -{formatPrice(previousTotal - totalPrice)}
-          </div>
-        )}
       </div>
     </div>
   );
