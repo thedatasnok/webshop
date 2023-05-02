@@ -3,6 +3,7 @@ import { Value } from '@/components/branding/Value';
 import CategoryCard from '@/components/category/CategoryCard';
 import PageLayout from '@/components/layout/PageLayout';
 import ExternalLink from '@/components/navigation/ExternalLink';
+import NavigationCard from '@/components/navigation/NavigationCard';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
@@ -58,7 +59,7 @@ const LandingPage = () => {
 
         <section
           aria-labelledby='categories-title'
-          className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
+          className='overflow-x-scroll pb-2'
         >
           <div className='mx-auto flex w-fit justify-center gap-4'>
             {categories?.map((category) => (
@@ -85,7 +86,7 @@ const LandingPage = () => {
 
         <section
           aria-labelledby='featured-products-title'
-          className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
+          className='overflow-x-scroll pb-2'
         >
           <div className='mx-auto flex w-fit justify-center gap-4'>
             {products?.map((product) => (
@@ -103,19 +104,7 @@ const LandingPage = () => {
               />
             ))}
             {products && products.length > 1 && (
-              <NavLink
-                to={RouteHref.PRODUCTS}
-                className='border-base-800 bg-base-900/30 hover:bg-primary-900/10 hover:text-primary-600 hover:border-primary-800 flex w-48 flex-col items-center justify-center rounded-sm border'
-              >
-                <RiStore2Line className='h-16 w-16' />
-
-                <div className='flex items-center'>
-                  <span className='font-title font-semibold uppercase'>
-                    Browse more
-                  </span>
-                  <RiArrowRightLine className='h-5 w-5' />
-                </div>
-              </NavLink>
+              <NavigationCard title='browse more' icon={RiStore2Line} />
             )}
           </div>
         </section>
