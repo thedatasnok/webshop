@@ -84,7 +84,7 @@ public class UserContextOrderController {
   @Operation(summary = "Places an order for the logged in user")
   @PostMapping
   @CustomerAuthorization
-  public ResponseEntity<GenericResponse> placeOrder(
+  public ResponseEntity<OrderDetails> placeOrder(
       @Valid @RequestBody PlaceOrderRequest orderRequest,
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter
   ) {
@@ -147,7 +147,7 @@ public class UserContextOrderController {
     );
 
     return ResponseEntity.created(URI.create("/api/v1/orders/" + savedOrder.getId()))
-      .body(new GenericResponse("Order placed successfully"));
+      .body(this.orderService.findById(savedOrder.getId()));
   }
 
   @Operation(summary = "Cancels an order for the logged in user")
