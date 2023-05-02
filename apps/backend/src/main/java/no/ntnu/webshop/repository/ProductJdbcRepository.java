@@ -51,7 +51,7 @@ public class ProductJdbcRepository {
         prev_pp.price AS previous_price,
         -- Merges the defined attributes of the product with the shared attributes of the family
         COALESCE(
-          p.defined_attributes::jsonb || p_family.shared_attributes::jsonb, 
+          p_family.shared_attributes::jsonb || p.defined_attributes::jsonb, 
           p.defined_attributes::jsonb, 
           p_family.shared_attributes::jsonb, 
           '{}'
