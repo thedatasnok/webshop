@@ -94,7 +94,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
 
       <section id='logo-divider' className='relative my-2'>
         <div className='absolute inset-0 flex items-center' aria-hidden='true'>
-          <div className='border-base-600 w-full border-t' />
+          <div className='border-base-800 w-full border-t' />
         </div>
         <div className='relative flex justify-center'>
           <div className='bg-base-950 w-32 px-4'>
