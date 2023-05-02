@@ -18,8 +18,10 @@ import no.ntnu.webshop.model.ProductChild;
 import no.ntnu.webshop.model.ProductFamily;
 import no.ntnu.webshop.model.ProductPrice;
 import no.ntnu.webshop.repository.CategoryJpaRepository;
+import no.ntnu.webshop.repository.ProductChildJpaRepository;
 import no.ntnu.webshop.repository.ProductFamilyJpaRepository;
 import no.ntnu.webshop.repository.ProductJpaRepository;
+import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.service.FileService.FileCategory;
 
 @Service
@@ -27,6 +29,8 @@ import no.ntnu.webshop.service.FileService.FileCategory;
 public class ProductService {
   private final ProductJpaRepository productJpaRepository;
   private final ProductFamilyJpaRepository productFamilyJpaRepository;
+  private final ProductPriceJpaRepository productPriceJpaRepository;
+  private final ProductChildJpaRepository productChildJpaRepository;
   private final CategoryJpaRepository categoryJpaRepository;
   private final FileService fileService;
   private final Validator validator;
@@ -126,6 +130,17 @@ public class ProductService {
     }
 
     return this.createProduct(request);
+  }
+
+  /**
+   * Deletes a product and its related entities.
+   * 
+   * @param product the product to delete
+   */
+  public void deleteProduct(Product product) {
+    this.productChildJpaRepository.deleteAllByParent(product);
+    this.productPriceJpaRepository.deleteAllByProductId(product.getId());
+    this.productJpaRepository.delete(product);
   }
 
 }
