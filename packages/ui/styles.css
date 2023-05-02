@@ -37,15 +37,6 @@ body {
     clip-path: polygon(2% 0, 100% 0, 100% 100%, 0 100%, 0 5%);
   }
 
-  .hide-scroll-bar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .hide-scroll-bar::-webkit-scrollbar {
-    display: none;
-  }
-
   .grid-cols-inherit {
     grid-template-columns: inherit;
   }
@@ -56,7 +47,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  @apply h-2 w-2;
+  @apply h-1.5 w-2;
 }
 
 ::-webkit-scrollbar-track {
