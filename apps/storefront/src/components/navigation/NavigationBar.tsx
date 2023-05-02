@@ -34,13 +34,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
             icon={RiHeadphoneLine}
           />
         </li>
-        <li>
-          <NavigationItem
-            to={RouteHref.PROFILE}
-            name='Profile'
-            icon={RiUser3Line}
-          />
-        </li>
         <li className='relative'>
           <NavigationItem
             to={RouteHref.CART}
@@ -53,6 +46,13 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
               {itemQuantity < 10 ? itemQuantity : '9+'}
             </div>
           )}
+        </li>
+        <li>
+          <NavigationItem
+            to={RouteHref.PROFILE}
+            name='Profile'
+            icon={RiUser3Line}
+          />
         </li>
       </ul>
     </nav>
