@@ -102,7 +102,7 @@ class UserContextOrderControllerTests {
       this.userAccountJpaRepository.delete(user);
     }
 
-    this.productService.deleteProduct(this.product);
+    this.productService.deleteProductById(this.product.getId(), true);
   }
 
   /**
