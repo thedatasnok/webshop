@@ -2,6 +2,7 @@ import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
 import { Popover, Transition } from '@headlessui/react';
 import { useDebouncedValue } from '@mantine/hooks';
+import { formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { FormEvent, useEffect, useState } from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   RiSearchLine,
 } from 'react-icons/ri';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import OnSalePill from '../product/OnSalePill';
 
 export interface SearchOverlayProps {}
 
@@ -151,15 +153,24 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
                         }}
                       />
                       <div className='flex-1 overflow-hidden'>
-                        <p className='font-title truncate text-lg font-semibold uppercase'>
+                        <span className='font-title truncate text-lg font-semibold uppercase'>
                           {product.name}
-                        </p>
+                        </span>
                         <p className='text-base-300 truncate text-sm'>
-                          specifications
+                          {product.shortDescription}
                         </p>
                       </div>
 
-                      <p className='font-title'>${product.price}</p>
+                      <OnSalePill className={clsx(!product.isDiscount && 'invisible')} />
+
+                      <span
+                        className={clsx(
+                          'font-title font-semibold',
+                          product.isDiscount && 'text-primary'
+                        )}
+                      >
+                        {formatPrice(product.price)}
+                      </span>
 
                       <RiArrowRightSLine className='h-5 w-5' />
                     </NavLink>

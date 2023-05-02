@@ -1,6 +1,7 @@
 import { formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
+import OnSalePill from './OnSalePill';
 
 interface ProductCardProps {
   id: number;
@@ -37,9 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Top-right pill */}
       {isDiscount && (
-        <span className='bg-secondary-800/50 border-secondary-800 text-secondary-50 absolute right-1 top-1 rounded-sm border px-0.5 text-xs'>
-          SALE
-        </span>
+        <OnSalePill className='absolute right-1 top-1' />
       )}
 
       <h3 className='font-title group-hover:text-primary-600 mt-0.5 truncate px-2 text-xl font-bold uppercase'>
