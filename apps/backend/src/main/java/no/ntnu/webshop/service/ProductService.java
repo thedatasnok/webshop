@@ -138,8 +138,9 @@ public class ProductService {
    * @param product the product to delete
    */
   public void deleteProduct(Product product) {
-    this.productChildJpaRepository.deleteAllByParent(product);
-    this.productPriceJpaRepository.deleteAllByProductId(product.getId());
+    // TODO: Find a way to delete related entities without using REMOVE as a CascadeType.
+    // this.productChildJpaRepository.deleteAllByParentId(product.getId());
+    // this.productPriceJpaRepository.deleteAllByProductId(product.getId());
     this.productJpaRepository.delete(product);
   }
 
