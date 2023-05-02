@@ -106,7 +106,7 @@ class ProductControllerTests {
         MockMvcRequestBuilders.delete("/api/v1/products/" + id + "?force=true")
           .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
       )
-      .andExpect(MockMvcResultMatchers.status().isOk());
+      .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     assertFalse(this.productJpaRepository.existsById(id), "Product was not deleted");
   }
