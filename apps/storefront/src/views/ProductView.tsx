@@ -1,4 +1,5 @@
 import PageLayout from '@/components/layout/PageLayout';
+import NavigationCard from '@/components/navigation/NavigationCard';
 import ProductCard from '@/components/product/ProductCard';
 import { RouteHref } from '@/router';
 import {
@@ -9,7 +10,11 @@ import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
 import { Button, GroupedTable, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { RiArrowUpSLine, RiShoppingCartLine } from 'react-icons/ri';
+import {
+  RiArrowUpSLine,
+  RiShoppingCartLine,
+  RiStore2Line,
+} from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { NavLink, Navigate, useParams } from 'react-router-dom';
 
@@ -32,33 +37,31 @@ const ProductView = () => {
 
   return (
     <PageLayout>
-      <main>
-        <div className='mx-auto mt-4 max-w-screen-xl'>
-          <div className='text-base-400 font-title space-x-2 text-sm font-semibold uppercase transition-all'>
-            <NavLink
-              to={RouteHref.HOME}
-              className='hover:text-base-300 transition-colors hover:underline'
-            >
-              Home
-            </NavLink>
-            <span>/</span>
-            <NavLink
-              to={RouteHref.PRODUCTS}
-              className='hover:text-base-300 transition-colors hover:underline'
-            >
-              Browse
-            </NavLink>
-            <span>/</span>
-            <NavLink
-              to='#'
-              className='text-base-300 transition-colors hover:underline'
-            >
-              {productInfo?.name}
-            </NavLink>
-          </div>
+      <main className='mx-auto mt-4 max-w-screen-xl'>
+        <div className='text-base-400 font-title space-x-2 text-sm font-semibold uppercase transition-all'>
+          <NavLink
+            to={RouteHref.HOME}
+            className='hover:text-base-300 transition-colors hover:underline'
+          >
+            Home
+          </NavLink>
+          <span>/</span>
+          <NavLink
+            to={RouteHref.PRODUCTS}
+            className='hover:text-base-300 transition-colors hover:underline'
+          >
+            Browse
+          </NavLink>
+          <span>/</span>
+          <NavLink
+            to='#'
+            className='text-base-300 transition-colors hover:underline'
+          >
+            {productInfo?.name}
+          </NavLink>
         </div>
 
-        <div className='mx-auto flex w-full max-w-screen-xl flex-col gap-4 py-4 sm:flex-row'>
+        <div className='mx-auto flex w-full flex-col gap-4 py-4 sm:flex-row'>
           <div className='relative sm:w-1/2'>
             <img
               className='clip-edges clip-corner-sm'
@@ -123,7 +126,7 @@ const ProductView = () => {
           </div>
         </div>
 
-        <div className='mx-auto mt-4 hidden max-w-screen-xl gap-16 md:grid md:grid-cols-2'>
+        <div className='mx-auto mt-4 hidden gap-16 md:grid md:grid-cols-2'>
           <div>
             <h2 className='font-title text-3xl font-semibold uppercase'>
               Description
@@ -147,7 +150,7 @@ const ProductView = () => {
           </div>
         </div>
 
-        <div className='mx-auto mt-4 max-w-screen-xl flex-col gap-24'>
+        <div className='mx-auto mt-4 flex-col gap-24'>
           <div>
             <div className='block md:hidden'>
               <Disclosure>
@@ -208,29 +211,35 @@ const ProductView = () => {
               )}
             </Disclosure>
           </div>
+          <h2 className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'>
+            Related products
+          </h2>
+
+          <section
+            aria-labelledby='featured-products-title'
+            className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
+          >
+            <div className='mx-auto flex w-fit justify-center gap-4'>
+              {relatedProducts?.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  to={[RouteHref.PRODUCTS, product.id].join('/')}
+                  name={product.name}
+                  previousPrice={product.previousPrice}
+                  shortDescription={product.shortDescription}
+                  isDiscount={product.isDiscount}
+                  price={product.price}
+                  image={product.imageUrls[0]}
+                  className='w-48 flex-shrink-0'
+                />
+              ))}
+              {relatedProducts && relatedProducts.length > 1 && (
+                <NavigationCard title='browse more' icon={RiStore2Line} />
+              )}
+            </div>
+          </section>
         </div>
-
-        <h2 className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'>
-          Related products
-        </h2>
-
-        <section id='products-temp'>
-          <div className='mx-auto grid w-fit max-w-screen-xl grid-cols-2 gap-4 pt-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
-            {relatedProducts?.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                to={'/products/' + product.id}
-                name={product.name}
-                previousPrice={product.previousPrice}
-                price={product.price}
-                shortDescription={product.shortDescription}
-                isDiscount={product.isDiscount}
-                image={product.imageUrls[0]}
-              />
-            ))}
-          </div>
-        </section>
       </main>
     </PageLayout>
   );
