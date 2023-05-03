@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -213,6 +214,13 @@ public class Product {
     }
 
     return true;
+  }
+
+  @PreRemove
+  private void clearCategories() {
+    for (var category : this.categories) {
+      category.removeProduct(this);
+    }
   }
 
 }
