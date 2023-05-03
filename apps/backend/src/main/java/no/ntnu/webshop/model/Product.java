@@ -73,7 +73,7 @@ public class Product {
    * The child products of this product, which then compose this product.
    */
   @OneToMany(mappedBy = "parent", cascade = {
-      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
   })
   private List<ProductChild> children = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class Product {
    * one active price for the product.
    */
   @OneToMany(mappedBy = "product", cascade = {
-      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE
+      CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
   })
   private List<ProductPrice> prices = new ArrayList<>();
 

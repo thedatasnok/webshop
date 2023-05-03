@@ -133,15 +133,23 @@ public class ProductService {
   }
 
   /**
-   * Deletes a product and its related entities.
+   * Deletes a product and optionally its related entities. Deletion will fail if the product is
+   * referenced to by order lines.
    * 
-   * @param product the product to delete
+   * @param productId the id of the product to delete
+   * @param force     whether to delete related entities or not, namely its prices and child
+   *                  references
    */
-  public void deleteProduct(Product product) {
-    // TODO: Find a way to delete related entities without using REMOVE as a CascadeType.
-    // this.productChildJpaRepository.deleteAllByParentId(product.getId());
-    // this.productPriceJpaRepository.deleteAllByProductId(product.getId());
-    this.productJpaRepository.delete(product);
+  public void deleteProductById(
+      Long productId,
+      boolean force
+  ) {
+    if (force) {
+      this.productChildJpaRepository.deleteAllByParentId(productId);
+      this.productPriceJpaRepository.deleteAllByProductId(productId);
+    }
+
+    this.productJpaRepository.deleteById(productId);
   }
 
 }

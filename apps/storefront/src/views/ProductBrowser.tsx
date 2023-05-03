@@ -2,14 +2,15 @@ import CategoryCard from '@/components/category/CategoryCard';
 import PageLayout from '@/components/layout/PageLayout';
 import ProductCard from '@/components/product/ProductCard';
 import ProductListCard from '@/components/product/ProductListCard';
+import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
 import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
 import { SortByField, SortDirection, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { RiGridFill, RiListCheck } from 'react-icons/ri';
-import { useSearchParams } from 'react-router-dom';
+import { RiGridFill, RiListCheck, RiSearchLine } from 'react-icons/ri';
+import { NavLink, useSearchParams } from 'react-router-dom';
 
 const PRODUCT_SORT_FIELDS = ['Price', 'Name', 'Discount'];
 
@@ -25,7 +26,7 @@ const ProductBrowser = () => {
   const paramSortDirection =
     (searchParams.get('sortDirection') as SortDirection) || SortDirection.ASC;
 
-  const { data: products } = useFindProductsQuery({
+  const { data: products, isLoading } = useFindProductsQuery({
     categoryId: parsedCategoryId ? [parsedCategoryId] : undefined,
     sortBy: paramSortField,
     sortDirection: paramSortDirection,
@@ -144,6 +145,23 @@ const ProductBrowser = () => {
             </div>
           </div>
         </div>
+
+        {!isLoading && products && products.length === 0 && (
+          <div className='text-base-400 mx-auto my-16 flex max-w-xs flex-col items-center gap-1 text-center'>
+            <RiSearchLine className='h-16 w-16' />
+            <p className='text-sm'>
+              Could not find any products matching your search criteria, try
+              searching for something else or{' '}
+              <NavLink
+                to={RouteHref.PRODUCTS}
+                className='hover:text-base-200 underline'
+              >
+                clear your search
+              </NavLink>
+              .
+            </p>
+          </div>
+        )}
 
         {/* section or div? */}
         <section

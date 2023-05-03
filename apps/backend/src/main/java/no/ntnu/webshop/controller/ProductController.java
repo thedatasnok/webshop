@@ -182,13 +182,7 @@ public class ProductController {
     if (!this.productJpaRepository.existsById(id))
       throw new ProductNotFoundException("Could not find product to delete with id: " + id);
 
-    if (force.orElse(false)) {
-      this.productPriceJpaRepository.deleteAllByProductId(id);
-      this.productJpaRepository.deleteById(id);
-      return ResponseEntity.ok(null);
-    }
-
-    this.productJpaRepository.deleteById(id);
+    this.productService.deleteProductById(id, force.orElse(false));
 
     return ResponseEntity.noContent().build();
   }

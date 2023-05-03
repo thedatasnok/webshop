@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import no.ntnu.webshop.contracts.GenericResponse;
 import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.PlaceOrderRequest;
 import no.ntnu.webshop.error.model.OrderNotFoundException;

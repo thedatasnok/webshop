@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -268,16 +267,18 @@ class ProductControllerTests {
    * @return the product result
    * @throws Exception if an error occurs
    */
-  private ResultActions deleteProductWithId(
+  private void deleteProductWithId(
       Long id,
       UserAccount userAccount
   ) throws Exception {
-    return mockMvc
+    mockMvc
       .perform(
         MockMvcRequestBuilders.delete("/api/v1/products/" + id + "?force=true")
           .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
       )
-      .andExpect(MockMvcResultMatchers.status().isOk());
+      .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    assertFalse(this.productJpaRepository.existsById(id), "Product was not deleted");
   }
 
 }

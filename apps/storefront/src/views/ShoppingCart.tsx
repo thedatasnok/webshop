@@ -54,15 +54,16 @@ const ShoppingCart = () => {
             Shopping cart
           </h1>
           <div className='ml-auto'>
-            {isEmpty ? (
-              ''
-            ) : (
-              <button
+            {!isEmpty && (
+              <Button
                 onClick={openDialog}
-                className='hover:text-base-300 text-base-400 text-xs hover:underline'
+                style='outline'
+                variant='neutral'
+                className='text-xs'
               >
-                clear cart
-              </button>
+                <RiCloseLine className='-ml-1.5 h-4 w-4' />
+                <span className='pt-px'>Clear cart</span>
+              </Button>
             )}
             <DialogPrompt
               isOpen={isOpen}
