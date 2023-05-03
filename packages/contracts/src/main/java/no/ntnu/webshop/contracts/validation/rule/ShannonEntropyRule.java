@@ -49,8 +49,8 @@ public class ShannonEntropyRule implements Rule {
     var passwordLength = password.length();
 
     for (char currentCharacter : password.toCharArray()) {
+      frequencyMap.computeIfPresent(currentCharacter, (character, count) -> count + 1);
       frequencyMap.putIfAbsent(currentCharacter, 1);
-      frequencyMap.computeIfPresent(currentCharacter, (character, count) -> count++);
     }
 
     float sum = 0;
