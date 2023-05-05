@@ -39,9 +39,9 @@ import no.ntnu.webshop.security.annotation.CustomerAuthorization;
 import no.ntnu.webshop.service.OrderService;
 
 /**
- * Controller responsible for endpoints that regard orders for the currently loggged in user
- * account. This is split out from the {@link UserContextController} {@link OrderController} to as
- * an attempt to increase cohesiveness.
+ * Controller responsible for endpoints that do operations on orders for the currently loggged in
+ * user account. This is split out from the {@link UserContextController} and
+ * {@link OrderController} to attempt to increase cohesiveness.
  */
 @Tag(name = "User Context")
 @RestController

@@ -39,6 +39,9 @@ import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 import no.ntnu.webshop.service.ProductService;
 
+/**
+ * Controller responsible for endpoints that are related to products.
+ */
 @Tag(name = "Products")
 @RestController
 @RequiredArgsConstructor
@@ -124,8 +127,8 @@ public class ProductController {
   }
 
   @Operation(summary = "Creates a product with an uploaded image set image")
-  // overloading works fine here, but springdoc openapi doesn't correctly reflect the overloads
-  // so we'll postfix it with "with-img" to differentiate them
+  // overloading works fine with spring boot, but springdoc openapi doesn't correctly reflect the
+  // overloads so we'll postfix it with "with-img" to differentiate them
   @PostMapping(value = "/with-img", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ShopWorkerAuthorization
   public ResponseEntity<ProductDetails> createProduct(

@@ -43,6 +43,12 @@ public class MailEventHandler {
     ).toString();
   }
 
+  /**
+   * Event handler for a {@link OrderConfirmationEvent}, sending a request to the mail microservice to
+   * send an order confirmation email to the user placing the order.
+   * 
+   * Note that the email will not be sent in a case where the mail microservice is not configured.
+   */
   @EventListener(OrderConfirmationEvent.class)
   public void handleOrderConfirmationEvent(
       OrderConfirmationEvent event
@@ -64,6 +70,12 @@ public class MailEventHandler {
     }
   }
 
+  /**
+   * Event handler for a {@link CustomerRegisteredEvent}, sending a request to the mail microservice to
+   * send a sign up confirmation email to the user registering.
+   * 
+   * Note that the email will not be sent in a case where the mail microservice is not configured.
+   */
   @EventListener(CustomerRegisteredEvent.class)
   public void handleCustomerRegisteredEvent(
       CustomerRegisteredEvent event

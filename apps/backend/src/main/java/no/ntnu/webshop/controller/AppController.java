@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 
+/**
+ * Controller responsible for operations that are related to app-level state and settings.
+ */
 @Tag(name = "App", description = "Operations related to app-level state and settings")
 @RestController
 @RequiredArgsConstructor

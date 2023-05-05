@@ -30,6 +30,9 @@ import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 import no.ntnu.webshop.service.UserAccountService;
 
+/**
+ * Controller responsible for endpoints that do operations related to authenticating user accounts.
+ */
 @Tag(name = "Authentication")
 @RestController
 @RequiredArgsConstructor

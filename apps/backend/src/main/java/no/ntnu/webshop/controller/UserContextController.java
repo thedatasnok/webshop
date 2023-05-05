@@ -27,7 +27,8 @@ import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 
 /**
- * Controller responsible for endpoints that regard the currently authenticated user account.
+ * Controller responsible for endpoints that do operations on/for the currently authenticated user
+ * account.
  * 
  * The user account is determined by the access token that is expected to be sent with the request.
  * 

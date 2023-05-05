@@ -22,6 +22,9 @@ import no.ntnu.webshop.model.Category;
 import no.ntnu.webshop.repository.CategoryJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
+/**
+ * Controller responsible for endpoints that do operations on the categories collection.
+ */
 @Tag(name = "Categories")
 @RestController
 @RequiredArgsConstructor

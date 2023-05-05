@@ -22,6 +22,11 @@ import no.ntnu.webshop.model.ProductFamily;
 import no.ntnu.webshop.repository.ProductFamilyJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 
+/**
+ * Controller responsible for endpoints that do operations on the product families collection.
+ * 
+ * @see ProductFamily
+ */
 @Tag(name = "Product Families")
 @RestController
 @ShopWorkerAuthorization
