@@ -361,7 +361,7 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
           <div className='text-xl'>{formatPrice(totalPrice)}</div>
           {isDiscount && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              -{formatPrice(previousTotal - totalPrice)}
+              {formatPrice(previousTotal - totalPrice)}
             </div>
           )}
         </div>
