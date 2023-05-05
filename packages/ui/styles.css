@@ -44,6 +44,19 @@ body {
   .preserve-line {
     @apply after:inline-block after:content-[""];
   }
+
+  .animate-loading-line {
+    animation: loading-line 2s linear infinite;
+  }
+}
+
+@keyframes loading-line {
+  0% {
+    left: -10%;
+  }
+  100% {
+    left: 110%;
+  }
 }
 
 ::-webkit-scrollbar {

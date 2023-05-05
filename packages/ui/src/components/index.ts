@@ -4,6 +4,7 @@ import Alert from './feedback/Alert';
 import DialogPrompt from './feedback/DialogPrompt';
 import ErrorLabel from './feedback/ErrorLabel';
 import Hint from './feedback/Hint';
+import LoadingBar from './feedback/LoadingBar';
 import GroupedTable from './grid/GroupedTable';
 import Button from './input/Button';
 import InputLabel from './input/InputLabel';
@@ -24,6 +25,7 @@ export {
   InputLabel,
   ErrorLabel,
   RadioGroup,
+  LoadingBar,
   SortByField,
   DialogPrompt,
   GroupedTable,

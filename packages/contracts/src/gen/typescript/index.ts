@@ -123,6 +123,11 @@ export interface PlaceOrderRequest {
     lines: { [index: string]: number };
 }
 
+export interface UpdateOrderRequest {
+    orderStatus: string;
+    paymentStatus: string;
+}
+
 export interface UpdateProductPriceRequest {
     isDiscount: boolean;
     price: number;
@@ -197,6 +202,16 @@ export interface UpdateUserProfileRequest {
     fullName: string;
     password: string | null;
     passwordConfirmation: string | null;
+}
+
+export interface UserAccountListItem {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified: boolean;
+    role: string;
+    createdAt: Date;
+    orderCount: number;
 }
 
 export interface UserProfile {
