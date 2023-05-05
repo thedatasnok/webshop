@@ -16,6 +16,7 @@ import {
   PaymentMethod,
   RadioGroup,
   ShippingMethod,
+  Switch,
   TextField,
   formatPrice,
   useAuth,
@@ -111,13 +112,6 @@ const Checkout = () => {
     },
   });
 
-  function handleDifferentBillingAddress(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    const checked = e.target.checked;
-    form.setFieldValue('differentBillingAddress', checked);
-  }
-
   return (
     <>
       <header className='mx-auto flex flex-col items-center justify-center py-10'>
@@ -141,7 +135,7 @@ const Checkout = () => {
         </NavLink>
       </div>
 
-      <main className='mx-auto grid max-w-screen-xl gap-0 px-2 lg:grid-cols-2 lg:gap-8'>
+      <main className='mx-auto grid max-w-screen-xl gap-0 px-2 pb-4 lg:grid-cols-2 lg:gap-8'>
         <form
           id='check-out-form'
           className='flex w-full flex-col gap-1'
@@ -178,11 +172,12 @@ const Checkout = () => {
           </div>
 
           <div className='flex items-center gap-2'>
-            <input
+            <Switch
               id='different-billing-address'
-              type='checkbox'
-              className='border-base-600 bg-base-600'
-              onChange={handleDifferentBillingAddress}
+              checked={form.values.differentBillingAddress}
+              onChange={(value) =>
+                form.setFieldValue('differentBillingAddress', value)
+              }
             />
 
             <InputLabel htmlFor='different-billing-address'>

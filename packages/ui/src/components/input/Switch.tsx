@@ -2,14 +2,16 @@ import { Switch as HeadlessSwitch } from '@headlessui/react';
 import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
 
 interface SwitchProps {
+  id?: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   ariaLabel?: string;
 }
 
-const Switch: React.FC<SwitchProps> = ({ checked, onChange, ariaLabel }) => {
+const Switch: React.FC<SwitchProps> = ({ id, checked, onChange, ariaLabel }) => {
   return (
     <HeadlessSwitch
+      id={id}
       checked={checked}
       onChange={onChange}
       aria-label={ariaLabel}
