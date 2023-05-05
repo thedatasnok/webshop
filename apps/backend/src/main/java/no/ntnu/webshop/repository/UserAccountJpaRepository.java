@@ -1,16 +1,44 @@
 package no.ntnu.webshop.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import no.ntnu.webshop.contracts.user.UserAccountListItem;
 import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.model.UserAccount;
 
 public interface UserAccountJpaRepository extends JpaRepository<UserAccount, UUID> {
+
+  @Query("""
+    SELECT new no.ntnu.webshop.contracts.user.UserAccountListItem(
+      user.id,
+      user.fullName,
+      user.email,
+      user.emailVerified,
+      CAST(user.role AS STRING),
+      user.createdAt,
+      COUNT(DISTINCT o.id)
+    )
+    FROM UserAccount user
+    LEFT JOIN Order o ON o.customer = user
+    WHERE 
+      (:fullName IS NULL OR user.fullName ILIKE %:fullName%) AND
+      (:email IS NULL OR user.email ILIKE %:email%) AND
+      (:verified IS NULL OR user.emailVerified = :verified)
+    GROUP BY user.id
+    """)
+  List<UserAccountListItem> findUserAccounts(
+      @Param("fullName") Optional<String> fullName,
+      @Param("email") Optional<String> email,
+      @Param("verified") Optional<Boolean> verified,
+      Sort sort
+  );
 
   /**
    * Finds a user account by its registered email.
