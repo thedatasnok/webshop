@@ -7,7 +7,7 @@ import no.ntnu.webshop.contracts.utility.annotation.GenerateTypeScript;
 
 @GenerateTypeScript
 public record UserAccountListItem(
-  UUID uuid,
+  UUID id,
   String name,
   String email,
   boolean emailVerified,
