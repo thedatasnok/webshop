@@ -6,7 +6,7 @@
 
 <div align="center">
   <a href="#getting-started">Getting started</a> •
-  <a href="#">View demo</a> •
+  <a href="https://cgg.datasnok.cool/">View demo</a> •
   <a href="#license">License</a>
 </div>
 
