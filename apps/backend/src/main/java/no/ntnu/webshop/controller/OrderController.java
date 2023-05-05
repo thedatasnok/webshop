@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +32,13 @@ import no.ntnu.webshop.repository.OrderJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 import no.ntnu.webshop.service.OrderService;
 
+/**
+ * Controller responsible for endpoints that are related to orders. This does not include placing
+ * orders or manipulating them on behalf of a customer.
+ * 
+ * @see UserContextOrderController The UserContextOrderController that handles orders on behalf of
+ *      the authenticated customer
+ */
 @Tag(name = "Orders")
 @RestController
 @ShopWorkerAuthorization
@@ -43,12 +52,12 @@ public class OrderController {
   @Operation(summary = "Finds a summary of orders grouped by day")
   @GetMapping("/summary")
   public ResponseEntity<List<OrderSummary>> findDailyOrderSummary(
-      @Parameter(description = "The date to start the summary from, defaults to 7 days ago.")
-      @RequestParam("since") Optional<Instant> since
+      @Parameter(description = "The date to start the summary from, defaults to 7 days ago.") @RequestParam("since")
+      @DateTimeFormat(iso = ISO.DATE) Optional<Date> since
   ) {
-    var sinceInstant = since.orElse(Instant.now().minus(7, ChronoUnit.DAYS));
+    var sinceDate = since.orElse(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
 
-    return ResponseEntity.ok(this.orderJdbcRepository.findDailyOrderSummary(Date.from(sinceInstant)));
+    return ResponseEntity.ok(this.orderJdbcRepository.findDailyOrderSummary(sinceDate));
   }
 
   @Operation(summary = "Lists all orders")

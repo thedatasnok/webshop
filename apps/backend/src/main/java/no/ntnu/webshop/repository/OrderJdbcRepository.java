@@ -46,7 +46,7 @@ public class OrderJdbcRepository {
           COUNT(DISTINCT o.order_id) AS number_of_sales,
           SUM(ol.subtotal) AS sum_of_sales
         FROM
-          GENERATE_SERIES(NOW() - INTERVAL '7 days', NOW(), INTERVAL '1 day') AS date_series
+          GENERATE_SERIES(:since, NOW(), INTERVAL '1 day') AS date_series
         LEFT JOIN "order" o ON (DATE_TRUNC('day', o.ordered_at) = DATE_TRUNC('day', date_series))
         LEFT JOIN order_line ol ON (ol.fk_order_id = o.order_id)
         GROUP BY date
