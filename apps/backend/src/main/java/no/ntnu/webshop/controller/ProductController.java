@@ -96,7 +96,7 @@ public class ProductController {
   @Operation(summary = "Finds a product by its id")
   @GetMapping("/{id}")
   public ResponseEntity<ProductDetails> findProductById(
-      @PathVariable Long id
+      @Parameter(name = "id") @PathVariable Long id
   ) {
     if (!this.productJpaRepository.existsById(id))
       throw new ProductNotFoundException("Could not find product with id: " + id);
@@ -107,7 +107,7 @@ public class ProductController {
   @Operation(summary = "Finds a list of related products by a given products id")
   @GetMapping("/{id}/related")
   public ResponseEntity<List<ProductListItem>> findRelatedProducts(
-      @PathVariable Long id
+      @Parameter(name = "id") @PathVariable Long id
   ) {
     if (!this.productJpaRepository.existsById(id))
       throw new ProductNotFoundException("Cannot find related products for non a existing product");
@@ -152,7 +152,7 @@ public class ProductController {
   @ShopWorkerAuthorization
   @PutMapping("/{id}/price")
   public ResponseEntity<ProductDetails> updateProductPrice(
-      @PathVariable("id") Long productId,
+      @Parameter(name = "id") @PathVariable("id") Long productId,
       @RequestBody UpdateProductPriceRequest request
   ) {
     var product = this.productJpaRepository.findById(productId)
@@ -178,7 +178,7 @@ public class ProductController {
   @DeleteMapping("/{id}")
   @ShopWorkerAuthorization
   public ResponseEntity<Object> deleteProduct(
-      @PathVariable Long id,
+      @Parameter(name = "id") @PathVariable Long id,
       @Parameter(description = "If true, the product will be forcefully deleted along with it's references")
       @RequestParam(value = "force", required = false) Optional<Boolean> force
   ) {

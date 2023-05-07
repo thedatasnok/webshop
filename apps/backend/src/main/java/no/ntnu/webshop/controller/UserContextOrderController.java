@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -66,16 +67,16 @@ public class UserContextOrderController {
   }
 
   @Operation(summary = "Finds a specific order for the logged in user")
-  @GetMapping("/{orderId}")
+  @GetMapping("/{id}")
   public ResponseEntity<OrderDetails> findOrder(
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
-      @PathVariable Long orderId
+      @Parameter(name = "id") @PathVariable Long id
   ) {
     var userId = adapter.getUserAccount().getId();
-    var results = this.orderJdbcRepository.findOrders(Optional.of(userId), Optional.empty(), Optional.of(orderId));
+    var results = this.orderJdbcRepository.findOrders(Optional.of(userId), Optional.empty(), Optional.of(id));
 
     if (results.isEmpty())
-      throw new OrderNotFoundException("Could not find an order with id: " + orderId);
+      throw new OrderNotFoundException("Could not find an order with id: " + id);
 
     return ResponseEntity.ok(results.get(0));
   }
@@ -150,21 +151,21 @@ public class UserContextOrderController {
   }
 
   @Operation(summary = "Cancels an order for the logged in user")
-  @PatchMapping("/{orderId}/cancel")
+  @PatchMapping("/{id}/cancel")
   public ResponseEntity<OrderDetails> cancelOrder(
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
-      @PathVariable Long orderId
+      @Parameter(name = "id") @PathVariable Long id
   ) {
     // we find by id and customer to ensure that the order belongs to the logged in user
     // this prevents users from cancelling other users orders
-    var order = this.orderJpaRepository.findByIdAndCustomer(orderId, adapter.getUserAccount().getId())
-      .orElseThrow(() -> new OrderNotFoundException("Could not find an order with id: " + orderId));
+    var order = this.orderJpaRepository.findByIdAndCustomer(id, adapter.getUserAccount().getId())
+      .orElseThrow(() -> new OrderNotFoundException("Could not find an order with id: " + id));
 
     order.setOrderStatus(OrderStatus.CANCELLED);
 
     this.orderJpaRepository.save(order);
 
-    return ResponseEntity.ok(this.orderService.findById(orderId));
+    return ResponseEntity.ok(this.orderService.findById(id));
   }
 
 }

@@ -67,20 +67,20 @@ public class OrderController {
   }
 
   @Operation(summary = "Updates an orders statuses")
-  @PatchMapping("/{orderId}")
+  @PatchMapping("/{id}")
   public ResponseEntity<OrderDetails> updateOrder(
-      @PathVariable Long orderId,
+      @Parameter(name = "id") @PathVariable Long id,
       @RequestBody UpdateOrderRequest request
   ) {
-    var order = this.orderJpaRepository.findById(orderId)
-      .orElseThrow(() -> new OrderNotFoundException("Could not find an order with id: " + orderId));
+    var order = this.orderJpaRepository.findById(id)
+      .orElseThrow(() -> new OrderNotFoundException("Could not find an order with id: " + id));
 
     order.setOrderStatus(OrderStatus.fromString(request.orderStatus()));
     order.setPaymentStatus(PaymentStatus.fromString(request.paymentStatus()));
 
     this.orderJpaRepository.save(order);
 
-    return ResponseEntity.ok(this.orderService.findById(orderId));
+    return ResponseEntity.ok(this.orderService.findById(id));
   }
 
 }

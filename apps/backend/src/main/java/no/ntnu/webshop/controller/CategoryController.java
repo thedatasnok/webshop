@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,11 +61,11 @@ public class CategoryController {
     );
   }
 
-  @Operation(summary = "Deletes a category by ID")
+  @Operation(summary = "Deletes a category by its id")
   @DeleteMapping("/{id}")
   @ShopWorkerAuthorization
   public ResponseEntity<Object> deleteCategory(
-      @PathVariable Integer id
+      @Parameter(name = "id") @PathVariable Integer id
   ) {
     if (!this.categoryJpaRepository.existsById(id))
       throw new CategoryNotFoundException("Could not find category with id: " + id);
