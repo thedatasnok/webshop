@@ -33,7 +33,7 @@ import no.ntnu.webshop.service.UserAccountService;
 /**
  * Controller responsible for endpoints that do operations related to authenticating user accounts.
  */
-@Tag(name = "Authentication")
+@Tag(name = "Authentication", description = "Operations related to authenticating user accounts")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")

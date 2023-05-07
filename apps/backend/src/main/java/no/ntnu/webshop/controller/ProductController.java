@@ -42,7 +42,7 @@ import no.ntnu.webshop.service.ProductService;
 /**
  * Controller responsible for endpoints that are related to products.
  */
-@Tag(name = "Products")
+@Tag(name = "Products", description = "Operations on the collection of products")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products")

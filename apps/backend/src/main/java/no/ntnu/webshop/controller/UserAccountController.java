@@ -18,7 +18,7 @@ import no.ntnu.webshop.contracts.user.UserAccountListItem;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.security.annotation.ShopOwnerAuthorization;
 
-@Tag(name = "User Accounts", description = "Operations on user accounts")
+@Tag(name = "User Accounts", description = "Operations on the collection of user accounts")
 @RestController
 @ShopOwnerAuthorization
 @RequiredArgsConstructor

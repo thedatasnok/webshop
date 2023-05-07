@@ -39,7 +39,7 @@ import no.ntnu.webshop.service.OrderService;
  * @see UserContextOrderController The UserContextOrderController that handles orders on behalf of
  *      the authenticated customer
  */
-@Tag(name = "Orders")
+@Tag(name = "Orders", description = "Operations on the collection of orders")
 @RestController
 @ShopWorkerAuthorization
 @RequiredArgsConstructor

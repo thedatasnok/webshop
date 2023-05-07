@@ -25,7 +25,7 @@ import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 /**
  * Controller responsible for endpoints that do operations on the categories collection.
  */
-@Tag(name = "Categories")
+@Tag(name = "Categories", description = "Operations on the collection of categories")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/categories")

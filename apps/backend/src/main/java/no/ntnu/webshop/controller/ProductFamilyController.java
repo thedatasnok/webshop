@@ -27,7 +27,7 @@ import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
  * 
  * @see ProductFamily
  */
-@Tag(name = "Product Families")
+@Tag(name = "Product Families", description = "Operations on the collection of product families")
 @RestController
 @ShopWorkerAuthorization
 @RequiredArgsConstructor

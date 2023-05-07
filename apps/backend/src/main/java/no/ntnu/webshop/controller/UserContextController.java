@@ -1,7 +1,6 @@
 package no.ntnu.webshop.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -25,6 +24,7 @@ import no.ntnu.webshop.contracts.user.UserProfile;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.security.JwtUtility;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
+import no.ntnu.webshop.security.annotation.AuthenticatedAuthorization;
 
 /**
  * Controller responsible for endpoints that do operations on/for the currently authenticated user
@@ -36,11 +36,11 @@ import no.ntnu.webshop.security.UserAccountDetailsAdapter;
  *      responsible finding the user account from an access token
  */
 @Slf4j
-@Tag(name = "User Context", description = "Endpoints that apply to the currently logged in user")
+@Tag(name = "User Context", description = "Operations that apply to the currently logged in user")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/me")
-@PreAuthorize("isAuthenticated()")
+@AuthenticatedAuthorization
 public class UserContextController {
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final PasswordEncoder passwordEncoder;

@@ -6,16 +6,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import no.ntnu.webshop.config.OpenApiConfig;
-import no.ntnu.webshop.model.UserAccountRole;
 
 /**
- * Annotation for securing methods or classes to shop workers and shop owners. Shop owners are
- * thought of an extension to the permissions of a shop worker, so this annotation is a combination
- * of the two.
+ * Annotation for securing methods or classes to authenticated users. This annotation will cause
+ * only authenticated requests to be authorized for the annotated method or class.
  * 
  * It will also add the OpenAPI security requirement to the annotated method or class.
  */
@@ -24,8 +22,6 @@ import no.ntnu.webshop.model.UserAccountRole;
     ElementType.METHOD, ElementType.TYPE
 })
 @Retention(RetentionPolicy.RUNTIME)
-@Secured({
-    UserAccountRole.Code.SHOP_WORKER, UserAccountRole.Code.SHOP_OWNER
-})
+@PreAuthorize("isAuthenticated()")
 @SecurityRequirement(name = OpenApiConfig.SECURITY_SCHEME)
-public @interface ShopWorkerAuthorization {}
+public @interface AuthenticatedAuthorization {}
