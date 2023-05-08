@@ -3,6 +3,7 @@ package no.ntnu.webshop.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -229,7 +230,140 @@ class ProductControllerTests {
   }
 
   /**
-   * Creates a product and returns the result
+   * Tests the endpoint to find featured products. Creates 4 products on discount and 11 other
+   * products. Tests if the featured products does not contain more than 10 products. Tests if the
+   * featured products contains the 4 products on discount.
+   * 
+   * @throws Exception
+   */
+  @Test
+  void testFindFeaturedProducts() throws Exception {
+
+    List<CreateProductRequest> discountProductRequests = new ArrayList<>();
+    List<MvcResult> discountProductResults = new ArrayList<>();
+
+    List<CreateProductRequest> productRequests = new ArrayList<>();
+    List<MvcResult> productResults = new ArrayList<>();
+
+    // 4 products on discount
+    for (int i = 0; i < 4; i++) {
+      var discountProductRequest = new CreateProductRequest(
+        "sample product",
+        "",
+        "sample description",
+        "",
+        List.of("https://example.com/image.png"),
+        300.0,
+        true,
+        null,
+        Set.of(),
+        Map.of(),
+        Map.of()
+      );
+
+      discountProductRequests.add(discountProductRequest);
+      discountProductResults.add(
+        this.mockMvc
+          .perform(
+            MockMvcRequestBuilders.post("/api/v1/products")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(this.objectMapper.writeValueAsString(discountProductRequest))
+              .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
+          )
+          .andExpect(MockMvcResultMatchers.status().isOk())
+          .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+          .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("sample product"))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("sample description"))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls").isArray())
+          .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls[0]").value("https://example.com/image.png"))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(300.0))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.isDiscount").value(true))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.familyId").doesNotExist())
+          .andExpect(MockMvcResultMatchers.jsonPath("$.attributes").isEmpty())
+          .andExpect(MockMvcResultMatchers.jsonPath("$.children").isEmpty())
+          .andReturn()
+      );
+    }
+
+    // 10 products
+    for (int i = 0; i < 11; i++) {
+      var productRequest = new CreateProductRequest(
+        "sample product",
+        "",
+        "sample description",
+        "",
+        List.of("https://example.com/image.png"),
+        300.0,
+        false,
+        null,
+        Set.of(),
+        Map.of(),
+        Map.of()
+      );
+
+      productRequests.add(productRequest);
+      var productResult = createProduct(productRequests.get(i));
+      productResults.add(productResult);
+    }
+
+    var featuredProducts = mockMvc
+      .perform(
+        MockMvcRequestBuilders.get("/api/v1/products/featured")
+          .contentType(MediaType.APPLICATION_JSON)
+          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andReturn()
+      .getResponse()
+      .getContentAsString();
+
+    List<ProductListItem> featuredProductList = objectMapper
+      .readValue(featuredProducts, new TypeReference<List<ProductListItem>>(){});
+
+    List<Long> productIds = new ArrayList<>();
+    List<Long> discountProductIds = new ArrayList<>();
+
+    for (int i = 0; i < discountProductResults.size(); i++) {
+      var productId = this.objectMapper
+        .readValue(discountProductResults.get(i).getResponse().getContentAsString(), ProductDetails.class)
+        .id();
+      discountProductIds.add(productId);
+    }
+
+    for (int i = 0; i < productResults.size(); i++) {
+      var productId = this.objectMapper
+        .readValue(productResults.get(i).getResponse().getContentAsString(), ProductDetails.class)
+        .id();
+      productIds.add(productId);
+    }
+
+    // Asserts that there is 10 featured products, since featured products only takes in 10 products.
+    assertEquals(10, featuredProductList.size());
+
+    // Asserts that the products on discount is in the featured product list
+    // The first featuredProduct should be the last discount product created and so on.
+    assertEquals(featuredProductList.get(0).id(), discountProductIds.get(3));
+    assertEquals(featuredProductList.get(1).id(), discountProductIds.get(2));
+    assertEquals(featuredProductList.get(2).id(), discountProductIds.get(1));
+    assertEquals(featuredProductList.get(3).id(), discountProductIds.get(0));
+
+    // cleanup
+
+    // deletion of products without discount
+    for (int i = 0; i < productResults.size(); i++) {
+      deleteProductWithId(productIds.get(i), userAccount);
+    }
+
+    // deletion of products with discount
+    for (int i = 0; i < discountProductResults.size(); i++) {
+      deleteProductWithId(discountProductIds.get(i), userAccount);
+    }
+
+  }
+
+  /**
+   * Creates a product and checks that the response is correct to the request. This method is used to
+   * create products for testing, with the correct request values.
    * 
    * @param productRequest the product request
    * @return the result
