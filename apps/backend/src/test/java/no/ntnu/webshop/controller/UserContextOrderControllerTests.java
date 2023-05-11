@@ -109,7 +109,7 @@ class UserContextOrderControllerTests {
    * Tests that an order can be placed.
    */
   @Test
-  void canPlaceOrder() throws Exception {
+  void canPlaceAndCancelOrder() throws Exception {
     var request = new PlaceOrderRequest(
       "bob the mocker",
       ADDRESS_DTO,
@@ -144,6 +144,17 @@ class UserContextOrderControllerTests {
     var id = this.objectMapper.readValue(result.getResponse().getContentAsString(), OrderDetails.class).id();
 
     var order = this.orderJpaRepository.findById(id);
+
+    this.mockMvc
+      .perform(
+        MockMvcRequestBuilders.patch("/api/v1/me/orders/" + id + "/cancel")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(this.objectMapper.writeValueAsString(request))
+          .header("Authorization", this.authorizationTestUtility.generateJwt(user))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("CANCELLED"))
+      .andReturn();
 
     assertNotNull(order.get(), "Could not find the order we just placed");
 
