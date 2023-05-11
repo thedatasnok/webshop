@@ -103,7 +103,7 @@ class ProductControllerTests {
    * @throws Exception if an error occurs during the test.
    */
   @Test
-  void testFindRelatedProducts() throws Exception {
+  void canFindRelatedProducts() throws Exception {
     var categoryRequest = new CreateCategoryRequest(
       "test category",
       ""
@@ -237,7 +237,7 @@ class ProductControllerTests {
    * @throws Exception
    */
   @Test
-  void testFindFeaturedProducts() throws Exception {
+  void canFindFeaturedProducts() throws Exception {
 
     List<CreateProductRequest> discountProductRequests = new ArrayList<>();
     List<MvcResult> discountProductResults = new ArrayList<>();
