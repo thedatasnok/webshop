@@ -8,7 +8,9 @@ import { Disclosure } from '@headlessui/react';
 import { useDebouncedState } from '@mantine/hooks';
 import { OrderDetails } from '@webshop/contracts';
 import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
+import Case from 'case';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import { forwardRef, useState } from 'react';
 import {
   RiAddLine,
@@ -31,27 +33,27 @@ interface ProductListCardOrderHistoryActionsProps {
   isDiscount: boolean;
 }
 
+/**
+ * One-off component for displaying the price and quantity of a product in the order history.
+ */
 const ProductListCardOrderHistoryActions: React.FC<
   ProductListCardOrderHistoryActionsProps
 > = ({ price, previousPrice, quantity, isDiscount }) => {
   const totalPrice = price * quantity;
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <div className='flex flex-col items-end sm:flex-row sm:items-center sm:gap-4'>
-        <div className='flex items-center'>
-          <p>{quantity}&nbsp;x&nbsp;</p>
-          {formatPrice(price)}
-        </div>
+    <div className='font-title flex flex-col items-end sm:flex-row sm:items-center sm:gap-4'>
+      <p>
+        {quantity}&nbsp;&times;&nbsp;{formatPrice(price)}
+      </p>
 
-        <div className='flex flex-col items-end font-semibold sm:min-w-[5rem]'>
-          <div className='text-xl'>{formatPrice(totalPrice)}</div>
-          {isDiscount && previousPrice && (
-            <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              {formatPrice(previousPrice * quantity - totalPrice)}
-            </div>
-          )}
-        </div>
+      <div className='flex flex-col items-end font-semibold sm:min-w-[5rem]'>
+        <div className='text-xl'>{formatPrice(totalPrice)}</div>
+        {isDiscount && previousPrice && (
+          <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
+            {formatPrice(previousPrice * quantity - totalPrice)}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -75,33 +77,36 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
     }
   };
 
+  const orderId = order.id.toString().padStart(4, '0');
+
   return (
     <>
       <Disclosure defaultOpen={isLast}>
-        <Disclosure.Button className='bg-base-900 font-title ui-open:border-primary border-b-base-400 focus:bg-base-800 flex items-center rounded-sm border-b-2 px-2 py-2 text-xl font-semibold uppercase outline-none'>
-          <RiArrowRightSLine className='ui-open:rotate-90 ui-open:transform' />
-          <div className='grid w-full grid-cols-4 items-center justify-items-start pl-1'>
-            <p>Order #{order.id.toString().padStart(4, '0')}</p>
+        <Disclosure.Button className='font-title ui-open:border-primary-800 border-base-700 hover:bg-base-900 focus:bg-base-900 flex items-center rounded-sm border px-2 py-2 text-xl font-semibold uppercase outline-none transition'>
+          <RiArrowRightSLine className='ui-open:rotate-90 transform transition' />
+          <div className='grid w-full grid-cols-3 items-center justify-items-start pl-1 sm:grid-cols-4'>
+            <p>Order #{orderId}</p>
 
-            <p className='inline-flex items-center gap-1'>
+            <p className='inline-flex items-center gap-1 justify-self-center'>
               <RiBitCoinLine className='h-6 w-6' />
               <span className='sr-only'>Payment status:</span>
               <span>{order.paymentStatus}</span>
             </p>
 
-            <p className='inline-flex items-center gap-1'>
+            <p className='inline-flex items-center gap-1 justify-self-center'>
               <RiTruckLine className='h-6 w-6' />
               <span className='sr-only'>Order status:</span>
               <span>{order.status}</span>
             </p>
 
-            <p className='justify-self-end'>
-              {order.orderedAt.toString().substring(0, 10)}
+            <p className='justify-self-end max-sm:hidden'>
+              {dayjs(order.orderedAt).format('L')}
             </p>
           </div>
         </Disclosure.Button>
-        <Disclosure.Panel className='px-4 py-2'>
-          <section className='flex justify-between'>
+
+        <Disclosure.Panel className='relative px-4 py-2'>
+          <section className='grid justify-between gap-2 sm:grid-cols-3'>
             <div>
               <h2 className='font-title text-lg font-semibold uppercase'>
                 Billing address
@@ -115,6 +120,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
                 <p>{order.billingAddress.country}</p>
               </div>
             </div>
+
             <div>
               <h2 className='font-title text-lg font-semibold uppercase'>
                 Delivery address
@@ -129,10 +135,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
                 <p>{order.deliveryAddress.country}</p>
               </div>
             </div>
-            <div className={clsx(order.status === 'CANCELLED' && 'invisible')}>
+
+            <div
+              className={clsx(
+                'absolute right-2 top-2',
+                order.status === 'CANCELLED' && 'invisible'
+              )}
+            >
               <Button
                 variant='neutral'
-                className='mt-1.5 h-fit'
+                className='h-fit'
                 onClick={() => setShowCancelConfirmation(true)}
               >
                 Cancel order
@@ -142,12 +154,29 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
 
           <section className='mt-4'>
             <h2 className='font-title text-lg font-semibold uppercase'>
-              Options
+              Details
             </h2>
-            <div className='text-base-300'>
-              <p>Payment method: {order.paymentMethod.replace('_', ' ')}</p>
-              <p>Shipping method: {order.shippingMethod.replace('_', ' ')}</p>
-            </div>
+
+            <p className='text-base-300 text-sm'>
+              Contact: {order.customerName}{' '}
+              <a
+                className='text-base-400 hover:text-primary transition hover:underline'
+                href={'mailto:'.concat(order.customerEmail)}
+              >
+                ({order.customerEmail})
+              </a>
+            </p>
+            <p className='text-base-300 text-sm'>
+              Ordered placed: {dayjs(order.orderedAt).format('LLLL')}
+            </p>
+            <p className='text-base-300 text-sm'>
+              Payment method:{' '}
+              {Case.sentence(order.paymentMethod.replace('_', ' '))}
+            </p>
+            <p className='text-base-300 text-sm'>
+              Shipping method:{' '}
+              {Case.sentence(order.shippingMethod.replace('_', ' '))}
+            </p>
           </section>
 
           <section className='mt-4'>
@@ -172,23 +201,28 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
               </ProductListCard>
             ))}
 
-            <p className='mt-2 flex justify-end text-2xl font-semibold uppercase underline'>
+            <p className='font-title mt-2 flex justify-end text-xl font-semibold uppercase'>
               Total: {formatPrice(order.total)}
             </p>
           </section>
         </Disclosure.Panel>
       </Disclosure>
+
       <DialogPrompt
         action={handleCancelOrder}
         isOpen={showCancelConfirmation}
         message='Are you sure you want to cancel this order?'
         onClose={() => setShowCancelConfirmation(false)}
-        title={`Cancel order #${order.id.toString().padStart(4, '0')}`}
+        title={`Cancel order #${orderId}`}
       />
     </>
   );
 };
 
+/**
+ * Displays the order history of the current user, allowing them to search through by product name.
+ * This is displayed on the User profile page.
+ */
 const OrderHistory = forwardRef<HTMLDivElement, OrderHistoryProps>(
   ({ className }, ref) => {
     const [searchString, setSearchString] = useDebouncedState('', 500);

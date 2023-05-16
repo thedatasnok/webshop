@@ -3,17 +3,24 @@ import { useLocation } from 'react-router-dom';
 import NavigationBar from '../navigation/NavigationBar';
 import Footer from './Footer';
 import Header from './Header';
+import clsx from 'clsx';
 
 interface PageLayoutProps {
-  excludeHeader?: boolean;
+  /**
+   * The children element(s) to render inside the main element of the page layout.
+   */
   children?: React.ReactNode;
+  /**
+   * The class names to apply to the main element, which is the parent element of the children.
+   */
+  className?: string;
 }
 
 /**
  * Shared page layout component, ensuring the existance of a header, footer and navigation bar for mobile.
- * It's meant to be opt-in as not every page will need it.
+ * It's meant to be opt-in as not every page will need/want this layout.
  */
-const PageLayout: React.FC<PageLayoutProps> = ({ excludeHeader, children }) => {
+const PageLayout: React.FC<PageLayoutProps> = ({ children, className }) => {
   const location = useLocation();
 
   /**
@@ -26,10 +33,10 @@ const PageLayout: React.FC<PageLayoutProps> = ({ excludeHeader, children }) => {
 
   return (
     <>
-      <div className='overflow-auto px-2 pb-16 sm:px-4'>
-        {!excludeHeader && <Header />}
+      <div className='flex min-h-screen flex-col overflow-y-auto px-2 pb-16 sm:px-4'>
+        <Header />
 
-        {children}
+        <main className={clsx('flex-1', className)}>{children}</main>
 
         <Footer />
       </div>

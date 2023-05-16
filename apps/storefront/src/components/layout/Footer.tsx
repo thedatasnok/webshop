@@ -16,7 +16,7 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
-    <footer className={clsx('mx-auto mt-12 max-w-screen-xl', className)}>
+    <footer className={clsx('mx-auto mt-12 max-w-screen-xl w-full', className)}>
       <div className='grid grid-cols-1 justify-items-center text-center leading-8 sm:grid-cols-3'>
         <div className='mb-8'>
           <h2 className='font-title text-base-50 mb-4 text-xl font-semibold uppercase'>
