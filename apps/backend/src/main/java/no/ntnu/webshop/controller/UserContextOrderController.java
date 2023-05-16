@@ -60,6 +60,7 @@ public class UserContextOrderController {
   @GetMapping
   public ResponseEntity<List<OrderDetails>> findOrders(
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter,
+      @Parameter(description = "The name of the product to find orders for, can be a case insensitive partial match")
       @RequestParam("productName") Optional<String> productName
   ) {
     var userId = adapter.getUserAccount().getId();

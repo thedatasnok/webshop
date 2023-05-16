@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -62,8 +63,13 @@ public class OrderController {
 
   @Operation(summary = "Lists all orders")
   @GetMapping
-  public ResponseEntity<List<OrderDetails>> findOrders() {
-    return ResponseEntity.ok(this.orderJdbcRepository.findOrders(Optional.empty(), Optional.empty(), Optional.empty()));
+  public ResponseEntity<List<OrderDetails>> findOrders(
+      @Parameter(description = "The id of the customer to find orders for")
+      @RequestParam(value = "customerId", required = false) Optional<UUID> customerId,
+      @Parameter(description = "The name of the product to find orders for, can be a case insensitive partial match")
+      @RequestParam(value = "productName", required = false) Optional<String> productName
+  ) {
+    return ResponseEntity.ok(this.orderJdbcRepository.findOrders(customerId, productName, Optional.empty()));
   }
 
   @Operation(summary = "Updates an orders statuses")
