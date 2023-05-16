@@ -48,7 +48,7 @@ const ProductListCardOrderHistoryActions: React.FC<
           <div className='text-xl'>{formatPrice(totalPrice)}</div>
           {isDiscount && previousPrice && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              -{formatPrice(previousPrice * quantity - totalPrice)}
+              {formatPrice(previousPrice * quantity - totalPrice)}
             </div>
           )}
         </div>

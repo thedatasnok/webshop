@@ -4,13 +4,13 @@ import { RiMailLine, RiPhoneLine, RiStore2Line } from 'react-icons/ri';
 const Support = () => {
   return (
     <PageLayout>
-      <main className='mx-auto flex max-w-screen-xl justify-center p-2'>
-        <div className='border-base-800 border p-4'>
+      <main className='mx-auto flex max-w-screen-xl justify-center gap-2 py-4'>
+        <div className='flex-grow-0'>
           <h1 className='font-title flex pb-2 text-2xl font-semibold uppercase'>
             Support
           </h1>
 
-          <p className='max-w-screen-xl'>
+          <p className='text-base-300'>
             Cyberpunk gaming gear are dedicated to providing you with the best
             shopping experience possible, and that includes offering top-notch
             support for all of your inquiries. Whether you have a question about
@@ -30,11 +30,11 @@ const Support = () => {
             </a>
 
             <a
-              href='mailto:support@cgg.no'
+              href='mailto:noreply@datasnok.cool'
               className='hover:text-primary-400 flex gap-2 transition-colors'
             >
               <RiMailLine className='h-6 w-6' />
-              <p>support@cgg.no</p>
+              <p>noreply@datasnok.cool</p>
             </a>
 
             <a
@@ -47,16 +47,12 @@ const Support = () => {
             </a>
           </div>
         </div>
-        <section
-          aria-label='storefront-image'
-          className='border-base-800 hidden border lg:flex'
-        >
-          <img
-            alt='storefront'
-            src='https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/branding/storefront-image.jpg'
-            className='border-base-800'
-          />
-        </section>
+
+        <img
+          alt='storefront'
+          src='https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/branding/storefront-image.jpg'
+          className='border-base-800 w-1/2 flex-1 flex-shrink-0 rounded-sm border max-lg:hidden'
+        />
       </main>
     </PageLayout>
   );

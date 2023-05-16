@@ -81,10 +81,10 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             </li>
 
             <li>
-              <a href='mailto: support@cgg.no'>
+              <a href='mailto: noreply@datasnok.cool'>
                 <div className='flex items-center gap-1'>
                   <RiMailLine className='h-5 w-5'></RiMailLine>
-                  <p className='hover:underline'>support@cgg.no</p>
+                  <p className='hover:underline'>noreply@datasnok.cool</p>
                 </div>
               </a>
             </li>

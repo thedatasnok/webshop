@@ -70,16 +70,9 @@ const ProductBrowser = () => {
   return (
     <PageLayout>
       <main className='mx-auto w-full max-w-screen-xl'>
-        <section id='hero' className='py-4'>
-          <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase'>
-            Browse
-          </h1>
-
-          <p className='text-base-300 text-sm'>
-            Explore our newest insane gaming gear that will enhance your aim in
-            CS:GO Source 7 and Half life 3
-          </p>
-        </section>
+        <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase py-4'>
+          Browse
+        </h1>
 
         <section id='categories'>
           <div className='mx-auto my-2 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>

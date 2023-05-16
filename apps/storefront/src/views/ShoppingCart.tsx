@@ -178,7 +178,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
               !isDiscount && 'invisible sm:hidden'
             )}
           >
-            -{formatPrice(previousTotal - totalPrice)}
+            {formatPrice(previousTotal - totalPrice)}
           </div>
         </div>
         {/* Delete */}

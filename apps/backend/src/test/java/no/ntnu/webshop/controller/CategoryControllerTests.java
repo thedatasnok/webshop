@@ -57,7 +57,7 @@ class CategoryControllerTests {
   }
 
   @Test
-  void testCreateCategoryAndDelete() throws Exception {
+  void canCreateCategoryAndDelete() throws Exception {
     var request = new CreateCategoryRequest(
       "test category",
       ""
