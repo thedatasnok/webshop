@@ -25,5 +25,4 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: changelog/001-search/000-extension.sql
-            dbms: postgesql
             relativeToChangelogFile: true
