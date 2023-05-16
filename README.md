@@ -10,6 +10,19 @@
   <a href="#license">License</a>
 </div>
 
+## Table of contents
+
+- [Project structure](#project-structure)
+- [Architecture](#architecture)
+- [Useful resources](#useful-resources)
+- [Getting started](#getting-started)
+  - [Environment variables](#environment-variables)
+  - [Development](#development)
+  - [Running tests](#running-tests)
+  - [Deployment](#deployment)
+- [License](#license)
+
+
 ## Project structure
 
 ```
@@ -43,6 +56,19 @@ A high-level overview of the architecture is in the diagram below, and should de
 
 
 It assumed that the application is going to be deployed as a set of containers to a Kubernetes cluster, however running it within any other container orchestration system should be possible. The reverse proxy part would have to be swapped out with an equivalent solution for the chosen system. Further details can be found under [Deployment](#deployment).
+
+
+## Useful resources
+
+Some internal resources you may find useful:
+
+- [Architecture diagram](docs/diagrams/architecture.drawio.svg)
+- [Project structure diagram](docs/diagrams/project-structure.drawio.svg)
+- [Release workflow](docs/RELEASE.md)
+- [ER diagram](docs/diagrams/erdiagramv2.drawio.svg)
+- [Use cases](docs/diagrams/use-cases.drawio.svg)
+- [API documentation](https://cgg.datasnok.cool/api/swagger-ui/index.html)
+
 
 ## Getting started
 
