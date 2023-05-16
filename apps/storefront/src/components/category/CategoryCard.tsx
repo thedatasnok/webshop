@@ -5,6 +5,7 @@ interface CategoryCardProps {
   name: string;
   iconUrl: string;
   selected?: boolean;
+  responsiveIcon?: boolean;
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({
@@ -12,12 +13,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   name,
   iconUrl,
   selected,
+  responsiveIcon,
 }) => {
   return (
     <div
       className={clsx(
         'border-base-800 bg-base-900/30 hover:border-primary-800 hover:text-primary-600 group flex aspect-square cursor-pointer',
-        'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition ',
+        'relative flex-col items-center justify-center gap-2 rounded-sm border p-1 outline-none sm:p-2 sm:transition md:p-4',
         selected && 'text-primary  border-primary'
       )}
     >
@@ -25,7 +27,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         role='img'
         aria-labelledby={`category-${id}`}
         className={clsx(
-          'bg-base-300 group-hover:bg-primary mx-auto aspect-square w-14 transition sm:w-24',
+          'bg-base-300 group-hover:bg-primary aspect-square transition',
+          responsiveIcon ? 'w-10 sm:w-14 md:w-24' : 'w-24',
           selected && 'bg-primary'
         )}
         style={{

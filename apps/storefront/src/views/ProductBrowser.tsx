@@ -70,7 +70,7 @@ const ProductBrowser = () => {
   return (
     <PageLayout>
       <main className='mx-auto w-full max-w-screen-xl'>
-        <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase py-4'>
+        <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase pt-4'>
           Browse
         </h1>
 
@@ -86,6 +86,7 @@ const ProductBrowser = () => {
                   name={category.name}
                   iconUrl={category.iconUrl}
                   selected={parsedCategoryId === category.id}
+                  responsiveIcon
                 />
               </button>
             ))}
