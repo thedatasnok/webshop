@@ -1,6 +1,7 @@
 import PageLayout from '@/components/layout/PageLayout';
 import NavigationCard from '@/components/navigation/NavigationCard';
 import ProductCard from '@/components/product/ProductCard';
+import ProductChildren from '@/components/product/ProductChildren';
 import { RouteHref } from '@/router';
 import {
   useFindProductQuery,
@@ -142,67 +143,48 @@ const ProductView = () => {
           <hr className='text-base-800 mb-2' />
 
           {productInfo && <GroupedTable data={productInfo.attributes} />}
+
+          <ProductChildren children={productInfo?.children} />
         </div>
       </div>
 
       <div className='mt-4 flex-col gap-24'>
-        <div>
-          <div className='block md:hidden'>
-            <Disclosure>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
-                    <h2 className='font-title text-3xl font-semibold uppercase'>
-                      Description
-                    </h2>
+        <Disclosure as='div' className='md:hidden'>
+          <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
+            <h2 className='font-title text-3xl font-semibold uppercase'>
+              Description
+            </h2>
 
-                    <RiArrowUpSLine
-                      className={clsx(
-                        'h-4 w-4',
-                        open && 'rotate-180 transform'
-                      )}
-                    />
-                  </Disclosure.Button>
+            <RiArrowUpSLine className='ui-open:rotate-180 h-4 w-4 transform' />
+          </Disclosure.Button>
 
-                  <hr className='text-base-800 mb-2' />
+          <hr className='text-base-800 mb-2' />
 
-                  <Disclosure.Panel className='pb-4 text-gray-500'>
-                    <p className='text-base-300 whitespace-pre-line text-sm'>
-                      {productInfo?.description}
-                    </p>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
-          </div>
-          <p></p>
-        </div>
+          <Disclosure.Panel className='pb-4 text-gray-500'>
+            <p className='text-base-300 whitespace-pre-line text-sm'>
+              {productInfo?.description}
+            </p>
+          </Disclosure.Panel>
+        </Disclosure>
 
-        <div className='block md:hidden'>
-          <Disclosure>
-            {({ open }) => (
-              <>
-                <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
-                  <h2 className='font-title text-3xl font-semibold uppercase'>
-                    Specs
-                  </h2>
+        <Disclosure as='div' className='md:hidden'>
+          <Disclosure.Button className='flex w-full flex-col items-center pt-2'>
+            <h2 className='font-title text-3xl font-semibold uppercase'>
+              Specs
+            </h2>
 
-                  <RiArrowUpSLine
-                    className={clsx('h-4 w-4', open && 'rotate-180 transform')}
-                  />
-                </Disclosure.Button>
+            <RiArrowUpSLine className='ui-open:rotate-180 h-4 w-4 transform' />
+          </Disclosure.Button>
 
-                <hr className='text-base-800 mb-2' />
+          <hr className='text-base-800 mb-2' />
 
-                <Disclosure.Panel className='pb-4 text-gray-500'>
-                  {productInfo && (
-                    <GroupedTable data={productInfo.attributes} />
-                  )}
-                </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
-        </div>
+          <Disclosure.Panel className='pb-4 text-gray-500'>
+            {productInfo && <GroupedTable data={productInfo.attributes} />}
+
+            <ProductChildren children={productInfo?.children} />
+          </Disclosure.Panel>
+        </Disclosure>
+
         <h2 className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'>
           Related products
         </h2>
