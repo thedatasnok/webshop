@@ -1,10 +1,6 @@
 import { RouteHref } from '@/router';
 import { IconType } from 'react-icons';
-import {
-  RiArrowRightLine,
-  RiExternalLinkLine,
-  RiStore2Line,
-} from 'react-icons/ri';
+import { RiArrowRightLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 interface NavigationCardProps {

@@ -13,9 +13,13 @@ interface ProductListCardProps {
   className?: string;
 }
 
+/**
+ * A list variant of the product card.
+ * This component will render the left side of the card,
+ * and the provided children prop will be rendered on the right side.
+ */
 const ProductListCard: React.FC<ProductListCardProps> = ({
   to,
-  id,
   name,
   shortDescription,
   image,
@@ -37,7 +41,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
         <img
           src={image}
           alt={name}
-          className='aspect-square w-1/3 h-fit md:w-1/6'
+          className='aspect-square h-fit w-1/3 md:w-1/6'
         />
 
         {/* Top-left on sale pill */}

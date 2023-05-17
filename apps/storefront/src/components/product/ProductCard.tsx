@@ -15,6 +15,9 @@ interface ProductCardProps {
   className?: string;
 }
 
+/**
+ * A card that displays a product as a grid item.
+ */
 const ProductCard: React.FC<ProductCardProps> = ({
   id,
   to,
@@ -37,9 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <img src={image} alt={name} className='aspect-square w-full' />
 
       {/* Top-right pill */}
-      {isDiscount && (
-        <OnSalePill className='absolute right-1 top-1' />
-      )}
+      {isDiscount && <OnSalePill className='absolute right-1 top-1' />}
 
       <h3 className='font-title group-hover:text-primary-600 mt-0.5 truncate px-2 text-xl font-bold uppercase'>
         {name}

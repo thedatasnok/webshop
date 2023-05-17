@@ -1,6 +1,5 @@
 import { RouteHref } from '@/router';
 import { Logo } from '@webshop/ui';
-import clsx from 'clsx';
 import {
   RiHeadphoneLine,
   RiHome4Line,
@@ -10,13 +9,11 @@ import {
 } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
-interface FooterProps {
-  className?: string;
-}
+interface FooterProps {}
 
-const Footer: React.FC<FooterProps> = ({ className }) => {
+const Footer: React.FC<FooterProps> = () => {
   return (
-    <footer className={clsx('mx-auto mt-12 max-w-screen-xl w-full', className)}>
+    <footer className='mx-auto mt-12 w-full max-w-screen-xl'>
       <div className='grid grid-cols-1 justify-items-center text-center leading-8 sm:grid-cols-3'>
         <div className='mb-8'>
           <h2 className='font-title text-base-50 mb-4 text-xl font-semibold uppercase'>
