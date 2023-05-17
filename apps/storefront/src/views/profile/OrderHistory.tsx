@@ -183,23 +183,26 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
             <h2 className='font-title text-lg font-semibold uppercase'>
               Products
             </h2>
-            {order.lines.map((line) => (
-              <ProductListCard
-                key={line.productId}
-                to={'/products/' + line.productId}
-                name={line.productName}
-                id={line.productId}
-                shortDescription={line.productShortDescription}
-                image={line.productImageUrls[0]}
-              >
-                <ProductListCardOrderHistoryActions
-                  quantity={line.quantity}
-                  price={line.unitPrice}
-                  previousPrice={line.previousUnitPrice}
-                  isDiscount={line.wasDiscount}
-                />
-              </ProductListCard>
-            ))}
+
+            <ul>
+              {order.lines.map((line) => (
+                <ProductListCard
+                  key={line.productId}
+                  to={'/products/' + line.productId}
+                  name={line.productName}
+                  id={line.productId}
+                  shortDescription={line.productShortDescription}
+                  image={line.productImageUrls[0]}
+                >
+                  <ProductListCardOrderHistoryActions
+                    quantity={line.quantity}
+                    price={line.unitPrice}
+                    previousPrice={line.previousUnitPrice}
+                    isDiscount={line.wasDiscount}
+                  />
+                </ProductListCard>
+              ))}
+            </ul>
 
             <p className='font-title mt-2 flex justify-end text-xl font-semibold uppercase'>
               Total: {formatPrice(order.total)}

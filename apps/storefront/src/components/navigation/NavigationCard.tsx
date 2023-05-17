@@ -13,17 +13,19 @@ const NavigationCard: React.FC<NavigationCardProps> = ({
   icon: Icon,
 }) => {
   return (
-    <NavLink
-      to={RouteHref.PRODUCTS}
-      className='border-base-800 bg-base-900/30 hover:bg-primary-900/10 hover:text-primary-600 hover:border-primary-800 flex w-48 flex-col items-center justify-center rounded-sm border'
-    >
-      <Icon className='h-16 w-16' />
+    <li className='flex'>
+      <NavLink
+        to={RouteHref.PRODUCTS}
+        className='border-base-800 bg-base-900/30 hover:bg-primary-900/10 hover:text-primary-600 hover:border-primary-800 flex w-48 flex-col items-center justify-center rounded-sm border'
+      >
+        <Icon className='h-16 w-16' />
 
-      <div className='flex items-center'>
-        <span className='font-title font-semibold uppercase'>{title}</span>
-        <RiArrowRightLine className='h-5 w-5' />
-      </div>
-    </NavLink>
+        <div className='flex items-center'>
+          <span className='font-title font-semibold uppercase'>{title}</span>
+          <RiArrowRightLine className='h-5 w-5' />
+        </div>
+      </NavLink>
+    </li>
   );
 };
 

@@ -29,7 +29,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
   className,
 }) => {
   return (
-    <div
+    <li
       className={clsx(
         'border-base-800 relative grid grid-cols-5 overflow-hidden p-1',
         hoverEffects &&
@@ -41,7 +41,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
         <img
           src={image}
           alt={name}
-          className='aspect-square h-fit w-1/3 md:w-1/6'
+          className='aspect-square h-fit w-1/3 self-center md:w-1/6'
         />
 
         {/* Top-left on sale pill */}
@@ -52,7 +52,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
         )}
 
         <div className='flex flex-col overflow-hidden'>
-          <h3 className='font-title group-hover:text-primary-600 mt-0.5 truncate px-2 text-xl font-bold uppercase'>
+          <h3 className='font-title group-hover:text-primary-600 truncate px-2 text-xl font-bold uppercase'>
             {name}
           </h3>
           <p className='group-hover:text-primary-700 text-base-400 preserve-line -mt-1 mb-0.5 line-clamp-2 px-2 text-xs'>
@@ -61,7 +61,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
         </div>
       </NavLink>
       <div className='col-span-2 flex justify-end'>{children}</div>
-    </div>
+    </li>
   );
 };
 

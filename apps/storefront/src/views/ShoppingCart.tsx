@@ -73,7 +73,7 @@ const ShoppingCart = () => {
         <h3 className='max-sm:hidden'>Delete</h3>
       </div>
 
-      <div className='mx-auto flex w-fit flex-col'>
+      <ul className='mx-auto flex w-fit flex-col'>
         {products?.map((product, i, array) => (
           <ProductListCard
             key={product.id}
@@ -93,7 +93,7 @@ const ShoppingCart = () => {
             />
           </ProductListCard>
         ))}
-      </div>
+      </ul>
 
       {isEmpty ? (
         <div>
@@ -214,7 +214,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    * Decrements the quantity by 1.
    * Ignores if the quantity is above 1.
    */
-  function decrementQuantity() {
+  const decrementQuantity = () => {
     if (quantity > 1) updateQuantity(quantity - 1);
   }
 
@@ -222,7 +222,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    * Increments the quantity by 1.
    * Ignores if the quantity is above 999.
    */
-  function incrementQuantity() {
+  const incrementQuantity = () => {
     if (quantity < 999) updateQuantity(quantity + 1);
   }
 

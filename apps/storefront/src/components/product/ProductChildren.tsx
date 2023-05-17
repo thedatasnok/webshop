@@ -16,7 +16,7 @@ const ProductChildren: React.FC<ProductChildrenProps> = ({ children }) => {
         This pack contains the following:
       </h3>
 
-      <div role='list' className=''>
+      <ul className='flex flex-col gap-1 items-center'>
         {children.map((child) => (
           <ProductListCard
             key={child.id}
@@ -25,13 +25,14 @@ const ProductChildren: React.FC<ProductChildrenProps> = ({ children }) => {
             image={child.imageUrls[0]}
             to={`/products/${child.id}`}
             shortDescription={child.description}
+            hoverEffects
           >
             <div className='flex items-center justify-center'>
               &times;&nbsp;{child.quantity}
             </div>
           </ProductListCard>
         ))}
-      </div>
+      </ul>
     </>
   );
 };

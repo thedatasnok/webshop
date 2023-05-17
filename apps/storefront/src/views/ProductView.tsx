@@ -61,8 +61,12 @@ const ProductView = () => {
         </NavLink>
       </div>
 
-      <div className='flex w-full flex-col gap-4 py-4 sm:flex-row'>
-        <div className='relative sm:w-1/2'>
+      {/* Main product section */}
+      <section
+        aria-label='Product information'
+        className='flex w-full flex-col gap-4 py-4 sm:flex-row'
+      >
+        <div className='relative h-fit sm:w-1/2'>
           <img
             className='clip-edges clip-corner-sm'
             src={productInfo?.imageUrls[0]}
@@ -74,7 +78,7 @@ const ProductView = () => {
           </div>
         </div>
 
-        <div className='flex-1 px-4'>
+        <div className='flex-1 md:pl-4'>
           <h1 className='font-title text-base-50 mb-2 text-4xl font-bold uppercase'>
             {productInfo?.name}
           </h1>
@@ -121,10 +125,23 @@ const ProductView = () => {
             <span>Add to Cart</span>
             <RiShoppingCartLine className='-mt-0.5 h-4 w-4' />
           </Button>
+
+          {/* Product children content */}
+          <div className='max-md:hidden'>
+            <ProductChildren children={productInfo?.children} />
+          </div>
         </div>
+      </section>
+
+      {/* Mobile viewport placing of children */}
+      <div className='md:hidden'>
+        <ProductChildren children={productInfo?.children} />
       </div>
 
-      <div className='mx-auto mt-4 hidden gap-16 md:grid md:grid-cols-2'>
+      <section
+        aria-label='Product details'
+        className='mx-auto mt-4 hidden gap-16 md:grid md:grid-cols-2'
+      >
         <div>
           <h2 className='font-title text-3xl font-semibold uppercase'>
             Description
@@ -143,10 +160,8 @@ const ProductView = () => {
           <hr className='text-base-800 mb-2' />
 
           {productInfo && <GroupedTable data={productInfo.attributes} />}
-
-          <ProductChildren children={productInfo?.children} />
         </div>
-      </div>
+      </section>
 
       <div className='mt-4 flex-col gap-24'>
         <Disclosure as='div' className='md:hidden'>
@@ -180,23 +195,23 @@ const ProductView = () => {
 
           <Disclosure.Panel className='pb-4 text-gray-500'>
             {productInfo && <GroupedTable data={productInfo.attributes} />}
-
-            <ProductChildren children={productInfo?.children} />
           </Disclosure.Panel>
         </Disclosure>
 
-        <h2 className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'>
+        <h2
+          id='related-products-title'
+          className='font-title my-4 text-center text-3xl font-bold uppercase tracking-wider sm:mt-16 md:mt-32'
+        >
           Related products
         </h2>
 
         <section
-          aria-labelledby='featured-products-title'
-          className='max-sm:hide-scroll-bar overflow-x-scroll pb-2'
+          aria-labelledby='related-products-title'
+          className='overflow-x-scroll pb-2'
         >
-          <div className='mx-auto flex w-fit justify-center gap-4'>
+          <ol className='mx-auto flex w-fit justify-center gap-4'>
             {relatedProducts?.map((product) => (
               <ProductCard
-                key={product.id}
                 id={product.id}
                 to={[RouteHref.PRODUCTS, product.id].join('/')}
                 name={product.name}
@@ -208,10 +223,11 @@ const ProductView = () => {
                 className='w-48 flex-shrink-0'
               />
             ))}
+
             {relatedProducts && relatedProducts.length > 1 && (
               <NavigationCard title='browse more' icon={RiStore2Line} />
             )}
-          </div>
+          </ol>
         </section>
       </div>
     </PageLayout>

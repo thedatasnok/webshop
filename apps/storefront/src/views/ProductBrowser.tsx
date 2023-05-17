@@ -8,7 +8,7 @@ import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
 import { SortByField, SortDirection, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { RiGridFill, RiListCheck, RiSearchLine } from 'react-icons/ri';
 import { NavLink, useSearchParams } from 'react-router-dom';
 
@@ -45,7 +45,7 @@ const ProductBrowser = () => {
     setIsGridSelected(false);
   };
 
-  function handleCategoryClick(category: CategoryDto) {
+  const handleCategoryClick = (category: CategoryDto) => {
     if (parsedCategoryId === category.id) {
       setSearchParams((old) => {
         old.delete('category');
@@ -156,8 +156,7 @@ const ProductBrowser = () => {
         </div>
       )}
 
-      {/* section or div? */}
-      <section
+      <ol
         className={clsx(
           'gap-2',
           !isGridSelected && 'flex flex-col',
@@ -166,7 +165,7 @@ const ProductBrowser = () => {
         )}
       >
         {products?.map((product) => (
-          <div key={product.id}>
+          <Fragment key={product.id}>
             {isGridSelected ? (
               <ProductCard
                 id={product.id}
@@ -195,9 +194,9 @@ const ProductBrowser = () => {
                 />
               </ProductListCard>
             )}
-          </div>
+          </Fragment>
         ))}
-      </section>
+      </ol>
     </PageLayout>
   );
 };

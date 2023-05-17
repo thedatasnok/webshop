@@ -59,20 +59,21 @@ const LandingPage = () => {
         aria-labelledby='categories-title'
         className='overflow-x-scroll pb-2'
       >
-        <div className='mx-auto flex w-fit justify-center gap-4'>
+        <ul className='mx-auto flex w-fit justify-center gap-4'>
           {categories?.map((category) => (
-            <NavLink
-              key={category.id}
-              to={[RouteHref.PRODUCTS, '?category=', category.id].join('')}
-            >
-              <CategoryCard
-                id={category.id}
-                name={category.name}
-                iconUrl={category.iconUrl}
-              />
-            </NavLink>
+            <li key={category.id}>
+              <NavLink
+                to={[RouteHref.PRODUCTS, '?category=', category.id].join('')}
+              >
+                <CategoryCard
+                  id={category.id}
+                  name={category.name}
+                  iconUrl={category.iconUrl}
+                />
+              </NavLink>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <h2
@@ -86,7 +87,7 @@ const LandingPage = () => {
         aria-labelledby='featured-products-title'
         className='overflow-x-scroll pb-2'
       >
-        <div className='mx-auto flex w-fit justify-center gap-4'>
+        <ol className='mx-auto flex w-fit justify-center gap-4'>
           {products?.map((product) => (
             <ProductCard
               key={product.id}
@@ -104,7 +105,7 @@ const LandingPage = () => {
           {products && products.length > 1 && (
             <NavigationCard title='browse more' icon={RiStore2Line} />
           )}
-        </div>
+        </ol>
       </section>
 
       <h2
@@ -118,11 +119,11 @@ const LandingPage = () => {
         aria-labelledby='testimonials-title'
         className='overflow-x-scroll'
       >
-        <div className='mx-auto flex w-fit justify-center gap-4'>
+        <ul className='mx-auto flex w-fit justify-center gap-4'>
           {TESTIMONIALS.map((testimonial, i) => (
             <TestimonialCard key={i} {...testimonial} />
           ))}
-        </div>
+        </ul>
       </section>
 
       <h2

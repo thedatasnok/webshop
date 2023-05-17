@@ -295,24 +295,25 @@ const Checkout = () => {
         <div className='h-max pt-4 sm:pt-0 lg:flex lg:flex-col'>
           <SectionHeader title='Shopping cart' />
 
-          {products?.map((product, i, array) => (
-            <ProductListCard
-              key={product.id}
-              to={'/products/' + product.id}
-              id={product.id}
-              name={product.name}
-              shortDescription={product.shortDescription}
-              image={product.imageUrls[0]}
-              className={i !== array.length - 1 ? 'border-b' : ''}
-            >
-              <ProductListCardCartActions
-                quantity={items[product.id]}
-                price={product.price}
-                previousPrice={product.previousPrice}
-                isDiscount={product.isDiscount}
-              />
-            </ProductListCard>
-          ))}
+          <ul className='divide-y'>
+            {products?.map((product) => (
+              <ProductListCard
+                key={product.id}
+                to={'/products/' + product.id}
+                id={product.id}
+                name={product.name}
+                shortDescription={product.shortDescription}
+                image={product.imageUrls[0]}
+              >
+                <ProductListCardCartActions
+                  quantity={items[product.id]}
+                  price={product.price}
+                  previousPrice={product.previousPrice}
+                  isDiscount={product.isDiscount}
+                />
+              </ProductListCard>
+            ))}
+          </ul>
         </div>
       </main>
     </>
