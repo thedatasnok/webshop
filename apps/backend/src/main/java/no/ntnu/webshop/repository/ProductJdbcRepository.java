@@ -61,8 +61,9 @@ public class ProductJdbcRepository {
           'id', child.product_id,
           'quantity', p_child.quantity,
           'name', child.name,
-          'description', child.description,
-          'attributes', child.defined_attributes
+          'description', child.short_description,
+          'attributes', child.defined_attributes,
+          'imageUrls', child.image_urls
         )) FILTER (WHERE child.product_id IS NOT NULL), '[]') AS children,
         -- Finds all variants in the same family as the product and groups them into a JSON array
         COALESCE(JSON_AGG(JSON_BUILD_OBJECT(
