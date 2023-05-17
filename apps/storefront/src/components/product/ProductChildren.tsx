@@ -13,7 +13,7 @@ const ProductChildren: React.FC<ProductChildrenProps> = ({ children }) => {
   return (
     <>
       <h3 className='font-title mt-4 text-lg font-semibold uppercase'>
-        This package also contains the following:
+        This pack contains the following:
       </h3>
 
       <div role='list' className=''>
