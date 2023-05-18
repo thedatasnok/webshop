@@ -13,6 +13,9 @@ interface NavigationBarProps {
   className?: string;
 }
 
+/**
+ * Mobile navigation bar component, displayed at the bottom of the screen for mobile or small screens.
+ */
 const NavigationBar: React.FC<NavigationBarProps> = ({ className }) => {
   const { isEmpty, itemQuantity } = useCart();
   return (

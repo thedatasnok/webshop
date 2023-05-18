@@ -8,7 +8,7 @@ import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
 import { SortByField, SortDirection, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { RiGridFill, RiListCheck, RiSearchLine } from 'react-icons/ri';
 import { NavLink, useSearchParams } from 'react-router-dom';
 
@@ -45,7 +45,7 @@ const ProductBrowser = () => {
     setIsGridSelected(false);
   };
 
-  function handleCategoryClick(category: CategoryDto) {
+  const handleCategoryClick = (category: CategoryDto) => {
     if (parsedCategoryId === category.id) {
       setSearchParams((old) => {
         old.delete('category');
@@ -68,144 +68,135 @@ const ProductBrowser = () => {
   };
 
   return (
-    <PageLayout>
-      <main className='mx-auto w-full max-w-screen-xl'>
-        <section id='hero' className='py-4'>
-          <h1 className='font-title mb-2 flex text-2xl font-semibold uppercase'>
-            Browse
-          </h1>
+    <PageLayout className='mx-auto w-full max-w-screen-xl'>
+      <h1 className='font-title mb-2 flex pt-4 text-2xl font-semibold uppercase'>
+        Browse
+      </h1>
 
-          <p className='text-base-300 text-sm'>
-            Explore our newest insane gaming gear that will enhance your aim in
-            CS:GO Source 7 and Half life 3
-          </p>
-        </section>
-
-        <section id='categories'>
-          <div className='mx-auto my-2 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
-            {categories?.map((category) => (
-              <button
-                onClick={() => handleCategoryClick(category)}
-                key={category.id}
-              >
-                <CategoryCard
-                  id={category.id}
-                  name={category.name}
-                  iconUrl={category.iconUrl}
-                  selected={parsedCategoryId === category.id}
-                />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <div className='mt-2 flex flex-col sm:flex-row sm:justify-between'>
-          <h2
-            className={clsx(
-              'text-base-200 font-title preserve-line text-sm font-semibold uppercase tracking-wide',
-              !paramSearch && 'invisible'
-            )}
-          >
-            Showing {products?.length} results for "{paramSearch}"
-          </h2>
-
-          <div className='my-1 mr-0 flex items-center justify-end gap-2'>
-            <span className='text-base-200 font-title text-sm font-semibold uppercase tracking-wide'>
-              Sorting by
-            </span>
-            <SortByField
-              direction={paramSortDirection}
-              field={paramSortField}
-              fields={PRODUCT_SORT_FIELDS}
-              onChange={onSortChange}
-            />
-
-            <div className='flex items-center'>
-              <button
-                onClick={handleGridButtonClick}
-                className={clsx(
-                  'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
-                  isGridSelected && 'text-primary'
-                )}
-              >
-                <span className='sr-only'>Display as grid</span>
-                <RiGridFill className='h-7 w-7' />
-              </button>
-
-              <button
-                onClick={handleListButtonClick}
-                className={clsx(
-                  'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
-                  !isGridSelected && 'text-primary'
-                )}
-              >
-                <span className='sr-only'>Display as list</span>
-                <RiListCheck className='h-7 w-7' />
-              </button>
-            </div>
-          </div>
+      <section id='categories'>
+        <div className='mx-auto my-2 grid w-full grid-cols-4 gap-2 lg:grid-cols-8'>
+          {categories?.map((category) => (
+            <button
+              onClick={() => handleCategoryClick(category)}
+              key={category.id}
+            >
+              <CategoryCard
+                id={category.id}
+                name={category.name}
+                iconUrl={category.iconUrl}
+                selected={parsedCategoryId === category.id}
+                responsiveIcon
+              />
+            </button>
+          ))}
         </div>
+      </section>
 
-        {!isLoading && products && products.length === 0 && (
-          <div className='text-base-400 mx-auto my-16 flex max-w-xs flex-col items-center gap-1 text-center'>
-            <RiSearchLine className='h-16 w-16' />
-            <p className='text-sm'>
-              Could not find any products matching your search criteria, try
-              searching for something else or{' '}
-              <NavLink
-                to={RouteHref.PRODUCTS}
-                className='hover:text-base-200 underline'
-              >
-                clear your search
-              </NavLink>
-              .
-            </p>
-          </div>
-        )}
-
-        {/* section or div? */}
-        <section
+      <div className='mt-2 flex flex-col sm:flex-row sm:justify-between'>
+        <h2
           className={clsx(
-            'gap-2',
-            !isGridSelected && 'flex flex-col',
-            isGridSelected &&
-              'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'
+            'text-base-200 font-title preserve-line text-sm font-semibold uppercase tracking-wide',
+            !paramSearch && 'invisible'
           )}
         >
-          {products?.map((product) => (
-            <div key={product.id}>
-              {isGridSelected ? (
-                <ProductCard
-                  id={product.id}
-                  to={'/products/' + product.id}
-                  name={product.name}
-                  previousPrice={product.previousPrice}
-                  price={product.price}
-                  shortDescription={product.shortDescription}
-                  isDiscount={product.isDiscount}
-                  image={product.imageUrls[0]}
-                />
-              ) : (
-                <ProductListCard
-                  to={'/products/' + product.id}
-                  id={product.id}
-                  name={product.name}
-                  shortDescription={product.shortDescription}
-                  isDiscount={product.isDiscount}
-                  image={product.imageUrls[0]}
-                  hoverEffects
-                >
-                  <ProductListActions
-                    price={product.price}
-                    isDiscount={product.isDiscount}
-                    previousPrice={product.previousPrice}
-                  />
-                </ProductListCard>
+          Showing {products?.length} results for "{paramSearch}"
+        </h2>
+
+        <div className='my-1 mr-0 flex items-center justify-end gap-2'>
+          <span className='text-base-200 font-title text-sm font-semibold uppercase tracking-wide'>
+            Sorting by
+          </span>
+          <SortByField
+            direction={paramSortDirection}
+            field={paramSortField}
+            fields={PRODUCT_SORT_FIELDS}
+            onChange={onSortChange}
+          />
+
+          <div className='flex items-center'>
+            <button
+              onClick={handleGridButtonClick}
+              className={clsx(
+                'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
+                isGridSelected && 'text-primary'
               )}
-            </div>
-          ))}
-        </section>
-      </main>
+            >
+              <span className='sr-only'>Display as grid</span>
+              <RiGridFill className='h-7 w-7' />
+            </button>
+
+            <button
+              onClick={handleListButtonClick}
+              className={clsx(
+                'border-base-700 hover:bg-base-800 rounded-l-sm border transition-colors',
+                !isGridSelected && 'text-primary'
+              )}
+            >
+              <span className='sr-only'>Display as list</span>
+              <RiListCheck className='h-7 w-7' />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {!isLoading && products && products.length === 0 && (
+        <div className='text-base-400 mx-auto my-16 flex max-w-xs flex-col items-center gap-1 text-center'>
+          <RiSearchLine className='h-16 w-16' />
+          <p className='text-sm'>
+            Could not find any products matching your search criteria, try
+            searching for something else or{' '}
+            <NavLink
+              to={RouteHref.PRODUCTS}
+              className='hover:text-base-200 underline'
+            >
+              clear your search
+            </NavLink>
+            .
+          </p>
+        </div>
+      )}
+
+      <ol
+        className={clsx(
+          'gap-2',
+          !isGridSelected && 'flex flex-col',
+          isGridSelected &&
+            'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'
+        )}
+      >
+        {products?.map((product) => (
+          <Fragment key={product.id}>
+            {isGridSelected ? (
+              <ProductCard
+                id={product.id}
+                to={'/products/' + product.id}
+                name={product.name}
+                previousPrice={product.previousPrice}
+                price={product.price}
+                shortDescription={product.shortDescription}
+                isDiscount={product.isDiscount}
+                image={product.imageUrls[0]}
+              />
+            ) : (
+              <ProductListCard
+                to={'/products/' + product.id}
+                id={product.id}
+                name={product.name}
+                shortDescription={product.shortDescription}
+                isDiscount={product.isDiscount}
+                image={product.imageUrls[0]}
+                hoverEffects
+              >
+                <ProductListActions
+                  price={product.price}
+                  isDiscount={product.isDiscount}
+                  previousPrice={product.previousPrice}
+                />
+              </ProductListCard>
+            )}
+          </Fragment>
+        ))}
+      </ol>
     </PageLayout>
   );
 };

@@ -33,110 +33,102 @@ const ShoppingCart = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
-  function openDialog() {
-    setIsOpen(true);
-  }
-
-  function closeDialog() {
-    setIsOpen(false);
-  }
-
-  function handleClearCart() {
+  const onClear = () => {
     dispatch(clearCart());
     setIsOpen(false);
-  }
+  };
 
   return (
-    <PageLayout>
-      <main className='mx-auto max-w-screen-xl'>
-        <div className='mx-auto flex max-w-screen-xl items-center justify-center py-4'>
-          <h1 className='font-title text-2xl font-semibold uppercase'>
-            Shopping cart
-          </h1>
-          <div className='ml-auto'>
-            {!isEmpty && (
-              <Button
-                onClick={openDialog}
-                style='outline'
-                variant='neutral'
-                className='text-xs'
-              >
-                <RiCloseLine className='-ml-1.5 h-4 w-4' />
-                <span className='pt-px'>Clear cart</span>
-              </Button>
-            )}
-            <DialogPrompt
-              isOpen={isOpen}
-              onClose={closeDialog}
-              title='clear cart'
-              message='Are you sure you want to clear your cart?'
-              action={handleClearCart}
+    <PageLayout className='mx-auto max-w-screen-xl flex-1 w-full'>
+      <div className='flex items-center justify-center py-4'>
+        <h1 className='font-title text-2xl font-semibold uppercase'>
+          Shopping cart
+        </h1>
+
+        <div className='ml-auto'>
+          {!isEmpty && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              style='outline'
+              variant='neutral'
+              className='text-xs'
+            >
+              <RiCloseLine className='-ml-1.5 h-4 w-4' />
+              <span className='pt-px'>Clear cart</span>
+            </Button>
+          )}
+          <DialogPrompt
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title='clear cart'
+            message='Are you sure you want to clear your cart?'
+            action={onClear}
+          />
+        </div>
+      </div>
+
+      <div className='font-title mr-1 flex flex-row justify-end gap-4 uppercase sm:mr-0 sm:gap-4 md:gap-7'>
+        <h3 className='max-sm:hidden sm:pr-16 md:pr-14'>Quantity</h3>
+        <h3>Total</h3>
+        <h3 className='max-sm:hidden'>Delete</h3>
+      </div>
+
+      <ul className='mx-auto flex w-fit flex-col'>
+        {products?.map((product, i, array) => (
+          <ProductListCard
+            key={product.id}
+            id={product.id}
+            to={'/products/' + product.id}
+            name={product.name}
+            shortDescription={product.shortDescription}
+            image={product.imageUrls[0]}
+            className={i !== array.length - 1 ? 'border-b' : ''}
+          >
+            <ProductListCardCartActions
+              productId={product.id}
+              quantity={items[product.id]}
+              price={product.price}
+              previousPrice={product.previousPrice}
+              isDiscount={product.isDiscount}
             />
+          </ProductListCard>
+        ))}
+      </ul>
+
+      {isEmpty ? (
+        <div>
+          <NavLink
+            className={clsx(
+              'border-base-950 hover:text-primary-600 text-base-400 group flex cursor-pointer',
+              'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
+            )}
+            to={RouteHref.PRODUCTS}
+          >
+            <RiAddLine className='absolute h-8 w-8 -translate-y-14 translate-x-9' />
+            <RiShoppingCartLine className='h-16 w-16' />
+            <p className='text-center'>
+              Looks like there is nothing in your cart yet. <br />
+              Go shopping!
+            </p>
+          </NavLink>
+        </div>
+      ) : (
+        <>
+          <div className='font-title pt-2 text-center text-xl font-semibold uppercase sm:pt-2 sm:text-right'>
+            {/* default value to 0 if products are not loaded  */}
+            Sum: {formatPrice(totalPrice || 0)}
           </div>
-        </div>
 
-        <div className='font-title mr-1 flex flex-row justify-end gap-4 uppercase sm:mr-0 sm:gap-4 md:gap-7'>
-          <h3 className='hidden sm:block sm:pr-16 md:pr-14'>Quantity</h3>
-          <h3>Total</h3>
-          <h3 className='hidden sm:block'>Delete</h3>
-        </div>
-
-        <div className='mx-auto flex w-fit flex-col'>
-          {products?.map((product, i, array) => (
-            <ProductListCard
-              key={product.id}
-              id={product.id}
-              to={'/products/' + product.id}
-              name={product.name}
-              shortDescription={product.shortDescription}
-              image={product.imageUrls[0]}
-              className={i !== array.length - 1 ? 'border-b' : ''}
-            >
-              <ProductListCardCartActions
-                productId={product.id}
-                quantity={items[product.id]}
-                price={product.price}
-                previousPrice={product.previousPrice}
-                isDiscount={product.isDiscount}
-              />
-            </ProductListCard>
-          ))}
-        </div>
-        {isEmpty ? (
-          <div>
-            <NavLink
-              className={clsx(
-                'border-base-950 hover:text-primary-600 text-base-400 group flex cursor-pointer',
-                'flex-col items-center justify-center gap-2 rounded-sm border p-4 outline-none sm:transition '
-              )}
-              to={RouteHref.PRODUCTS}
-            >
-              <RiAddLine className='absolute h-8 w-8 -translate-y-14 translate-x-9' />
-              <RiShoppingCartLine className='h-16 w-16' />
-              <p className='text-center'>
-                Looks like there is nothing in your cart yet. <br />
-                Go shopping!
-              </p>
-            </NavLink>
-          </div>
-        ) : (
-          <>
-            <div className='font-title pt-2 text-center text-xl font-semibold uppercase sm:pt-2 sm:text-right'>
-              {/* default value to 0 if products are not loaded  */}
-              Sum: {formatPrice(totalPrice || 0)}
-            </div>
-
-            <NavLink
-              to={RouteHref.CHECKOUT}
-              className='mx-auto mt-2 block h-fit w-fit sm:ml-auto sm:mr-0'
-            >
-              <Button type='button' className='text-lg font-semibold'>
-                Checkout
-              </Button>
-            </NavLink>
-          </>
-        )}
-      </main>
+          <NavLink
+            to={RouteHref.CHECKOUT}
+            className='mx-auto mt-2 block h-fit w-fit sm:ml-auto sm:mr-0'
+          >
+            <Button type='button' className='text-lg font-semibold'>
+              Checkout
+            </Button>
+          </NavLink>
+        </>
+      )}
     </PageLayout>
   );
 };
@@ -178,7 +170,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
               !isDiscount && 'invisible sm:hidden'
             )}
           >
-            -{formatPrice(previousTotal - totalPrice)}
+            {formatPrice(previousTotal - totalPrice)}
           </div>
         </div>
         {/* Delete */}
@@ -222,7 +214,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    * Decrements the quantity by 1.
    * Ignores if the quantity is above 1.
    */
-  function decrementQuantity() {
+  const decrementQuantity = () => {
     if (quantity > 1) updateQuantity(quantity - 1);
   }
 
@@ -230,7 +222,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    * Increments the quantity by 1.
    * Ignores if the quantity is above 999.
    */
-  function incrementQuantity() {
+  const incrementQuantity = () => {
     if (quantity < 999) updateQuantity(quantity + 1);
   }
 

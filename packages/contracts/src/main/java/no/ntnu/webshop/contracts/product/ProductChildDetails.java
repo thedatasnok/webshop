@@ -1,5 +1,6 @@
 package no.ntnu.webshop.contracts.product;
 
+import java.util.List;
 import java.util.Map;
 
 import lombok.Builder;
@@ -12,5 +13,6 @@ public record ProductChildDetails(
   Integer quantity,
   String name,
   String description,
-  Map<String, String> attributes
+  Map<String, Map<String, String>> attributes,
+  List<String> imageUrls
 ) {}

@@ -2,7 +2,7 @@ import { useTypedSelector } from '@/store';
 import { useMemo } from 'react';
 
 /**
- * Hooks to get the cart state from the store.
+ * Hook to get the cart state from the store.
  *
  * @returns the cart state, wrapped in a memoized object
  */

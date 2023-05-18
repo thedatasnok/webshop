@@ -158,7 +158,8 @@ export interface ProductChildDetails {
     quantity: number;
     name: string;
     description: string;
-    attributes: { [index: string]: string };
+    attributes: { [index: string]: { [index: string]: string } };
+    imageUrls: string[];
 }
 
 export interface ProductDetails {

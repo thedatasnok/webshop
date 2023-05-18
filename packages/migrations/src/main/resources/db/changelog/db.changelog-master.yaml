@@ -19,3 +19,10 @@ databaseChangeLog:
         - sqlFile:
             path: changelog/000-initial/004-orders.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 001-search
+      author: thedatasnok, GBfur, dawsta27
+      changes:
+        - sqlFile:
+            path: changelog/001-search/000-extension.sql
+            relativeToChangelogFile: true

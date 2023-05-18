@@ -2,10 +2,7 @@ import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { useFindProductsQuery } from '@/services/products';
-import {
-  useGetOrderQuery,
-  usePlaceOrderMutation,
-} from '@/services/userContextOrders';
+import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
@@ -32,7 +29,7 @@ import {
   RiWalletLine,
 } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -298,24 +295,25 @@ const Checkout = () => {
         <div className='h-max pt-4 sm:pt-0 lg:flex lg:flex-col'>
           <SectionHeader title='Shopping cart' />
 
-          {products?.map((product, i, array) => (
-            <ProductListCard
-              key={product.id}
-              to={'/products/' + product.id}
-              id={product.id}
-              name={product.name}
-              shortDescription={product.shortDescription}
-              image={product.imageUrls[0]}
-              className={i !== array.length - 1 ? 'border-b' : ''}
-            >
-              <ProductListCardCartActions
-                quantity={items[product.id]}
-                price={product.price}
-                previousPrice={product.previousPrice}
-                isDiscount={product.isDiscount}
-              />
-            </ProductListCard>
-          ))}
+          <ul className='divide-y'>
+            {products?.map((product) => (
+              <ProductListCard
+                key={product.id}
+                to={'/products/' + product.id}
+                id={product.id}
+                name={product.name}
+                shortDescription={product.shortDescription}
+                image={product.imageUrls[0]}
+              >
+                <ProductListCardCartActions
+                  quantity={items[product.id]}
+                  price={product.price}
+                  previousPrice={product.previousPrice}
+                  isDiscount={product.isDiscount}
+                />
+              </ProductListCard>
+            ))}
+          </ul>
         </div>
       </main>
     </>
@@ -357,7 +355,7 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
           qty: {quantity}
         </p>
 
-        <div className='flex flex-col items-end font-semibold sm:min-w-[5rem]'>
+        <div className='font-title flex flex-col items-end font-semibold sm:min-w-[5rem]'>
           <div className='text-xl'>{formatPrice(totalPrice)}</div>
           {isDiscount && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>

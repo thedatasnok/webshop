@@ -44,7 +44,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       AND prev_pp.to = pp.from
     WHERE
       ((COALESCE(:id) IS NULL AND :allowEmptyIdList = TRUE) OR p.id IN (:id)) AND
-      (:name IS NULL OR p.name ILIKE %:name%) AND
+      (:name IS NULL OR (SIMILARITY(p.name, :name) > 0.3 OR p.name ILIKE %:name%)) AND
       (COALESCE(:category) IS NULL OR p.id IN (
         SELECT DISTINCT p.id
         FROM Category c

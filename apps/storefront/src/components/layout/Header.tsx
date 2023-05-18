@@ -1,7 +1,6 @@
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
 import { Logo, useAuth } from '@webshop/ui';
-import clsx from 'clsx';
 import {
   RiDoorOpenLine,
   RiHeadphoneLine,
@@ -13,19 +12,24 @@ import { NavLink } from 'react-router-dom';
 import NavigationItem from '../navigation/NavigationItem';
 import { SearchBar } from '../navigation/SearchBar';
 
-interface HeaderProps {
-  className?: string;
-}
+interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ className }) => {
+/**
+ * Main header component, displayed atop most pages.
+ */
+const Header: React.FC<HeaderProps> = () => {
   const { isLoggedIn } = useAuth();
   const { isEmpty, itemQuantity } = useCart();
 
   return (
-    <header className={clsx('border-base-200', className)}>
+    <header>
       <nav className='mx-auto flex max-w-screen-xl flex-col gap-4 py-4 sm:flex-row sm:items-center'>
         <div className='flex justify-center'>
-          <NavLink to={RouteHref.HOME} className='w-64 sm:w-44' aria-label='home'>
+          <NavLink
+            to={RouteHref.HOME}
+            className='w-64 sm:w-44'
+            aria-label='home'
+          >
             <Logo variant='big' />
           </NavLink>
         </div>
@@ -58,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             />
 
             {!isEmpty && (
-              <div className='bg-primary text-base-900 absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full px-1 text-xs font-semibold'>
+              <div className='bg-primary text-base-900 absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full px-1 text-xs font-semibold'>
                 {itemQuantity < 10 ? itemQuantity : '9+'}
               </div>
             )}
