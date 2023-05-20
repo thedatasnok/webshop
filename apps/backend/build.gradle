@@ -19,7 +19,6 @@ dependencies {
   implementation 'com.auth0:java-jwt:4.3.0'
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
   implementation 'com.amazonaws:aws-java-sdk-s3:1.12.437'
-  implementation 'io.hypersistence:hypersistence-utils-hibernate-62:3.3.2'
   
   compileOnly 'org.projectlombok:lombok'
 
