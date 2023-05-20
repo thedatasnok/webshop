@@ -167,7 +167,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isLast }) => {
               </a>
             </p>
             <p className='text-base-300 text-sm'>
-              Ordered placed: {dayjs(order.orderedAt).format('LLLL')}
+              Order placed: {dayjs(order.orderedAt).format('LLLL')}
             </p>
             <p className='text-base-300 text-sm'>
               Payment method:{' '}
