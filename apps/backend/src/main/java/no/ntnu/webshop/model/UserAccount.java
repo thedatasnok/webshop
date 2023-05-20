@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +20,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.ntnu.webshop.utility.EnumTypes.UserAccountRoleEnumType;
 
 /**
  * Represents a user account in the database. Note that the id cannot be set manually, as it should
@@ -57,7 +57,7 @@ public class UserAccount implements Serializable {
 
   @Setter
   @Enumerated(EnumType.STRING)
-  @Type(UserAccountRoleEnumType.class)
+  @Type(PostgreSQLEnumType.class)
   @Column(name = "role", nullable = false)
   private UserAccountRole role;
 

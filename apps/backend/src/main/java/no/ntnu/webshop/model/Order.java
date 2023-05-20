@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,10 +27,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.ntnu.webshop.utility.EnumTypes.OrderStatusEnumType;
-import no.ntnu.webshop.utility.EnumTypes.PaymentMethodEnumType;
-import no.ntnu.webshop.utility.EnumTypes.PaymentStatusEnumType;
-import no.ntnu.webshop.utility.EnumTypes.ShippingMethodEnumType;
 
 /**
  * Represents an order in the database.
@@ -91,23 +88,23 @@ public class Order {
 
   @Setter
   @Enumerated(EnumType.STRING)
-  @Type(OrderStatusEnumType.class)
+  @Type(PostgreSQLEnumType.class)
   @Column(name = "order_status")
   private OrderStatus orderStatus;
 
   @Setter
   @Enumerated(EnumType.STRING)
-  @Type(PaymentStatusEnumType.class)
+  @Type(PostgreSQLEnumType.class)
   @Column(name = "payment_status")
   private PaymentStatus paymentStatus;
 
   @Enumerated(EnumType.STRING)
-  @Type(PaymentMethodEnumType.class)
+  @Type(PostgreSQLEnumType.class)
   @Column(name = "payment_method")
   private PaymentMethod paymentMethod;
 
   @Enumerated(EnumType.STRING)
-  @Type(ShippingMethodEnumType.class)
+  @Type(PostgreSQLEnumType.class)
   @Column(name = "shipping_method")
   private ShippingMethod shippingMethod;
 
