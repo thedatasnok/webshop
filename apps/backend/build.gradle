@@ -33,7 +33,7 @@ dependencies {
   testAnnotationProcessor 'org.projectlombok:lombok'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'org.testcontainers:postgresql:1.18.1'
+  testImplementation 'org.testcontainers:postgresql'
   testRuntimeOnly project(':packages:migrations')
 }
 

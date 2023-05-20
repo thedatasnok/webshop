@@ -76,10 +76,10 @@ public class ProductController {
     // if the parameter is not recognized, the default is to sort by id, could also throw an exception
     // if that is more suited
     var column = switch (sortBy.orElse("id").toLowerCase()) {
-      case "name" -> "p.name";
-      case "price" -> "pp.price";
-      case "discount" -> "pp.isDiscount";
-      default -> "p.id";
+      case "name" -> "name";
+      case "price" -> "price";
+      case "discount" -> "discount";
+      default -> "id";
     };
 
     var sort = Sort.by(sortDirection.orElse(Direction.ASC), column);

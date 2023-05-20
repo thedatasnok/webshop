@@ -4,25 +4,25 @@ databaseChangeLog:
       author: thedatasnok, GBfur, dawsta27
       changes:
         - sqlFile:
-            path: changelog/000-initial/000-h2-utils.sql
+            path: 000-initial/000-h2-utils.sql
             dbms: h2
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/000-initial/001-user-account.sql
+            path: 000-initial/001-user-account.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/000-initial/002-category.sql
+            path: 000-initial/002-category.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/000-initial/003-products.sql
+            path: 000-initial/003-products.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: changelog/000-initial/004-orders.sql
+            path: 000-initial/004-orders.sql
             relativeToChangelogFile: true
   - changeSet:
       id: 001-search
       author: thedatasnok, GBfur, dawsta27
       changes:
         - sqlFile:
-            path: changelog/001-search/000-extension.sql
+            path: 001-search/000-extension.sql
             relativeToChangelogFile: true

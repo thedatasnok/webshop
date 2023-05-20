@@ -25,6 +25,7 @@ public class EnumTypes {
    * Custom enum type that maps enums to PostgreSQL enums. By default Hibernate maps enums to VARCHAR,
    * which would cause exceptions on insert.
    */
+  // TODO: Find and alternative way to handle this conversion from the PostgreSQL enum type to the Java one.
   private static class CustomEnumType<T extends Enum<T>> extends EnumType<T> {
     @Override
     public void nullSafeSet(

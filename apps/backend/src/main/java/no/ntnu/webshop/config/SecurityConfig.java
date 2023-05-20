@@ -58,19 +58,10 @@ public class SecurityConfig {
   public SecurityFilterChain webSecurityCustomizer(
       HttpSecurity httpSecurity
   ) throws Exception {
-    httpSecurity.cors()
-      .and()
-      .csrf()
-      .disable()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .authorizeHttpRequests()
+    httpSecurity.csrf(csrf -> csrf.disable())
+      .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       // by default we permit all requests, but we can override this by using annotation on each endpoint
-      .requestMatchers("/**")
-      .permitAll()
-      .anyRequest()
-      .authenticated();
+      .authorizeHttpRequests(authorize -> authorize.requestMatchers("/**").permitAll().anyRequest().authenticated());
 
     httpSecurity.addFilterBefore(this.authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
