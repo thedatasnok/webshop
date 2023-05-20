@@ -26,13 +26,13 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
    */
   @Query("""
     SELECT new no.ntnu.webshop.contracts.product.ProductListItem(
-      p.id,
+      p.id AS id,
       p.name,
       p.shortDescription,
       p.imageUrls,
-      pp.price,
-      pp.isDiscount,
-      prev_pp.price
+      pp.price AS price,
+      pp.isDiscount AS discount,
+      prev_pp.price AS prevPrice
     )
     FROM Product p
     INNER JOIN ProductPrice pp
@@ -120,7 +120,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       ON prev_pp.product = p
       AND prev_pp.to = pp.from
     LEFT JOIN p.categories c
-    WHERE p.id != :id
+    WHERE p.id <> :id
     ORDER BY CASE WHEN c.id IN (
       SELECT DISTINCT related_category.id
       FROM Product related_product
