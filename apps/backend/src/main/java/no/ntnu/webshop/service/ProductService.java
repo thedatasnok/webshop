@@ -89,7 +89,7 @@ public class ProductService {
       );
     }
 
-    var categories = this.categoryJpaRepository.findAllById(request.categoryIds());
+    var categories = this.categoryJpaRepository.findAllByIdWithProducts(request.categoryIds());
 
     if (categories.size() != request.categoryIds().size())
       throw new CategoryNotFoundException("One or more categories were not found");

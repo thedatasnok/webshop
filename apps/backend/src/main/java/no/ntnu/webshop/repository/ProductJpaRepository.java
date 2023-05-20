@@ -126,7 +126,8 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       FROM Product related_product
       INNER JOIN related_product.categories related_category
       WHERE related_product.id = :id
-    ) THEN TRUE ELSE FALSE END DESC
+    ) THEN TRUE ELSE FALSE END DESC,
+    p.id DESC
     LIMIT 10
     """)
   List<ProductListItem> findRelatedProducts(
