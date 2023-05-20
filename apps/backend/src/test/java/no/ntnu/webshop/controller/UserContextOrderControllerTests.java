@@ -35,8 +35,10 @@ import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.service.OrderService;
 import no.ntnu.webshop.service.ProductService;
 import no.ntnu.webshop.utility.AuthorizationTestUtility;
+import no.ntnu.webshop.utility.EnableTestcontainers;
 
 @SpringBootTest
+@EnableTestcontainers
 @RequiredArgsConstructor
 class UserContextOrderControllerTests {
   private final UserAccountJpaRepository userAccountJpaRepository;

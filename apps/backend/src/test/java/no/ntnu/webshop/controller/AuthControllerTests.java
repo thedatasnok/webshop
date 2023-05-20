@@ -21,8 +21,10 @@ import no.ntnu.webshop.contracts.auth.SignInRequest;
 import no.ntnu.webshop.contracts.auth.SignUpRequest;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
+import no.ntnu.webshop.utility.EnableTestcontainers;
 
 @SpringBootTest
+@EnableTestcontainers
 @RequiredArgsConstructor
 class AuthControllerTests {
   private final ObjectMapper objectMapper;

@@ -26,8 +26,10 @@ import no.ntnu.webshop.repository.CategoryJpaRepository;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
 import no.ntnu.webshop.service.UserAccountService;
 import no.ntnu.webshop.utility.AuthorizationTestUtility;
+import no.ntnu.webshop.utility.EnableTestcontainers;
 
 @SpringBootTest
+@EnableTestcontainers
 @RequiredArgsConstructor
 class CategoryControllerTests {
 

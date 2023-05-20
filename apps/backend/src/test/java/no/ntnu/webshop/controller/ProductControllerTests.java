@@ -4,9 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,19 +27,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import no.ntnu.webshop.contracts.category.CategoryDto;
 import no.ntnu.webshop.contracts.category.CreateCategoryRequest;
 import no.ntnu.webshop.contracts.product.CreateProductRequest;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductListItem;
-import no.ntnu.webshop.model.Category;
 import no.ntnu.webshop.model.UserAccount;
 import no.ntnu.webshop.model.UserAccountRole;
 import no.ntnu.webshop.repository.ProductJpaRepository;
 import no.ntnu.webshop.repository.UserAccountJpaRepository;
+import no.ntnu.webshop.service.ProductService;
 import no.ntnu.webshop.service.UserAccountService;
 import no.ntnu.webshop.utility.AuthorizationTestUtility;
+import no.ntnu.webshop.utility.EnableTestcontainers;
 
 @SpringBootTest
+@EnableTestcontainers
 @RequiredArgsConstructor
 class ProductControllerTests {
   private final ObjectMapper objectMapper;
@@ -46,6 +51,7 @@ class ProductControllerTests {
   private final UserAccountService userAccountService;
   private final UserAccountJpaRepository userAccountJpaRepository;
   private final AuthorizationTestUtility authorizationTestUtility;
+  private final ProductService productService;
 
   private MockMvc mockMvc;
   private UserAccount userAccount;
@@ -56,7 +62,7 @@ class ProductControllerTests {
       .apply(SecurityMockMvcConfigurers.springSecurity())
       .build();
 
-    userAccount = this.userAccountService
+    this.userAccount = this.userAccountService
       .createUserAccount("Bob the Mocker", "mock@bob.com", "password", UserAccountRole.SHOP_OWNER);
   }
 
@@ -66,7 +72,7 @@ class ProductControllerTests {
   }
 
   @Test
-  void canCreateProduct() throws Exception {
+  void canCreateAndDeleteProduct() throws Exception {
     var request = new CreateProductRequest(
       "sample product",
       "",
@@ -83,13 +89,36 @@ class ProductControllerTests {
 
     var countBefore = this.productJpaRepository.count();
 
-    var result = createProduct(request);
+    var result = this.mockMvc
+      .perform(
+        MockMvcRequestBuilders.post("/api/v1/products")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(this.objectMapper.writeValueAsString(request))
+          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("sample product"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("sample description"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls").isArray())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls[0]").value("https://example.com/image.png"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(300.0))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.isDiscount").value(false))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.familyId").doesNotExist())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.attributes").isEmpty())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.children").isEmpty())
+      .andReturn();
 
     assertEquals(countBefore + 1, this.productJpaRepository.count());
 
     var id = this.objectMapper.readValue(result.getResponse().getContentAsString(), ProductDetails.class).id();
 
-    deleteProductWithId(id, userAccount);
+    this.mockMvc
+      .perform(
+        MockMvcRequestBuilders.delete("/api/v1/products/" + id + "?force=true")
+          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
+      )
+      .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     assertFalse(this.productJpaRepository.existsById(id), "Product was not deleted");
   }
@@ -105,10 +134,11 @@ class ProductControllerTests {
   @Test
   void canFindRelatedProducts() throws Exception {
     var categoryRequest = new CreateCategoryRequest(
-      "test category",
+      UUID.randomUUID().toString(),
       ""
     );
-    var categoryResult = mockMvc
+
+    var categoryResult = this.mockMvc
       .perform(
         MockMvcRequestBuilders.post("/api/v1/categories")
           .contentType(MediaType.APPLICATION_JSON)
@@ -119,25 +149,11 @@ class ProductControllerTests {
       .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(categoryRequest.name()))
       .andExpect(MockMvcResultMatchers.jsonPath("$.iconUrl").value(categoryRequest.iconUrl()));
 
-    Integer categoryId = objectMapper
-      .readValue(categoryResult.andReturn().getResponse().getContentAsString(), Category.class)
-      .getId();
+    var categoryId = this.objectMapper
+      .readValue(categoryResult.andReturn().getResponse().getContentAsString(), CategoryDto.class)
+      .id();
 
-    var productRequest1 = new CreateProductRequest(
-      "sample product",
-      "",
-      "sample description",
-      "",
-      List.of("https://example.com/image.png"),
-      300.0,
-      false,
-      null,
-      Set.of(),
-      Map.of(),
-      Map.of()
-    );
-
-    var productRequest2 = new CreateProductRequest(
+    var request = new CreateProductRequest(
       "sample product",
       "",
       "sample description",
@@ -151,40 +167,15 @@ class ProductControllerTests {
       Map.of()
     );
 
-    var productRequest3 = new CreateProductRequest(
-      "sample product",
-      "",
-      "sample description",
-      "",
-      List.of("https://example.com/image.png"),
-      300.0,
-      false,
-      null,
-      Set.of(categoryId),
-      Map.of(),
-      Map.of()
-    );
-
-    var productResult1 = createProduct(productRequest1);
-    var productResult2 = createProduct(productRequest2);
-    var productResult3 = createProduct(productRequest3);
-
-    var productId1 = this.objectMapper
-      .readValue(productResult1.getResponse().getContentAsString(), ProductDetails.class)
-      .id();
-    var productId2 = this.objectMapper
-      .readValue(productResult2.getResponse().getContentAsString(), ProductDetails.class)
-      .id();
-    var productId3 = this.objectMapper
-      .readValue(productResult3.getResponse().getContentAsString(), ProductDetails.class)
-      .id();
+    var productId1 = this.productService.createProduct(request).getId();
+    var productId2 = this.productService.createProduct(request).getId();
+    var productId3 = this.productService.createProduct(request).getId();
 
     // get related products for the second product
-    var relatedProductSecondProduct = mockMvc
+    var relatedProductSecondProduct = this.mockMvc
       .perform(
         MockMvcRequestBuilders.get("/api/v1/products/" + productId2 + "/related")
           .contentType(MediaType.APPLICATION_JSON)
-          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
       )
       .andExpect(MockMvcResultMatchers.status().isOk())
       .andReturn()
@@ -192,7 +183,7 @@ class ProductControllerTests {
       .getContentAsString();
 
     // get the list of related products
-    List<ProductListItem> secondProductRelatedList = objectMapper
+    List<ProductListItem> secondProductRelatedList = this.objectMapper
       .readValue(relatedProductSecondProduct, new TypeReference<List<ProductListItem>>(){});
 
     // asserts that the first related product is the third product
@@ -200,7 +191,7 @@ class ProductControllerTests {
     assertEquals(secondProductRelatedList.get(0).id(), productId3);
 
     // does the same for the third product
-    var relatedProductsThirdProduct = mockMvc
+    var relatedProductsThirdProduct = this.mockMvc
       .perform(
         MockMvcRequestBuilders.get("/api/v1/products/" + productId3 + "/related")
           .contentType(MediaType.APPLICATION_JSON)
@@ -211,15 +202,15 @@ class ProductControllerTests {
       .getResponse()
       .getContentAsString();
 
-    List<ProductListItem> thirdProductRelatedList = objectMapper
+    List<ProductListItem> thirdProductRelatedList = this.objectMapper
       .readValue(relatedProductsThirdProduct, new TypeReference<List<ProductListItem>>(){});
 
     assertEquals(thirdProductRelatedList.get(0).id(), productId2);
 
     // cleanup
-    deleteProductWithId(productId1, userAccount);
-    deleteProductWithId(productId2, userAccount);
-    deleteProductWithId(productId3, userAccount);
+    this.productService.deleteProductById(productId1, true);
+    this.productService.deleteProductById(productId2, true);
+    this.productService.deleteProductById(productId3, true);
 
     this.mockMvc
       .perform(
@@ -238,72 +229,46 @@ class ProductControllerTests {
    */
   @Test
   void canFindFeaturedProducts() throws Exception {
+    var discountProduct = new CreateProductRequest(
+      "sample product",
+      "",
+      "sample description",
+      "",
+      List.of("https://example.com/image.png"),
+      300.0,
+      true,
+      null,
+      Set.of(),
+      Map.of(),
+      Map.of()
+    );
 
-    List<CreateProductRequest> discountProductRequests = new ArrayList<>();
-    List<MvcResult> discountProductResults = new ArrayList<>();
-
-    List<CreateProductRequest> productRequests = new ArrayList<>();
-    List<MvcResult> productResults = new ArrayList<>();
+    List<Long> discountedProductIds = new ArrayList<>();
 
     // 4 products on discount
     for (int i = 0; i < 4; i++) {
-      var discountProductRequest = new CreateProductRequest(
-        "sample product",
-        "",
-        "sample description",
-        "",
-        List.of("https://example.com/image.png"),
-        300.0,
-        true,
-        null,
-        Set.of(),
-        Map.of(),
-        Map.of()
-      );
-
-      discountProductRequests.add(discountProductRequest);
-      discountProductResults.add(
-        this.mockMvc
-          .perform(
-            MockMvcRequestBuilders.post("/api/v1/products")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(this.objectMapper.writeValueAsString(discountProductRequest))
-              .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
-          )
-          .andExpect(MockMvcResultMatchers.status().isOk())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("sample product"))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("sample description"))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls").isArray())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls[0]").value("https://example.com/image.png"))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(300.0))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.isDiscount").value(true))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.familyId").doesNotExist())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.attributes").isEmpty())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.children").isEmpty())
-          .andReturn()
-      );
+      discountedProductIds.add(this.productService.createProduct(discountProduct).getId());
     }
 
-    // 10 products
-    for (int i = 0; i < 11; i++) {
-      var productRequest = new CreateProductRequest(
-        "sample product",
-        "",
-        "sample description",
-        "",
-        List.of("https://example.com/image.png"),
-        300.0,
-        false,
-        null,
-        Set.of(),
-        Map.of(),
-        Map.of()
-      );
+    var regularProduct = new CreateProductRequest(
+      "sample product",
+      "",
+      "sample description",
+      "",
+      List.of("https://example.com/image.png"),
+      300.0,
+      false,
+      null,
+      Set.of(),
+      Map.of(),
+      Map.of()
+    );
 
-      productRequests.add(productRequest);
-      var productResult = createProduct(productRequests.get(i));
-      productResults.add(productResult);
+    List<Long> regularProductIds = new ArrayList<>();
+
+    // 10 regular products
+    for (int i = 0; i < 11; i++) {
+      regularProductIds.add(this.productService.createProduct(regularProduct).getId());
     }
 
     var featuredProducts = mockMvc
@@ -317,102 +282,23 @@ class ProductControllerTests {
       .getResponse()
       .getContentAsString();
 
-    List<ProductListItem> featuredProductList = objectMapper
+    List<ProductListItem> featuredProductList = this.objectMapper
       .readValue(featuredProducts, new TypeReference<List<ProductListItem>>(){});
-
-    List<Long> productIds = new ArrayList<>();
-    List<Long> discountProductIds = new ArrayList<>();
-
-    for (int i = 0; i < discountProductResults.size(); i++) {
-      var productId = this.objectMapper
-        .readValue(discountProductResults.get(i).getResponse().getContentAsString(), ProductDetails.class)
-        .id();
-      discountProductIds.add(productId);
-    }
-
-    for (int i = 0; i < productResults.size(); i++) {
-      var productId = this.objectMapper
-        .readValue(productResults.get(i).getResponse().getContentAsString(), ProductDetails.class)
-        .id();
-      productIds.add(productId);
-    }
 
     // Asserts that there is 10 featured products, since featured products only takes in 10 products.
     assertEquals(10, featuredProductList.size());
 
     // Asserts that the products on discount is in the featured product list
     // The first featuredProduct should be the last discount product created and so on.
-    assertEquals(featuredProductList.get(0).id(), discountProductIds.get(3));
-    assertEquals(featuredProductList.get(1).id(), discountProductIds.get(2));
-    assertEquals(featuredProductList.get(2).id(), discountProductIds.get(1));
-    assertEquals(featuredProductList.get(3).id(), discountProductIds.get(0));
+    assertEquals(featuredProductList.get(0).id(), discountedProductIds.get(3));
+    assertEquals(featuredProductList.get(1).id(), discountedProductIds.get(2));
+    assertEquals(featuredProductList.get(2).id(), discountedProductIds.get(1));
+    assertEquals(featuredProductList.get(3).id(), discountedProductIds.get(0));
 
     // cleanup
-
-    // deletion of products without discount
-    for (int i = 0; i < productResults.size(); i++) {
-      deleteProductWithId(productIds.get(i), userAccount);
-    }
-
-    // deletion of products with discount
-    for (int i = 0; i < discountProductResults.size(); i++) {
-      deleteProductWithId(discountProductIds.get(i), userAccount);
-    }
-
-  }
-
-  /**
-   * Creates a product and checks that the response is correct to the request. This method is used to
-   * create products for testing, with the correct request values.
-   * 
-   * @param productRequest the product request
-   * @return the result
-   * @throws Exception if an error occurs
-   */
-  private MvcResult createProduct(
-      CreateProductRequest productRequest
-  ) throws Exception {
-    return this.mockMvc
-      .perform(
-        MockMvcRequestBuilders.post("/api/v1/products")
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(this.objectMapper.writeValueAsString(productRequest))
-          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
-      )
-      .andExpect(MockMvcResultMatchers.status().isOk())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("sample product"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("sample description"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls").isArray())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.imageUrls[0]").value("https://example.com/image.png"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(300.0))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.isDiscount").value(false))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.familyId").doesNotExist())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.attributes").isEmpty())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.children").isEmpty())
-      .andReturn();
-  }
-
-  /**
-   * Deletes a product with the given id
-   * 
-   * @param id          the id of the product
-   * @param userAccount the user account
-   * @return the product result
-   * @throws Exception if an error occurs
-   */
-  private void deleteProductWithId(
-      Long id,
-      UserAccount userAccount
-  ) throws Exception {
-    mockMvc
-      .perform(
-        MockMvcRequestBuilders.delete("/api/v1/products/" + id + "?force=true")
-          .header("Authorization", this.authorizationTestUtility.generateJwt(userAccount))
-      )
-      .andExpect(MockMvcResultMatchers.status().isNoContent());
-
-    assertFalse(this.productJpaRepository.existsById(id), "Product was not deleted");
+    Stream.of(discountedProductIds, regularProductIds)
+      .flatMap(Collection::stream)
+      .forEach(id -> this.productService.deleteProductById(id, true));
   }
 
 }

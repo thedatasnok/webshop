@@ -26,8 +26,10 @@ import no.ntnu.webshop.security.annotation.ShopOwnerAuthorization;
 import no.ntnu.webshop.security.annotation.ShopWorkerAuthorization;
 import no.ntnu.webshop.service.UserAccountService;
 import no.ntnu.webshop.utility.AuthorizationTestUtility;
+import no.ntnu.webshop.utility.EnableTestcontainers;
 
 @SpringBootTest
+@EnableTestcontainers
 @RequiredArgsConstructor
 class AuthorizationTests {
   private final WebApplicationContext context;
