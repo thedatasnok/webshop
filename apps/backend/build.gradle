@@ -34,6 +34,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
   testRuntimeOnly project(':packages:migrations')
+  testRuntimeOnly 'org.testcontainers:postgresql:1.18.1'
 }
 
 tasks.named('test') {
