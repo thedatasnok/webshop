@@ -212,6 +212,7 @@ const ProductView = () => {
           <ol className='mx-auto flex w-fit justify-center gap-4'>
             {relatedProducts?.map((product) => (
               <ProductCard
+                key={product.id}
                 id={product.id}
                 to={[RouteHref.PRODUCTS, product.id].join('/')}
                 name={product.name}
