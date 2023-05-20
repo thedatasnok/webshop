@@ -182,11 +182,9 @@ Add the following to your `settings.json` to enable running tests from VS Code:
 
 </details>
 
-In order to run tests, you need to have a Postgres instance to run the tests against. Ideally we wanted to use an in-memory H2 database, but it has some errors when handling JSON columns together with Hibernate so the idea was abandoned for now.
+In order to run tests, you need to have Docker installed. Our tests rely on [Testcontainers](https://www.testcontainers.org/), which automagically starts a Postgres container instance that it will use for the tests.
 
-This can be accomplished by defining a `.env` file in the root of the project, refer to the steps in [Getting started](#getting-started) for more information, followed by running this command: `docker compose up -d database`
-
-Once you have set up the database, run the tests from your editor or through `./gradlew :apps:backend:test`.
+Once you have everything set up, run the tests from your editor or through `./gradlew :apps:backend:test`.
 
 ### Deployment
 
