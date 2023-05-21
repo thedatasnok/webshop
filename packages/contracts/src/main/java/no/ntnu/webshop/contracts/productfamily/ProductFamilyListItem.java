@@ -7,7 +7,7 @@ public record ProductFamilyListItem(
   Long id,
   String name,
   String description,
-  Map<String, String> sharedAttributes,
-  Map<String, Set<String>> attributeMap,
+  Map<String, Map<String, String>> sharedAttributes,
+  Map<String, Map<String, Set<String>>> attributeMap,
   Long productCount
 ) {}
