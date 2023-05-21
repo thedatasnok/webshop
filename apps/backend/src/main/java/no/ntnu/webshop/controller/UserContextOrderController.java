@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,17 +23,9 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.PlaceOrderRequest;
 import no.ntnu.webshop.error.model.OrderNotFoundException;
-import no.ntnu.webshop.error.model.ProductNotFoundException;
-import no.ntnu.webshop.event.model.OrderConfirmationEvent;
-import no.ntnu.webshop.model.Address;
-import no.ntnu.webshop.model.Order;
-import no.ntnu.webshop.model.OrderLine;
 import no.ntnu.webshop.model.OrderStatus;
-import no.ntnu.webshop.model.PaymentMethod;
-import no.ntnu.webshop.model.ShippingMethod;
 import no.ntnu.webshop.repository.OrderJdbcRepository;
 import no.ntnu.webshop.repository.OrderJpaRepository;
-import no.ntnu.webshop.repository.ProductPriceJpaRepository;
 import no.ntnu.webshop.security.UserAccountDetailsAdapter;
 import no.ntnu.webshop.security.annotation.CustomerAuthorization;
 import no.ntnu.webshop.service.OrderService;
@@ -52,8 +43,6 @@ import no.ntnu.webshop.service.OrderService;
 public class UserContextOrderController {
   private final OrderJdbcRepository orderJdbcRepository;
   private final OrderJpaRepository orderJpaRepository;
-  private final ProductPriceJpaRepository productPriceJpaRepository;
-  private final ApplicationEventPublisher eventPublisher;
   private final OrderService orderService;
 
   @Operation(summary = "Lists all orders for the logged in user")
@@ -90,65 +79,9 @@ public class UserContextOrderController {
       @AuthenticationPrincipal UserAccountDetailsAdapter adapter
   ) {
     var customer = adapter.getUserAccount();
-
-    var deliveryAddress = new Address(
-      orderRequest.shippingAddress().country(),
-      orderRequest.shippingAddress().postalCode(),
-      orderRequest.shippingAddress().city(),
-      orderRequest.shippingAddress().street(),
-      orderRequest.shippingAddress().careOf()
-    );
-
-    // copy address unless it's different
-    var billingAddress = !orderRequest.differentBillingAddress() ? Address.copyOf(deliveryAddress)
-        : new Address(
-          orderRequest.billingAddress().country(),
-          orderRequest.billingAddress().postalCode(),
-          orderRequest.billingAddress().city(),
-          orderRequest.billingAddress().street(),
-          orderRequest.billingAddress().careOf()
-        );
-
-    var order = new Order(
-      customer,
-      orderRequest.customerName(),
-      deliveryAddress,
-      billingAddress,
-      PaymentMethod.fromString(orderRequest.paymentMethod()),
-      ShippingMethod.fromString(orderRequest.shippingMethod())
-    );
-
-    var productIds = orderRequest.lines().keySet();
-
-    var prices = this.productPriceJpaRepository.findAllCurrentPricesByProductIds(productIds);
-
-    if (prices.size() != productIds.size())
-      throw new ProductNotFoundException("Cannot place an order with non-active or non-existant products");
-
-    for (var price : prices) {
-      var product = price.getProduct();
-
-      var line = new OrderLine(
-        order,
-        product,
-        price,
-        orderRequest.lines().get(product.getId())
-      );
-
-      order.addOrderLine(line);
-    }
-
-    var savedOrder = this.orderJpaRepository.save(order);
-
-    this.eventPublisher.publishEvent(
-      new OrderConfirmationEvent(
-        customer,
-        savedOrder.getId()
-      )
-    );
-
-    return ResponseEntity.created(URI.create("/api/v1/orders/" + savedOrder.getId()))
-      .body(this.orderService.findById(savedOrder.getId()));
+    var placedOrder = this.orderService.placeOrder(orderRequest, customer);
+    return ResponseEntity.created(URI.create("/api/v1/orders/" + placedOrder.id()))
+      .body(this.orderService.findById(placedOrder.id()));
   }
 
   @Operation(summary = "Cancels an order for the logged in user")
