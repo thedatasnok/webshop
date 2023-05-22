@@ -61,9 +61,9 @@ const Dashboard = () => {
 
       <section id='recent-sales'>
         <h2 className='font-title mb-2 text-xl font-semibold'>Recent orders</h2>
-        <div className='font-title divide-base-700 divide-y overflow-y-auto'>
+        <ol className='font-title divide-base-700 divide-y overflow-y-auto'>
           {recentOrders?.map((order, i) => (
-            <div key={i} className='grid grid-cols-7 justify-between px-2 py-2'>
+            <li key={i} className='grid grid-cols-7 justify-between px-2 py-2'>
               <RecentOrderGroup
                 title='Order id'
                 text={<>#{order.id.toString().padStart(4, '0')}</>}
@@ -104,9 +104,9 @@ const Dashboard = () => {
                   View details
                 </Button>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
     </div>
   );
