@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.webshop.contracts.order.OrderDetails;
+import no.ntnu.webshop.contracts.order.OrderListItem;
 import no.ntnu.webshop.contracts.order.OrderSummary;
 import no.ntnu.webshop.contracts.order.UpdateOrderRequest;
 import no.ntnu.webshop.error.model.OrderNotFoundException;
@@ -59,6 +60,20 @@ public class OrderController {
     var sinceDate = since.orElse(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
 
     return ResponseEntity.ok(this.orderJdbcRepository.findDailyOrderSummary(sinceDate));
+  }
+
+  @Operation(summary = "Finds the most recent orders")
+  @GetMapping("/recent")
+  public ResponseEntity<List<OrderListItem>> findRecentOrders(
+      @Parameter(description = "The date to find order since, defaults to 7 days ago.") @RequestParam("since")
+      @DateTimeFormat(iso = ISO.DATE) Optional<Date> since
+  ) {
+    var sinceDate = since.orElse(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
+
+    // Truncate the date to the start of the day for both provided and defaulted dates
+    var date = Date.from(sinceDate.toInstant().truncatedTo(ChronoUnit.DAYS));
+
+    return ResponseEntity.ok(this.orderJpaRepository.findRecentOrders(date));
   }
 
   @Operation(summary = "Lists all orders")

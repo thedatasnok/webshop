@@ -104,6 +104,18 @@ export interface OrderLineDetails {
     subtotal: number;
 }
 
+export interface OrderListItem {
+    id: number;
+    orderedAt: Date;
+    customerName: string;
+    customerEmail: string;
+    orderStatus: string;
+    paymentMethod: string;
+    shippingMethod: string;
+    total: number;
+    numberOfLines: number;
+}
+
 export interface OrderSummary {
     date: Date;
     numberOfSales: number;

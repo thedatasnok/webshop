@@ -1,5 +1,11 @@
 import CustomTooltip from '@/components/chart/CustomTooltip';
-import { useFindDailyOrderSummaryQuery } from '@/services/orders';
+import {
+  useFindDailyOrderSummaryQuery,
+  useRecentOrdersQuery,
+} from '@/services/orders';
+import { Button, formatPrice } from '@webshop/ui';
+import dayjs from 'dayjs';
+import React from 'react';
 import {
   Area,
   Bar,
@@ -13,6 +19,7 @@ import {
 
 const Dashboard = () => {
   const { data: orderSummary } = useFindDailyOrderSummaryQuery();
+  const { data: recentOrders } = useRecentOrdersQuery();
 
   return (
     <div className='relative grid h-full grid-rows-2 px-4 pt-4'>
@@ -54,37 +61,67 @@ const Dashboard = () => {
 
       <section id='recent-sales'>
         <h2 className='font-title mb-2 text-xl font-semibold'>Recent orders</h2>
-        <div className='divide-base-700 divide-y overflow-y-auto'>
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className='flex items-center justify-between py-2 px-2'
-            >
-              <div>
-                <p className='font-title text-sm font-semibold uppercase'>
-                  order id
-                </p>
-                <p className='font-title'>#000{i + 1}</p>
+        <div className='font-title divide-base-700 divide-y overflow-y-auto'>
+          {recentOrders?.map((order, i) => (
+            <div key={i} className='grid grid-cols-7 justify-between px-2 py-2'>
+              <RecentOrderGroup
+                title='Order id'
+                text={<>#{order.id.toString().padStart(4, '0')}</>}
+              />
+
+              <RecentOrderGroup title='Total' text={formatPrice(order.total)} />
+
+              <RecentOrderGroup
+                title='Customer'
+                text={
+                  <>
+                    <span>{order.customerName}</span>
+                    &nbsp;
+                    <a
+                      href={'mailto:'.concat(order.customerEmail)}
+                      className='text-base-300 hover:text-primary'
+                    >
+                      ({order.customerEmail})
+                    </a>
+                  </>
+                }
+              />
+
+              <RecentOrderGroup title='Status' text={order.orderStatus} />
+
+              <RecentOrderGroup
+                title='# of order lines'
+                text={order.numberOfLines}
+              />
+
+              <RecentOrderGroup
+                title='Order placed'
+                text={dayjs(order.orderedAt).fromNow()}
+              />
+
+              <div className='my-auto justify-self-end'>
+                <Button variant='neutral' style='outline' size='sm'>
+                  View details
+                </Button>
               </div>
-              <div className='text-center'>
-                <p className='font-title text-sm font-semibold uppercase'>
-                  total
-                </p>
-                <p className='font-title'>$100</p>
-              </div>
-              <div>
-                <p className='font-title text-sm font-semibold uppercase'>
-                  Order placed
-                </p>
-                <p className='text-sm'>x minutes ago</p>
-              </div>
-              <button className='font-title border-base-600 hover:bg-base-800 border px-1 text-sm uppercase transition-all'>
-                Show details
-              </button>
             </div>
           ))}
         </div>
       </section>
+    </div>
+  );
+};
+
+interface RecentOrderGroupProps {
+  title: string;
+  text: React.ReactNode;
+}
+
+const RecentOrderGroup: React.FC<RecentOrderGroupProps> = ({ title, text }) => {
+  return (
+    <div>
+      <p className='text-sm font-semibold uppercase'>{title}</p>
+      <p className='text-sm'>{text}</p>
     </div>
   );
 };
