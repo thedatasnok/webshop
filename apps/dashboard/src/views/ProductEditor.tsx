@@ -149,8 +149,8 @@ const ProductEditor = () => {
               <ProductFamilyCard
                 key={i}
                 id={i}
-                name='CGG GAMING MUZ'
-                description='Incredibles gamerere muze von CGG ja junge meine mama hat mir einfach erlaubt das'
+                name='NovaStrike Ultimate'
+                description='The ultimate gaming mouse for the ultimate gamer, with built-in hyperdrive.'
                 productCount={3}
                 selected={form.values.familyId === i}
                 onClick={() => form.setFieldValue('familyId', i)}
@@ -166,6 +166,7 @@ const ProductEditor = () => {
             {[...Array(8)].map((_, i) => (
               <CategoryListCard
                 id={i}
+                key={i}
                 name='Console'
                 iconUrl='https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/icons/consoles.svg'
                 selected={form.values.categoryIds.includes(i)}
