@@ -1,3 +1,4 @@
+import { formatPrice } from '@webshop/ui';
 import { TooltipProps } from 'recharts';
 
 const CustomTooltip: React.FC<TooltipProps<number[], string>> = ({
@@ -20,7 +21,11 @@ const CustomTooltip: React.FC<TooltipProps<number[], string>> = ({
           <p className='font-title font-semibold'>
             {item.name !== undefined ? translations[item.name] : '--'}:
           </p>
-          <p className='font-title font-semibold'>{item.value}</p>
+          <p className='font-title font-semibold'>
+            {item.name === 'sumOfSales' && item.value
+              ? formatPrice(item.value as any) // this is never an array - idk why it's typed as one
+              : item.value}
+          </p>
         </div>
       ))}
     </div>
