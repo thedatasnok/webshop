@@ -27,6 +27,7 @@ importers:
       '@webshop/ui': workspace:*
       autoprefixer: ^10.4.14
       clsx: ^1.2.1
+      dayjs: ^1.11.7
       jwt-decode: ^3.1.2
       postcss: ^8.4.21
       prop-types: ^15.8.1
@@ -49,6 +50,7 @@ importers:
       '@webshop/contracts': link:../../packages/contracts
       '@webshop/ui': link:../../packages/ui
       clsx: 1.2.1
+      dayjs: 1.11.7
       jwt-decode: 3.1.2
       prop-types: 15.8.1
       react: 18.2.0
