@@ -38,7 +38,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
           className
         )}
       >
-        <img src={image} alt={name} className='aspect-square w-full' />
+        <img
+          loading='lazy'
+          src={image}
+          alt={name}
+          className='aspect-square w-full'
+        />
 
         {/* Top-right pill */}
         {isDiscount && <OnSalePill className='absolute right-1 top-1' />}

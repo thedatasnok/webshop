@@ -39,6 +39,7 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
     >
       <NavLink to={to} className='col-span-3 flex flex-1 overflow-hidden'>
         <img
+          loading='lazy'
           src={image}
           alt={name}
           className='aspect-square h-fit w-1/3 self-center md:w-1/6'
