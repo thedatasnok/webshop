@@ -20,7 +20,7 @@ Some characteristics we have found other cyberpunk themed sites to have:
 
 ## Inspiration sites
 
-- [James Warner](https://jmswrnr.com/)
+- [James Warner](https://jmswrnr.com/) (note: this has since been edited, the original site was more in line with our goals, [see](https://web.archive.org/web/20210625141704/https://jmswrnr.com/))
 - [Frontribe](https://www.behance.net/gallery/157115257/Frontribe?tracking_source=search_projects%7Ccyberpunk+website+designhttps://www.behance.net/gallery/157115257/Frontribe?tracking_source=search_projects%7Ccyberpunk+website+design)
 - [Komplett.no](https://komplett.no/)
 - [Maxgaming](https://maxgaming.no/)
@@ -33,6 +33,9 @@ All of these colors are defined in the [TailwindCSS config file](../packages/ui/
 We have named these colors with color-agnostic names so that they can potentially be swapped out for other colors in the future. 
 
 Each of the colors have shades the shades: `50, 100, 200, 300, 400, 500, 600, 700, 800, 900`
+
+The base color a long with the decoration colors also have a 950 shade, which was added to TailwindCSS in version 3.3. 
+
 
 As the theme is cyberpunk, we typically use the darker shades of the base color.
 
@@ -50,6 +53,7 @@ As the theme is cyberpunk, we typically use the darker shades of the base color.
 ![#3f3f46](https://placehold.co/64x64/3f3f46/3f3f46.png)
 ![#27272a](https://placehold.co/64x64/27272a/27272a.png)
 ![#18181b](https://placehold.co/64x64/18181b/18181b.png)
+![#09090b](https://placehold.co/64x64/09090b/09090b.png)
 
 </div>
 
@@ -86,6 +90,14 @@ As the theme is cyberpunk, we typically use the darker shades of the base color.
 ![#3A0231](https://placehold.co/64x64/3A0231/3A0231.png)
 
 </div>
+
+We have also chosen to add some decoration colors for indicators:
+- Error - red from TailwindCSS
+- Warn - yellow from TailwindCSS
+- Ok/success - emerald from TailwindCSS
+
+Find TailwindCSS colors [here](https://tailwindcss.com/docs/customizing-colors)
+
 
 ## Hierarchy and layout
 
@@ -165,6 +177,10 @@ They may be colored, but ideally uses the grayscale color.
 
 As noted above, borders should generally not be rounded. 
 Some exceptions may be made, but it should be considered carefully.
+
+As an afterthought we've found minimal rounding to be acceptable, and has since become the standard for the project.
+The sizing scale is defined by TailwindCSS, where we use the `rounded-sm` class for most elements.
+
 
 ## Shadows
 
