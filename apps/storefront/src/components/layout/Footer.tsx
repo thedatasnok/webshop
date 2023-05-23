@@ -14,36 +14,43 @@ interface FooterProps {}
 const Footer: React.FC<FooterProps> = () => {
   return (
     <footer className='mx-auto mt-12 w-full max-w-screen-xl'>
-      <div className='grid grid-cols-1 justify-items-center text-center leading-8 sm:grid-cols-3'>
+      <section
+        id='sitelinks'
+        className='grid grid-cols-1 justify-items-center text-center leading-8 sm:grid-cols-3'
+      >
         <div className='mb-8'>
           <h2 className='font-title text-base-50 mb-4 text-xl font-semibold uppercase'>
             Shortcuts
           </h2>
-          <ul className='text-base-400'>
+
+          <ul className='text-base-400 flex flex-col max-sm:items-center'>
             <li>
-              <NavLink to={RouteHref.HOME}>
-                <div className='flex items-center gap-1'>
-                  <RiHome4Line className='h-5 w-5'></RiHome4Line>
-                  <p className='hover:underline'>Home</p>
-                </div>
+              <NavLink
+                to={RouteHref.HOME}
+                className='group flex items-center gap-1'
+              >
+                <RiHome4Line className='h-5 w-5 max-sm:-ml-1' />
+                <p className='group-hover:underline'>Home</p>
               </NavLink>
             </li>
 
             <li>
-              <NavLink to={RouteHref.PRODUCTS}>
-                <div className='flex items-center gap-1'>
-                  <RiStore2Line className='h-5 w-5'></RiStore2Line>
-                  <p className='hover:underline'>Browse</p>
-                </div>
+              <NavLink
+                to={RouteHref.PRODUCTS}
+                className='group flex items-center gap-1'
+              >
+                <RiStore2Line className='h-5 w-5' />
+                <p className='group-hover:underline'>Browse</p>
               </NavLink>
             </li>
 
             <li>
-              <NavLink to={RouteHref.SUPPORT}>
-                <div className='flex items-center gap-1'>
-                  <RiHeadphoneLine className='h-5 w-5'></RiHeadphoneLine>
-                  <p className='hover:underline'>Support</p>
-                </div>
+              <NavLink
+                to={RouteHref.SUPPORT}
+                className='group flex items-center gap-1'
+              >
+                <RiHeadphoneLine className='h-5 w-5' />
+                <p className='group-hover:underline'>Support</p>
               </NavLink>
             </li>
           </ul>
@@ -54,12 +61,8 @@ const Footer: React.FC<FooterProps> = () => {
             Opening times
           </h2>
           <ul className='text-base-400'>
-            <li>
-              <a>Weekdays: 07:00 - 07:05</a>
-            </li>
-            <li>
-              <a>Weekends: 08:00 - 08:01</a>
-            </li>
+            <li>Weekdays: 07:00 - 07:05</li>
+            <li>Weekends: 08:00 - 08:01</li>
           </ul>
         </div>
 
@@ -67,32 +70,36 @@ const Footer: React.FC<FooterProps> = () => {
           <h2 className='font-title text-base-50 mb-4 text-xl font-semibold uppercase'>
             Contact us
           </h2>
-          <ul className='text-base-400'>
+
+          <ul className='text-base-400 flex flex-col max-sm:items-center'>
             <li>
-              <a href='tel: 4713371337'>
-                <div className='flex items-center gap-1'>
-                  <RiPhoneLine className='h-5 w-5'></RiPhoneLine>
-                  <p className='hover:underline'>+47 13371337</p>
-                </div>
+              <a
+                href='tel:4713371337'
+                className='group flex items-center gap-1'
+              >
+                <RiPhoneLine className='h-5 w-5' />
+                <p className='group-hover:underline'>+47 13371337</p>
               </a>
             </li>
 
             <li>
-              <a href='mailto: noreply@datasnok.cool'>
-                <div className='flex items-center gap-1'>
-                  <RiMailLine className='h-5 w-5'></RiMailLine>
-                  <p className='hover:underline'>noreply@datasnok.cool</p>
-                </div>
+              <a
+                href='mailto:noreply@datasnok.cool'
+                className='group flex items-center gap-1'
+              >
+                <RiMailLine className='h-5 w-5' />
+                <p className='group-hover:underline'>noreply@datasnok.cool</p>
               </a>
             </li>
           </ul>
         </div>
-      </div>
+      </section>
 
       <section id='logo-divider' className='relative my-2'>
         <div className='absolute inset-0 flex items-center' aria-hidden='true'>
           <div className='border-base-800 w-full border-t' />
         </div>
+
         <div className='relative flex justify-center'>
           <div className='bg-base-950 w-32 px-4'>
             <Logo variant='small' />
@@ -100,7 +107,7 @@ const Footer: React.FC<FooterProps> = () => {
         </div>
       </section>
 
-      <p className='text-base-400 my-4 text-center text-sm'>
+      <p className='text-base-400 mt-4 text-center text-sm'>
         &copy; 2023 CGG&trade; Certain Rights Reserved.
       </p>
     </footer>

@@ -33,7 +33,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children, className }) => {
 
   return (
     <>
-      <div className='flex min-h-screen flex-col overflow-y-auto px-2 pb-16 sm:px-4'>
+      <div className='flex min-h-screen flex-col overflow-y-auto px-2 pb-20 sm:px-4 sm:pb-8'>
         <Header />
 
         <main className={clsx('flex-1', className)}>{children}</main>
