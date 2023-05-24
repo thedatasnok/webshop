@@ -1,6 +1,9 @@
 import { formatPrice } from '@webshop/ui';
 import { TooltipProps } from 'recharts';
 
+/**
+ * Custom tooltip component that is used for the recent sales graph in the dashobard.
+ */
 const CustomTooltip: React.FC<TooltipProps<number[], string>> = ({
   payload,
 }) => {

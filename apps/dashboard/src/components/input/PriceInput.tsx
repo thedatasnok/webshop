@@ -3,6 +3,10 @@ interface PriceInputProps {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   onChange?: (value: string) => void;
 }
+
+/**
+ * Custom input component used to input a price as a numeric value.
+ */
 const PriceInput: React.FC<PriceInputProps> = ({ id, inputProps }) => {
   return (
     <div className='border-base-700 flex w-fit items-center rounded-sm border'>

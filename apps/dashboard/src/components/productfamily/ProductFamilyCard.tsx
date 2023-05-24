@@ -9,6 +9,9 @@ interface ProductFamilyCardProps {
   onClick?: () => void;
 }
 
+/**
+ * Card for rendering a product family.
+ */
 const ProductFamilyCard: React.FC<ProductFamilyCardProps> = ({
   id,
   name,
@@ -18,7 +21,7 @@ const ProductFamilyCard: React.FC<ProductFamilyCardProps> = ({
   onClick,
 }) => {
   return (
-    <div
+    <li
       onClick={onClick}
       className={clsx(
         'border-base-800 relative flex h-24 w-72 flex-shrink-0 cursor-pointer rounded-sm border p-1',
@@ -43,7 +46,7 @@ const ProductFamilyCard: React.FC<ProductFamilyCardProps> = ({
           {productCount} products
         </p>
       </div>
-    </div>
+    </li>
   );
 };
 

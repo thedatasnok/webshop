@@ -19,6 +19,9 @@ import {
 } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
+/**
+ * View for editing the definition of a product.
+ */
 const ProductEditor = () => {
   const [isDiscount, setIsDiscount] = useState(false);
 
@@ -144,7 +147,7 @@ const ProductEditor = () => {
             icon={RiSearchLine}
             placeholder='Search product families...'
           />
-          <div className='flex flex-row gap-2 overflow-x-auto px-1 py-2'>
+          <ul className='flex flex-row gap-2 overflow-x-auto px-1 py-2'>
             {[...Array(10)].map((_, i) => (
               <ProductFamilyCard
                 key={i}
@@ -156,13 +159,13 @@ const ProductEditor = () => {
                 onClick={() => form.setFieldValue('familyId', i)}
               />
             ))}
-          </div>
+          </ul>
 
           <h2 className='font-title mt-4 text-lg font-semibold uppercase'>
             Categories
           </h2>
           <TextField icon={RiSearchLine} placeholder='Search categories...' />
-          <div className='grid grid-cols-2 gap-2 overflow-x-auto px-1 py-2'>
+          <ul className='grid grid-cols-2 gap-2 overflow-x-auto px-1 py-2'>
             {[...Array(8)].map((_, i) => (
               <CategoryListCard
                 id={i}
@@ -178,7 +181,7 @@ const ProductEditor = () => {
                 }
               />
             ))}
-          </div>
+          </ul>
         </div>
 
         <div className='col-span-4 h-fit'>

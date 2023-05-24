@@ -5,6 +5,10 @@ import { NavLink, useOutlet } from 'react-router-dom';
 import clsx from 'clsx';
 import { RouteHref } from '@/router/enum';
 
+/**
+ * Dashboard layout component, rendered as a parent of the views that are
+ * part of the dashboard.
+ */
 const DashboardLayout = () => {
   const outlet = useOutlet();
   const [signOut] = useSignOutMutation();

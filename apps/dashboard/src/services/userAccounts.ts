@@ -9,6 +9,9 @@ export interface FindUserAccountsQueryParams extends QueryParams {
 
 export const userAccountsApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({
+    /**
+     * Finds user accounts.
+     */
     findUserAccounts: builder.query<
       UserAccountListItem[],
       FindUserAccountsQueryParams

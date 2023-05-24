@@ -5,6 +5,10 @@ interface DiscountSwitchProps {
   value: boolean;
   onChange?: (value: boolean) => void;
 }
+
+/**
+ * Switch input used to mark a product as discounted.
+ */
 const DiscountSwitch: React.FC<DiscountSwitchProps> = ({ value, onChange }) => {
   return (
     <Switch

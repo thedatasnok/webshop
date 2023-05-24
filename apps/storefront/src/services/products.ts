@@ -33,6 +33,9 @@ export const productsApi = webshopApi.injectEndpoints({
       query: (id) => ({ url: `/v1/products/${id}` }),
     }),
 
+    /**
+     * Finds a products related products
+     */
     relatedProducts: builder.query<ProductListItem[], number>({
       query: (id) => `/v1/products/${id}/related`,
     }),

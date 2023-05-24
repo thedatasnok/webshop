@@ -8,6 +8,10 @@ interface NavigationCardProps {
   icon: IconType;
 }
 
+/**
+ * Card used to navigate to a different page, like at the end of featured & related products.
+ * Accepts a title and an icon that will be displayed on the card.
+ */
 const NavigationCard: React.FC<NavigationCardProps> = ({
   title,
   icon: Icon,

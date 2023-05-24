@@ -9,6 +9,9 @@ interface CategoryListCardProps {
   onClick?: () => void;
 }
 
+/**
+ * List card used to display a category in a list format.
+ */
 const CategoryListCard: React.FC<CategoryListCardProps> = ({
   id,
   name,
@@ -17,7 +20,7 @@ const CategoryListCard: React.FC<CategoryListCardProps> = ({
   onClick,
 }) => {
   return (
-    <div
+    <li
       onClick={onClick}
       className={clsx(
         'border-base-800 group flex cursor-pointer items-center gap-1 rounded-sm border p-2',
@@ -45,7 +48,7 @@ const CategoryListCard: React.FC<CategoryListCardProps> = ({
           mask: `url(${iconUrl}) no-repeat center`,
         }}
       />
-    </div>
+    </li>
   );
 };
 

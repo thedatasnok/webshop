@@ -33,6 +33,7 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
         },
       ],
     }),
+
     /**
      * Finds all orders in user context
      */
@@ -45,6 +46,7 @@ export const userContextOrdersApi = webshopApi.injectEndpoints({
         },
       ],
     }),
+
     /**
      * Gets the specified order
      */

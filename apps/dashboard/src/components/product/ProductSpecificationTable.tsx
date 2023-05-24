@@ -56,6 +56,10 @@ export interface ProductSpecificationTableProps {
   onChange: (name: string, data: ProductSpecificationRow[]) => void;
 }
 
+/**
+ * Table for rendering product specifications.
+ * This is used in the product editor, and allows for editing the specifications of a product.
+ */
 const ProductSpecificationTable: React.FC<ProductSpecificationTableProps> = ({
   name: initialName,
   onChange,

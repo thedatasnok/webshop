@@ -5,6 +5,10 @@ export interface ProductChildrenProps {
   children?: ProductChildDetails[];
 }
 
+/**
+ * Component for displaying the children of a product.
+ * Accepts an array of children and displays them in a unordered list.
+ */
 const ProductChildren: React.FC<ProductChildrenProps> = ({ children }) => {
   if (children === undefined || children.length === 0) {
     return null;
@@ -16,7 +20,7 @@ const ProductChildren: React.FC<ProductChildrenProps> = ({ children }) => {
         This pack contains the following:
       </h3>
 
-      <ul className='flex flex-col gap-1 items-center'>
+      <ul className='flex flex-col items-center gap-1'>
         {children.map((child) => (
           <ProductListCard
             key={child.id}

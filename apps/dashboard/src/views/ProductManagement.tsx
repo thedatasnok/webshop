@@ -1,7 +1,7 @@
 import PageTitle from '@/components/layout/PageTitle';
 import { RouteHref } from '@/router/enum';
 import { Button, TextField } from '@webshop/ui';
-import { RiAddLine, RiSearch2Line, RiSearchLine } from 'react-icons/ri';
+import { RiAddLine, RiSearch2Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 
 const ProductManagement = () => {

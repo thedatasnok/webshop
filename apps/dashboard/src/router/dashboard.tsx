@@ -11,6 +11,9 @@ const ProductEditor = React.lazy(() => import('@/views/ProductEditor'));
 const ProductManagement = React.lazy(() => import('@/views/ProductManagement'));
 const UserManagement = React.lazy(() => import('@/views/UserManagement'));
 
+/**
+ * Dashboard routes, these are rendered to the right of the global sidebar.
+ */
 const dashboardRoutes: ApplicationRoute[] = [
   {
     name: 'Dashboard',

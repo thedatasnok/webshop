@@ -42,6 +42,9 @@ export type ApplicationRoute = RouteObject & {
   children?: ApplicationRoute[];
 };
 
+/**
+ * Root application routes, these are views that share no common layout.
+ */
 export const routes: ApplicationRoute[] = [
   {
     name: 'Sign In',

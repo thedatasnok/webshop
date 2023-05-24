@@ -39,7 +39,7 @@ const ShoppingCart = () => {
   };
 
   return (
-    <PageLayout className='mx-auto max-w-screen-xl flex-1 w-full'>
+    <PageLayout className='mx-auto w-full max-w-screen-xl flex-1'>
       <div className='flex items-center justify-center py-4'>
         <h1 className='font-title text-2xl font-semibold uppercase'>
           Shopping cart
@@ -206,6 +206,10 @@ interface CounterProps {
   quantity: number;
 }
 
+/**
+ * Counter component that is used to change the quantity of a product in the cart.
+ * Allows to increment, decrement and manually change the quantity, from 1 to 999.
+ */
 const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
   const dispatch = useDispatch();
   const numberInputRef = useRef<HTMLInputElement>(null);
@@ -216,7 +220,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    */
   const decrementQuantity = () => {
     if (quantity > 1) updateQuantity(quantity - 1);
-  }
+  };
 
   /**
    * Increments the quantity by 1.
@@ -224,7 +228,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
    */
   const incrementQuantity = () => {
     if (quantity < 999) updateQuantity(quantity + 1);
-  }
+  };
 
   /**
    * Updates the quantity, writing it to the store which further updates local storage.

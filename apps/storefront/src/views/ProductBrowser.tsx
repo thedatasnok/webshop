@@ -57,7 +57,7 @@ const ProductBrowser = () => {
         return old;
       });
     }
-  }
+  };
 
   const onSortChange = (field: string, direction: SortDirection) => {
     setSearchParams((old) => {
@@ -207,6 +207,10 @@ interface ProductListActionsProps {
   isDiscount: boolean;
 }
 
+/**
+ * Component that displays the price and previous price of a product in the list view.
+ * This is the right part of the list card.
+ */
 const ProductListActions: React.FC<ProductListActionsProps> = ({
   price,
   previousPrice,
