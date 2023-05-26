@@ -119,13 +119,13 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     LEFT JOIN ProductPrice prev_pp
       ON prev_pp.product = p
       AND prev_pp.to = pp.from
-    LEFT JOIN p.categories c
     WHERE p.id <> :id
-    ORDER BY CASE WHEN c.id IN (
-      SELECT DISTINCT related_category.id
-      FROM Product related_product
-      INNER JOIN related_product.categories related_category
-      WHERE related_product.id = :id
+    ORDER BY CASE WHEN p.id IN (
+      SELECT DISTINCT related_product.id
+      FROM Product reference_product
+      INNER JOIN reference_product.categories c
+      INNER JOIN c.products related_product
+      WHERE reference_product.id = :id
     ) THEN TRUE ELSE FALSE END DESC,
     p.id DESC
     LIMIT 10
