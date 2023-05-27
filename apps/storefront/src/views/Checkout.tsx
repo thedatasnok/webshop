@@ -288,7 +288,7 @@ const Checkout = () => {
             type='submit'
           >
             {/* default value to 0 if products are not loaded  */}
-            Pay {formatPrice(totalPrice || 0)}
+            Pay {formatPrice(totalPrice ?? 0)}
           </Button>
         </form>
 
@@ -351,15 +351,15 @@ const ProductListCardCartActions: React.FC<CheckoutCardCartActionsProps> = ({
   return (
     <div className='flex flex-col justify-center'>
       <div className='flex items-center gap-4 sm:gap-4'>
-        <p className='border-base-700 flex h-fit flex-row items-center border px-1 uppercase'>
-          qty: {quantity}
+        <p className='font-title'>
+          {quantity}&nbsp;&times;&nbsp;{formatPrice(price)}
         </p>
 
         <div className='font-title flex flex-col items-end font-semibold sm:min-w-[5rem]'>
           <div className='text-xl'>{formatPrice(totalPrice)}</div>
-          {isDiscount && (
+          {isDiscount && previousTotal !== 0 && (
             <div className='bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs'>
-              {formatPrice(previousTotal - totalPrice)}
+              {formatPrice(totalPrice - previousTotal)}
             </div>
           )}
         </div>

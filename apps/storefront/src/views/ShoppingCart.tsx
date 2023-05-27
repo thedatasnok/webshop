@@ -116,7 +116,7 @@ const ShoppingCart = () => {
         <>
           <div className='font-title pt-2 text-center text-xl font-semibold uppercase sm:pt-2 sm:text-right'>
             {/* default value to 0 if products are not loaded  */}
-            Sum: {formatPrice(totalPrice || 0)}
+            Sum: {formatPrice(totalPrice ?? 0)}
           </div>
 
           <NavLink
@@ -167,10 +167,10 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
           <div
             className={clsx(
               'bg-secondary/30 border-secondary text-secondary-50 w-fit whitespace-nowrap rounded-sm border px-1 text-xs',
-              !isDiscount && 'invisible sm:hidden'
+              (!isDiscount || previousTotal === 0) && 'invisible sm:hidden'
             )}
           >
-            {formatPrice(previousTotal - totalPrice)}
+            {formatPrice(totalPrice - previousTotal)}
           </div>
         </div>
         {/* Delete */}

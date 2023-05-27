@@ -1,5 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout';
 import NavigationCard from '@/components/navigation/NavigationCard';
+import OnSalePill from '@/components/product/OnSalePill';
 import ProductCard from '@/components/product/ProductCard';
 import ProductChildren from '@/components/product/ProductChildren';
 import { RouteHref } from '@/router';
@@ -76,6 +77,8 @@ const ProductView = () => {
           <div className='bg-base-950 font-title absolute bottom-0 right-1/4 translate-x-full translate-y-1/2 px-2 py-1 font-bold uppercase tracking-widest '>
             #{productInfo?.id.toString().padStart(4, '0')}
           </div>
+
+          <OnSalePill className='absolute top-2 right-2 text-xl' />
         </div>
 
         <div className='flex-1 md:pl-4'>
@@ -109,7 +112,7 @@ const ProductView = () => {
               productInfo?.isDiscount && 'text-primary'
             )}
           >
-            {formatPrice(productInfo?.price || 0)}
+            {formatPrice(productInfo?.price ?? 0)}
           </span>
 
           <span
