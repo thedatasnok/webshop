@@ -78,7 +78,9 @@ const ProductView = () => {
             #{productInfo?.id.toString().padStart(4, '0')}
           </div>
 
-          <OnSalePill className='absolute top-2 right-2 text-xl' />
+          {productInfo?.isDiscount && (
+            <OnSalePill className='absolute right-2 top-2 text-xl' />
+          )}
         </div>
 
         <div className='flex-1 md:pl-4'>
