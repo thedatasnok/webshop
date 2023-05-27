@@ -6,7 +6,7 @@ import { useFindProductsQuery } from '@/services/products';
 import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
 import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import {
   RiAddLine,
   RiCloseLine,
@@ -68,9 +68,9 @@ const ShoppingCart = () => {
       </div>
 
       <div className='font-title mr-1 flex flex-row justify-end gap-4 uppercase sm:mr-0 sm:gap-4 md:gap-7'>
-        <h3 className='max-sm:hidden sm:pr-16 md:pr-14'>Quantity</h3>
-        <h3>Total</h3>
-        <h3 className='max-sm:hidden'>Delete</h3>
+        <h2 className='max-sm:hidden sm:pr-16 md:pr-14'>Quantity</h2>
+        <h2>Total</h2>
+        <h2 className='max-sm:hidden'>Delete</h2>
       </div>
 
       <ul className='mx-auto flex w-fit flex-col'>
@@ -178,6 +178,7 @@ const ProductListCardCartActions: React.FC<ProductListCardCartActionsProps> = ({
           onClick={() => dispatch(removeCartItem(productId))}
           className='border-base-700 hidden aspect-square items-center justify-center rounded-sm border sm:flex'
         >
+          <span className='sr-only'>Remove from cart</span>
           <RiCloseLine className='hover:fill-error w-6' />
         </button>
       </div>
@@ -267,6 +268,8 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
     if (e.target.valueAsNumber > 999) updateQuantity(999);
   };
 
+  const quantityInputId = useId();
+
   return (
     <div className='border-base-700 flex rounded-sm border'>
       <button
@@ -274,6 +277,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
         disabled={quantity === 1}
         className='hover:bg-base-900 transition-colors disabled:pointer-events-none'
       >
+        <span className='sr-only'>Decrement quantity</span>
         <RiSubtractLine
           className={clsx(
             {
@@ -284,8 +288,13 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
         />
       </button>
 
+      <label htmlFor={quantityInputId} className='sr-only'>
+        Quantity
+      </label>
+
       <input
         type='number'
+        id={quantityInputId}
         ref={numberInputRef}
         defaultValue={quantity}
         onChange={handleNumberChanged}
@@ -298,6 +307,7 @@ const Counter: React.FC<CounterProps> = ({ productId, quantity }) => {
         disabled={quantity === 999}
         className='hover:bg-base-800 transition-colors disabled:pointer-events-none'
       >
+        <span className='sr-only'>Increment quantity</span>
         <RiAddLine
           className={clsx(
             {

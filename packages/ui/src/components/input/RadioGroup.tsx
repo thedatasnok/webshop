@@ -83,10 +83,7 @@ const RadioGroup = <T,>({
             )}
           >
             {/* Mock checkbox, to provide some extra visual feedback */}
-            <div
-              role='checkbox'
-              className='bg-base-700 ring-base-800 ui-checked:bg-primary-600 ui-checked:ring-primary-900 h-2 w-2 rounded-full ring'
-            />
+            <div className='bg-base-700 ring-base-800 ui-checked:bg-primary-600 ui-checked:ring-primary-900 h-2 w-2 rounded-full ring' />
 
             <Icon className='h-7 w-7' />
 

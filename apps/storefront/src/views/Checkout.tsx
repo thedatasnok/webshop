@@ -116,6 +116,7 @@ const Checkout = () => {
           to={RouteHref.HOME}
           className='flex-wrap items-center justify-center'
         >
+          <span className='sr-only'>CGG Home</span>
           <div className='w-32'>
             <Logo variant='small' />
           </div>
@@ -141,37 +142,58 @@ const Checkout = () => {
           <SectionHeader title='Delivery address' />
 
           <div>
-            <InputLabel>Name</InputLabel>
-            <TextField {...form.getInputProps('customerName')} />
+            <InputLabel htmlFor='customer-name'>Name</InputLabel>
+            <TextField
+              id='customer-name'
+              {...form.getInputProps('customerName')}
+            />
           </div>
 
           <div>
-            <InputLabel>Country</InputLabel>
-            <TextField {...form.getInputProps('shippingAddress.country')} />
+            <InputLabel htmlFor='shipping-country'>Country</InputLabel>
+            <TextField
+              id='shipping-country'
+              {...form.getInputProps('shippingAddress.country')}
+            />
           </div>
           <div>
-            <InputLabel>City</InputLabel>
-            <TextField {...form.getInputProps('shippingAddress.city')} />
+            <InputLabel htmlFor='shipping-city'>City</InputLabel>
+            <TextField
+              id='shipping-city'
+              {...form.getInputProps('shippingAddress.city')}
+            />
           </div>
           <div>
-            <InputLabel>Street</InputLabel>
-            <TextField {...form.getInputProps('shippingAddress.street')} />
+            <InputLabel htmlFor='shipping-street'>Street</InputLabel>
+            <TextField
+              id='shipping-street'
+              {...form.getInputProps('shippingAddress.street')}
+            />
           </div>
 
           <div>
-            <InputLabel>Postal Code</InputLabel>
-            <TextField {...form.getInputProps('shippingAddress.postalCode')} />
+            <InputLabel htmlFor='shipping-postal-code'>Postal Code</InputLabel>
+            <TextField
+              id='shipping-postal-code'
+              {...form.getInputProps('shippingAddress.postalCode')}
+            />
           </div>
 
           <div>
-            <InputLabel>C/O Address (optional)</InputLabel>
-            <TextField {...form.getInputProps('shippingAddress.careOf')} />
+            <InputLabel htmlFor='shipping-co'>
+              C/O Address (optional)
+            </InputLabel>
+            <TextField
+              id='shipping-co'
+              {...form.getInputProps('shippingAddress.careOf')}
+            />
           </div>
 
           <div className='flex items-center gap-2'>
             <Switch
               id='different-billing-address'
               checked={form.values.differentBillingAddress}
+              ariaLabel='Different billing address'
               onChange={(value) =>
                 form.setFieldValue('differentBillingAddress', value)
               }
@@ -187,30 +209,47 @@ const Checkout = () => {
               <SectionHeader title='Billing address' className='mt-2' />
 
               <div>
-                <InputLabel>Country</InputLabel>
-                <TextField {...form.getInputProps('billingAddress.country')} />
-              </div>
-
-              <div>
-                <InputLabel>City</InputLabel>
-                <TextField {...form.getInputProps('billingAddress.city')} />
-              </div>
-
-              <div>
-                <InputLabel>Street</InputLabel>
-                <TextField {...form.getInputProps('billingAddress.street')} />
-              </div>
-
-              <div>
-                <InputLabel>Postal Code</InputLabel>
+                <InputLabel htmlFor='billing-country'>Country</InputLabel>
                 <TextField
+                  id='billing-country'
+                  {...form.getInputProps('billingAddress.country')}
+                />
+              </div>
+
+              <div>
+                <InputLabel htmlFor='billing-city'>City</InputLabel>
+                <TextField
+                  id='billing-city'
+                  {...form.getInputProps('billingAddress.city')}
+                />
+              </div>
+
+              <div>
+                <InputLabel htmlFor='billing-street'>Street</InputLabel>
+                <TextField
+                  id='billing-street'
+                  {...form.getInputProps('billingAddress.street')}
+                />
+              </div>
+
+              <div>
+                <InputLabel htmlFor='billing-postal-code'>
+                  Postal Code
+                </InputLabel>
+                <TextField
+                  id='billing-postal-code'
                   {...form.getInputProps('billingAddress.postalCode')}
                 />
               </div>
 
               <div>
-                <InputLabel>C/O Address (optional)</InputLabel>
-                <TextField {...form.getInputProps('billingAddress.careOf')} />
+                <InputLabel htmlFor='billing-co'>
+                  C/O Address (optional)
+                </InputLabel>
+                <TextField
+                  id='billing-co'
+                  {...form.getInputProps('billingAddress.careOf')}
+                />
               </div>
             </>
           )}

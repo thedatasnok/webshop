@@ -48,9 +48,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Top-right pill */}
         {isDiscount && <OnSalePill className='absolute right-1 top-1' />}
 
-        <h3 className='font-title group-hover:text-primary-600 mt-0.5 truncate px-2 text-xl font-bold uppercase'>
+        <span className='font-title group-hover:text-primary-600 mt-0.5 block truncate px-2 text-xl font-bold uppercase'>
           {name}
-        </h3>
+        </span>
 
         {/* The after styles are there in order make the height of the line render even if there is no text in the paragraph */}
         <p className='group-hover:text-primary-700 mb-0.5 truncate px-2 text-xs after:inline-block after:content-[""]'>
