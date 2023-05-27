@@ -20,6 +20,17 @@ import { AddressDto, OrderLineDetails } from '@webshop/contracts';
 import { OrderConfirmationProps } from './api/endpoints/orderConfirmation';
 import environment from './api/env';
 
+// this is a copy of the utility function in the ui package, importing it doesn't work here
+// because `window` is undefined
+export const formatPrice = (price: number) => {
+  return price.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+};
+
 const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
   const getSavings = (line: OrderLineDetails) => {
     if (line.wasDiscount && line.previousUnitPrice) {
@@ -79,7 +90,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
 
             <Section className='mx-auto w-3/4'>
               <Column>
-                <Address header='Billing address' {...order.deliveryAddress} />
+                <Address header='Billing address' {...order.billingAddress} />
               </Column>
               <Column>
                 <Address header='Delivery address' {...order.deliveryAddress} />
@@ -100,20 +111,28 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
                     </Column>
                     <Column className='pl-4'>
                       <Text className='text-lg font-bold uppercase'>
-                        {line.quantity}x {line.productName}
+                        {line.productName}
                       </Text>
                       <Text className=''>{line.productShortDescription}</Text>
                     </Column>
                     <Column align='right'>
                       <Text>
-                        ${line.subtotal}
+                        <span className='mr-6'>
+                          {line.quantity}&nbsp;&times;&nbsp;
+                          {formatPrice(line.unitPrice)}
+                        </span>
+                      </Text>
+                    </Column>
+                    <Column align='right'>
+                      <Text>
+                        {formatPrice(line.subtotal)}
                         <br />
                         {line.wasDiscount && (
                           <>
                             <span className='text-sm font-semibold'>
                               Discount:
                             </span>{' '}
-                            ${getSavings(line)}
+                            {formatPrice(getSavings(line))}
                           </>
                         )}
                       </Text>
@@ -127,12 +146,13 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
               <Row>
                 <Column align='right'>
                   <Text>
-                    <span className='font-semibold'>Total:</span> ${order.total}
+                    <span className='font-semibold'>Total:</span>{' '}
+                    {formatPrice(order.total)}
                   </Text>
                   {totalSaved > 0 && (
                     <Text>
-                      <span className='font-semibold'>Discount:</span> $
-                      {totalSaved}
+                      <span className='font-semibold'>Discount:</span>
+                      {formatPrice(totalSaved)}
                     </Text>
                   )}
                 </Column>
