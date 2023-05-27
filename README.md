@@ -69,6 +69,8 @@ Some internal resources you may find useful:
 - [Use cases](docs/diagrams/use-cases.drawio.svg)
 - [API documentation](https://cgg.datasnok.cool/api/swagger-ui/index.html)
 - [Wireframe](https://www.figma.com/file/Ncex2OIvg9kFG4ShYLDBpi/Webshop?type=design&node-id=0%3A1&t=y58tj1vW4rVKZ0YY-1)
+- [Design guidelines](docs/DESIGN.md)
+- [Methodology](docs/METHOD.md)
 
 ## Getting started
 
