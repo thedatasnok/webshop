@@ -1,6 +1,6 @@
 {
   "name": "@webshop/workspace",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "Workspace root for Webshop",
   "devDependencies": {
     "prettier": "^2.8.7",
