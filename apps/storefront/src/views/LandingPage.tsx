@@ -78,7 +78,7 @@ const LandingPage = () => {
 
       <h2
         id='featured-products-title'
-        className='font-title mb-4 mt-8 text-center text-2xl font-bold uppercase tracking-wider'
+        className='font-title my-4 text-center text-2xl font-bold uppercase tracking-wider'
       >
         Featured products
       </h2>
@@ -110,7 +110,7 @@ const LandingPage = () => {
 
       <h2
         id='testimonials-title'
-        className='font-title mb-4 mt-12 text-center text-2xl font-bold uppercase tracking-wider'
+        className='font-title mb-4 mt-8 text-center text-2xl font-bold uppercase tracking-wider'
       >
         Testimonials
       </h2>
