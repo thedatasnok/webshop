@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "844b6f1a-b37d-4854-99c1-8a668c004c4e",
+		"name": "webshop mail service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6406699",
+		"_collection_link": "https://cgg-webshop.postman.co/workspace/webshop~6399055e-3425-447d-bea9-12098e6a1676/collection/6406699-844b6f1a-b37d-4854-99c1-8a668c004c4e?action=share&creator=6406699&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Send order confirmation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"to\": \"REPLACEME@gmail.com\",\r\n    \"order\": {\r\n        \"id\": 25,\r\n        \"customerName\": \"Kalle Lindgren\",\r\n        \"orderedAt\": \"2023-04-01T18:13:44.159+00:00\",\r\n        \"deliveryAddress\": {\r\n            \"country\": \"Norway\",\r\n            \"postalCode\": \"6002\",\r\n            \"city\": \"Ålesund\",\r\n            \"street\": \"Larsgårdsvegen 2\",\r\n            \"careOf\": null\r\n        },\r\n        \"billingAddress\": {\r\n            \"country\": \"Norway\",\r\n            \"postalCode\": \"6002\",\r\n            \"city\": \"Ålesund\",\r\n            \"street\": \"Larsgårdsvegen 2\",\r\n            \"careOf\": null\r\n        },\r\n        \"lines\": [\r\n            {\r\n                \"id\": 45,\r\n                \"productId\": 1,\r\n                \"productName\": \"Xbox Pack\",\r\n                \"productShortDescription\": \"En episk\",\r\n                \"productImageUrls\": [],\r\n                \"quantity\": 2,\r\n                \"wasDiscount\": false,\r\n                \"previousUnitPrice\": 4230,\r\n                \"unitPrice\": 6820,\r\n                \"subtotal\": 13640\r\n            },\r\n            {\r\n                \"id\": 46,\r\n                \"productId\": 36,\r\n                \"productName\": \"Mouse\",\r\n                \"productShortDescription\": \"Gaming mouse\",\r\n                \"productImageUrls\": [\r\n                    \"https://media.discordapp.net/attachments/1073313153137516626/1073357874132156548/00044-1602128532-masterpiece_best_quality_a_3d_render_of_a_futuristic_gaming_mouse_with_haptic_feedback_and_terrain_generation.png\"\r\n                ],\r\n                \"quantity\": 1,\r\n                \"wasDiscount\": false,\r\n                \"previousUnitPrice\": null,\r\n                \"unitPrice\": 300,\r\n                \"subtotal\": 300\r\n            }\r\n        ],\r\n        \"total\": 13940,\r\n        \"status\": \"NEW\",\r\n        \"paymentStatus\": \"NEW\",\r\n        \"paymentMethod\": \"SMART_CONTRACT\",\r\n        \"shippingMethod\": \"DRONE\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/mails/order-confirmation",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"mails",
+						"order-confirmation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign up confirmation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"to\": \"REPLACEME@gmail.com\",\r\n    \"user\": {\r\n        \"fullName\": \"REPLACEME\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/mails/sign-up-confirmation",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"mails",
+						"sign-up-confirmation"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

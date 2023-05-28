@@ -1,0 +1,823 @@
+{
+	"info": {
+		"_postman_id": "4f4b5200-d80d-415a-8fa7-77e7ed4c3c3f",
+		"name": "webshop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6406699",
+		"_collection_link": "https://cgg-webshop.postman.co/workspace/webshop~6399055e-3425-447d-bea9-12098e6a1676/collection/6406699-4f4b5200-d80d-415a-8fa7-77e7ed4c3c3f?action=share&creator=6406699&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register new user account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setNextRequest(\"Sign in\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Karl Lindgren\",\r\n    \"email\": \"karl@noreply.org\",\r\n    \"password\": \"KarlLindgren4020BlazeLongDog\",\r\n    \"passwordConfirmation\": \"KarlLindgren4020BlazeLongDog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/sign-up",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setNextRequest(\"Refresh access token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{AUTH_EMAIL}}\",\r\n    \"password\": \"{{AUTH_PASSWORD}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/sign-in",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh access token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setNextRequest(\"Sign out\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/refresh",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign out",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/sign-out",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get daily order summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/orders/summary",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List recent orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/orders/recent",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"recent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/orders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update order statuses",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderStatus\": \"IN_PROGRESS\",\r\n    \"paymentStatus\": \"PAID\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/orders/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User context",
+			"item": [
+				{
+					"name": "Get user profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user details",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Kalle Lindgren\",\r\n    \"email\": \"kalle@noreply.org\",\r\n    \"password\": \"KarlLindgren4020BlazeLongDog\",\r\n    \"passwordConfirmation\": \"KarlLindgren4020BlazeLongDog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me/orders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete current user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"shippingAddress\": {\r\n        \"country\": \"Norway\",\r\n        \"postalCode\": \"6002\",\r\n        \"city\": \"Ålesund\",\r\n        \"street\": \"Larsgårdsvegen 2\",\r\n        \"careOf\": null\r\n    },\r\n    \"billingAddress\": null,\r\n    \"differentBillingAddress\": false,\r\n    \"paymentMethod\": \"SMART_CONTRACT\",\r\n    \"shippingMethod\": \"DRONE\",\r\n    \"lines\": {\r\n        \"1\": 2\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me/orders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel order by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/me/orders/1/cancel",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"me",
+								"orders",
+								"1",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Find product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find featured products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/featured",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"featured"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ChronoSync Gaming Monitor\",\r\n    \"shortName\": \"ChronoSync\",\r\n    \"description\": \"Experience gaming like never before with the ChronoSync Gaming Monitor. With its advanced time-warping technology, the ChronoSync allows you to manipulate time and space within your games, giving you a competitive edge like no other.\\n\\nThe ChronoSync features an ultra-high-definition display with lifelike color and detail. Its advanced HDR technology ensures that every scene is rendered with maximum contrast and dynamic range, while its ultra-fast refresh rate ensures smooth and fluid motion with minimal input lag. And with its low blue light technology, the ChronoSync reduces eye strain and fatigue, allowing you to play for longer periods without discomfort.\\n\\nThe ChronoSync also features a range of advanced connectivity options, including built-in Wi-Fi and Bluetooth, and multiple USB and HDMI ports. And with its sleek, futuristic design, the ChronoSync looks great in any gaming setup.\\n\\nTake your gaming to the next level with the ChronoSync Gaming Monitor – the ultimate screen for the true gaming enthusiast.\",\r\n    \"shortDescription\": \"Experience gaming like never before with the ChronoSync Gaming Monitor. Advanced time-warping technology gives you a competitive edge like no other.\",\r\n    \"imageUrls\": [\"https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/products/screen3-1024.jpg\"],\r\n    \"price\": 500,\r\n    \"isDiscount\": true,\r\n    \"familyId\": null,\r\n    \"attributes\": {\r\n        \"Display\": {\r\n            \"Size\": \"32 inches\",\r\n            \"Resolution\": \"4K (3840 x 2160)\",\r\n            \"Panel Type\": \"IPS\",\r\n            \"HDR\": \"Yes\",\r\n            \"Refresh Rate\": \"240Hz\",\r\n            \"Response Time\": \"1ms\",\r\n            \"Low Blue Light\": \"Yes\"\r\n        },\r\n        \"Time-Warping\": {\r\n            \"Time Manipulation\": \"Yes\",\r\n            \"Space Manipulation\": \"Yes\",\r\n            \"Temporal Resolution\": \"500 fps\"\r\n        },\r\n        \"Connectivity\": {\r\n            \"Wi-Fi\": \"Yes\",\r\n            \"Bluetooth\": \"Yes\",\r\n            \"USB Ports\": \"4\",\r\n            \"HDMI Ports\": \"3\"\r\n        }\r\n    },\r\n    \"categoryIds\": [],\r\n    \"children\": {}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new product with image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "screen1-2048.jpg"
+								},
+								{
+									"key": "product",
+									"value": "{\n    \"name\": \"CGG GAMING MONITOR\",\n    \"shortName\": \"244HZ\",\n    \"description\": \"Some description\",\n    \"shortDescription\": \"\",\n    \"imageUrls\": [],\n    \"price\": 1300,\n    \"isDiscount\": true,\n    \"familyId\": null,\n    \"attributes\": {\n        \"Size\": {\n            \"Height\": \"30mm\"\n        }\n    },\n    \"categoryIds\": [],\n    \"children\": {}\n}",
+									"description": "JSON string, similar to the one used in the regular POST request to create products.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/with-img",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"with-img"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update price of product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isDiscount\": false,\r\n    \"price\": 4230.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/4/price",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"4",
+								"price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload product image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "some.svg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/1/image",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find related products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/products/1/related",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1",
+								"related"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Families",
+			"item": [
+				{
+					"name": "List product families",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/product-families",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product-families"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create product family",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"CGG GAMING MOUSE\",\r\n    \"description\": \"\",\r\n    \"sharedAttributes\": {\r\n        \"Power\": {\r\n            \"Max consumption\": \"5W\"\r\n        }\r\n    },\r\n    \"attributeMap\": {}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/product-families",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product-families"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Find categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Other\",\r\n    \"iconUrl\": \"https://cgg-webshop-assets.s3.eu-north-1.amazonaws.com/images/icons/consoles.svg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/categories/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User accounts",
+			"item": [
+				{
+					"name": "List user accounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user-accounts",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{WEBSHOP_ACCESS_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const ACCESS_TOKEN_KEY = \"WEBSHOP_ACCESS_TOKEN\";",
+					"",
+					"let isAuthenticated = false;",
+					"let token = pm.environment.get(ACCESS_TOKEN_KEY);",
+					"",
+					"if (token) {",
+					"    const parts = token.split(\".\");",
+					"",
+					"    if (parts.length === 3) {",
+					"        const words = CryptoJS.enc.Base64.parse(parts[1]);",
+					"        const claims = JSON.parse(CryptoJS.enc.Utf8.stringify(words));",
+					"        isAuthenticated = new Date().getTime() < claims.exp * 1000 && claims.email === pm.environment.get(\"AUTH_EMAIL\");",
+					"    }",
+					"}",
+					"",
+					"if (!isAuthenticated) {",
+					"    pm.sendRequest({",
+					"        url: `${pm.environment.get('BASE_URL')}/api/v1/auth/sign-in`,",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Content-Type': 'application/json'",
+					"        },",
+					"        body: JSON.stringify({",
+					"            email: pm.environment.get(\"AUTH_EMAIL\"),",
+					"            password: pm.environment.get(\"AUTH_PASSWORD\")",
+					"        })",
+					"    }, (err, res) => {",
+					"        if (!err) pm.environment.set(ACCESS_TOKEN_KEY, res.json().accessToken);",
+					"    });",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
