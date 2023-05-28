@@ -108,28 +108,38 @@ const ProductView = () => {
             ))}
           </div>
 
-          <span
-            className={clsx(
-              'text-base-100 font-title text-2xl font-bold',
-              productInfo?.isDiscount && 'text-primary'
-            )}
-          >
-            {formatPrice(productInfo?.price ?? 0)}
-          </span>
+          {productInfo && productInfo.price === null && (
+            <p className='text-base-300'>This product has been discontinued.</p>
+          )}
 
-          <span
-            title={`Previously ${formatPrice(productInfo?.previousPrice || 0)}`}
-            className='text-base-400 font-title preserve-line ml-2 font-semibold uppercase'
-          >
-            {productInfo?.isDiscount && productInfo.previousPrice && (
-              <>Prev. {formatPrice(productInfo.previousPrice)}</>
-            )}
-          </span>
+          {productInfo?.price !== null && (
+            <>
+              <span
+                className={clsx(
+                  'text-base-100 font-title text-2xl font-bold',
+                  productInfo?.isDiscount && 'text-primary'
+                )}
+              >
+                {formatPrice(productInfo?.price ?? 0)}
+              </span>
 
-          <Button size='md' onClick={add} className='mt-4 block'>
-            <span>Add to Cart</span>
-            <RiShoppingCartLine className='-mt-0.5 h-4 w-4' />
-          </Button>
+              <span
+                title={`Previously ${formatPrice(
+                  productInfo?.previousPrice ?? 0
+                )}`}
+                className='text-base-400 font-title preserve-line ml-2 font-semibold uppercase'
+              >
+                {productInfo?.isDiscount && productInfo.previousPrice && (
+                  <>Prev. {formatPrice(productInfo.previousPrice)}</>
+                )}
+              </span>
+
+              <Button size='md' onClick={add} className='mt-4 block'>
+                <span>Add to Cart</span>
+                <RiShoppingCartLine className='-mt-0.5 h-4 w-4' />
+              </Button>
+            </>
+          )}
 
           {/* Product children content */}
           <div className='max-md:hidden'>
