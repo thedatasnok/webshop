@@ -1,10 +1,13 @@
+import NoSearchResults from '@/components/feedback/NoSearchResults';
 import PageTitle from '@/components/layout/PageTitle';
+import { RouteHref } from '@/router/enum';
 import { useFindUserAccountsQuery } from '@/services/userAccounts';
+import { useDebouncedValue } from '@mantine/hooks';
 import { Button, LoadingBar, Switch, TextField } from '@webshop/ui';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useDebouncedValue } from '@mantine/hooks';
 import { RiCheckLine, RiCloseLine, RiSearchLine } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
 
 const UserManagement = () => {
   const [fullName, setFullName] = useState('');
@@ -51,32 +54,44 @@ const UserManagement = () => {
       </section>
 
       <div role='table' className='grid grid-cols-5 items-center'>
-        <h2 className='font-title border-base-700 border-b pl-1 text-lg font-semibold uppercase'>
-          Name
-        </h2>
-        <h2 className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'>
-          Role
-        </h2>
-        <h2 className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'>
-          Email verified
-        </h2>
-        <h2 className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'>
-          Orders placed
-        </h2>
-        <h2 className='border-base-700 preserve-line border-b text-lg'>
-          {/* shows only for screen readers */}
-          <span className='sr-only'>Actions</span>
-        </h2>
+        <div role='row' className='grid-cols-inherit col-span-5 grid'>
+          <h2
+            role='columnheader'
+            className='font-title border-base-700 border-b pl-1 text-lg font-semibold uppercase'
+          >
+            Name
+          </h2>
+          <h2
+            role='columnheader'
+            className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'
+          >
+            Role
+          </h2>
+          <h2
+            role='columnheader'
+            className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'
+          >
+            Email verified
+          </h2>
+          <h2
+            role='columnheader'
+            className='font-title border-base-700 border-b text-center text-lg font-semibold uppercase'
+          >
+            Orders placed
+          </h2>
+          <h2
+            role='columnheader'
+            className='border-base-700 preserve-line border-b text-lg'
+          >
+            {/* shows only for screen readers */}
+            <span className='sr-only'>Actions</span>
+          </h2>
+        </div>
 
         <LoadingBar loading={isFetching} className='col-span-5' />
 
         {!isFetching && users?.length === 0 && (
-          <div className='text-base-400 col-span-5 flex flex-col items-center justify-center py-4'>
-            <RiSearchLine className='h-16 w-16' />
-            <p className='font-title text-sm font-semibold uppercase'>
-              No users found
-            </p>
-          </div>
+          <NoSearchResults text='No products found' className='col-span-6' />
         )}
 
         {users?.map((user, idx, array) => (
@@ -114,7 +129,11 @@ const UserManagement = () => {
               role='cell'
               className='flex items-center justify-end gap-2 p-2 text-sm'
             >
-              <Button variant='neutral'>View orders</Button>
+              <NavLink
+                to={RouteHref.ORDER_MANAGEMENT.concat('?customerId=' + user.id)}
+              >
+                <Button variant='neutral'>View orders</Button>
+              </NavLink>
               <Button variant='destructive'>Disable account</Button>
             </div>
           </div>

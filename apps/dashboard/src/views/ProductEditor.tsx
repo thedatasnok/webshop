@@ -28,7 +28,9 @@ const ProductEditor = () => {
   const handleSpecificationChange = (
     name: string,
     data: ProductSpecificationRow[]
-  ) => {};
+  ) => {
+    // does nothing yet
+  };
 
   const fileName = undefined;
 

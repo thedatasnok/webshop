@@ -1,5 +1,10 @@
-import { OrderListItem, OrderSummary } from '@webshop/contracts';
-import { webshopApi } from '@webshop/ui';
+import { OrderDetails, OrderListItem, OrderSummary } from '@webshop/contracts';
+import { QueryParams, buildQueryParams, webshopApi } from '@webshop/ui';
+
+export interface FindOrdersQueryParams extends QueryParams {
+  customerId?: string;
+  productName?: string;
+}
 
 export const ordersApi = webshopApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,8 +21,15 @@ export const ordersApi = webshopApi.injectEndpoints({
     recentOrders: builder.query<OrderListItem[], void>({
       query: () => '/v1/orders/recent',
     }),
+
+    findOrders: builder.query<OrderDetails[], FindOrdersQueryParams>({
+      query: (params) => '/v1/orders?' + buildQueryParams(params),
+    }),
   }),
 });
 
-export const { useFindDailyOrderSummaryQuery, useRecentOrdersQuery } =
-  ordersApi;
+export const {
+  useFindDailyOrderSummaryQuery,
+  useRecentOrdersQuery,
+  useFindOrdersQuery,
+} = ordersApi;
