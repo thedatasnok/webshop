@@ -35,7 +35,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       prev_pp.price AS prevPrice
     )
     FROM Product p
-    INNER JOIN ProductPrice pp
+    LEFT JOIN ProductPrice pp
       ON pp.product = p
       AND pp.from <= NOW()
       AND pp.to IS NULL
@@ -45,6 +45,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     WHERE
       ((COALESCE(:id) IS NULL AND :allowEmptyIdList = TRUE) OR p.id IN (:id)) AND
       (:name IS NULL OR (SIMILARITY(p.name, :name) > 0.3 OR p.name ILIKE %:name%)) AND
+      (:includeDiscontinued = TRUE OR pp.id IS NOT NULL) AND
       (COALESCE(:category) IS NULL OR p.id IN (
         SELECT DISTINCT p.id
         FROM Category c
@@ -57,6 +58,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
       @Param("name") Optional<String> name,
       @Param("category") List<Integer> category,
       @Param("allowEmptyIdList") Boolean allowEmptyIdList,
+      @Param("includeDiscontinued") Boolean includeDiscontinued,
       Sort direction
   );
 

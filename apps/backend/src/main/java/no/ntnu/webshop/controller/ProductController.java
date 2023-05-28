@@ -65,6 +65,8 @@ public class ProductController {
       @RequestParam(value = "categoryId", required = false) List<Integer> category,
       @Parameter(description = "If true, the query will return products without being passed a list of ids.")
       @RequestParam(value = "allowEmptyIdList", required = false) Optional<Boolean> allowEmptyIdList,
+      @Parameter(description = "Whether or not to include discontinued products")
+      @RequestParam(value = "includeDiscontinued", required = false) Optional<Boolean> includeDiscontinued,
       @Parameter(description = "The column to sort by, can be id, name, price or discount")
       @RequestParam(value = "sortBy", required = false) Optional<String> sortBy,
       @Parameter(description = "The direction to sort by, can be asc or desc")
@@ -83,8 +85,10 @@ public class ProductController {
     };
 
     var sort = Sort.by(sortDirection.orElse(Direction.ASC), column);
+    var discontinued = includeDiscontinued.orElse(false);
 
-    return ResponseEntity.ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds, sort));
+    return ResponseEntity
+      .ok(this.productJpaRepository.findProducts(ids, name, category, allowEmptyIds, discontinued, sort));
   }
 
   @Operation(summary = "Finds a list of featured products")
