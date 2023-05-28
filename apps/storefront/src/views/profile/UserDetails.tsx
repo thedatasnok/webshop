@@ -75,8 +75,8 @@ const UserDetails = forwardRef<HTMLDivElement, UserDetailsProps>(
     const form = useForm({
       validate: zodResolver(schema),
       initialValues: {
-        email: tokenDetails?.username || '',
-        fullName: tokenDetails?.fullName || '',
+        email: tokenDetails?.username ?? '',
+        fullName: tokenDetails?.fullName ?? '',
         password: '',
         passwordConfirmation: '',
         passwordStrength: {

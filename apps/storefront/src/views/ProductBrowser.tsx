@@ -4,9 +4,13 @@ import ProductCard from '@/components/product/ProductCard';
 import ProductListCard from '@/components/product/ProductListCard';
 import { RouteHref } from '@/router';
 import { useGetCategoriesQuery } from '@/services/categories';
-import { useFindProductsQuery } from '@/services/products';
 import { CategoryDto } from '@webshop/contracts';
-import { SortByField, SortDirection, formatPrice } from '@webshop/ui';
+import {
+  SortByField,
+  SortDirection,
+  formatPrice,
+  useFindProductsQuery,
+} from '@webshop/ui';
 import clsx from 'clsx';
 import { Fragment, useState } from 'react';
 import { RiGridFill, RiListCheck, RiSearchLine } from 'react-icons/ri';
@@ -22,7 +26,7 @@ const ProductBrowser = () => {
     ? Number(paramCategoryId)
     : undefined;
 
-  const paramSortField = searchParams.get('sortBy') || PRODUCT_SORT_FIELDS[0];
+  const paramSortField = searchParams.get('sortBy') ?? PRODUCT_SORT_FIELDS[0];
   const paramSortDirection =
     (searchParams.get('sortDirection') as SortDirection) || SortDirection.ASC;
 

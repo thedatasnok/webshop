@@ -1,5 +1,6 @@
-import { ProductDetails, ProductListItem } from '@webshop/contracts';
-import { QueryParams, buildQueryParams, webshopApi } from '@webshop/ui';
+import { ProductDetails, ProductListItem } from "@webshop/contracts";
+import { webshopApi } from "./base";
+import { QueryParams, buildQueryParams } from "./utils";
 
 export interface FindProductsQueryParams extends QueryParams {
   id?: number[];

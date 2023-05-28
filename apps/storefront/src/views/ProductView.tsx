@@ -4,13 +4,15 @@ import OnSalePill from '@/components/product/OnSalePill';
 import ProductCard from '@/components/product/ProductCard';
 import ProductChildren from '@/components/product/ProductChildren';
 import { RouteHref } from '@/router';
-import {
-  useFindProductQuery,
-  useRelatedProductsQuery,
-} from '@/services/products';
 import { addToCart } from '@/store/cart.slice';
 import { Disclosure } from '@headlessui/react';
-import { Button, GroupedTable, formatPrice } from '@webshop/ui';
+import {
+  Button,
+  GroupedTable,
+  formatPrice,
+  useFindProductQuery,
+  useRelatedProductsQuery,
+} from '@webshop/ui';
 import clsx from 'clsx';
 import {
   RiArrowUpSLine,

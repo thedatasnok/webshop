@@ -1,7 +1,6 @@
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { useFindProductsQuery } from '@/services/products';
 import { usePlaceOrderMutation } from '@/services/userContextOrders';
 import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
@@ -17,6 +16,7 @@ import {
   TextField,
   formatPrice,
   useAuth,
+  useFindProductsQuery,
 } from '@webshop/ui';
 import clsx from 'clsx';
 import {

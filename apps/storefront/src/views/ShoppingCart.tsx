@@ -2,9 +2,13 @@ import PageLayout from '@/components/layout/PageLayout';
 import ProductListCard from '@/components/product/ProductListCard';
 import { useCart } from '@/hooks/useCart';
 import { RouteHref } from '@/router';
-import { useFindProductsQuery } from '@/services/products';
 import { clearCart, removeCartItem, updateCartItem } from '@/store/cart.slice';
-import { Button, DialogPrompt, formatPrice } from '@webshop/ui';
+import {
+  Button,
+  DialogPrompt,
+  formatPrice,
+  useFindProductsQuery,
+} from '@webshop/ui';
 import clsx from 'clsx';
 import { useId, useRef, useState } from 'react';
 import {

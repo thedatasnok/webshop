@@ -1,4 +1,5 @@
-export * from './base';
 export * from './auth';
-export * from './utils';
+export * from './base';
+export * from './products';
 export * from './userContext';
+export * from './utils';

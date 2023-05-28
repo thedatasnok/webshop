@@ -1,8 +1,7 @@
 import { RouteHref } from '@/router';
-import { useFindProductsQuery } from '@/services/products';
 import { Popover, Transition } from '@headlessui/react';
 import { useDebouncedValue } from '@mantine/hooks';
-import { formatPrice } from '@webshop/ui';
+import { formatPrice, useFindProductsQuery } from '@webshop/ui';
 import clsx from 'clsx';
 import { FormEvent, useEffect, useState } from 'react';
 import {
@@ -161,7 +160,9 @@ export const SearchBar: React.FC<SearchOverlayProps> = () => {
                         </p>
                       </div>
 
-                      <OnSalePill className={clsx(!product.isDiscount && 'invisible')} />
+                      <OnSalePill
+                        className={clsx(!product.isDiscount && 'invisible')}
+                      />
 
                       <span
                         className={clsx(
