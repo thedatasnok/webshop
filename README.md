@@ -71,6 +71,8 @@ Some internal resources you may find useful:
 - [Wireframe](https://www.figma.com/file/Ncex2OIvg9kFG4ShYLDBpi/Webshop?type=design&node-id=0%3A1&t=y58tj1vW4rVKZ0YY-1)
 - [Design guidelines](docs/DESIGN.md)
 - [Methodology](docs/METHOD.md)
+- [Backend Postman collection](docs/postman/backend.postman_collection.json)
+- [Mail service Postman collection](docs/postman/mail.postman_collection.json)
 
 ## Getting started
 
