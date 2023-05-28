@@ -17,6 +17,7 @@ const DashboardLayout = () => {
     <div className='flex h-screen w-screen overflow-hidden'>
       <aside className='border-base-800 flex w-24 flex-shrink-0 flex-col border-r'>
         <NavLink to={RouteHref.DASHBOARD} className='my-2 h-10 p-2'>
+          <span className='sr-only'>CGG Home</span>
           <Logo variant='small' />
         </NavLink>
 
@@ -47,6 +48,7 @@ const DashboardLayout = () => {
           onClick={() => signOut()}
           className='hover:bg-base-900 flex items-center justify-center gap-1 px-2 py-1'
         >
+          <span className='sr-only'>Sign out</span>
           <RiLogoutBoxLine className='h-6 w-6' />
         </button>
       </aside>
