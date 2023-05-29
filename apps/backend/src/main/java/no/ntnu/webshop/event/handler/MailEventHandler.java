@@ -3,7 +3,6 @@ package no.ntnu.webshop.event.handler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
@@ -14,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.event.model.CustomerRegisteredEvent;
 import no.ntnu.webshop.event.model.OrderConfirmationEvent;
-import no.ntnu.webshop.repository.OrderJdbcRepository;
+import no.ntnu.webshop.service.OrderService;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailEventHandler {
-  private final OrderJdbcRepository orderJdbcRepository;
+  private final OrderService orderService;
   private final RestTemplate restTemplate = new RestTemplate();
 
   @Value("${no.ntnu.webshop.mail-service.host}")
@@ -56,8 +55,7 @@ public class MailEventHandler {
     if (!this.enabled)
       return;
 
-    var placedOrder = this.orderJdbcRepository
-      .findOrders(Optional.of(event.customer().getId()), Optional.empty(), Optional.of(event.orderId()));
+    var placedOrder = this.orderService.findById(event.orderId());
 
     try {
       this.restTemplate.postForObject(
