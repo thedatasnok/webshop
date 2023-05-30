@@ -32,7 +32,6 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
    * Finds a list of orders, optionally filtered by the given date.
    * 
    * @param since the date to find order since
-   * @param sort  the sort order to use
    * 
    * @return a list of orders
    */

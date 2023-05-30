@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents the primary key of the ProductItem entity.
+ * Represents the primary key of the ProductChild entity.
  * 
  * @see ProductChild
  */

@@ -15,12 +15,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.contracts.address.AddressDto;
 import no.ntnu.webshop.contracts.order.OrderDetails;
 import no.ntnu.webshop.contracts.order.OrderLineDetails;
 import no.ntnu.webshop.contracts.order.OrderSummary;
 import no.ntnu.webshop.error.model.MappingException;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class OrderJdbcRepository {
@@ -81,7 +83,8 @@ public class OrderJdbcRepository {
     params.addValue("productName", productName.orElse(null), Types.VARCHAR);
     params.addValue("orderId", orderId.orElse(null), Types.BIGINT);
 
-    // not sure how
+    // couldn't find a way to do this with JPQL/HQL
+    // so we're using native SQL instead
     return this.jdbcTemplate.query("""
         SELECT
           o.order_id,
@@ -172,6 +175,7 @@ public class OrderJdbcRepository {
           .shippingMethod(rs.getString("shipping_method"))
           .build();
       } catch (Exception e) {
+        log.error("Failed to convert order to OrderDetails", e);
         throw new MappingException("Failed to convert order to OrderDetails");
       }
     });

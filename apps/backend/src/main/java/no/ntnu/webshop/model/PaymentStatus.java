@@ -6,6 +6,13 @@ public enum PaymentStatus {
   PAID,
   CANCELLED;
 
+  /**
+   * Returns the payment status with the given name. The name is case insensitive.
+   * 
+   * @param name the name of the payment status
+   * 
+   * @return the payment status with the given name
+   */
   public static PaymentStatus fromString(
       String string
   ) {

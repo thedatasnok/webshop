@@ -16,11 +16,13 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
   /**
    * Finds a list of products based on the given parameters.
    * 
-   * @param ids              an optionally empty list of product ids, if empty none will be returned
-   *                         unless specified otherwise by allowEmptyIdList
-   * @param name             a name to search for, if null no filtering will be done
-   * @param category         a list of category ids to search for, if null no filtering will be done
-   * @param allowEmptyIdList if true, and ids is empty, all products will be returned
+   * @param ids                 an optionally empty list of product ids, if empty none will be
+   *                            returned unless specified otherwise by allowEmptyIdList
+   * @param name                a name to search for, if null no filtering will be done
+   * @param category            a list of category ids to search for, if null no filtering will be
+   *                            done
+   * @param allowEmptyIdList    if true, and ids is empty, all products will be returned
+   * @param includeDiscontinued if true, discontinued products will be included
    * 
    * @return a list of products
    */

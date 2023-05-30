@@ -10,11 +10,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.webshop.contracts.product.ProductDetails;
 import no.ntnu.webshop.contracts.product.ProductVariant;
 import no.ntnu.webshop.contracts.product.ProductChildDetails;
 import no.ntnu.webshop.error.model.MappingException;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class ProductJdbcRepository {
@@ -109,7 +111,7 @@ public class ProductJdbcRepository {
           this.objectMapper.readValue(rs.getString("variants"), PRODUCT_VARIANT_LIST_TYPE_REF)
         );
       } catch (Exception e) {
-        e.printStackTrace();
+        log.error("Failed to map product to ProductDetails", e);
         throw new MappingException("Failed to convert product to ProductDetails");
       }
     });

@@ -15,6 +15,16 @@ import no.ntnu.webshop.model.UserAccount;
 
 public interface UserAccountJpaRepository extends JpaRepository<UserAccount, UUID> {
 
+  /**
+   * Finds a list of user accounts based on the given parameters.
+   * 
+   * @param fullName the full name to search for, if null no filtering will be done
+   * @param email    the email to search for, if null no filtering will be done
+   * @param verified if true, only verified user accounts will be returned, if false, only unverified
+   * @param sort     the sort order to use
+   * 
+   * @return a list of user accounts
+   */
   @Query("""
     SELECT new no.ntnu.webshop.contracts.user.UserAccountListItem(
       user.id,
@@ -27,7 +37,7 @@ public interface UserAccountJpaRepository extends JpaRepository<UserAccount, UUI
     )
     FROM UserAccount user
     LEFT JOIN Order o ON o.customer = user
-    WHERE 
+    WHERE
       (:fullName IS NULL OR user.fullName ILIKE %:fullName%) AND
       (:email IS NULL OR user.email ILIKE %:email%) AND
       (:verified IS NULL OR user.emailVerified = :verified)

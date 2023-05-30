@@ -25,6 +25,8 @@ public enum UserAccountRole {
     return this.code;
   }
 
+  // this is essentially just string variants of the roles
+  // in some cases we are not able to use the enum directly, for instance in the `@Secured` annotation
   public static class Code {
     public static final String SHOP_OWNER = "SHOP_OWNER";
     public static final String SHOP_WORKER = "SHOP_WORKER";
