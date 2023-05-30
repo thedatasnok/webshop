@@ -7,6 +7,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
 import {
   Button,
+  ErrorLabel,
   InputLabel,
   Logo,
   PaymentMethod,
@@ -32,26 +33,54 @@ import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+const mandatoryAddressSchema = z.object({
+  country: z.string().nonempty('Country cannot be empty'),
+  city: z.string().nonempty('City cannot be empty'),
+  street: z.string().nonempty('Street cannot be empty'),
+  postalCode: z.string().nonempty('Postal code cannot be empty'),
+  careOf: z.string().optional(),
+});
+
+const optionalAddressSchema = z.object({
+  country: z.string(),
+  city: z.string(),
+  street: z.string(),
+  postalCode: z.string(),
+  careOf: z.string(),
+});
+
 const schema = z.object({
   customerName: z.string().nonempty(),
-  shippingAddress: z.object({
-    country: z
-      .string()
-      .min(2, { message: 'Name should have at least 2 letters' }),
-    city: z.string().min(2),
-    street: z.string().min(2),
-    postalCode: z.string().min(2),
-    careOf: z.string().optional(),
-  }),
-  billingAddress: z.object({
-    country: z.string(),
-    postalCode: z.string(),
-    city: z.string(),
-    street: z.string(),
-  }),
+  shippingAddress: mandatoryAddressSchema,
+  billingAddress: optionalAddressSchema,
   differentBillingAddress: z.boolean(),
-  shippingMethod: z.string(),
-  paymentMethod: z.string(),
+  shippingMethod: z.enum(
+    [
+      ShippingMethod.INSTANT_TELEPORTATION,
+      ShippingMethod.DRONE,
+      ShippingMethod.SELF_DRIVING_TRUCK,
+      ShippingMethod.HYPERLOOP,
+    ],
+    {
+      errorMap: (_issue, _ctx) => ({
+        message: 'Please select a shipping method',
+      }),
+    }
+  ),
+  paymentMethod: z.enum(
+    [
+      PaymentMethod.BIOMETRIC,
+      PaymentMethod.CRYPTO,
+      PaymentMethod.VIRTUAL_WALLET,
+      PaymentMethod.SMART_CONTRACT,
+      PaymentMethod.CREDIT_CARD,
+    ],
+    {
+      errorMap: (_issue, _ctx) => ({
+        message: 'Please select a payment method',
+      }),
+    }
+  ),
 });
 
 const Checkout = () => {
@@ -94,7 +123,6 @@ const Checkout = () => {
         street: '',
         careOf: '',
       },
-
       billingAddress: {
         country: '',
         postalCode: '',
@@ -147,6 +175,7 @@ const Checkout = () => {
               id='customer-name'
               {...form.getInputProps('customerName')}
             />
+            <ErrorLabel text={form.errors.customerName as string} />
           </div>
 
           <div>
@@ -155,6 +184,9 @@ const Checkout = () => {
               id='shipping-country'
               {...form.getInputProps('shippingAddress.country')}
             />
+            <ErrorLabel
+              text={form.errors['shippingAddress.country'] as string}
+            />
           </div>
           <div>
             <InputLabel htmlFor='shipping-city'>City</InputLabel>
@@ -162,12 +194,16 @@ const Checkout = () => {
               id='shipping-city'
               {...form.getInputProps('shippingAddress.city')}
             />
+            <ErrorLabel text={form.errors['shippingAddress.city'] as string} />
           </div>
           <div>
             <InputLabel htmlFor='shipping-street'>Street</InputLabel>
             <TextField
               id='shipping-street'
               {...form.getInputProps('shippingAddress.street')}
+            />
+            <ErrorLabel
+              text={form.errors['shippingAddress.street'] as string}
             />
           </div>
 
@@ -176,6 +212,9 @@ const Checkout = () => {
             <TextField
               id='shipping-postal-code'
               {...form.getInputProps('shippingAddress.postalCode')}
+            />
+            <ErrorLabel
+              text={form.errors['shippingAddress.postalCode'] as string}
             />
           </div>
 
@@ -186,6 +225,9 @@ const Checkout = () => {
             <TextField
               id='shipping-co'
               {...form.getInputProps('shippingAddress.careOf')}
+            />
+            <ErrorLabel
+              text={form.errors['shippingAddress.careOf'] as string}
             />
           </div>
 
@@ -214,6 +256,9 @@ const Checkout = () => {
                   id='billing-country'
                   {...form.getInputProps('billingAddress.country')}
                 />
+                <ErrorLabel
+                  text={form.errors['billingAddress.country'] as string}
+                />
               </div>
 
               <div>
@@ -222,6 +267,9 @@ const Checkout = () => {
                   id='billing-city'
                   {...form.getInputProps('billingAddress.city')}
                 />
+                <ErrorLabel
+                  text={form.errors['billingAddress.city'] as string}
+                />
               </div>
 
               <div>
@@ -229,6 +277,9 @@ const Checkout = () => {
                 <TextField
                   id='billing-street'
                   {...form.getInputProps('billingAddress.street')}
+                />
+                <ErrorLabel
+                  text={form.errors['billingAddress.street'] as string}
                 />
               </div>
 
@@ -240,6 +291,9 @@ const Checkout = () => {
                   id='billing-postal-code'
                   {...form.getInputProps('billingAddress.postalCode')}
                 />
+                <ErrorLabel
+                  text={form.errors['billingAddress.postalCode'] as string}
+                />
               </div>
 
               <div>
@@ -249,6 +303,9 @@ const Checkout = () => {
                 <TextField
                   id='billing-co'
                   {...form.getInputProps('billingAddress.careOf')}
+                />
+                <ErrorLabel
+                  text={form.errors['billingAddress.careOf'] as string}
                 />
               </div>
             </>
@@ -289,6 +346,8 @@ const Checkout = () => {
             ]}
           />
 
+          <ErrorLabel text={form.errors.shippingMethod as string} />
+
           <SectionHeader title='Payment method' className='mt-2 text-xl' />
 
           <RadioGroup
@@ -321,6 +380,8 @@ const Checkout = () => {
               },
             ]}
           />
+
+          <ErrorLabel text={form.errors.paymentMethod as string} />
 
           <Button
             className='mt-2 w-fit self-center text-lg font-semibold'
