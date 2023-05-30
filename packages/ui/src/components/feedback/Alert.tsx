@@ -40,7 +40,7 @@ const Alert: React.FC<AlertProps> = ({
         level === AlertLevel.ERROR && 'bg-error/10 border-error text-error'
       )}
     >
-      <AlertIcon level={level} className='h-5 w-5' />
+      <AlertIcon level={level} className='h-5 w-5 flex-shrink-0' />
       <span className='text-sm font-thin leading-tight'>{message}</span>
       {children}
       {onClose && <RiCloseLine onClick={onClose} className='ml-auto' />}

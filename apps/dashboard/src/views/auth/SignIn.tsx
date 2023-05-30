@@ -81,15 +81,15 @@ const SignIn = () => {
               )}
             </div>
 
-            <Button className='mt-2 w-full' type='submit' isLoading={isLoading}>
-              Sign in
-            </Button>
-
             <Alert
               level={AlertLevel.ERROR}
               show={isError}
               message='Sign in failed, please verify your credentials.'
             />
+
+            <Button className='w-full' type='submit' isLoading={isLoading}>
+              Sign in
+            </Button>
           </form>
         </div>
       </main>

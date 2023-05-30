@@ -3,6 +3,8 @@ import { RouteHref } from '@/router';
 import { useForm, zodResolver } from '@mantine/form';
 import { SignUpRequest } from '@webshop/contracts';
 import {
+  Alert,
+  AlertLevel,
   Button,
   ErrorLabel,
   InputLabel,
@@ -42,7 +44,7 @@ const schema = z
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [signUp] = useSignUpMutation();
+  const [signUp, { isError }] = useSignUpMutation();
 
   const handleSubmit = async (values: SignUpRequest) => {
     try {
@@ -189,6 +191,12 @@ const SignUp = () => {
                     form.values.passwordConfirmation === form.values.password,
                 },
               ]}
+            />
+
+            <Alert
+              show={isError}
+              level={AlertLevel.ERROR}
+              message='Something went wrong, please verify your input and try again. If the problem persists, please contact support.'
             />
 
             <Button className='w-full' type='submit'>
