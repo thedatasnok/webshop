@@ -81,6 +81,7 @@ Some internal resources you may find useful:
 - [Development](#development)
 - [Running tests](#running-tests)
 - [Deployment](#deployment)
+- [Administrative user](#administrative-user)
 
 
 ### Environment variables
@@ -132,7 +133,7 @@ In order to get started with development, you will need the following:
 - Node.js 18 (LTS)
 - Environment variables defined, refer to [the section above](#environment-variables) and [.env.example](.env.example)
 
-With those installed, you can:
+With those ready, you can:
 
 1. Clone the repository using your preferred method
 
@@ -200,6 +201,11 @@ Our own environments are defined in GitHub and deployed from GitHub Actions usin
 - Storage provisioner for the persistent volume claims
 
 If you wish to run the stack using Docker Compose, you can use the [docker-compose.prod.yml](docker-compose.prod.yml) file. For HTTPS to work, you will have to modify the commented out segments of the Traefik reverse proxy service.
+
+### Administrative user
+
+When there are no registered users, the backend will automatically assign the registered user to be an administrator. In other words, the first registered user gets the role `SHOP_OWNER`. This means that if you set up a new environment, you should create the admin user before creating any other users.
+
 
 ## License
 
