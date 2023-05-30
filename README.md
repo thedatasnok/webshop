@@ -73,6 +73,7 @@ Some internal resources you may find useful:
 - [Methodology](docs/METHOD.md)
 - [Backend Postman collection](docs/postman/backend.postman_collection.json)
 - [Mail service Postman collection](docs/postman/mail.postman_collection.json)
+- [Mail service README](apps/mail/README.md)
 
 ## Getting started
 
