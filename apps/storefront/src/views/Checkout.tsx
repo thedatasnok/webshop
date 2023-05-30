@@ -6,6 +6,8 @@ import { clearCart } from '@/store/cart.slice';
 import { useForm, zodResolver } from '@mantine/form';
 import { PlaceOrderRequest } from '@webshop/contracts';
 import {
+  Alert,
+  AlertLevel,
   Button,
   ErrorLabel,
   InputLabel,
@@ -92,7 +94,7 @@ const Checkout = () => {
     allowEmptyIdList: false,
   });
 
-  const [placeOrder] = usePlaceOrderMutation();
+  const [placeOrder, { isError }] = usePlaceOrderMutation();
   const dispatch = useDispatch();
 
   const handleSubmit = async (values: PlaceOrderRequest) => {
@@ -382,6 +384,12 @@ const Checkout = () => {
           />
 
           <ErrorLabel text={form.errors.paymentMethod as string} />
+
+          <Alert
+            level={AlertLevel.ERROR}
+            show={isError}
+            message='Something went wrong placing the order, please verify your input and try again. If the error persists, please contact support.'
+          />
 
           <Button
             className='mt-2 w-fit self-center text-lg font-semibold'
