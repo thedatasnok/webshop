@@ -25,7 +25,7 @@ The sprints are organized using GitHub Projects, which can be found [here](https
 - [x] [Sprint 14](docs/sprints/SPRINT14.md) (Apr 24 - Apr 30)
 - [x] [Sprint 15](docs/sprints/SPRINT15.md) (May 1 - May 7)
 - [x] [Sprint 16](docs/sprints/SPRINT16.md) (May 8 - May 21)
-- [ ] [Sprint 17](docs/sprints/SPRINT17.md) (May 22 - May 31)
+- [x] [Sprint 17](docs/sprints/SPRINT17.md) (May 22 - May 31)
 
 The issue list for each of these sprints may be seen in the "[By sprint](https://github.com/users/thedatasnok/projects/3/views/3)" view. Some issues were moved to the next sprint, in those cases the sprint reports should cover it.
 
